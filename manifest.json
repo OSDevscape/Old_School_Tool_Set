@@ -1,12 +1,13 @@
 {
-  "name": "Old School Tool Set",
+  "id": "/",
+  "name": "OSTS",
   "short_name": "OSTS",
   "description": "Old School Tool Set (OSTS) for Old School RuneScape tools, tracking, bestiary, timers, and charts",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0d1117",
-  "theme_color": "#c5a028",
-  "orientation": "portrait",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "description": "OSTS timer and tracking app",
   "icons": [
      {
       "src": "./Logo/icon-192.png",
@@ -18,10 +19,5 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ],
-  "categories": [
-    "games",
-    "utilities"
-  ],
-  "screenshots": []
+  ]
 }
