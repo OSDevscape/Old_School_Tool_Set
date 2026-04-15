@@ -12,7 +12,7 @@ replacements = {
     "__VAPID_KEY__": os.environ.get("VAPID_KEY", ""),
 }
 
-for name in ["fcm-bootstrap.js", "sw.js"]:
+for name in ["bootstrap.js", "sw.js"]:
     p = Path(name)
     txt = p.read_text(encoding="utf-8")
     for k, v in replacements.items():
