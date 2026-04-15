@@ -1,43 +1,54 @@
-const CACHE_NAME = 'OSTS V11.0.0';
-const STATIC_ASSETS = [
-  './',
-  './index.html',
-  './manifest.json',
-  'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js'
+const CACHE_NAME = "osts-cache-v1";
+const APP_SHELL = [
+  "./",
+  "./manifest.json"
 ];
 
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then(cache =>
-      cache.addAll(
-        STATIC_ASSETS.filter(url => !url.startsWith('http') || !navigator.onLine ? true : true)
-      )
-    ).catch(() => {})
+self.addEventListener("install", event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL))
   );
   self.skipWaiting();
 });
 
-self.addEventListener('activate', e => {
-  e.waitUntil(
+self.addEventListener("activate", event => {
+  event.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+      Promise.all(
+        keys
+          .filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
+      )
     )
   );
   self.clients.claim();
 });
 
-self.addEventListener('fetch', e => {
-  if (e.request.url.includes('api.wiseoldman.net')) return; // Don't cache API calls
-  e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request).then(res => {
-      const clone = res.clone();
-      caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
-      return res;
-    })).catch(() => caches.match('./index.html'))
+self.addEventListener("fetch", event => {
+  const request = event.request;
+
+  if (request.method !== "GET") return;
+
+  const url = new URL(request.url);
+
+  if (url.origin !== self.location.origin) return;
+  if (url.pathname.includes("/api/")) return;
+  if (url.pathname.endsWith("/sw.js")) return;
+
+  event.respondWith(
+    fetch(request)
+      .then(response => {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+        return response;
+      })
+      .catch(() =>
+        caches.match(request).then(cached => cached || caches.match("./"))
+      )
   );
 });
 
-/* Firebase Messaging service worker for OSTS */
+/* Firebase Messaging */
 importScripts("https://www.gstatic.com/firebasejs/12.12.0/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/12.12.0/firebase-messaging-compat.js");
 
@@ -53,28 +64,34 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// Runs when a push arrives and page is in background / closed
 messaging.onBackgroundMessage(payload => {
-  const title = payload?.notification?.title || "Timer finished";
+  const title = payload?.notification?.title || "Notification";
   const options = {
-    body: payload?.notification?.body || "Your timer is ready to collect.",
+    body: payload?.notification?.body || "You have a new update.",
     icon: "./icon-192.png",
     badge: "./icon-192.png",
-    data: payload?.fcmOptions?.link || "./"
+    data: {
+      url: payload?.fcmOptions?.link || "./"
+    }
   };
+
   self.registration.showNotification(title, options);
 });
 
 self.addEventListener("notificationclick", event => {
   event.notification.close();
+
+  const targetUrl = event.notification?.data?.url || "./";
+
   event.waitUntil(
-    clients
-      .matchAll({ type: "window", includeUncontrolled: true })
-      .then(clientsArr => {
-        for (const client of clientsArr) {
-          if ("focus" in client) return client.focus();
+    clients.matchAll({ type: "window", includeUncontrolled: true }).then(windowClients => {
+      for (const client of windowClients) {
+        if ("focus" in client) {
+          client.navigate(targetUrl);
+          return client.focus();
         }
-        return clients.openWindow(event.notification.data || "./");
-      })
+      }
+      return clients.openWindow(targetUrl);
+    })
   );
 });
