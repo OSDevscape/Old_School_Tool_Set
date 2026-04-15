@@ -58,8 +58,8 @@ messaging.onBackgroundMessage(payload => {
   const title = payload?.notification?.title || "Timer finished";
   const options = {
     body: payload?.notification?.body || "Your timer is ready to collect.",
-    icon: "./icon-192.png",
-    badge: "./icon-192.png",
+    icon: ".Logo\icon-192.png",
+    badge: ".Logo\icon-192.png",
     data: payload?.fcmOptions?.link || "./"
   };
   self.registration.showNotification(title, options);
