@@ -159,6 +159,22 @@ header h1 span{color:var(--muted);font-weight:400;font-size:13px;margin-left:4px
 .pill.variant{background:rgba(34,211,238,.15);color:#22d3ee}
 .period-tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none}.period-tabs::-webkit-scrollbar{display:none}.period-tab{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:7px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer}.period-tab.active{background:var(--gold);color:#000;border-color:var(--gold)}
 .gain-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;gap:12px;margin-bottom:6px}.no-gains{text-align:center;padding:40px 20px;color:var(--muted);font-size:14px}
+.gains-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:8px}
+.gain-flip{perspective:600px;cursor:default;-webkit-tap-highlight-color:transparent}
+.gain-flip.has-gains{cursor:pointer}
+.gain-flip-inner{position:relative;width:100%;padding-top:100%;transform-style:preserve-3d;transition:transform .42s cubic-bezier(.4,0,.2,1)}
+.gain-flip.open .gain-flip-inner{transform:rotateY(180deg)}
+.gain-flip-front,.gain-flip-back{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;overflow:hidden}
+.gain-flip-front{background:var(--surface);border:1px solid var(--border);transition:border-color .15s,background .15s}
+.gain-flip.has-gains .gain-flip-front{border-top:2px solid var(--sc,var(--gold))}
+.gain-flip.has-gains:hover .gain-flip-front{border-color:var(--sc,var(--gold));background:var(--surface2)}
+.gain-flip-front img{width:26px;height:26px;object-fit:contain}
+.gain-flip-front .gf-name{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 4px}
+.gain-flip-back{background:var(--surface2);border:1px solid var(--sc,var(--gold));border-top:2px solid var(--sc,var(--gold));transform:rotateY(180deg);padding:5px 4px;gap:1px}
+.gain-flip-back .gb-name{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 4px;text-align:center}
+.gain-flip-back .gb-xp{font-size:11.5px;font-weight:800;color:var(--sc,var(--gold));white-space:nowrap;line-height:1}
+.gain-flip-back .gb-xp-lbl{font-size:8px;color:var(--muted);letter-spacing:.3px}
+.gain-flip-back .gb-lvl{font-size:9px;color:var(--gold);background:rgba(184,136,72,.18);border-radius:4px;padding:1px 5px;margin-top:2px;white-space:nowrap}
 .chart-section{margin-bottom:20px}.chart-section h3{font-size:14px;font-weight:700;color:var(--gold);margin-bottom:10px}.chart-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px}
 #toast{position:fixed;bottom:calc(var(--nav-h) + 10px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 20px;font-size:13px;opacity:0;pointer-events:none;z-index:300;transition:all .3s;white-space:nowrap}#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
@@ -295,6 +311,343 @@ body.theme-light .skills-placeholder-logo,body.theme-osrs .skills-placeholder-lo
 .settings-update-row-single{grid-template-columns:1fr}
 .partyhat-blue{background:#58a6ff !important;color:#06111f !important}
 .partyhat-blue:hover{filter:brightness(1.04)}
+
+/* ═══════════════════════════════════════════════
+   Road to Max — uses main app design system
+   ═══════════════════════════════════════════════ */
+
+/* ── Header ────────────────────────────────── */
+#tab-roadtomax header {
+  text-align: center;
+  padding: 14px 4px 16px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+#tab-roadtomax h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: .03em;
+}
+#tab-roadtomax .sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+/* ── Stats row ─────────────────────────────── */
+#tab-roadtomax .stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+#tab-roadtomax .stat {
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 10px 8px;
+  text-align: center;
+}
+#tab-roadtomax .stat .lbl {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 4px;
+}
+#tab-roadtomax .stat .val {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1.1;
+}
+#tab-roadtomax .stat .val.dim { color: var(--muted); }
+#tab-roadtomax .stat .note {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+/* ── Section headings ──────────────────────── */
+#tab-roadtomax .heading {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 20px 0 10px 2px;
+}
+#tab-roadtomax .section-toggle {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 20px 0 10px 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+#tab-roadtomax .section-toggle:hover { color: var(--gold2, #d0a060); }
+#tab-roadtomax .s-chevron { font-size: 10px; color: var(--muted); transition: transform .2s; }
+#tab-roadtomax .s-chevron.open { transform: rotate(180deg); }
+
+/* ── Nearest / Achievement lists ───────────── */
+#tab-roadtomax .nearest,
+#tab-roadtomax .achieve-list {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+#tab-roadtomax .nearest.visible,
+#tab-roadtomax .achieve-list.visible { display: flex; }
+
+/* ── Nearest 99 cards ──────────────────────── */
+#tab-roadtomax .n99-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 11px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+#tab-roadtomax .n99-icon {
+  width: 36px; height: 36px; flex-shrink: 0;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+#tab-roadtomax .n99-icon img { width: 24px; height: 24px; image-rendering: pixelated; }
+#tab-roadtomax .n99-info { flex: 1; min-width: 0; }
+#tab-roadtomax .n99-name { font-size: 13px; font-weight: 800; color: var(--text); }
+#tab-roadtomax .n99-left { font-size: 11px; color: var(--muted); margin-top: 2px; }
+#tab-roadtomax .n99-ring { flex-shrink: 0; position: relative; width: 48px; height: 48px; }
+#tab-roadtomax .n99-ring svg { transform: rotate(-90deg); }
+#tab-roadtomax .n99-ring-bg  { fill: none; stroke: var(--border); stroke-width: 4; }
+#tab-roadtomax .n99-ring-fill { fill: none; stroke: var(--gold); stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset .6s ease; }
+#tab-roadtomax .n99-pct {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: var(--gold);
+}
+
+/* ── Achievement cards ──────────────────────── */
+#tab-roadtomax .ach-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  flex-direction: column;
+  padding: 0;
+  cursor: default;
+}
+#tab-roadtomax .ach-card-main {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px; cursor: pointer;
+}
+#tab-roadtomax .ach-count { font-size: 10px; color: var(--muted); }
+#tab-roadtomax .ach-chev { font-size: 10px; color: var(--muted); margin-left: 4px; transition: transform .2s; flex-shrink: 0; }
+#tab-roadtomax .ach-drop {
+  display: none;
+  border-top: 1px solid var(--border);
+  background: var(--surface2);
+  padding: 10px 14px 12px;
+}
+#tab-roadtomax .ach-drop.open { display: block; }
+#tab-roadtomax .ach-drop-hdr {
+  font-size: 10px; font-weight: 800; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px;
+}
+#tab-roadtomax .ach-drop-grid {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 4px 12px;
+  font-size: 11px;
+}
+#tab-roadtomax .ach-col-hdr {
+  font-size: 10px; color: var(--muted); letter-spacing: .4px;
+  padding-bottom: 4px; border-bottom: 1px solid var(--border);
+}
+#tab-roadtomax .ach-row-name { color: var(--text); display: flex; align-items: center; padding: 3px 0; }
+#tab-roadtomax .ach-row-val  { color: var(--gold); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: flex-end; padding: 3px 0; }
+
+/* ── Skill grid ─────────────────────────────── */
+#tab-roadtomax .grid { display: grid; gap: 8px; }
+
+/* ── Skill cards ────────────────────────────── */
+#tab-roadtomax .card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color .15s;
+}
+#tab-roadtomax .card:hover { border-color: rgba(184,136,72,.5); }
+#tab-roadtomax .card.done  { border-left: 3px solid var(--green); }
+#tab-roadtomax .card.done .sname { color: var(--green); }
+#tab-roadtomax .card.done .bar   { background: var(--green); }
+#tab-roadtomax .card.done .tgt   { color: var(--green) !important; }
+#tab-roadtomax .card.open  { border-color: rgba(184,136,72,.55); }
+
+#tab-roadtomax .crow {
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+#tab-roadtomax .badge {
+  width: 36px; height: 36px; flex-shrink: 0;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+#tab-roadtomax .badge img { width: 24px; height: 24px; image-rendering: pixelated; }
+#tab-roadtomax .sinfo { flex: 1; min-width: 0; }
+#tab-roadtomax .sname { font-size: 13px; font-weight: 800; color: var(--text); }
+#tab-roadtomax .sname.dim { color: var(--muted); }
+#tab-roadtomax .stag  { font-size: 10px; color: var(--gold); font-weight: 600; }
+#tab-roadtomax .smeth { font-size: 11px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#tab-roadtomax .track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 5px; }
+#tab-roadtomax .bar   { height: 100%; background: var(--gold); border-radius: 2px; transition: width .5s ease; }
+#tab-roadtomax .nums  { text-align: right; flex-shrink: 0; }
+#tab-roadtomax .cur   { font-size: 13px; color: var(--muted); }
+#tab-roadtomax .cur.dim { color: var(--surface3, #2d333b); }
+#tab-roadtomax .arr   { font-size: 10px; color: var(--border); line-height: 1; }
+#tab-roadtomax .tgt   { font-size: 15px; font-weight: 800; color: var(--gold); }
+#tab-roadtomax .chevron { font-size: 10px; color: var(--muted); margin-left: 2px; flex-shrink: 0; transition: transform .2s; }
+#tab-roadtomax .card.open .chevron { transform: rotate(180deg); }
+
+/* ── Drop panel (skill detail) ──────────────── */
+#tab-roadtomax .drop {
+  display: none;
+  border-top: 1px solid var(--border);
+  background: var(--surface2);
+  padding: 10px 14px 12px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+#tab-roadtomax .card.open .drop { display: block; }
+#tab-roadtomax .drow {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+}
+#tab-roadtomax .drow:last-child { border-bottom: none; }
+#tab-roadtomax .dlbl { color: var(--muted); white-space: nowrap; }
+#tab-roadtomax .dval { color: var(--text); text-align: right; }
+#tab-roadtomax .dval.gold  { color: var(--gold); font-weight: 700; }
+#tab-roadtomax .dval.green { color: var(--green); }
+#tab-roadtomax .dsect {
+  font-size: 10px; font-weight: 800; color: var(--gold);
+  text-transform: uppercase; letter-spacing: .5px;
+  padding: 8px 0 3px; margin-top: 2px;
+}
+#tab-roadtomax .dsect:first-child { padding-top: 0; margin-top: 0; }
+
+/* ── Weekly rotation ────────────────────────── */
+#tab-roadtomax .days { display: grid; gap: 8px; }
+#tab-roadtomax .day {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+#tab-roadtomax .day h3 {
+  font-size: 12px; font-weight: 800; color: var(--gold);
+  text-transform: uppercase; letter-spacing: .04em;
+  margin-bottom: 8px;
+}
+#tab-roadtomax .day ul { list-style: none; display: flex; flex-wrap: wrap; gap: 5px; }
+#tab-roadtomax .day li {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px 9px;
+  font-size: 11px;
+  color: var(--text);
+}
+#tab-roadtomax .day li span { color: var(--muted); margin-left: 3px; }
+
+/* ── Phase plan tips ─────────────────────────── */
+#tab-roadtomax .tip {
+  background: rgba(184,136,72,.07);
+  border: 1px solid rgba(184,136,72,.22);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text);
+}
+#tab-roadtomax .tip b {
+  font-size: 12px; font-weight: 800; color: var(--gold);
+  display: block; margin-bottom: 5px;
+}
+#tab-roadtomax .ptag {
+  display: inline-block;
+  background: var(--gold);
+  color: #000;
+  font-size: 9px; font-weight: 800;
+  letter-spacing: .5px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-right: 5px;
+  text-transform: uppercase;
+}
+
+/* ── Daily habits ────────────────────────────── */
+#tab-roadtomax .habits-grid { display: grid; gap: 8px; }
+#tab-roadtomax .habit-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+#tab-roadtomax .habit-icon {
+  width: 36px; height: 36px; flex-shrink: 0;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+#tab-roadtomax .habit-icon img { width: 22px; height: 22px; image-rendering: pixelated; }
+#tab-roadtomax .habit-text { flex: 1; min-width: 0; }
+#tab-roadtomax .habit-title { font-size: 13px; font-weight: 800; color: var(--text); margin-bottom: 3px; }
+#tab-roadtomax .habit-desc  { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* ── Footer ──────────────────────────────────── */
+#tab-roadtomax footer {
+  text-align: center;
+  padding: 16px 4px;
+  font-size: 11px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  margin-top: 20px;
+  line-height: 1.6;
+}
+
+/* ── Spinner ─────────────────────────────────── */
+#tab-roadtomax .spin {
+  display: inline-block; width: 10px; height: 10px;
+  border: 2px solid var(--border); border-top-color: var(--gold);
+  border-radius: 50%; animation: spin .7s linear infinite;
+  vertical-align: middle; margin-right: 4px;
+}
 </style>
 </head>
 <body>
@@ -465,6 +818,51 @@ body.theme-light .skills-placeholder-logo,body.theme-osrs .skills-placeholder-lo
       <a class="news-cta" href="https://oldschool.runescape.com" target="_blank" rel="noopener noreferrer">Open Official OSRS News</a>
     </div>
   </div>
+  <div id="tab-roadtomax" class="tab-page">
+  <header>
+    <h1>Road to Max Cape</h1>
+    <p class="sub" id="r2m-sub">Search a player to load your personalised plan</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="lbl">Current Total</div><div class="val dim" id="r2m-vTotal">--</div><div class="note">of 2376 max</div></div>
+    <div class="stat"><div class="lbl">Levels Needed</div><div class="val dim" id="r2m-vNeeded">--</div><div class="note" id="r2m-vDay">-- levels/day</div></div>
+    <div class="stat"><div class="lbl">Completion</div><div class="val dim" id="r2m-vPct">--</div><div class="note">toward max cape</div></div>
+    <div class="stat"><div class="lbl">Combat Level</div><div class="val dim" id="r2m-vCombat">--</div><div class="note">of 126 max</div></div>
+  </div>
+
+  <div class="section-toggle" id="r2m-nearest-heading" style="display:none" onclick="r2m_toggleSection('nearest','nearest-chevron')">
+    Nearest 99s <span class="s-chevron" id="r2m-nearest-chevron">&#9660;</span>
+  </div>
+  <div class="nearest" id="r2m-nearest"></div>
+
+  <div class="section-toggle" id="r2m-achieve-heading" style="display:none" onclick="r2m_toggleSection('achieve','achieve-chevron')">
+    Nearest Skill Achievements <span class="s-chevron" id="r2m-achieve-chevron">&#9660;</span>
+  </div>
+  <div class="achieve-list" id="r2m-achieve"></div>
+
+  <div class="heading">Skill-by-Skill Breakdown</div>
+  <div class="grid" id="r2m-grid"></div>
+
+  <div class="heading">Weekly Training Rotation</div>
+  <div id="r2m-weeklyRotation" class="days"></div>
+
+  <div class="heading">3-Phase Year Plan</div>
+  <div id="r2m-phasePlan"></div>
+
+  <div class="heading">Daily Non-Negotiables</div>
+  <div id="r2m-dailyHabits" class="habits-grid"></div>
+
+  <footer>
+    <small style="color:var(--muted)">Data: Wise Old Man (wiseoldman.net) | <span id="r2m-foot">Awaiting lookup</span></small>
+    <br><br>
+    <em>May Guthix guide your grind. The Max Cape awaits.</em>
+    <br><br>
+    <center>&copy; OSDevscape. All rights reserved.</center><br>
+    <small><center>&#8226; Road to Max &#8226;</center></small>
+  </footer>
+  </div>
+
 </div>
 <div id="bottom-nav">
   <button class="nav-btn active" data-tab="overview"><span class="nav-icon">🏠</span>Home</button>
@@ -503,6 +901,7 @@ body.theme-light .skills-placeholder-logo,body.theme-osrs .skills-placeholder-lo
         <button class="modal-action" data-more-target="bossing">🏆 Bossing</button>
         <button class="modal-action" data-more-target="timers">⏱️ Timers</button>
         <button class="modal-action" data-more-target="bestiary">🐉 Bestiary</button>
+        <button class="modal-action" data-more-target="roadtomax">🗺️ Road to Max</button>
       </div>
     </div>
   </div>
@@ -947,7 +1346,7 @@ function filterBestiary(){
       +'</div></details>';
   }).join('')||'<div class="no-gains">No monsters match.</div>';
 }
-function openMoreMenu(){var el=document.getElementById('more-menu-overlay');if(el)el.classList.add('show')}function closeMoreMenu(){var el=document.getElementById('more-menu-overlay');if(el)el.classList.remove('show')}function openSettingsPicker(title,options,selectedValue,onSelect){var overlay=document.getElementById('settings-picker-overlay');var titleEl=document.getElementById('settings-picker-title');var subEl=document.getElementById('settings-picker-sub');var optionsEl=document.getElementById('settings-picker-options');if(!overlay||!titleEl||!subEl||!optionsEl)return false;titleEl.textContent=title||'Choose option';subEl.textContent='Select one option';optionsEl.innerHTML=(options||[]).map(function(opt){var active=String(opt.value)===String(selectedValue);return '<button class="modal-action'+(active?' primary':'')+'" type="button" data-picker-value="'+opt.value+'">'+opt.label+'</button>';}).join('');optionsEl.querySelectorAll('[data-picker-value]').forEach(function(btn){btn.onclick=function(e){if(e){e.preventDefault();e.stopPropagation();} var value=btn.getAttribute('data-picker-value'); if(typeof onSelect==='function') onSelect(value); closeSettingsPicker(); return false;};});overlay.classList.add('show');return false}function closeSettingsPicker(){var overlay=document.getElementById('settings-picker-overlay');if(overlay)overlay.classList.remove('show');return false}function switchTab(name,btn){$$('.tab-page').forEach(t=>t.classList.remove('active'));$$('.nav-btn').forEach(b=>b.classList.remove('active'));$('#tab-'+name).classList.add('active');if(btn)btn.classList.add('active');closeTimerTools();closeMoreMenu();closeSettingsPicker();if(name==='gains'&&currentPlayer)renderCharts();if(name==='bossing'&&currentPlayer)renderBossing(currentPlayer)}
+function openMoreMenu(){var el=document.getElementById('more-menu-overlay');if(el)el.classList.add('show')}function closeMoreMenu(){var el=document.getElementById('more-menu-overlay');if(el)el.classList.remove('show')}function openSettingsPicker(title,options,selectedValue,onSelect){var overlay=document.getElementById('settings-picker-overlay');var titleEl=document.getElementById('settings-picker-title');var subEl=document.getElementById('settings-picker-sub');var optionsEl=document.getElementById('settings-picker-options');if(!overlay||!titleEl||!subEl||!optionsEl)return false;titleEl.textContent=title||'Choose option';subEl.textContent='Select one option';optionsEl.innerHTML=(options||[]).map(function(opt){var active=String(opt.value)===String(selectedValue);return '<button class="modal-action'+(active?' primary':'')+'" type="button" data-picker-value="'+opt.value+'">'+opt.label+'</button>';}).join('');optionsEl.querySelectorAll('[data-picker-value]').forEach(function(btn){btn.onclick=function(e){if(e){e.preventDefault();e.stopPropagation();} var value=btn.getAttribute('data-picker-value'); if(typeof onSelect==='function') onSelect(value); closeSettingsPicker(); return false;};});overlay.classList.add('show');return false}function closeSettingsPicker(){var overlay=document.getElementById('settings-picker-overlay');if(overlay)overlay.classList.remove('show');return false}function switchTab(name,btn){$$('.tab-page').forEach(t=>t.classList.remove('active'));$$('.nav-btn').forEach(b=>b.classList.remove('active'));$('#tab-'+name).classList.add('active');if(btn)btn.classList.add('active');closeTimerTools();closeMoreMenu();closeSettingsPicker();if(name==='gains'&&currentPlayer)renderCharts();if(name==='bossing'&&currentPlayer)renderBossing(currentPlayer);if(name==='roadtomax'&&currentPlayer&&typeof window.r2m_loadFromCurrentPlayer==='function')window.r2m_loadFromCurrentPlayer(currentPlayer);}
 const TEMPLE_SKILL_MAP={overall:'Overall',attack:'Attack',defence:'Defence',strength:'Strength',hitpoints:'Hitpoints',ranged:'Ranged',prayer:'Prayer',magic:'Magic',cooking:'Cooking',woodcutting:'Woodcutting',fletching:'Fletching',fishing:'Fishing',firemaking:'Firemaking',crafting:'Crafting',smithing:'Smithing',mining:'Mining',herblore:'Herblore',agility:'Agility',thieving:'Thieving',slayer:'Slayer',farming:'Farming',runecrafting:'Runecraft',hunter:'Hunter',construction:'Construction'};
 const ACCOUNT_LABELS={ironman:'🛡 Iron',hardcore:'💀 HCIM',ultimate:'🔱 UIM',regular:'⚔ Main'};
 const WOM_API_KEY='qk0phdajd2rrxyt4jj58r5dz';
@@ -983,9 +1382,9 @@ async function lookupWiseOldMan(rsn){const res=await womFetch('https://api.wiseo
 async function fetchGainsForService(rsn,period){ const res=await womFetch('https://api.wiseoldman.net/v2/players/'+encodeURIComponent(rsn)+'/gained?period='+period); if(!res.ok) throw new Error('Wise Old Man gains unavailable'); return await res.json(); }
 function getCurrentRsnForService(){const input=document.getElementById('rsn-input');const typed=input&&input.value?input.value.trim():'';return typed||currentPlayer?.displayName||currentPlayer?.username||'';}
 function getServicePlayerUrl(rsn){return 'https://wiseoldman.net/players/'+encodeURIComponent(rsn);}
-async function pushManualServiceUpdate(){const rsn=getCurrentRsnForService();if(!rsn){showToast('Enter a player name first');return;}const remaining=getWomUpdateRemainingMs();if(remaining>0){refreshServiceUpdateButton();showToast('Push update is limited to once every 10 minutes.\n\nTry again in '+formatRateLimitRemaining(remaining)+'.',7000);return;}const btn=document.getElementById('service-update-btn');if(btn){btn.disabled=true;btn.textContent='Updating...';}try{const res=await womFetch('https://api.wiseoldman.net/v2/players/'+encodeURIComponent(rsn),{method:'POST'});if(!res.ok) throw new Error('Wise Old Man update failed');const data=await res.json();setWomUpdateLastPush(Date.now());refreshServiceUpdateButton();currentPlayer=data;renderPlayer(data);renderSkills(data);renderBossing(data);await fetchGains(rsn,currentPeriod);showToast('Wise Old Man profile updated.\n\nPush update is now on a 10-minute cooldown.',6200);}catch(err){showToast(err.message||'Update failed');refreshServiceUpdateButton();}}
+async function pushManualServiceUpdate(){const rsn=getCurrentRsnForService();if(!rsn){showToast('Enter a player name first');return;}const remaining=getWomUpdateRemainingMs();if(remaining>0){refreshServiceUpdateButton();showToast('Push update is limited to once every 10 minutes.\n\nTry again in '+formatRateLimitRemaining(remaining)+'.',7000);return;}const btn=document.getElementById('service-update-btn');if(btn){btn.disabled=true;btn.textContent='Updating...';}try{const res=await womFetch('https://api.wiseoldman.net/v2/players/'+encodeURIComponent(rsn),{method:'POST'});if(!res.ok) throw new Error('Wise Old Man update failed');const data=await res.json();setWomUpdateLastPush(Date.now());refreshServiceUpdateButton();currentPlayer=data;renderPlayer(data);renderSkills(data);renderBossing(data);if(typeof window.r2m_loadFromCurrentPlayer==='function')window.r2m_loadFromCurrentPlayer(data);await fetchGains(rsn,currentPeriod);showToast('Wise Old Man profile updated.\n\nPush update is now on a 10-minute cooldown.',6200);}catch(err){showToast(err.message||'Update failed');refreshServiceUpdateButton();}}
 function openSelectedServicePage(){const rsn=getCurrentRsnForService();if(!rsn){showToast('Enter a player name first');return;}window.open(getServicePlayerUrl(rsn),'_blank','noopener,noreferrer');}
-async function lookupPlayer(){const rsn=$('#rsn-input').value.trim();if(!rsn){showToast('Enter a player name');return}$('#error-msg').classList.remove('error-show');$('#loader').classList.add('loading');$('#player-card').classList.remove('show');try{const data=await lookupWiseOldMan(rsn);currentPlayer=data;renderPlayer(data);renderSkills(data);renderBossing(data);await fetchGains(rsn,currentPeriod);$('#loader').classList.remove('loading');$('#welcome-msg').style.display='none';$('#player-card').style.display='';$('#player-card').classList.add('show');showToast('✅ '+(data.displayName||rsn)+' loaded via Wise Old Man');localStorage.setItem('iron_last_rsn',rsn)}catch(err){$('#loader').classList.remove('loading');if(!currentPlayer)$('#welcome-msg').style.display='flex';$('#error-msg').textContent=err.message||'Failed to load player';$('#error-msg').classList.add('error-show')}}
+async function lookupPlayer(){const rsn=$('#rsn-input').value.trim();if(!rsn){showToast('Enter a player name');return}$('#error-msg').classList.remove('error-show');$('#loader').classList.add('loading');$('#player-card').classList.remove('show');try{const data=await lookupWiseOldMan(rsn);currentPlayer=data;renderPlayer(data);renderSkills(data);renderBossing(data);if(typeof window.r2m_loadFromCurrentPlayer==='function')window.r2m_loadFromCurrentPlayer(data);await fetchGains(rsn,currentPeriod);$('#loader').classList.remove('loading');$('#welcome-msg').style.display='none';$('#player-card').style.display='';$('#player-card').classList.add('show');showToast('✅ '+(data.displayName||rsn)+' loaded via Wise Old Man');localStorage.setItem('iron_last_rsn',rsn)}catch(err){$('#loader').classList.remove('loading');if(!currentPlayer)$('#welcome-msg').style.display='flex';$('#error-msg').textContent=err.message||'Failed to load player';$('#error-msg').classList.add('error-show')}}
 function renderPlayer(data){const types={ironman:['IRONMAN','badge-ironman','🛡'],hardcore:['HARDCORE','badge-hardcore','💀'],ultimate:['ULTIMATE','badge-ultimate','🔱'],regular:['MAIN','badge-regular','⚔']};const t=types[data.type]||types.ironman;const snap=data.latestSnapshot?.data?.skills||{};const overall=snap.overall;$('#pa-icon').textContent=t[2];$('#pa-name').textContent=data.displayName||data.username;$('#pa-badge').textContent=t[0];$('#pa-badge').className='badge '+t[1];$('#pa-totallvl').textContent=overall?.level??'-';$('#pa-totalxp').textContent=overall?.experience!=null?fmtXP(overall.experience):'-';$('#pa-rank').textContent=overall?.rank!=null?fmtRank(overall.rank):'-';$('#player-name-header').textContent='— '+(data.displayName||data.username||'');$('#last-updated').textContent='Last updated: '+(data.updatedAt?new Date(data.updatedAt).toLocaleString():'Unknown');const nonOverall=SKILLS.filter(s=>s[0]!=='overall').map(([id,name])=>({id:id,name:name,lvl:+(snap[id]?.level||xpToLevel(snap[id]?.experience||0)),xp:+(snap[id]?.experience||0)}));const maxed=nonOverall.filter(x=>x.lvl>=99).length;const top=nonOverall.slice().sort((a,b)=>b.lvl-a.lvl||b.xp-a.xp)[0];const next=nonOverall.filter(x=>x.lvl<99).sort((a,b)=>(xpForLevel(99)-a.xp)-(xpForLevel(99)-b.xp))[0];const combat=calcCombat(snap);$('#ov-combat').textContent=combat||'-';$('#ov-maxed').textContent=maxed;$('#ov-topskill').textContent=top?top.name+' '+top.lvl:'-';$('#ov-topskill-xp').textContent=top?fmtXP(top.xp)+' XP':'-';$('#ov-next99').textContent=next?next.name+' '+next.lvl:'Maxed';$('#ov-next99-xp').textContent=next?(fmtXP(xpForLevel(99)-next.xp)+' to 99'):'No remaining skills';$('#ov-melee').textContent=compactSkillLine('attack','strength','defence',snap);$('#ov-range').textContent=compactSkillLine('ranged','magic','prayer',snap);$('#ov-gathering').textContent=compactSkillLine('mining','fishing','woodcutting',snap);$('#ov-utility').textContent=compactSkillLine('slayer','farming','herblore',snap);$('#ov-note').textContent=(data.displayName||data.username||'This account')+' has total level '+(overall?.level??'-')+', estimated combat '+(combat||'-')+', '+maxed+' maxed skill'+(maxed===1?'':'s')+', and '+(next?next.name+' as the closest next 99.':'no remaining non-99 skills.');$('#player-card').classList.add('show')}
 function renderSkills(data){
 const snap=data.latestSnapshot?.data?.skills;
@@ -1042,7 +1441,48 @@ function openSkillSheet(skillId){
   requestAnimationFrame(()=>document.getElementById('skill-sheet').classList.add('show'));
 }
 async function fetchGains(rsn,period){try{const data=await fetchGainsForService(rsn,period);currentGains=data;renderGains(data);if(currentPlayer&&document.getElementById('tab-gains')&&document.getElementById('tab-gains').classList.contains('active'))renderCharts()}catch(e){$('#gains-content').innerHTML='<div class="no-gains">Could not load gains data.</div>';$('#charts-content').innerHTML='<div class="welcome" style="min-height:240px"><div class="welcome-icon">📈</div><p>Progress charts are unavailable right now.</p></div>'}}
-function renderGains(data){const skills=data?.data?.skills;if(!skills){$('#gains-content').innerHTML='<div class="no-gains">No gains data available for this period.</div>';return}const entries=SKILLS.filter(s=>s[0]!=='overall').map(([id,name])=>{const g=skills[id]||{};const gained=Number(g?.experience?.gained||0);const endLvl=Number(g?.level?.end||0);const meta=SKILL_META[id]||{};return {id:id,name:name,gained:gained,endLvl:endLvl,color:meta.color||'#c5a028'};}).filter(e=>e.gained>0).sort((a,b)=>b.gained-a.gained).slice(0,12);if(!entries.length){$('#gains-content').innerHTML='<div class="no-gains">No XP gains found for this period.</div>';return}$('#gains-content').innerHTML=entries.map(e=>'<div class="gain-item"><div style="color:'+e.color+';font-weight:700">'+e.name+'</div><div style="text-align:right"><div style="color:'+e.color+';font-weight:700">+'+fmtXP(e.gained)+'</div><div style="font-size:11px;color:var(--muted)">Lvl '+e.endLvl+'</div></div></div>').join('')}
+function renderGains(data){
+  var skills=data&&data.data&&data.data.skills;
+  if(!skills){$('#gains-content').innerHTML='<div class="no-gains">No gains data available for this period.</div>';return;}
+  var entries=SKILLS.filter(function(s){return s[0]!=='overall';}).map(function(s){
+    var id=s[0],name=s[1];
+    var g=skills[id]||{};
+    var gained=Number((g.experience&&g.experience.gained)||0);
+    var startLvl=Number((g.level&&g.level.start)||0);
+    var endLvl=Number((g.level&&g.level.end)||0);
+    var lvlGained=endLvl-startLvl;
+    var meta=SKILL_META[id]||{};
+    return {id:id,name:name,gained:gained,endLvl:endLvl,lvlGained:lvlGained,icon:meta.icon||'',color:meta.color||'#c5a028'};
+  }).filter(function(e){return e.gained>0;}).sort(function(a,b){return b.gained-a.gained;});
+  if(!entries.length){$('#gains-content').innerHTML='<div class="no-gains">No XP gains found for this period.</div>';return;}
+  function shortName(n){return n.length>9?n.slice(0,8)+'\u2026':n;}
+  var cards=entries.map(function(e){
+    var iconHtml=e.icon
+      ?'<img src="'+e.icon+'" alt="'+e.name+'" width="26" height="26" loading="lazy">'
+      :'<div style="width:26px;height:26px;border-radius:50%;background:rgba(184,136,72,.2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:'+e.color+'">'+e.name[0]+'</div>';
+    var lvlBadge=e.lvlGained>0?'<div class="gb-lvl">+'+e.lvlGained+' lvl</div>':'';
+    return '<div class="gain-flip has-gains" data-skill-id="'+e.id+'" style="--sc:'+e.color+'">'+
+      '<div class="gain-flip-inner">'+
+        '<div class="gain-flip-front">'+iconHtml+'<div class="gf-name">'+shortName(e.name)+'</div></div>'+
+        '<div class="gain-flip-back">'+
+          '<div class="gb-name">'+shortName(e.name)+'</div>'+
+          '<div class="gb-xp">+'+fmtXP(e.gained)+'</div>'+
+          '<div class="gb-xp-lbl">XP gained</div>'+
+          '<div class="gb-xp-lbl">Lvl '+e.endLvl+'</div>'+
+          lvlBadge+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+  $('#gains-content').innerHTML='<div class="gains-grid">'+cards+'</div>';
+  document.querySelectorAll('#gains-content .gain-flip').forEach(function(card){
+    card.addEventListener('click',function(){
+      var isOpen=card.classList.contains('open');
+      document.querySelectorAll('#gains-content .gain-flip.open').forEach(function(c){c.classList.remove('open');});
+      if(!isOpen) card.classList.add('open');
+    });
+  });
+}
 function renderCharts(){if(!currentPlayer)return;const snap=currentPlayer.latestSnapshot?.data?.skills;if(!snap)return;Object.values(chartInstances).forEach(c=>c.destroy());chartInstances={};const skills=SKILLS.filter(s=>s[0]!=='overall');const labels=skills.map(s=>s[1]);const levels=skills.map(([id])=>Number(snap[id]?.level||0));const xps=skills.map(([id])=>+((Number(snap[id]?.experience||0)/1e6).toFixed(2)));const colors=skills.map(([id])=>String((SKILL_META[id]||{}).color||'#c5a028'));const bgSoft=colors.map(c=>hexToRgba(c,.45));const bgStrong=colors.map(c=>hexToRgba(c,.78));$('#charts-content').innerHTML='<div class="chart-section"><h3>Skill Levels</h3><div class="chart-wrap"><canvas id="chart-levels" height="220"></canvas></div></div><div class="chart-section"><h3>XP Distribution (M)</h3><div class="chart-wrap"><canvas id="chart-xp" height="220"></canvas></div></div>';const opts={responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#8b949e',font:{size:9}},grid:{color:'#21262d'}},y:{ticks:{color:'#8b949e'},grid:{color:'#21262d'}}}};chartInstances.levels=new Chart(document.getElementById('chart-levels'),{type:'bar',data:{labels:labels,datasets:[{data:levels,backgroundColor:bgSoft,borderColor:colors,borderWidth:1,borderRadius:4}]},options:opts});chartInstances.xp=new Chart(document.getElementById('chart-xp'),{type:'bar',data:{labels:labels,datasets:[{data:xps,backgroundColor:bgStrong,borderColor:colors,borderWidth:1,borderRadius:4}]},options:opts})}
 document.getElementById('search-btn').addEventListener('click',lookupPlayer);
 document.getElementById('rsn-input').addEventListener('keydown',e=>{if(e.key==='Enter')lookupPlayer()});
@@ -1181,5 +1621,772 @@ const last=localStorage.getItem('iron_last_rsn'); if(last) $('#rsn-input').value
 })();
 </script>
 
+
+<script>
+(function() {
+"use strict";
+
+var W = 'https://oldschool.runescape.wiki/w/Special:FilePath/';
+
+// XP table: index 0 = XP needed to reach level 1 (0), index 1 = level 2 (83) ... index 98 = level 99 (13,034,431)
+// So R2M_XP[n] = total R2M_XP required to BE level n+1
+// Generated from official OSRS formula: points = floor(n + 300 * 2^(n/7)), XP = floor(sum/4)
+var R2M_XP = [0,83,174,276,388,512,650,801,969,1154,1358,1584,1833,2107,2411,2746,3115,3523,3973,4470,5018,5624,6291,7028,7842,8740,9730,10824,12031,13363,14833,16456,18247,20224,22406,24815,27473,30408,33648,37224,41171,45529,50339,55649,61512,67983,75127,83014,91721,101333,111945,123660,136594,150872,166636,184040,203254,224466,247886,273742,302288,333804,368599,407015,449428,496254,547953,605032,668051,737627,814445,899257,992895,1096278,1210421,1336443,1475581,1629200,1798808,1986068,2192818,2421087,2673114,2951373,3258594,3597792,3972294,4385776,4842295,5346332,5902831,6517253,7195629,7944614,8771558,9684577,10692629,11805606,13034431];
+
+// Derive true level (1-99) from XP value
+function r2m_levelFromXp(xp) {
+  for (var i = R2M_XP.length - 1; i >= 0; i--) {
+    if (xp >= R2M_XP[i]) return i + 1;
+  }
+  return 1;
+}
+function r2m_xpToNext(lv, curXp) {
+  if (lv >= 99) return 0;
+  return Math.max(0, R2M_XP[lv] - curXp); // R2M_XP[lv] = threshold for level lv+1
+}
+function r2m_xpTo99(curXp) {
+  return Math.max(0, R2M_XP[98] - curXp); // R2M_XP[98] = 13,034,431
+}
+function r2m_fmtXp(n) {
+  if (n === null || n === undefined || isNaN(n)) return '--';
+  return Math.round(n).toLocaleString('en-GB');
+}
+
+// Best methods per skill, keyed by minimum level bracket
+// Each entry: { lvl, activity, xphr }
+var R2M_METHODS = {
+  Attack:       [{lvl:1,  activity:'Crabs / Sand Crabs',          xphr:'30k'  },
+                 {lvl:60, activity:'Slayer with whip',             xphr:'70k'  },
+                 {lvl:85, activity:'Slayer with scythe / rapier',  xphr:'100k' }],
+  Strength:     [{lvl:1,  activity:'Crabs / Sand Crabs',          xphr:'30k'  },
+                 {lvl:60, activity:'NMZ AFK (absorbs)',            xphr:'90k'  },
+                 {lvl:85, activity:'Slayer melee tasks',           xphr:'110k' }],
+  Hitpoints:    [{lvl:1,  activity:'Passive from all combat',      xphr:'20k'  },
+                 {lvl:70, activity:'NMZ or Slayer',                xphr:'35k'  }],
+  Defence:      [{lvl:1,  activity:'Defensive Slayer tasks',       xphr:'40k'  },
+                 {lvl:70, activity:'Slayer (defensive style)',     xphr:'70k'  }],
+  Ranged:       [{lvl:1,  activity:'Crabs (mithril darts)',        xphr:'50k'  },
+                 {lvl:55, activity:'Chinchompas at Ape Atoll',     xphr:'700k' },
+                 {lvl:70, activity:'Chinchompas at MM2 tunnels',   xphr:'1.1m' }],
+  Prayer:       [{lvl:1,  activity:'Ensouled heads (altar)',       xphr:'250k' },
+                 {lvl:70, activity:'Dragon bones at gilded altar', xphr:'650k' },
+                 {lvl:80, activity:'Superior dragon bones',        xphr:'950k' }],
+  Magic:        [{lvl:1,  activity:'Splashing (AFK)',              xphr:'10k'  },
+                 {lvl:55, activity:'High Alchemy (anywhere)',      xphr:'78k'  },
+                 {lvl:94, activity:'Ice Barrage (burst tasks)',    xphr:'400k' }],
+  Cooking:      [{lvl:1,  activity:'Wines (Jugs of Wine)',         xphr:'490k' },
+                 {lvl:80, activity:'Anglerfish at Hosidius',       xphr:'220k' },
+                 {lvl:90, activity:'1-tick Karambwans',            xphr:'950k' }],
+  Woodcutting:  [{lvl:1,  activity:'Oaks at Draynor',             xphr:'25k'  },
+                 {lvl:60, activity:'Teak trees at Ape Atoll',      xphr:'100k' },
+                 {lvl:75, activity:'2-tick Teak at Ape Atoll',     xphr:'160k' }],
+  Fletching:    [{lvl:1,  activity:'Arrow shafts',                 xphr:'100k' },
+                 {lvl:52, activity:'Maple longbows (u)',           xphr:'350k' },
+                 {lvl:81, activity:'Dragon darts (AFK)',           xphr:'1.6m' }],
+  Fishing:      [{lvl:1,  activity:'Shrimps / Sardines',          xphr:'10k'  },
+                 {lvl:58, activity:'Barbarian Fishing (2-tick)',   xphr:'60k'  },
+                 {lvl:65, activity:'Karambwans (1-tick)',          xphr:'105k' }],
+  Firemaking:   [{lvl:1,  activity:'Regular logs',                 xphr:'45k'  },
+                 {lvl:50, activity:'Wintertodt (all levels)',      xphr:'250k' },
+                 {lvl:75, activity:'Redwood logs',                 xphr:'390k' }],
+  Crafting:     [{lvl:1,  activity:'Gold bracelets',               xphr:'130k' },
+                 {lvl:54, activity:'Battlestaves (daily)',         xphr:'190k' },
+                 {lvl:83, activity:'Amethyst bolt tips',           xphr:'55k'  }],
+  Smithing:     [{lvl:1,  activity:'Anvil platebodies',            xphr:'50k'  },
+                 {lvl:40, activity:'Blast Furnace steel bars',     xphr:'130k' },
+                 {lvl:60, activity:'Blast Furnace gold bars',      xphr:'350k' }],
+  Mining:       [{lvl:1,  activity:'Copper / Tin',                 xphr:'10k'  },
+                 {lvl:30, activity:'Motherlode Mine (AFK)',        xphr:'25k'  },
+                 {lvl:75, activity:'Blast Mine (Lovakengj)',       xphr:'55k'  }],
+  Herblore:     [{lvl:1,  activity:'Attack potions (tarromin)',    xphr:'60k'  },
+                 {lvl:69, activity:'Ranging potions',              xphr:'400k' },
+                 {lvl:90, activity:'Stamina potions',              xphr:'700k' }],
+  Agility:      [{lvl:1,  activity:'Gnome Stronghold course',      xphr:'10k'  },
+                 {lvl:60, activity:'Seers rooftop course',         xphr:'52k'  },
+                 {lvl:80, activity:'Hallowed Sepulchre (fl 4-5)',  xphr:'75k'  }],
+  Thieving:     [{lvl:1,  activity:'Men / Women',                  xphr:'15k'  },
+                 {lvl:45, activity:'Blackjacking (Pollnivneach)',  xphr:'250k' },
+                 {lvl:91, activity:'Pyramid Plunder',              xphr:'280k' }],
+  Slayer:       [{lvl:1,  activity:'Turael tasks (low req)',       xphr:'10k'  },
+                 {lvl:50, activity:'Chaeldar tasks',               xphr:'35k'  },
+                 {lvl:75, activity:'Duradel / Konar tasks',        xphr:'65k'  }],
+  Farming:      [{lvl:1,  activity:'Allotment + herb runs',        xphr:'varies'},
+                 {lvl:15, activity:'Herb + tree runs (daily)',     xphr:'20k'  },
+                 {lvl:35, activity:'Fruit tree + calquat runs',    xphr:'50k'  }],
+  Runecrafting: [{lvl:1,  activity:'Air runes (Abyss)',            xphr:'20k'  },
+                 {lvl:23, activity:'Lava runes (Lunar spell)',     xphr:'78k'  },
+                 {lvl:77, activity:'Bloods at Arceuus',            xphr:'38k'  }],
+  Hunter:       [{lvl:1,  activity:'Crimson Swifts (Feldip)',      xphr:'5k'   },
+                 {lvl:63, activity:'Red chinchompas',              xphr:'100k' },
+                 {lvl:73, activity:'Black chinchompas (wildy)',    xphr:'175k' }],
+  Construction: [{lvl:1,  activity:'Crude wooden chairs',         xphr:'10k'  },
+                 {lvl:52, activity:'Oak larders (butler)',         xphr:'400k' },
+                 {lvl:77, activity:'Mahogany tables (butler)',     xphr:'900k' }],
+  Sailing:      [{lvl:1,  activity:'Intro voyage + port tasks',   xphr:'15k'  },
+                 {lvl:40, activity:'Sea charting routes',          xphr:'40k'  },
+                 {lvl:70, activity:'Naval combat + bounties',      xphr:'80k'  }],
+};
+
+// Get best method for current level
+function r2m_bestMethod(skillName, lvl) {
+  var opts = R2M_METHODS[skillName];
+  if (!opts) return { activity: 'See OSRS Wiki', xphr: 'varies' };
+  var best = opts[0];
+  for (var i = 0; i < opts.length; i++) {
+    if (lvl >= opts[i].lvl) best = opts[i];
+  }
+  return best;
+}
+
+const R2M_SKILLS = [
+  { name:"Attack",       wom:"attack",        icon:W+"Attack_icon.png"       },
+  { name:"Defence",      wom:"defence",       icon:W+"Defence_icon.png"      },
+  { name:"Strength",     wom:"strength",      icon:W+"Strength_icon.png"     },
+  { name:"Hitpoints",    wom:"hitpoints",     icon:W+"Hitpoints_icon.png"    },
+  { name:"Ranged",       wom:"ranged",        icon:W+"Ranged_icon.png"       },
+  { name:"Prayer",       wom:"prayer",        icon:W+"Prayer_icon.png"       },
+  { name:"Magic",        wom:"magic",         icon:W+"Magic_icon.png"        },
+  { name:"Cooking",      wom:"cooking",       icon:W+"Cooking_icon.png"      },
+  { name:"Woodcutting",  wom:"woodcutting",   icon:W+"Woodcutting_icon.png"  },
+  { name:"Fletching",    wom:"fletching",     icon:W+"Fletching_icon.png"    },
+  { name:"Fishing",      wom:"fishing",       icon:W+"Fishing_icon.png"      },
+  { name:"Firemaking",   wom:"firemaking",    icon:W+"Firemaking_icon.png"   },
+  { name:"Crafting",     wom:"crafting",      icon:W+"Crafting_icon.png"     },
+  { name:"Smithing",     wom:"smithing",      icon:W+"Smithing_icon.png"     },
+  { name:"Mining",       wom:"mining",        icon:W+"Mining_icon.png"       },
+  { name:"Herblore",     wom:"herblore",      icon:W+"Herblore_icon.png"     },
+  { name:"Agility",      wom:"agility",       icon:W+"Agility_icon.png"      },
+  { name:"Thieving",     wom:"thieving",      icon:W+"Thieving_icon.png"     },
+  { name:"Slayer",       wom:"slayer",        icon:W+"Slayer_icon.png"       },
+  { name:"Farming",      wom:"farming",       icon:W+"Farming_icon.png"      },
+  { name:"Runecrafting", wom:"runecrafting",  icon:W+"Runecraft_icon.png"    },
+  { name:"Hunter",       wom:"hunter",        icon:W+"Hunter_icon.png"       },
+  { name:"Construction", wom:"construction",  icon:W+"Construction_icon.png" },
+  { name:"Sailing",      wom:"sailing",       icon:W+"Sailing_icon.png"      },
+];
+
+var r2m_lvls = {};
+var r2m_xps  = {};
+R2M_SKILLS.forEach(function(s) { r2m_lvls[s.name] = 0; r2m_xps[s.name] = 0; });
+var r2m_loaded = false;
+
+function r2m_toggleCard(el) {
+  el.classList.toggle('open');
+}
+
+function r2m_toggleSection(id, chevronId) {
+  var el = document.getElementById(id.startsWith('r2m-') ? id : 'r2m-' + id);
+  var ch = document.getElementById(chevronId.startsWith('r2m-') ? chevronId : 'r2m-' + chevronId);
+  var open = el.classList.toggle('visible');
+  if (ch) ch.classList.toggle('open', open);
+}
+
+function r2m_calcCombatLevel() {
+  var atk  = r2m_lvls['Attack']       || 1;
+  var str  = r2m_lvls['Strength']     || 1;
+  var def  = r2m_lvls['Defence']      || 1;
+  var hp   = r2m_lvls['Hitpoints']    || 10;
+  var pray = r2m_lvls['Prayer']       || 1;
+  var rng  = r2m_lvls['Ranged']       || 1;
+  var mag  = r2m_lvls['Magic']        || 1;
+  var base = 0.25 * (def + hp + Math.floor(pray / 2));
+  var melee = 0.325 * (atk + str);
+  var range = 0.325 * (Math.floor(rng * 3 / 2));
+  var mage  = 0.325 * (Math.floor(mag * 3 / 2));
+  return Math.floor(base + Math.max(melee, range, mage));
+}
+
+function r2m_toggleAchDrop(id, header) {
+  var drop = document.getElementById(id);
+  if (!drop) return;
+  var open = drop.classList.toggle('open');
+  var chev = header.querySelector('.ach-chev');
+  if (chev) chev.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+function r2m_renderAchievements() {
+  var container = document.getElementById('r2m-achieve');
+  var heading   = document.getElementById('r2m-achieve-heading');
+  container.innerHTML = '';
+  if (!r2m_loaded) { container.classList.remove('visible'); heading.style.display = 'none'; return; }
+
+  // Milestone definitions
+  var milestones = [
+    { label:'Base 50 Stats',  threshold:50,  type:'base'  },
+    { label:'Base 60 Stats',  threshold:60,  type:'base'  },
+    { label:'Base 70 Stats',  threshold:70,  type:'base'  },
+    { label:'Base 80 Stats',  threshold:80,  type:'base'  },
+    { label:'Base 90 Stats',  threshold:90,  type:'base'  },
+    { label:'50m Total XP',   threshold:50000000,  type:'totalxp', icon:W+'Overall_icon.png' },
+    { label:'100m Total XP',  threshold:100000000, type:'totalxp', icon:W+'Overall_icon.png' },
+    { label:'200m Total XP',  threshold:200000000, type:'totalxp', icon:W+'Overall_icon.png' },
+  ];
+
+  // Base stats use all skills except Sailing (which is new and not part of traditional base milestones)
+  var BASE_SKILLS = R2M_SKILLS.filter(function(s) { return s.name !== 'Sailing'; });
+  var totalXp = R2M_SKILLS.reduce(function(sum, s) { return sum + (r2m_xps[s.name] || 0); }, 0);
+
+  var results = milestones.map(function(m) {
+    var pct, xpLeft, done, blocking = [];
+    if (m.type === 'base') {
+      var tgt = R2M_XP[m.threshold - 1];
+      var totalNeeded = BASE_SKILLS.length * tgt;
+      var totalHave   = BASE_SKILLS.reduce(function(sum, s) {
+        return sum + Math.min(r2m_xps[s.name] || 0, tgt);
+      }, 0);
+      done   = totalHave >= totalNeeded;
+      xpLeft = Math.max(0, totalNeeded - totalHave);
+      pct    = Math.floor((totalHave / totalNeeded) * 100);
+      m.icon = W + 'Overall_icon.png';
+      // Collect skills below the threshold, sorted by XP needed ascending
+      blocking = BASE_SKILLS
+        .filter(function(s) { return (r2m_xps[s.name] || 0) < tgt; })
+        .map(function(s) {
+          var curXp  = r2m_xps[s.name] || 0;
+          var trueLv = curXp > 0 ? r2m_levelFromXp(curXp) : (r2m_lvls[s.name] || 1);
+          return { name:s.name, icon:s.icon, trueLv:trueLv, xpNeeded: tgt - curXp };
+        })
+        .sort(function(a, b) { return a.xpNeeded - b.xpNeeded });
+    } else {
+      done   = totalXp >= m.threshold;
+      xpLeft = Math.max(0, m.threshold - totalXp);
+      pct    = Math.min(100, Math.floor((totalXp / m.threshold) * 100));
+    }
+    return { label:m.label, icon:m.icon, pct:pct, xpLeft:xpLeft, done:done, blocking:blocking, type:m.type };
+  }).filter(function(m) { return !m.done; })
+    .sort(function(a, b) { return b.pct - a.pct; })
+    .slice(0, 5);
+
+  if (results.length === 0) { heading.style.display = 'none'; return; }
+
+  var uid = 0;
+  results.forEach(function(m) {
+    var circ   = 2 * Math.PI * 18;
+    var offset = circ - (m.pct / 100) * circ;
+    var stroke = m.pct > 75 ? '#55bb55' : m.pct > 40 ? 'var(--gold)' : '#cc4433';
+    var cardId = 'ach-drop-' + (uid++);
+
+    // Build blocking skills rows
+    var blockingHtml = '';
+    if (m.type === 'base' && m.blocking.length > 0) {
+      blockingHtml =
+        '<div class="ach-drop" id="' + cardId + '">' +
+          '<div class="ach-drop-hdr">Skills holding you back</div>' +
+          '<div class="ach-drop-grid">' +
+            '<span class="ach-col-hdr">Skill</span>' +
+            '<span class="ach-col-hdr" style="text-align:center">Level</span>' +
+            '<span class="ach-col-hdr" style="text-align:right">XP needed</span>' +
+          m.blocking.map(function(s) {
+            return '<span class="ach-row-name"><img src="' + s.icon + '" onerror="this.style.display=\'none\'" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px">' + s.name + '</span>' +
+                   '<span class="ach-row-val" style="text-align:center">' + s.trueLv + '</span>' +
+                   '<span class="ach-row-val" style="text-align:right">' + r2m_fmtXp(s.xpNeeded) + '</span>';
+          }).join('') +
+          '</div>' +
+        '</div>';
+    }
+
+    var card = document.createElement('div');
+    card.className = 'n99-card ach-card';
+    card.innerHTML =
+      '<div class="ach-card-main" onclick="r2m_toggleAchDrop(\'' + cardId + '\', this)">' +
+        '<div class="n99-icon"><img src="' + m.icon + '" alt="" onerror="this.style.display=\'none\'"></div>' +
+        '<div class="n99-info">' +
+          '<div class="n99-name">' + m.label + (m.type === 'base' && m.blocking.length > 0 ? ' <span class="ach-count">(' + m.blocking.length + ' skill' + (m.blocking.length > 1 ? 's' : '') + ')</span>' : '') + '</div>' +
+          '<div class="n99-left">' + r2m_fmtXp(m.xpLeft) + ' xp left</div>' +
+        '</div>' +
+        '<div class="n99-ring">' +
+          '<svg width="48" height="48" viewBox="0 0 48 48">' +
+            '<circle class="n99-ring-bg" cx="24" cy="24" r="18"/>' +
+            '<circle class="n99-ring-fill" cx="24" cy="24" r="18"' +
+              ' stroke="' + stroke + '"' +
+              ' stroke-dasharray="' + circ.toFixed(1) + '"' +
+              ' stroke-dashoffset="' + offset.toFixed(1) + '"/>' +
+          '</svg>' +
+          '<div class="n99-pct">' + m.pct + '%</div>' +
+        '</div>' +
+        (m.type === 'base' && m.blocking.length > 0 ? '<div class="ach-chev">&#9660;</div>' : '') +
+      '</div>' +
+      blockingHtml;
+
+    container.appendChild(card);
+  });
+
+  heading.style.display = 'flex';
+}
+
+function r2m_renderNearest() {
+  var container = document.getElementById('r2m-nearest');
+  var heading   = document.getElementById('r2m-nearest-heading');
+  container.innerHTML = '';
+
+  if (!r2m_loaded) { container.classList.remove('visible'); heading.style.display = 'none'; return; }
+
+  // Build list of non-maxed skills sorted by XP remaining ascending
+  var ranked = R2M_SKILLS.map(function(s) {
+    var curXp  = r2m_xps[s.name] || 0;
+    var trueLv = curXp > 0 ? Math.min(r2m_levelFromXp(curXp), 99) : Math.min(r2m_lvls[s.name]||0, 99);
+    var rem    = trueLv >= 99 ? 0 : r2m_xpTo99(curXp);
+    var pct    = Math.round((curXp / R2M_XP[98]) * 100);
+    return { name:s.name, icon:s.icon, trueLv:trueLv, rem:rem, pct:pct };
+  }).filter(function(s) { return s.trueLv < 99; })
+    .sort(function(a, b) { return a.rem - b.rem; })
+    .slice(0, 3);
+
+  ranked.forEach(function(s) {
+    var circumference = 2 * Math.PI * 18; // r=18
+    var offset = circumference - (s.pct / 100) * circumference;
+    var card = document.createElement('div');
+    card.className = 'n99-card';
+    card.innerHTML =
+      '<div class="n99-icon"><img src="' + s.icon + '" alt="' + s.name + '" onerror="this.style.display=\'none\'"></div>' +
+      '<div class="n99-info">' +
+        '<div class="n99-name">99 ' + s.name + '</div>' +
+        '<div class="n99-left">' + r2m_fmtXp(s.rem) + ' xp left</div>' +
+      '</div>' +
+      '<div class="n99-ring">' +
+        '<svg width="48" height="48" viewBox="0 0 48 48">' +
+          '<circle class="n99-ring-bg"   cx="24" cy="24" r="18"/>' +
+          '<circle class="n99-ring-fill" cx="24" cy="24" r="18"' +
+            ' stroke-dasharray="' + circumference.toFixed(1) + '"' +
+            ' stroke-dashoffset="' + offset.toFixed(1) + '"/>' +
+        '</svg>' +
+        '<div class="n99-pct">' + s.pct + '%</div>' +
+      '</div>';
+    container.appendChild(card);
+  });
+
+  container.classList.add('visible');
+  heading.style.display = 'flex';
+}
+
+function r2m_render() {
+  var grid = document.getElementById('r2m-grid');
+  grid.innerHTML = '';
+
+  var data = R2M_SKILLS.map(function(s) {
+    return { name:s.name, icon:s.icon, wom:s.wom, lv: r2m_lvls[s.name]||0, xp: r2m_xps[s.name]||0 };
+  });
+
+  // Keep official WOM/OSRS skill tab order -- no sorting
+
+  data.forEach(function(s) {
+    var lv    = Math.min(s.lv, 99);           // display level (from WOM, capped 99)
+    var trueLv = s.xp > 0 ? Math.min(r2m_levelFromXp(s.xp), 99) : lv; // real level from XP
+    var isMax = trueLv >= 99;
+    var pct   = r2m_loaded ? Math.round((trueLv / 99) * 100) : 0;
+    var tag   = !r2m_loaded ? '--' : isMax ? 'MAXED' : '+' + (99 - trueLv) + ' lvls';
+
+    // XP stats
+    var curXp     = s.xp;
+    var toNext    = isMax ? 0 : r2m_xpToNext(trueLv, curXp);
+    var remaining = isMax ? 0 : r2m_xpTo99(curXp);
+    var method    = r2m_bestMethod(s.name, trueLv);
+
+    // Parse xphr to number for timeline math
+    var xphrRaw = method.xphr;
+    var xphrNum = 0;
+    if (xphrRaw && xphrRaw !== 'varies') {
+      var str = xphrRaw.replace(/,/g,'').toLowerCase().trim();
+      if      (str.indexOf('m') > -1) xphrNum = parseFloat(str) * 1000000;
+      else if (str.indexOf('k') > -1) xphrNum = parseFloat(str) * 1000;
+      else                             xphrNum = parseFloat(str) || 0;
+    }
+    var hoursTo99  = (xphrNum > 0 && remaining > 0) ? (remaining / xphrNum) : null;
+    var daysTo99   = hoursTo99 !== null ? Math.ceil(hoursTo99 / 2) : null;
+    var xpPerDay   = xphrNum > 0 ? r2m_fmtXp(xphrNum * 2) : 'varies';
+    var finishDate = null;
+    if (isMax) {
+      finishDate = 'Done';
+    } else if (daysTo99 !== null && daysTo99 > 0) {
+      var d = new Date();
+      d.setDate(d.getDate() + daysTo99);
+      finishDate = d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+    }
+    var daysStr  = daysTo99 !== null ? daysTo99.toLocaleString('en-GB') + ' days' : 'varies';
+    var hoursStr = hoursTo99 !== null ? Math.ceil(hoursTo99).toLocaleString('en-GB') + ' hrs' : 'varies';
+
+    var card = document.createElement('div');
+    card.className = 'card' + (isMax ? ' done' : '');
+
+    // Header row
+    var header = '<div class="crow" onclick="this.parentElement.classList.toggle(\'open\')">' +
+      '<div class="badge"><img src="' + s.icon + '" alt="' + s.name + '" onerror="this.style.display=\'none\'"></div>' +
+      '<div class="sinfo">' +
+        '<div class="sname' + (r2m_loaded ? '' : ' dim') + '">' + s.name + ' <span class="stag">(' + tag + ')</span></div>' +
+        '<div class="smeth">' + method.activity + '</div>' +
+        '<div class="track"><div class="bar" style="width:' + pct + '%"></div></div>' +
+      '</div>' +
+      '<div class="nums">' +
+        '<div class="cur' + (r2m_loaded ? '' : ' dim') + '">' + (r2m_loaded ? trueLv : '--') + '</div>' +
+        '<div class="arr">-></div>' +
+        '<div class="tgt">' + (isMax ? 'MAX' : '99') + '</div>' +
+      '</div>' +
+      '<div class="chevron">&#9660;</div>' +
+    '</div>';
+
+    // Dropdown panel
+    var drop = '';
+    if (r2m_loaded) {
+      drop = '<div class="drop">' +
+        '<div class="dsect">XP Progress</div>' +
+        '<div class="drow"><span class="dlbl">Current XP</span><span class="dval">' + r2m_fmtXp(curXp) + '</span></div>' +
+        (isMax
+          ? '<div class="drow"><span class="dlbl">Status</span><span class="dval green">Maxed -- 99!</span></div>'
+          : '<div class="drow"><span class="dlbl">XP to next level</span><span class="dval">' + r2m_fmtXp(toNext) + '</span></div>'
+        ) +
+        '<div class="drow"><span class="dlbl">XP to 99</span><span class="dval">' + (isMax ? 'Done' : r2m_fmtXp(remaining)) + '</span></div>' +
+        '<div class="dsect">Best Method</div>' +
+        '<div class="drow"><span class="dlbl">Activity</span><span class="dval gold">' + method.activity + '</span></div>' +
+        '<div class="drow"><span class="dlbl">XP / hr</span><span class="dval gold">' + (xphrNum > 0 ? r2m_fmtXp(xphrNum) : method.xphr) + '</span></div>' +
+        '<div class="drow"><span class="dlbl">XP / day <span style="font-size:9px">(2hr session)</span></span><span class="dval gold">' + xpPerDay + '</span></div>' +
+        (isMax ? '' :
+          '<div class="dsect">Timeline</div>' +
+          '<div class="drow"><span class="dlbl">Hours to 99</span><span class="dval">' + hoursStr + '</span></div>' +
+          '<div class="drow"><span class="dlbl">Days to 99 <span style="font-size:9px">(2hr/day)</span></span><span class="dval">' + daysStr + '</span></div>' +
+          '<div class="drow"><span class="dlbl">Finish by</span><span class="dval green">' + (finishDate || 'varies') + '</span></div>'
+        ) +
+      '</div>';
+    } else {
+      drop = '<div class="drop"><div class="drow"><span class="dlbl" style="width:100%;text-align:center;color:var(--muted)">Fetch your stats to see XP details</span></div></div>';
+    }
+
+    card.innerHTML = header + drop;
+    grid.appendChild(card);
+  });
+
+  if (r2m_loaded) {
+    var total  = R2M_SKILLS.reduce(function(sum, k) {
+      var x = r2m_xps[k.name] || 0;
+      return sum + (x > 0 ? Math.min(r2m_levelFromXp(x), 99) : Math.min(r2m_lvls[k.name]||0, 99));
+    }, 0);
+    var needed = 2376 - total;
+    var pct    = ((total / 2376) * 100).toFixed(1);
+    var perDay = (needed / 365).toFixed(1);
+    r2m_setVal('r2m-vTotal',  total,     false);
+    r2m_setVal('r2m-vNeeded', needed,    false);
+    r2m_setVal('r2m-vPct',    pct + '%', false);
+    document.getElementById('r2m-vDay').textContent = perDay + ' levels/day for 365 days';
+
+    // Combat level
+    var combat = r2m_calcCombatLevel();
+    r2m_setVal('r2m-vCombat', combat, false);
+  }
+
+  r2m_renderNearest();
+  r2m_renderAchievements();
+  r2m_renderWeekly();
+  r2m_renderPhases();
+  r2m_renderHabits();
+}
+
+function r2m_setVal(id, val, dim) {
+  var el = document.getElementById(id);
+  el.textContent = val;
+  el.className = 'val' + (dim ? ' dim' : '');
+}
+
+// Load data from the main app's currentPlayer object (WOM snapshot)
+function r2m_loadFromCurrentPlayer(data) {
+  if (!data) return;
+  var skills = data.latestSnapshot && data.latestSnapshot.data && data.latestSnapshot.data.skills;
+  if (!skills) return;
+
+  var hits = 0;
+  R2M_SKILLS.forEach(function(s) {
+    var entry = skills[s.wom];
+    if (entry && entry.level > 0) {
+      r2m_lvls[s.name] = entry.level;
+      r2m_xps[s.name]  = entry.experience || 0;
+      hits++;
+    }
+  });
+  if (hits === 0) return;
+
+  r2m_loaded = true;
+  r2m_render();
+
+  var displayName = data.displayName || data.username || '';
+  document.getElementById('r2m-sub').textContent  = displayName + ' — Total Level to 2376 — 365-Day Plan';
+  document.getElementById('r2m-foot').textContent = 'Live data for ' + displayName + ' via Wise Old Man';
+}
+window.r2m_loadFromCurrentPlayer = r2m_loadFromCurrentPlayer;
+
+function r2m_getTrueLv(name) {
+  var xp = r2m_xps[name] || 0;
+  return xp > 0 ? Math.min(r2m_levelFromXp(xp), 99) : Math.min(r2m_lvls[name] || 1, 99);
+}
+
+function r2m_renderWeekly() {
+  var el = document.getElementById('r2m-weeklyRotation');
+  if (!r2m_loaded) {
+    el.innerHTML = '<div class="day" style="opacity:0.4"><h3>Fetch your stats to see your personalised rotation</h3></div>';
+    return;
+  }
+
+  var lv = {}; // shorthand lookup
+  R2M_SKILLS.forEach(function(s) { lv[s.name] = r2m_getTrueLv(s.name); });
+
+  // Build level-appropriate method for each skill
+  function m(skill) { return r2m_bestMethod(skill, lv[skill] || 1); }
+
+  var days = [
+    { title: 'Monday -- Combat',
+      items: [
+        lv['Slayer'] < 50
+          ? ['Slayer', 'Turael or Mazchna tasks to build up']
+          : lv['Slayer'] < 75
+          ? ['Slayer', 'Chaeldar tasks -- good XP and drops']
+          : ['Slayer', 'Duradel/Konar -- best drops and XP'],
+        lv['Prayer'] < 70
+          ? ['Prayer', 'Ensouled heads at chaos altar']
+          : ['Prayer', 'Dragon bones at gilded altar'],
+        ['Herblore', 'Craft potions from Slayer drops'],
+      ]
+    },
+    { title: 'Tuesday -- Skilling',
+      items: [
+        lv['Agility'] < 60
+          ? ['Agility', 'Canifis rooftop course']
+          : lv['Agility'] < 80
+          ? ['Agility', 'Seers Village rooftop course']
+          : ['Agility', 'Hallowed Sepulchre floors 4-5'],
+        lv['Thieving'] < 45
+          ? ['Thieving', 'Fruit stalls at Hosidius']
+          : lv['Thieving'] < 91
+          ? ['Thieving', 'Blackjacking at Pollnivneach']
+          : ['Thieving', 'Pyramid Plunder'],
+        lv['Construction'] < 52
+          ? ['Construction', 'Oak chairs until 52']
+          : lv['Construction'] < 77
+          ? ['Construction', 'Oak larders with butler']
+          : ['Construction', 'Mahogany tables with demon butler'],
+      ]
+    },
+    { title: 'Wednesday -- Gathering',
+      items: [
+        ['Farming', 'Herb + tree + fruit tree runs -- morning and evening'],
+        lv['Mining'] < 60
+          ? ['Mining', 'Iron ore at Blast Mine or Minigame']
+          : lv['Mining'] < 75
+          ? ['Mining', 'Motherlode Mine AFK']
+          : ['Mining', 'Blast Mine at Lovakengj'],
+        lv['Smithing'] < 60
+          ? ['Smithing', 'Blast Furnace steel bars']
+          : ['Smithing', 'Blast Furnace gold bars'],
+        lv['Woodcutting'] < 60
+          ? ['Woodcutting', 'Oak trees near bank']
+          : lv['Woodcutting'] < 75
+          ? ['Woodcutting', 'Teak trees at Ape Atoll']
+          : ['Woodcutting', '2-tick Teak at Ape Atoll'],
+      ]
+    },
+    { title: 'Thursday -- Magic and Ranged',
+      items: [
+        lv['Magic'] < 55
+          ? ['Magic', 'Splashing low-level spells AFK']
+          : ['Magic', 'High Alchemy -- never stop alching'],
+        lv['Ranged'] < 55
+          ? ['Ranged', 'Crabs with mithril darts']
+          : lv['Ranged'] < 70
+          ? ['Ranged', 'Chinchompas at Ape Atoll']
+          : ['Ranged', 'Chinchompas at MM2 tunnels'],
+        lv['Fletching'] < 52
+          ? ['Fletching', 'Arrow shafts and headless arrows']
+          : lv['Fletching'] < 81
+          ? ['Fletching', 'Maple longbows (u) -- fast and cheap']
+          : ['Fletching', 'Dragon darts -- AFK and very fast'],
+      ]
+    },
+    { title: 'Friday -- Buyables and Buyables',
+      items: [
+        lv['Runecrafting'] < 23
+          ? ['Runecrafting', 'Air runes via Abyss to build up']
+          : lv['Runecrafting'] < 77
+          ? ['Runecrafting', 'Lava runes with Lunar spell']
+          : ['Runecrafting', 'Blood runes at Arceuus'],
+        lv['Hunter'] < 63
+          ? ['Hunter', 'Box traps -- crimson swifts or tropical wagtails']
+          : lv['Hunter'] < 73
+          ? ['Hunter', 'Red chinchompas']
+          : ['Hunter', 'Black chinchompas in Wilderness'],
+        lv['Fishing'] < 58
+          ? ['Fishing', 'Fly fishing at Barbarian Village']
+          : lv['Fishing'] < 65
+          ? ['Fishing', '2-tick Barbarian Fishing']
+          : ['Fishing', '1-tick Karambwans'],
+      ]
+    },
+    { title: 'Saturday -- Production and Sailing',
+      items: [
+        lv['Firemaking'] < 50
+          ? ['Firemaking', 'Regular or oak logs -- or start Wintertodt now']
+          : ['Firemaking', 'Wintertodt -- best XP and free supplies'],
+        lv['Cooking'] < 80
+          ? ['Cooking', 'Jugs of wine -- fastest low-level method']
+          : lv['Cooking'] < 90
+          ? ['Cooking', 'Anglerfish at Hosidius range']
+          : ['Cooking', '1-tick Karambwans'],
+        lv['Crafting'] < 54
+          ? ['Crafting', 'Gold bracelets at a furnace']
+          : ['Crafting', 'Battlestaves daily from Zaff -- cheap XP'],
+        lv['Sailing'] < 40
+          ? ['Sailing', 'Intro voyage and early port tasks']
+          : lv['Sailing'] < 70
+          ? ['Sailing', 'Sea charting routes']
+          : ['Sailing', 'Naval combat and bounty missions'],
+      ]
+    },
+    { title: 'Sunday -- Catch-up and Quests',
+      items: [
+        ['Farming', 'Full farm run -- allotment, herb, tree, fruit tree'],
+        ['Herblore', 'Clean all herbs and make potions from the week'],
+        [null, 'Quest grind -- unlock diary rewards and shortcuts'],
+        [null, 'Review your slowest skills and plan next week'],
+      ]
+    },
+  ];
+
+  var html = '';
+  days.forEach(function(day) {
+    html += '<div class="day"><h3>' + day.title + '</h3><ul>';
+    day.items.forEach(function(item) {
+      var skillName = item[0];
+      var desc = item[1];
+      if (skillName) {
+        var sk = R2M_SKILLS.find(function(s) { return s.name === skillName; });
+        var iconHtml = sk ? '<img src="' + sk.icon + '" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;margin-right:4px" onerror="this.style.display=\'none\'">' : '';
+        html += '<li>' + iconHtml + skillName + ' <span>' + desc + '</span></li>';
+      } else {
+        html += '<li>' + desc + '</li>';
+      }
+    });
+    html += '</ul></div>';
+  });
+
+  el.innerHTML = html;
+}
+
+function r2m_renderPhases() {
+  var el = document.getElementById('r2m-phasePlan');
+  if (!r2m_loaded) {
+    el.innerHTML = '<div class="tip"><b>Fetch your stats to see your personalised phase plan</b></div>';
+    return;
+  }
+
+  var lv = {};
+  R2M_SKILLS.forEach(function(s) { lv[s.name] = r2m_getTrueLv(s.name); });
+
+  // Identify the player's priority areas
+  var sub70 = R2M_SKILLS.filter(function(s) { return lv[s.name] < 70 && s.name !== 'Sailing'; }).map(function(s) { return s.name; });
+  var sub80 = R2M_SKILLS.filter(function(s) { return lv[s.name] < 80 && lv[s.name] >= 70; }).map(function(s) { return s.name; });
+  var remaining = R2M_SKILLS.filter(function(s) { return lv[s.name] < 99; })
+    .sort(function(a,b) { return r2m_xpTo99(r2m_xps[b.name]||0) - r2m_xpTo99(r2m_xps[a.name]||0) })
+    .slice(0, 4).map(function(s) { return s.name; });
+
+  var slayerTip = lv['Slayer'] < 50
+    ? 'Get Slayer to 50+ first -- it unlocks better tasks and starts funding Herblore and Prayer.'
+    : lv['Slayer'] < 75
+    ? 'Push Slayer to 75 to unlock Duradel -- better tasks, better drops, more GP for buyables.'
+    : 'Keep doing Slayer daily -- it funds Prayer, Herblore, and Crafting passively.';
+
+  var rcTip = lv['Runecrafting'] < 23
+    ? 'Runecrafting is your hardest 99. Start now with air runes via the Abyss to get to 23.'
+    : lv['Runecrafting'] < 77
+    ? 'Runecrafting (level ' + lv['Runecrafting'] + '): commit to lava runes via Lunar spell -- budget 6-8 weeks of daily sessions.'
+    : 'Runecrafting (level ' + lv['Runecrafting'] + '): blood runes at Arceuus -- slower but less intense.';
+
+  var p1Skills = sub70.length > 0
+    ? 'You have ' + sub70.length + ' skill' + (sub70.length > 1 ? 's' : '') + ' below 70: ' + sub70.slice(0,5).join(', ') + (sub70.length > 5 ? '...' : '') + '. Get these to 70+ first.'
+    : 'All skills are 70+. Move straight into Phase 2 grinding.';
+
+  var p3Skills = remaining.length > 0
+    ? 'Your biggest remaining grinds are: ' + remaining.join(', ') + '. Use Slayer and Sailing income to fund the buyables.'
+    : 'Almost there -- clear your remaining skills and claim the cape.';
+
+  el.innerHTML =
+    '<div class="tip"><b><span class="ptag">PHASE 1</span> Months 1-3 -- Foundation</b>' +
+      p1Skills + ' ' + slayerTip + ' Start Sailing early -- port tasks are low effort. Farming runs twice daily every day without exception.' +
+    '</div>' +
+    '<div class="tip"><b><span class="ptag">PHASE 2</span> Months 4-8 -- The Grind</b>' +
+      rcTip + ' Hunter: black chinchompas for fast XP and cash. Magic: alch at all times -- never idle. Smithing: Blast Furnace gold bars only. Track weekly progress.' +
+    '</div>' +
+    '<div class="tip"><b><span class="ptag">PHASE 3</span> Months 9-12 -- Final Push</b>' +
+      p3Skills + ' 1-tick Karambwans for Cooking, darts for Fletching, splash Magic overnight. Final month: full audit then claim the cape.' +
+    '</div>';
+}
+
+function r2m_renderHabits() {
+  var el = document.getElementById('r2m-dailyHabits');
+
+  var lv = {};
+  if (r2m_loaded) R2M_SKILLS.forEach(function(s) { lv[s.name] = r2m_getTrueLv(s.name); });
+
+  var habits = [
+    {
+      skill: 'Farming',
+      title: 'Farming Runs',
+      desc: 'Herb + tree + fruit tree runs every morning and evening. 10 minutes, massive passive XP over a year -- never skip.'
+    },
+    {
+      skill: 'Slayer',
+      title: 'Active Slayer Task',
+      desc: 'Always have a Slayer task running. It funds Prayer, Herblore, and Crafting passively and is your best all-round activity.'
+    },
+    {
+      skill: 'Herblore',
+      title: 'Decant Potions',
+      desc: 'Clean and decant all herbs and potions from Slayer drops every session. Free Herblore XP you are leaving on the table otherwise.'
+    },
+    {
+      skill: 'Magic',
+      title: 'High Alch Everything',
+      desc: r2m_loaded && (lv['Magic'] || 1) < 55
+        ? 'Get Magic to 55 for High Alchemy. Until then splash low-level spells AFK.'
+        : 'High Alch while doing anything passive -- banking, farming, AFK skilling. Magic must never go idle.'
+    },
+    {
+      skill: 'Runecrafting',
+      title: 'XP Lamps -- Runecrafting First',
+      desc: r2m_loaded && (lv['Runecrafting'] || 1) >= 99
+        ? 'Runecrafting is maxed -- direct lamps to Agility next.'
+        : 'Spend all XP lamps and book rewards on Runecrafting first. It is your slowest skill and every shortcut counts.'
+    },
+    {
+      skill: 'Sailing',
+      title: 'Daily Sailing Task',
+      desc: 'Do at least one port task or voyage every day. Sailing is easy to neglect and painful to catch up on -- stay consistent.'
+    },
+  ];
+
+  var html = '';
+  habits.forEach(function(h) {
+    var sk = R2M_SKILLS.find(function(s) { return s.name === h.skill; });
+    var iconHtml = sk ? '<img src="' + sk.icon + '" onerror="this.style.display=\'none\'">' : '';
+    html +=
+      '<div class="habit-card">' +
+        '<div class="habit-icon">' + iconHtml + '</div>' +
+        '<div class="habit-text">' +
+          '<div class="habit-title">' + h.title + '</div>' +
+          '<div class="habit-desc">' + h.desc + '</div>' +
+        '</div>' +
+      '</div>';
+  });
+
+  el.innerHTML = html;
+}
+
+// Expose for inline onclick handlers
+window.r2m_toggleSection  = r2m_toggleSection;
+window.r2m_toggleAchDrop  = r2m_toggleAchDrop;
+window.r2m_toggleCard     = r2m_toggleCard;
+
+// Initial render (empty state)
+r2m_render();
+r2m_renderWeekly();
+r2m_renderPhases();
+r2m_renderHabits();
+
+})();
+</script>
 </body>
 </html>
