@@ -1,0 +1,3 @@
+[build]
+  command = "python build_env_replace.py"
+  publish = "."

@@ -1,4 +1,3 @@
-
 const CACHE_NAME = 'OSTS V11.0.0';
 const STATIC_ASSETS = [
   './',
@@ -9,8 +8,11 @@ const STATIC_ASSETS = [
 
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_ASSETS.filter(url => !url.startsWith('http') || !navigator.onLine ? true : true)))
-      .catch(() => {})
+    caches.open(CACHE_NAME).then(cache =>
+      cache.addAll(
+        STATIC_ASSETS.filter(url => !url.startsWith('http') || !navigator.onLine ? true : true)
+      )
+    ).catch(() => {})
   );
   self.skipWaiting();
 });
@@ -34,18 +36,19 @@ self.addEventListener('fetch', e => {
     })).catch(() => caches.match('./index.html'))
   );
 });
+
 /* Firebase Messaging service worker for OSTS */
 importScripts("https://www.gstatic.com/firebasejs/12.12.0/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/12.12.0/firebase-messaging-compat.js");
 
 firebase.initializeApp({
-  apiKey: "AIzaSyDm80SF0r5J-a71Sgev0WCCYoXMBKHIkJU",
-  authDomain: "osts-198338.firebaseapp.com",
-  projectId: "osts-198338",
-  storageBucket: "osts-198338.firebasestorage.app",
-  messagingSenderId: "1004904569319",
-  appId: "1:1004904569319:web:5daba1f29eccb18fc20542",
-  measurementId: "G-Y9BJM39VWS"
+  apiKey: "__FIREBASE_API_KEY__",
+  authDomain: "__FIREBASE_AUTH_DOMAIN__",
+  projectId: "__FIREBASE_PROJECT_ID__",
+  storageBucket: "__FIREBASE_STORAGE_BUCKET__",
+  messagingSenderId: "__FIREBASE_MESSAGING_SENDER_ID__",
+  appId: "__FIREBASE_APP_ID__",
+  measurementId: "__FIREBASE_MEASUREMENT_ID__"
 });
 
 const messaging = firebase.messaging();

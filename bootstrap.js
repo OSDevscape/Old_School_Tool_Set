@@ -7,23 +7,20 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-messaging.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDm80SF0r5J-a71Sgev0WCCYoXMBKHIkJU",
-  authDomain: "osts-198338.firebaseapp.com",
-  projectId: "osts-198338",
-  storageBucket: "osts-198338.firebasestorage.app",
-  messagingSenderId: "1004904569319",
-  appId: "1:1004904569319:web:5daba1f29eccb18fc20542",
-  measurementId: "G-Y9BJM39VWS"
+  apiKey: "__FIREBASE_API_KEY__",
+  authDomain: "__FIREBASE_AUTH_DOMAIN__",
+  projectId: "__FIREBASE_PROJECT_ID__",
+  storageBucket: "__FIREBASE_STORAGE_BUCKET__",
+  messagingSenderId: "__FIREBASE_MESSAGING_SENDER_ID__",
+  appId: "__FIREBASE_APP_ID__",
+  measurementId: "__FIREBASE_MEASUREMENT_ID__"
 };
 
-// Your Web Push (VAPID) public key from Firebase console
-const VAPID_KEY =
-  "BJkuWdeRzadNf4lk42HVoPA3PccrfjEiDv5H1RSN36Z4IL8WYWhxW3HROjyq2oyXchJVBDvUvQBGvxfhHMqUUaE";
+const VAPID_KEY = "__VAPID_KEY__";
 
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
-// Call this once after app load (e.g. when user opens Timers)
 export async function registerPush() {
   if (!("serviceWorker" in navigator) || !("Notification" in window)) {
     return null;
@@ -32,18 +29,13 @@ export async function registerPush() {
   const perm = await Notification.requestPermission();
   if (perm !== "granted") return null;
 
-  // Register the Firebase messaging service worker
-  const reg = await navigator.serviceWorker.register(
-    "./firebase-messaging-sw.js"
-  );
+  const reg = await navigator.serviceWorker.register("./sw.js");
 
-  // Get FCM token for this browser
   const token = await getToken(messaging, {
     vapidKey: VAPID_KEY,
     serviceWorkerRegistration: reg
   });
 
-  // Optional: handle foreground messages (when app is open)
   onMessage(messaging, payload => {
     const title = payload?.notification?.title || "Timer update";
     const body = payload?.notification?.body || "A timer needs attention.";
@@ -52,7 +44,6 @@ export async function registerPush() {
     }
   });
 
-  // TODO: send `token` to your backend / Firestore so you can push timer alerts
   console.log("FCM token:", token);
   return token;
 }
