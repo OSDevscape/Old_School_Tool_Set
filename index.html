@@ -5913,6 +5913,18 @@
 
     })();
   </script>
-</body>
 
+    <script type="module">
+    import { registerPush } from './bootstrap.js';
+
+    window.addEventListener('load', async () => {
+      try {
+        const token = await registerPush();
+        console.log('FCM token:', token);
+      } catch (err) {
+        console.error('Push setup failed:', err);
+      }
+    });
+  </script>
+</body>
 </html>
