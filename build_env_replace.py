@@ -13,8 +13,8 @@ replacements = {
 }
 
 for name in ["bootstrap.js", "sw.js"]:
-    p = Path(name)
-    txt = p.read_text(encoding="utf-8")
-    for k, v in replacements.items():
-        txt = txt.replace(k, v)
-    p.write_text(txt, encoding="utf-8")
+    file_path = Path(name)
+    file_contents = file_path.read_text(encoding="utf-8")
+    for token, replacement_value in replacements.items():
+        file_contents = file_contents.replace(token, replacement_value)
+    file_path.write_text(file_contents, encoding="utf-8")
