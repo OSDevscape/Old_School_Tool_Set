@@ -1,0 +1,204 @@
+Brutus
+Image loaded from candidate #5: https://oldschool.runescape.wiki/w/Special:FilePath/Brutus.png
+
+
+Bryophyta
+Image loaded from candidate #5: https://oldschool.runescape.wiki/w/Special:FilePath/Bryophyta.png
+
+Obor
+Image loaded from candidate #5: https://oldschool.runescape.wiki/w/Special:FilePath/Obor.png
+
+
+Scurrius
+Image loaded from candidate #5: https://oldschool.runescape.wiki/w/Special:FilePath/Scurrius.png
+
+Abyssal Sire
+mage loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/1024px-abyssal_sire.png
+
+
+Alchemical Hydra
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/800px-alchemical_hydra.png
+
+Amoxliatl
+Image loaded from candidate #5: https://oldschool.runescape.wiki/w/Special:FilePath/Amoxliatl.png
+
+Araxxor
+Image loaded from candidate #5: https://oldschool.runescape.wiki/w/Special:FilePath/Araxxor.png
+
+Callisto
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/callisto.png
+
+Calvarion
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/260px-vetion.png
+
+Cerberus
+Image loaded from candidate #6: https://oldschool.runescape.wiki/w/Special:FilePath/Cerberus.png
+
+Chaos Elemental
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/chaos_elemental.png
+
+Chaos Fanatic
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/chaos_fanatic.png
+
+Commander Zilyana
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/commander_zilyana.png
+
+Corporeal Beast
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/corp.png
+
+Crazy Archaeologist
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/crazy_archaeologist.png
+
+Dagannoth Prime
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/200px-dagannoth_prime.png
+
+Dagannoth Rex
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/230px-dagannoth_rex.png
+
+Dagannoth Supreme
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/230px-dagannoth_supreme.png
+
+
+Deranged Archaeologist
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/crazy_archaeologist.png
+
+Doom Of Mokhaiotl
+Image loaded from candidate #13: https://oldschool.runescape.wiki/w/Special:FilePath/Doom%20of%20Mokhaiotl.png
+
+Duke Sucellus
+Image loaded from candidate #13: https://oldschool.runescape.wiki/w/Special:FilePath/Duke%20Sucellus.png
+
+General Graardor
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/general_graardor.png
+
+Giant Mole
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/250px-giant_mole.png
+
+Grotesque Guardians
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/280px-dawn.png
+
+
+Hespori
+Image loaded from candidate #5: https://oldschool.runescape.wiki/w/Special:FilePath/Hespori.png
+
+Kalphite Queen
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/290px-kalphite_queen.png
+
+King Black Dragon
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/290px-king_black_dragon.png
+
+Kraken
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/290px-kraken.png
+
+
+Kreearra
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/kreearra.png
+
+Kril Tsutsaroth
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/kril_tsutsaroth.png
+
+Mimic
+Image loaded from candidate #5: https://oldschool.runescape.wiki/w/Special:FilePath/Mimic.png
+
+Nex
+Image loaded from candidate #5: https://oldschool.runescape.wiki/w/Special:FilePath/Nex.png
+
+Nightmare
+
+
+Phantom Muspah
+
+
+Phosanis Nightmare
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/nightmare.png
+
+Sarachnis
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/sarachnis.png
+
+Scorpia
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/scorpia.pn
+
+
+Shellbane Gryphon
+Image loaded from candidate #13: https://oldschool.runescape.wiki/w/Special:FilePath/Shellbane%20gryphon.png
+
+Skotizo
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/250px-skotizo.png
+
+Sol Heredit
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/Smol_heredit.png
+
+
+Spindel
+Image loaded from candidate #5: https://oldschool.runescape.wiki/w/Special:FilePath/Spindel.png
+
+
+Tempoross
+Image loaded from candidate #5: https://oldschool.runescape.wiki/w/Special:FilePath/Tempoross.png
+
+
+The Corrupted Gauntlet
+
+
+The Corrupted Gauntlet
+Image loaded from candidate #13: https://oldschool.runescape.wiki/w/Special:FilePath/Crystalline%20Hunllef.png
+
+
+The Hueycoatl
+Image loaded from candidate #13: https://oldschool.runescape.wiki/w/Special:FilePath/The%20Hueycoatl.png
+
+
+The Leviathan
+image loaded from candidate #13: https://oldschool.runescape.wiki/w/Special:FilePath/The%20Leviathan.png
+
+
+The Royal Titans
+
+
+The Royal Titans
+image loaded from candidate #13: https://oldschool.runescape.wiki/w/Special:FilePath/The%20Whisperer.png
+
+
+Theatre Of Blood
+
+
+Theatre Of Blood Hard Mode
+
+
+Thermonuclear Smoke Devil
+Image loaded from candidate #13: https://oldschool.runescape.wiki/w/Special:FilePath/Thermonuclear%20smoke%20devil.png
+
+
+Tombs Of Amascut
+Image loaded from candidate #13: https://oldschool.runescape.wiki/w/Special:FilePath/Tombs%20of%20Amascut.png
+
+
+Tombs Of Amascut Expert
+Image loaded from candidate #13: https://oldschool.runescape.wiki/w/Special:FilePath/Tombs%20of%20Amascut.png
+
+TzKal Zuk
+Image loaded from candidate #5: https://oldschool.runescape.wiki/w/Special:FilePath/TzKal-Zuk.png
+
+TzTok Jad
+Image loaded from candidate #5: https://oldschool.runescape.wiki/w/Special:FilePath/TzTok-Jad.png
+
+Vardorvis
+Image loaded from candidate #5: https://oldschool.runescape.wiki/w/Special:FilePath/Vardorvis.png
+
+Venenatis
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/venenatis.png
+
+Vetion
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/260px-vetion.png
+
+Vorkath
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/vorkath.png
+
+Yama
+Image loaded from candidate #5: https://oldschool.runescape.wiki/w/Special:FilePath/Yama.png
+
+Zalcano
+Image loaded from candidate #5: https://oldschool.runescape.wiki/w/Special:FilePath/Zalcano.png
+
+Zulrah
+Image loaded from candidate #1: https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/zulrah.png
