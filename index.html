@@ -385,6 +385,31 @@
       color: var(--muted)
     }
 
+    .profile-share-row {
+      display: none;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .profile-share-row.visible {
+      display: flex;
+    }
+    .profile-share-btn {
+      flex: 1;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 9px 0;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .profile-share-btn:active {
+      background: var(--surface3);
+      border-color: rgba(184,136,72,.5);
+    }
+
     .overview-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -856,22 +881,6 @@
 
     .boss-metric .v.ehb-good {
       color: var(--green)
-    }
-
-    .boss-debug {
-      margin-top: 8px;
-      font-size: 10px;
-      color: var(--muted);
-      word-break: break-word;
-      line-height: 1.35
-    }
-
-    .boss-debug.good {
-      color: var(--green)
-    }
-
-    .boss-debug.bad {
-      color: #ff8a8a
     }
 
     .boss-image-overlay {
@@ -2777,42 +2786,42 @@
    ═══════════════════════════════════════════════ */
 
     /* ── Header ────────────────────────────────── */
-    #tab-roadtomax header {
+    .r2m-content header {
       text-align: center;
       padding: 14px 4px 16px;
       margin-bottom: 14px;
       border-bottom: 1px solid var(--border);
     }
 
-    #tab-roadtomax h1 {
+    .r2m-content h1 {
       font-size: 20px;
       font-weight: 700;
       color: var(--gold);
       letter-spacing: .03em;
     }
 
-    #tab-roadtomax .sub {
+    .r2m-content .sub {
       font-size: 12px;
       color: var(--muted);
       margin-top: 5px;
     }
 
     /* ── Stats row ─────────────────────────────── */
-    #tab-roadtomax .stats {
+    .r2m-content .stats {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;
       margin-bottom: 14px;
     }
 
-    #tab-roadtomax .stat {
+    .r2m-content .stat {
       background: var(--surface2);
       border-radius: 10px;
       padding: 10px 8px;
       text-align: center;
     }
 
-    #tab-roadtomax .stat .lbl {
+    .r2m-content .stat .lbl {
       font-size: 10px;
       color: var(--muted);
       text-transform: uppercase;
@@ -2820,25 +2829,25 @@
       margin-bottom: 4px;
     }
 
-    #tab-roadtomax .stat .val {
+    .r2m-content .stat .val {
       font-size: 20px;
       font-weight: 700;
       color: var(--gold);
       line-height: 1.1;
     }
 
-    #tab-roadtomax .stat .val.dim {
+    .r2m-content .stat .val.dim {
       color: var(--muted);
     }
 
-    #tab-roadtomax .stat .note {
+    .r2m-content .stat .note {
       font-size: 10px;
       color: var(--muted);
       margin-top: 3px;
     }
 
     /* ── Section headings ──────────────────────── */
-    #tab-roadtomax .heading {
+    .r2m-content .heading {
       font-size: 12px;
       font-weight: 800;
       letter-spacing: .08em;
@@ -2847,7 +2856,7 @@
       margin: 20px 0 10px 2px;
     }
 
-    #tab-roadtomax .section-toggle {
+    .r2m-content .section-toggle {
       font-size: 12px;
       font-weight: 800;
       letter-spacing: .08em;
@@ -2861,36 +2870,36 @@
       user-select: none;
     }
 
-    #tab-roadtomax .section-toggle:hover {
+    .r2m-content .section-toggle:hover {
       color: var(--gold2, #d0a060);
     }
 
-    #tab-roadtomax .s-chevron {
+    .r2m-content .s-chevron {
       font-size: 10px;
       color: var(--muted);
       transition: transform .2s;
     }
 
-    #tab-roadtomax .s-chevron.open {
+    .r2m-content .s-chevron.open {
       transform: rotate(180deg);
     }
 
     /* ── Nearest / Achievement lists ───────────── */
-    #tab-roadtomax .nearest,
-    #tab-roadtomax .achieve-list {
+    .r2m-content .nearest,
+    .r2m-content .achieve-list {
       display: none;
       flex-direction: column;
       gap: 8px;
       margin-bottom: 4px;
     }
 
-    #tab-roadtomax .nearest.visible,
-    #tab-roadtomax .achieve-list.visible {
+    .r2m-content .nearest.visible,
+    .r2m-content .achieve-list.visible {
       display: flex;
     }
 
     /* ── Nearest 99 cards ──────────────────────── */
-    #tab-roadtomax .n99-card {
+    .r2m-content .n99-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -2900,7 +2909,7 @@
       gap: 12px;
     }
 
-    #tab-roadtomax .n99-icon {
+    .r2m-content .n99-icon {
       width: 36px;
       height: 36px;
       flex-shrink: 0;
@@ -2912,47 +2921,47 @@
       justify-content: center;
     }
 
-    #tab-roadtomax .n99-icon img {
+    .r2m-content .n99-icon img {
       width: 24px;
       height: 24px;
       image-rendering: pixelated;
     }
 
-    #tab-roadtomax .n99-info {
+    .r2m-content .n99-info {
       flex: 1;
       min-width: 0;
     }
 
-    #tab-roadtomax .n99-name {
+    .r2m-content .n99-name {
       font-size: 13px;
       font-weight: 800;
       color: var(--text);
     }
 
-    #tab-roadtomax .n99-left {
+    .r2m-content .n99-left {
       font-size: 11px;
       color: var(--muted);
       margin-top: 2px;
     }
 
-    #tab-roadtomax .n99-ring {
+    .r2m-content .n99-ring {
       flex-shrink: 0;
       position: relative;
       width: 48px;
       height: 48px;
     }
 
-    #tab-roadtomax .n99-ring svg {
+    .r2m-content .n99-ring svg {
       transform: rotate(-90deg);
     }
 
-    #tab-roadtomax .n99-ring-bg {
+    .r2m-content .n99-ring-bg {
       fill: none;
       stroke: var(--border);
       stroke-width: 4;
     }
 
-    #tab-roadtomax .n99-ring-fill {
+    .r2m-content .n99-ring-fill {
       fill: none;
       stroke: var(--gold);
       stroke-width: 4;
@@ -2960,7 +2969,7 @@
       transition: stroke-dashoffset .6s ease;
     }
 
-    #tab-roadtomax .n99-pct {
+    .r2m-content .n99-pct {
       position: absolute;
       inset: 0;
       display: flex;
@@ -2972,7 +2981,7 @@
     }
 
     /* ── Achievement cards ──────────────────────── */
-    #tab-roadtomax .ach-card {
+    .r2m-content .ach-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -2982,7 +2991,7 @@
       cursor: default;
     }
 
-    #tab-roadtomax .ach-card-main {
+    .r2m-content .ach-card-main {
       display: flex;
       align-items: center;
       gap: 12px;
@@ -2990,12 +2999,12 @@
       cursor: pointer;
     }
 
-    #tab-roadtomax .ach-count {
+    .r2m-content .ach-count {
       font-size: 10px;
       color: var(--muted);
     }
 
-    #tab-roadtomax .ach-chev {
+    .r2m-content .ach-chev {
       font-size: 10px;
       color: var(--muted);
       margin-left: 4px;
@@ -3003,18 +3012,18 @@
       flex-shrink: 0;
     }
 
-    #tab-roadtomax .ach-drop {
+    .r2m-content .ach-drop {
       display: none;
       border-top: 1px solid var(--border);
       background: var(--surface2);
       padding: 10px 14px 12px;
     }
 
-    #tab-roadtomax .ach-drop.open {
+    .r2m-content .ach-drop.open {
       display: block;
     }
 
-    #tab-roadtomax .ach-drop-hdr {
+    .r2m-content .ach-drop-hdr {
       font-size: 10px;
       font-weight: 800;
       color: var(--muted);
@@ -3023,14 +3032,14 @@
       margin-bottom: 8px;
     }
 
-    #tab-roadtomax .ach-drop-grid {
+    .r2m-content .ach-drop-grid {
       display: grid;
       grid-template-columns: 1fr auto auto;
       gap: 4px 12px;
       font-size: 11px;
     }
 
-    #tab-roadtomax .ach-col-hdr {
+    .r2m-content .ach-col-hdr {
       font-size: 10px;
       color: var(--muted);
       letter-spacing: .4px;
@@ -3038,14 +3047,14 @@
       border-bottom: 1px solid var(--border);
     }
 
-    #tab-roadtomax .ach-row-name {
+    .r2m-content .ach-row-name {
       color: var(--text);
       display: flex;
       align-items: center;
       padding: 3px 0;
     }
 
-    #tab-roadtomax .ach-row-val {
+    .r2m-content .ach-row-val {
       color: var(--gold);
       font-size: 11px;
       font-weight: 700;
@@ -3056,13 +3065,13 @@
     }
 
     /* ── Skill grid ─────────────────────────────── */
-    #tab-roadtomax .grid {
+    .r2m-content .grid {
       display: grid;
       gap: 8px;
     }
 
     /* ── Skill cards ────────────────────────────── */
-    #tab-roadtomax .card {
+    .r2m-content .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -3070,31 +3079,31 @@
       transition: border-color .15s;
     }
 
-    #tab-roadtomax .card:hover {
+    .r2m-content .card:hover {
       border-color: rgba(184, 136, 72, .5);
     }
 
-    #tab-roadtomax .card.done {
+    .r2m-content .card.done {
       border-left: 3px solid var(--green);
     }
 
-    #tab-roadtomax .card.done .sname {
+    .r2m-content .card.done .sname {
       color: var(--green);
     }
 
-    #tab-roadtomax .card.done .bar {
+    .r2m-content .card.done .bar {
       background: var(--green);
     }
 
-    #tab-roadtomax .card.done .tgt {
+    .r2m-content .card.done .tgt {
       color: var(--green) !important;
     }
 
-    #tab-roadtomax .card.open {
+    .r2m-content .card.open {
       border-color: rgba(184, 136, 72, .55);
     }
 
-    #tab-roadtomax .crow {
+    .r2m-content .crow {
       padding: 10px 12px;
       display: flex;
       align-items: center;
@@ -3103,7 +3112,7 @@
       user-select: none;
     }
 
-    #tab-roadtomax .badge {
+    .r2m-content .badge {
       width: 36px;
       height: 36px;
       flex-shrink: 0;
@@ -3115,34 +3124,34 @@
       justify-content: center;
     }
 
-    #tab-roadtomax .badge img {
+    .r2m-content .badge img {
       width: 24px;
       height: 24px;
       image-rendering: pixelated;
     }
 
-    #tab-roadtomax .sinfo {
+    .r2m-content .sinfo {
       flex: 1;
       min-width: 0;
     }
 
-    #tab-roadtomax .sname {
+    .r2m-content .sname {
       font-size: 13px;
       font-weight: 800;
       color: var(--text);
     }
 
-    #tab-roadtomax .sname.dim {
+    .r2m-content .sname.dim {
       color: var(--muted);
     }
 
-    #tab-roadtomax .stag {
+    .r2m-content .stag {
       font-size: 10px;
       color: var(--gold);
       font-weight: 600;
     }
 
-    #tab-roadtomax .smeth {
+    .r2m-content .smeth {
       font-size: 11px;
       color: var(--muted);
       margin-top: 2px;
@@ -3151,7 +3160,7 @@
       text-overflow: ellipsis;
     }
 
-    #tab-roadtomax .track {
+    .r2m-content .track {
       height: 3px;
       background: var(--border);
       border-radius: 2px;
@@ -3159,40 +3168,40 @@
       margin-top: 5px;
     }
 
-    #tab-roadtomax .bar {
+    .r2m-content .bar {
       height: 100%;
       background: var(--gold);
       border-radius: 2px;
       transition: width .5s ease;
     }
 
-    #tab-roadtomax .nums {
+    .r2m-content .nums {
       text-align: right;
       flex-shrink: 0;
     }
 
-    #tab-roadtomax .cur {
+    .r2m-content .cur {
       font-size: 13px;
       color: var(--muted);
     }
 
-    #tab-roadtomax .cur.dim {
+    .r2m-content .cur.dim {
       color: var(--surface3, #2d333b);
     }
 
-    #tab-roadtomax .arr {
+    .r2m-content .arr {
       font-size: 10px;
       color: var(--border);
       line-height: 1;
     }
 
-    #tab-roadtomax .tgt {
+    .r2m-content .tgt {
       font-size: 15px;
       font-weight: 800;
       color: var(--gold);
     }
 
-    #tab-roadtomax .chevron {
+    .r2m-content .chevron {
       font-size: 10px;
       color: var(--muted);
       margin-left: 2px;
@@ -3200,12 +3209,12 @@
       transition: transform .2s;
     }
 
-    #tab-roadtomax .card.open .chevron {
+    .r2m-content .card.open .chevron {
       transform: rotate(180deg);
     }
 
     /* ── Drop panel (skill detail) ──────────────── */
-    #tab-roadtomax .drop {
+    .r2m-content .drop {
       display: none;
       border-top: 1px solid var(--border);
       background: var(--surface2);
@@ -3214,11 +3223,11 @@
       line-height: 1.6;
     }
 
-    #tab-roadtomax .card.open .drop {
+    .r2m-content .card.open .drop {
       display: block;
     }
 
-    #tab-roadtomax .drow {
+    .r2m-content .drow {
       display: flex;
       justify-content: space-between;
       gap: 8px;
@@ -3226,30 +3235,30 @@
       border-bottom: 1px solid var(--border);
     }
 
-    #tab-roadtomax .drow:last-child {
+    .r2m-content .drow:last-child {
       border-bottom: none;
     }
 
-    #tab-roadtomax .dlbl {
+    .r2m-content .dlbl {
       color: var(--muted);
       white-space: nowrap;
     }
 
-    #tab-roadtomax .dval {
+    .r2m-content .dval {
       color: var(--text);
       text-align: right;
     }
 
-    #tab-roadtomax .dval.gold {
+    .r2m-content .dval.gold {
       color: var(--gold);
       font-weight: 700;
     }
 
-    #tab-roadtomax .dval.green {
+    .r2m-content .dval.green {
       color: var(--green);
     }
 
-    #tab-roadtomax .dsect {
+    .r2m-content .dsect {
       font-size: 10px;
       font-weight: 800;
       color: var(--gold);
@@ -3259,18 +3268,18 @@
       margin-top: 2px;
     }
 
-    #tab-roadtomax .dsect:first-child {
+    .r2m-content .dsect:first-child {
       padding-top: 0;
       margin-top: 0;
     }
 
     /* ── Weekly rotation ────────────────────────── */
-    #tab-roadtomax .days {
+    .r2m-content .days {
       display: grid;
       gap: 8px;
     }
 
-    #tab-roadtomax .day {
+    .r2m-content .day {
       background: var(--surface);
       border: 1px solid var(--border);
       border-left: 3px solid var(--gold);
@@ -3278,7 +3287,7 @@
       padding: 12px 14px;
     }
 
-    #tab-roadtomax .day h3 {
+    .r2m-content .day h3 {
       font-size: 12px;
       font-weight: 800;
       color: var(--gold);
@@ -3287,14 +3296,14 @@
       margin-bottom: 8px;
     }
 
-    #tab-roadtomax .day ul {
+    .r2m-content .day ul {
       list-style: none;
       display: flex;
       flex-wrap: wrap;
       gap: 5px;
     }
 
-    #tab-roadtomax .day li {
+    .r2m-content .day li {
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 8px;
@@ -3303,13 +3312,13 @@
       color: var(--text);
     }
 
-    #tab-roadtomax .day li span {
+    .r2m-content .day li span {
       color: var(--muted);
       margin-left: 3px;
     }
 
     /* ── Phase plan tips ─────────────────────────── */
-    #tab-roadtomax .tip {
+    .r2m-content .tip {
       background: rgba(184, 136, 72, .07);
       border: 1px solid rgba(184, 136, 72, .22);
       border-radius: 12px;
@@ -3320,7 +3329,7 @@
       color: var(--text);
     }
 
-    #tab-roadtomax .tip b {
+    .r2m-content .tip b {
       font-size: 12px;
       font-weight: 800;
       color: var(--gold);
@@ -3328,7 +3337,7 @@
       margin-bottom: 5px;
     }
 
-    #tab-roadtomax .ptag {
+    .r2m-content .ptag {
       display: inline-block;
       background: var(--gold);
       color: #000;
@@ -3342,12 +3351,12 @@
     }
 
     /* ── Daily habits ────────────────────────────── */
-    #tab-roadtomax .habits-grid {
+    .r2m-content .habits-grid {
       display: grid;
       gap: 8px;
     }
 
-    #tab-roadtomax .habit-card {
+    .r2m-content .habit-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-left: 3px solid var(--gold);
@@ -3358,7 +3367,7 @@
       align-items: flex-start;
     }
 
-    #tab-roadtomax .habit-icon {
+    .r2m-content .habit-icon {
       width: 36px;
       height: 36px;
       flex-shrink: 0;
@@ -3370,32 +3379,32 @@
       justify-content: center;
     }
 
-    #tab-roadtomax .habit-icon img {
+    .r2m-content .habit-icon img {
       width: 22px;
       height: 22px;
       image-rendering: pixelated;
     }
 
-    #tab-roadtomax .habit-text {
+    .r2m-content .habit-text {
       flex: 1;
       min-width: 0;
     }
 
-    #tab-roadtomax .habit-title {
+    .r2m-content .habit-title {
       font-size: 13px;
       font-weight: 800;
       color: var(--text);
       margin-bottom: 3px;
     }
 
-    #tab-roadtomax .habit-desc {
+    .r2m-content .habit-desc {
       font-size: 12px;
       color: var(--muted);
       line-height: 1.5;
     }
 
     /* ── Footer ──────────────────────────────────── */
-    #tab-roadtomax footer {
+    .r2m-content footer {
       text-align: center;
       padding: 16px 4px;
       font-size: 11px;
@@ -3406,7 +3415,7 @@
     }
 
     /* ── Spinner ─────────────────────────────────── */
-    #tab-roadtomax .spin {
+    .r2m-content .spin {
       display: inline-block;
       width: 10px;
       height: 10px;
@@ -3739,6 +3748,398 @@
         font-size: 12px
       }
     }
+
+    /* ── R2M plan accordion (Skills tab) ─────────── */
+    #r2m-plan-body {
+      display: none;
+    }
+    #r2m-plan-body.open {
+      display: block;
+    }
+
+    /* ── R2M block inside skill sheet ────────────── */
+    .r2m-sheet-block {
+      margin-top: 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 12px;
+    }
+    .r2m-sheet-title {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .r2m-sheet-sect {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      padding: 8px 0 3px;
+      margin-top: 2px;
+    }
+    .r2m-sheet-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 4px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .r2m-sheet-row:last-child { border-bottom: none; }
+    .r2m-sheet-lbl { color: var(--muted); }
+    .r2m-sheet-val { color: var(--text); text-align: right; }
+
+    /* ── Fairy Rings tab ─────────────────────────── */
+    .fr-topbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .fr-search {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      outline: none;
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+    .fr-filter {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      outline: none;
+      padding: 10px 10px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .fr-group-heading {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--gold);
+      margin: 14px 0 6px 2px;
+    }
+    .fr-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 7px;
+      overflow: hidden;
+      transition: border-color .15s;
+    }
+    .fr-card.has-note { border-left: 3px solid var(--gold); }
+    .fr-card-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 13px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .fr-code {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--gold);
+      font-family: monospace;
+      letter-spacing: .05em;
+      flex-shrink: 0;
+      width: 32px;
+    }
+    .fr-info { flex: 1; min-width: 0; }
+    .fr-loc {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .fr-poi {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .fr-note-badge {
+      font-size: 14px;
+      flex-shrink: 0;
+      opacity: .7;
+    }
+    .fr-chevron {
+      font-size: 10px;
+      color: var(--muted);
+      flex-shrink: 0;
+      transition: transform .2s;
+    }
+    .fr-card.open .fr-chevron { transform: rotate(180deg); }
+    .fr-body {
+      display: none;
+      border-top: 1px solid var(--border);
+      background: var(--surface2);
+      padding: 12px 13px;
+    }
+    .fr-card.open .fr-body { display: block; }
+    .fr-poi-full {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 10px;
+    }
+    .fr-note-label {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--gold);
+      margin-bottom: 5px;
+    }
+    .fr-note-input {
+      width: 100%;
+      background: var(--surface3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.5;
+      padding: 8px 10px;
+      resize: none;
+      outline: none;
+      font-family: inherit;
+      min-height: 60px;
+    }
+    .fr-note-input:focus { border-color: rgba(184,136,72,.5); }
+    .fr-save-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .fr-btn {
+      font-size: 12px;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 14px;
+      cursor: pointer;
+    }
+    .fr-btn.save { background: var(--gold); color: #000; }
+    .fr-btn.clear { background: var(--surface3); color: var(--muted); }
+    /* ── Public profile view ──────────────────────────── */
+    #public-view {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 9999;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .pv-topbar {
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      z-index: 1;
+    }
+    .pv-brand-pill {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: .03em;
+    }
+    .pv-open-btn {
+      background: var(--gold);
+      color: #000;
+      border: none;
+      border-radius: 20px;
+      padding: 7px 16px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      letter-spacing: .02em;
+    }
+    .pv-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      min-height: 60vh;
+    }
+    .pv-error {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--red);
+      font-size: 14px;
+    }
+    .pv-content {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 0 48px;
+    }
+    .pv-header {
+      padding: 20px 18px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .pv-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      border-radius: 4px;
+      padding: 2px 8px;
+      background: rgba(184,136,72,.1);
+      margin-bottom: 8px;
+    }
+    .pv-name {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text);
+      margin: 0;
+    }
+    .pv-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .pv-stat {
+      padding: 14px 14px 10px;
+      border-right: 1px solid var(--border);
+    }
+    .pv-stat:last-child { border-right: none; }
+    .pv-stat-val {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--gold2, var(--gold));
+      line-height: 1.2;
+    }
+    .pv-stat-lbl {
+      font-size: 9px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-top: 3px;
+    }
+    .pv-section-label {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      padding: 14px 18px 8px;
+    }
+    .pv-skills {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      padding: 0 12px;
+    }
+    .pv-skill-tile {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 8px;
+      transition: border-color .15s;
+    }
+    .pv-skill-tile.maxed {
+      border-color: rgba(184,136,72,.4);
+      background: rgba(184,136,72,.06);
+    }
+    .pv-skill-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 7px;
+      background: var(--surface2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .pv-skill-icon img {
+      width: 22px;
+      height: 22px;
+      image-rendering: pixelated;
+    }
+    .pv-skill-lvl {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+    }
+    .pv-skill-tile.maxed .pv-skill-lvl {
+      color: var(--gold2, var(--gold));
+    }
+    .pv-r2m-section {
+      margin: 14px 18px 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 14px;
+    }
+    .pv-r2m-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .pv-r2m-label {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--gold);
+    }
+    .pv-r2m-pct {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--gold2, var(--gold));
+    }
+    .pv-r2m-bar-bg {
+      height: 7px;
+      background: var(--surface2);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .pv-r2m-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2, #d0a060));
+      transition: width .6s ease;
+    }
+    .pv-meta-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 18px 0;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .pv-footer-brand {
+      text-align: center;
+      font-size: 10px;
+      color: var(--muted);
+      padding: 24px 0 8px;
+    }
   </style>
 </head>
 
@@ -3845,32 +4246,52 @@
             <div class="s" id="ov-next99-xp">-</div>
           </div>
         </div>
-        <div class="summary-card">
-          <h3>Combat Snapshot</h3>
-          <div class="summary-list">
-            <div class="summary-pill">
-              <div class="n" id="ov-melee">-</div>
-              <div class="x">Attack / Strength / Defence</div>
+        <div class="summary-card r2m-content">
+          <h3 style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">🗺️ Road to Max</h3>
+          <div class="stats">
+            <div class="stat">
+              <div class="lbl">Current Total</div>
+              <div class="val dim" id="r2m-vTotal">--</div>
+              <div class="note">of 2376 max</div>
             </div>
-            <div class="summary-pill">
-              <div class="n" id="ov-range">-</div>
-              <div class="x">Ranged / Magic / Prayer</div>
+            <div class="stat">
+              <div class="lbl">Levels Needed</div>
+              <div class="val dim" id="r2m-vNeeded">--</div>
+              <div class="note" id="r2m-vDay">-- levels/day</div>
             </div>
-            <div class="summary-pill">
-              <div class="n" id="ov-gathering">-</div>
-              <div class="x">Mining / Fishing / Woodcutting</div>
+            <div class="stat">
+              <div class="lbl">Completion</div>
+              <div class="val dim" id="r2m-vPct">--</div>
+              <div class="note">toward max cape</div>
             </div>
-            <div class="summary-pill">
-              <div class="n" id="ov-utility">-</div>
-              <div class="x">Slayer / Farming / Herblore</div>
+            <div class="stat">
+              <div class="lbl">Combat Level</div>
+              <div class="val dim" id="r2m-vCombat">--</div>
+              <div class="note">of 126 max</div>
             </div>
           </div>
+        </div>
+        <div class="r2m-content" style="margin-top:12px">
+          <div class="section-toggle" id="r2m-nearest-heading" style="display:none"
+            onclick="r2m_toggleSection('nearest','nearest-chevron')">
+            Nearest 99s <span class="s-chevron" id="r2m-nearest-chevron">&#9660;</span>
+          </div>
+          <div class="nearest" id="r2m-nearest"></div>
+          <div class="section-toggle" id="r2m-achieve-heading" style="display:none"
+            onclick="r2m_toggleSection('achieve','achieve-chevron')">
+            Nearest Skill Achievements <span class="s-chevron" id="r2m-achieve-chevron">&#9660;</span>
+          </div>
+          <div class="achieve-list" id="r2m-achieve"></div>
         </div>
         <div class="overview-banner">
           <div class="title">Account Notes</div>
           <div class="desc" id="ov-note">Search a player to show a richer account summary here.</div>
         </div>
         <div id="last-updated"></div>
+        <div class="profile-share-row" id="profile-share-row">
+          <button class="profile-share-btn" id="btn-copy-link">🔗 Copy Link</button>
+          <button class="profile-share-btn" id="btn-dl-card">🖼 Save Card</button>
+        </div>
       </div>
       <div id="loader">
         <div class="spinner"></div><span style="color:var(--muted);font-size:14px">Fetching data...</span>
@@ -3889,6 +4310,19 @@
           <div class="welcome-icon"><img src="https://gyazo.com/b153ebb94f7120c15bac90b921466f81.png" alt="Skills"
               class="skills-placeholder-logo" loading="lazy"></div>
           <p>Search a player to view skills.</p>
+        </div>
+      </div>
+      <div class="r2m-content" id="r2m-plan-section" style="margin-top:8px">
+        <div class="section-toggle" onclick="var b=document.getElementById('r2m-plan-body');b.classList.toggle('open');this.querySelector('.s-chevron').classList.toggle('open')">
+          Training Plan <span class="s-chevron">&#9660;</span>
+        </div>
+        <div id="r2m-plan-body">
+          <div class="heading">Weekly Training Rotation</div>
+          <div id="r2m-weeklyRotation" class="days"></div>
+          <div class="heading">3-Phase Year Plan</div>
+          <div id="r2m-phasePlan"></div>
+          <div class="heading">Daily Non-Negotiables</div>
+          <div id="r2m-dailyHabits" class="habits-grid"></div>
         </div>
       </div>
     </div>
@@ -4027,70 +4461,19 @@
           Official OSRS News</a>
       </div>
     </div>
-    <div id="tab-roadtomax" class="tab-page">
-      <header>
-        <h1>Road to Max Cape</h1>
-        <p class="sub" id="r2m-sub">Search a player to load your personalised plan</p>
-      </header>
 
-      <div class="stats">
-        <div class="stat">
-          <div class="lbl">Current Total</div>
-          <div class="val dim" id="r2m-vTotal">--</div>
-          <div class="note">of 2376 max</div>
-        </div>
-        <div class="stat">
-          <div class="lbl">Levels Needed</div>
-          <div class="val dim" id="r2m-vNeeded">--</div>
-          <div class="note" id="r2m-vDay">-- levels/day</div>
-        </div>
-        <div class="stat">
-          <div class="lbl">Completion</div>
-          <div class="val dim" id="r2m-vPct">--</div>
-          <div class="note">toward max cape</div>
-        </div>
-        <div class="stat">
-          <div class="lbl">Combat Level</div>
-          <div class="val dim" id="r2m-vCombat">--</div>
-          <div class="note">of 126 max</div>
-        </div>
+    <div id="tab-fairyrings" class="tab-page">
+      <div class="fr-topbar">
+        <input id="fr-search" class="fr-search" placeholder="Search code, location, or notes…">
+        <select id="fr-filter" class="fr-filter">
+          <option value="all">All codes</option>
+          <option value="A">A codes</option>
+          <option value="B">B codes</option>
+          <option value="C">C codes</option>
+          <option value="D">D codes</option>
+        </select>
       </div>
-
-      <div class="section-toggle" id="r2m-nearest-heading" style="display:none"
-        onclick="r2m_toggleSection('nearest','nearest-chevron')">
-        Nearest 99s <span class="s-chevron" id="r2m-nearest-chevron">&#9660;</span>
-      </div>
-      <div class="nearest" id="r2m-nearest"></div>
-
-      <div class="section-toggle" id="r2m-achieve-heading" style="display:none"
-        onclick="r2m_toggleSection('achieve','achieve-chevron')">
-        Nearest Skill Achievements <span class="s-chevron" id="r2m-achieve-chevron">&#9660;</span>
-      </div>
-      <div class="achieve-list" id="r2m-achieve"></div>
-
-      <div class="heading">Skill-by-Skill Breakdown</div>
-      <div class="grid" id="r2m-grid"></div>
-
-      <div class="heading">Weekly Training Rotation</div>
-      <div id="r2m-weeklyRotation" class="days"></div>
-
-      <div class="heading">3-Phase Year Plan</div>
-      <div id="r2m-phasePlan"></div>
-
-      <div class="heading">Daily Non-Negotiables</div>
-      <div id="r2m-dailyHabits" class="habits-grid"></div>
-
-      <footer>
-        <small style="color:var(--muted)">Data: Wise Old Man (wiseoldman.net) | <span id="r2m-foot">Awaiting
-            lookup</span></small>
-        <br><br>
-        <em>May Guthix guide your grind. The Max Cape awaits.</em>
-        <br><br>
-        <center>&copy; OSDevscape. All rights reserved.</center><br>
-        <small>
-          <center>&#8226; Road to Max &#8226;</center>
-        </small>
-      </footer>
+      <div id="fr-list"></div>
     </div>
 
   </div>
@@ -4142,9 +4525,9 @@
       </div>
       <div class="modal-actions">
         <button class="modal-action" data-more-target="bossing">🏆 Bossing</button>
-        <button class="modal-action" data-more-target="timers">⏱️ Timers</button>
+        <button class="modal-action" data-more-target="fairyrings">🧚 Fairy Rings</button>
         <button class="modal-action" data-more-target="news">📰 News</button>
-        <button class="modal-action" data-more-target="roadtomax">🗺️ Road to Max</button>
+        <button class="modal-action" data-more-target="timers">⏱️ Timers</button>
       </div>
     </div>
   </div>
@@ -4865,7 +5248,7 @@
           + '</div></details>';
       }).join('') || '<div class="no-gains">No monsters match.</div>';
     }
-    function openMoreMenu() { var el = document.getElementById('more-menu-overlay'); if (el) el.classList.add('show') } function closeMoreMenu() { var el = document.getElementById('more-menu-overlay'); if (el) el.classList.remove('show') } function openSettingsPicker(title, options, selectedValue, onSelect) { var overlay = document.getElementById('settings-picker-overlay'); var titleEl = document.getElementById('settings-picker-title'); var subEl = document.getElementById('settings-picker-sub'); var optionsEl = document.getElementById('settings-picker-options'); if (!overlay || !titleEl || !subEl || !optionsEl) return false; titleEl.textContent = title || 'Choose option'; subEl.textContent = 'Select one option'; optionsEl.innerHTML = (options || []).map(function (opt) { var active = String(opt.value) === String(selectedValue); return '<button class="modal-action' + (active ? ' primary' : '') + '" type="button" data-picker-value="' + opt.value + '">' + opt.label + '</button>'; }).join(''); optionsEl.querySelectorAll('[data-picker-value]').forEach(function (btn) { btn.onclick = function (e) { if (e) { e.preventDefault(); e.stopPropagation(); } var value = btn.getAttribute('data-picker-value'); if (typeof onSelect === 'function') onSelect(value); closeSettingsPicker(); return false; }; }); overlay.classList.add('show'); return false } function closeSettingsPicker() { var overlay = document.getElementById('settings-picker-overlay'); if (overlay) overlay.classList.remove('show'); return false } function switchTab(name, btn) { $$('.tab-page').forEach(t => t.classList.remove('active')); $$('.nav-btn').forEach(b => b.classList.remove('active')); $('#tab-' + name).classList.add('active'); if (btn) btn.classList.add('active'); closeTimerTools(); closeMoreMenu(); closeSettingsPicker(); if (name === 'gains' && currentPlayer) renderCharts(); if (name === 'bossing' && currentPlayer) renderBossing(currentPlayer); if (name === 'roadtomax' && currentPlayer && typeof window.r2m_loadFromCurrentPlayer === 'function') window.r2m_loadFromCurrentPlayer(currentPlayer); }
+    function openMoreMenu() { var el = document.getElementById('more-menu-overlay'); if (el) el.classList.add('show') } function closeMoreMenu() { var el = document.getElementById('more-menu-overlay'); if (el) el.classList.remove('show') } function openSettingsPicker(title, options, selectedValue, onSelect) { var overlay = document.getElementById('settings-picker-overlay'); var titleEl = document.getElementById('settings-picker-title'); var subEl = document.getElementById('settings-picker-sub'); var optionsEl = document.getElementById('settings-picker-options'); if (!overlay || !titleEl || !subEl || !optionsEl) return false; titleEl.textContent = title || 'Choose option'; subEl.textContent = 'Select one option'; optionsEl.innerHTML = (options || []).map(function (opt) { var active = String(opt.value) === String(selectedValue); return '<button class="modal-action' + (active ? ' primary' : '') + '" type="button" data-picker-value="' + opt.value + '">' + opt.label + '</button>'; }).join(''); optionsEl.querySelectorAll('[data-picker-value]').forEach(function (btn) { btn.onclick = function (e) { if (e) { e.preventDefault(); e.stopPropagation(); } var value = btn.getAttribute('data-picker-value'); if (typeof onSelect === 'function') onSelect(value); closeSettingsPicker(); return false; }; }); overlay.classList.add('show'); return false } function closeSettingsPicker() { var overlay = document.getElementById('settings-picker-overlay'); if (overlay) overlay.classList.remove('show'); return false } function switchTab(name, btn) { $$('.tab-page').forEach(t => t.classList.remove('active')); $$('.nav-btn').forEach(b => b.classList.remove('active')); $('#tab-' + name).classList.add('active'); if (btn) btn.classList.add('active'); closeTimerTools(); closeMoreMenu(); closeSettingsPicker(); if (name === 'gains' && currentPlayer) renderCharts(); if (name === 'bossing' && currentPlayer) renderBossing(currentPlayer); }
     const TEMPLE_SKILL_MAP = { overall: 'Overall', attack: 'Attack', defence: 'Defence', strength: 'Strength', hitpoints: 'Hitpoints', ranged: 'Ranged', prayer: 'Prayer', magic: 'Magic', cooking: 'Cooking', woodcutting: 'Woodcutting', fletching: 'Fletching', fishing: 'Fishing', firemaking: 'Firemaking', crafting: 'Crafting', smithing: 'Smithing', mining: 'Mining', herblore: 'Herblore', agility: 'Agility', thieving: 'Thieving', slayer: 'Slayer', farming: 'Farming', runecrafting: 'Runecraft', hunter: 'Hunter', construction: 'Construction' };
     const ACCOUNT_LABELS = { ironman: '🛡 Iron', hardcore: '💀 HCIM', ultimate: '🔱 UIM', regular: '⚔ Main' };
     const WOM_API_KEY = 'qk0phdajd2rrxyt4jj58r5dz';
@@ -4878,20 +5261,77 @@
     function formatRateLimitRemaining(ms) { const total = Math.ceil(Math.max(0, ms) / 1000); const m = Math.floor(total / 60); const s = total % 60; return m + 'm ' + String(s).padStart(2, '0') + 's'; }
     function hexToRgba(hex, alpha) { const v = String(hex || '').replace('#', ''); if (v.length !== 6) return 'rgba(197,160,40,' + (alpha == null ? 1 : alpha) + ')'; const r = parseInt(v.slice(0, 2), 16), g = parseInt(v.slice(2, 4), 16), b = parseInt(v.slice(4, 6), 16); return 'rgba(' + r + ',' + g + ',' + b + ',' + (alpha == null ? 1 : alpha) + ')'; }
     function humanizeBossName(id) { const special = { ehp: 'EHP', ehb: 'EHB', toa: 'ToA', cox: 'CoX', tob: 'ToB', tzkal: 'TzKal', tztok: 'TzTok' }; return String(id || '').split('_').filter(Boolean).map(w => special[w] || w.charAt(0).toUpperCase() + w.slice(1)).join(' ') }
-    const BOSS_IMAGE_MAP = { "abyssal_sire": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/1024px-abyssal_sire.png", "alchemical_hydra": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/800px-alchemical_hydra.png", "artio": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/callisto.png", "callisto": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/callisto.png", "calvarion": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/260px-vetion.png", "cerberus": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/1024px-Cerberus.png", "chambers_of_xeric": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/cox.jpg", "chambers_of_xeric_challenge_mode": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/cox.jpg", "chaos_elemental": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/chaos_elemental.png", "chaos_fanatic": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/chaos_fanatic.png", "commander_zilyana": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/commander_zilyana.png", "corporeal_beast": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/corp.png", "crazy_archaeologist": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/crazy_archaeologist.png", "general_graardor": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/general_graardor.png", "giant_mole": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/250px-giant_mole.png", "kreearra": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/kreearra.png", "kril_tsutsaroth": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/kril_tsutsaroth.png", "nightmare": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/Nightmare.png", "phosanis_nightmare": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/nightmare.png", "sarachnis": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/sarachnis.png", "scorpia": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/scorpia.png", "skotizo": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/250px-skotizo.png", "venenatis": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/venenatis.png", "vetion": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/260px-vetion.png", "vorkath": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/vorkath.png", "zulrah": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/zulrah.png", "dagannoth_prime": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/200px-dagannoth_prime.png", "dagannoth_rex": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/230px-dagannoth_rex.png", "dagannoth_supreme": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/230px-dagannoth_supreme.png", "grotesque_guardians": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/280px-dawn.png", "king_black_dragon": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/290px-king_black_dragon.png", "kalphite_queen": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/290px-kalphite_queen.png", "kraken": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/290px-kraken.png", "sol_heredit": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/Smol_heredit.png", "deranged_archaeologist": "https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/crazy_archaeologist.png" };
-    const BOSS_IMAGE_ALIAS_MAP = { amoxliatl: 'Amoxliatl', araxxor: 'Araxxor', barrows_chests: 'Barrows chest', brutus: 'Brutus', bryophyta: 'Bryophyta', doom_of_mokhaiotl: 'Doom of Mokhaiotl', duke_sucellus: 'Duke Sucellus', hespori: 'Hespori', lunar_chests: 'Lunar chest', mimic: 'Mimic', nex: 'Nex', obor: 'Obor', phantom_muspah: 'Phantom Muspah', scurrius: 'Scurrius', shellbane_gryphon: 'Shellbane gryphon', spindel: 'Spindel', tempoross: 'Tempoross', the_corrupted_gauntlet: 'The Corrupted Hunllef', the_gauntlet: 'Crystalline Hunllef', the_hueycoatl: 'The Hueycoatl', the_leviathan: 'The Leviathan', the_royal_titans: 'The Royal Titans', the_whisperer: 'The Whisperer', theatre_of_blood: 'Theatre of Blood', theatre_of_blood_hard_mode: 'Theatre of Blood', thermonuclear_smoke_devil: 'Thermonuclear smoke devil', tombs_of_amascut: 'Tombs of Amascut', tombs_of_amascut_expert: 'Tombs of Amascut', tzkal_zuk: 'TzKal-Zuk', tztok_jad: 'TzTok-Jad', vardorvis: 'Vardorvis', wintertodt: 'Wintertodt', yama: 'Yama', zalcano: 'Zalcano' };
+    const BOSS_IMAGE_MAP = {
+      abyssal_sire:                  'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/1024px-abyssal_sire.png',
+      alchemical_hydra:              'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/800px-alchemical_hydra.png',
+      amoxliatl:                     'https://oldschool.runescape.wiki/w/Special:FilePath/Amoxliatl.png',
+      araxxor:                       'https://oldschool.runescape.wiki/w/Special:FilePath/Araxxor.png',
+      artio:                         'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/callisto.png',
+      brutus:                        'https://oldschool.runescape.wiki/w/Special:FilePath/Brutus.png',
+      bryophyta:                     'https://oldschool.runescape.wiki/w/Special:FilePath/Bryophyta.png',
+      callisto:                      'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/callisto.png',
+      calvarion:                     'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/260px-vetion.png',
+      cerberus:                      'https://oldschool.runescape.wiki/w/Special:FilePath/Cerberus.png',
+      chaos_elemental:               'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/chaos_elemental.png',
+      chaos_fanatic:                 'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/chaos_fanatic.png',
+      commander_zilyana:             'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/commander_zilyana.png',
+      corporeal_beast:               'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/corp.png',
+      crazy_archaeologist:           'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/crazy_archaeologist.png',
+      dagannoth_prime:               'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/200px-dagannoth_prime.png',
+      dagannoth_rex:                 'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/230px-dagannoth_rex.png',
+      dagannoth_supreme:             'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/230px-dagannoth_supreme.png',
+      deranged_archaeologist:        'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/crazy_archaeologist.png',
+      doom_of_mokhaiotl:             'https://oldschool.runescape.wiki/w/Special:FilePath/Doom%20of%20Mokhaiotl.png',
+      duke_sucellus:                 'https://oldschool.runescape.wiki/w/Special:FilePath/Duke%20Sucellus.png',
+      general_graardor:              'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/general_graardor.png',
+      giant_mole:                    'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/250px-giant_mole.png',
+      grotesque_guardians:           'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/280px-dawn.png',
+      hespori:                       'https://oldschool.runescape.wiki/w/Special:FilePath/Hespori.png',
+      kalphite_queen:                'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/290px-kalphite_queen.png',
+      king_black_dragon:             'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/290px-king_black_dragon.png',
+      kraken:                        'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/290px-kraken.png',
+      kreearra:                      'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/kreearra.png',
+      kril_tsutsaroth:               'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/kril_tsutsaroth.png',
+      mimic:                         'https://oldschool.runescape.wiki/w/Special:FilePath/Mimic.png',
+      nex:                           'https://oldschool.runescape.wiki/w/Special:FilePath/Nex.png',
+      obor:                          'https://oldschool.runescape.wiki/w/Special:FilePath/Obor.png',
+      phosanis_nightmare:            'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/nightmare.png',
+      sarachnis:                     'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/sarachnis.png',
+      scorpia:                       'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/scorpia.png',
+      scurrius:                      'https://oldschool.runescape.wiki/w/Special:FilePath/Scurrius.png',
+      shellbane_gryphon:             'https://oldschool.runescape.wiki/w/Special:FilePath/Shellbane%20gryphon.png',
+      skotizo:                       'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/250px-skotizo.png',
+      sol_heredit:                   'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/Smol_heredit.png',
+      spindel:                       'https://oldschool.runescape.wiki/w/Special:FilePath/Spindel.png',
+      tempoross:                     'https://oldschool.runescape.wiki/w/Special:FilePath/Tempoross.png',
+      the_corrupted_gauntlet:        'https://oldschool.runescape.wiki/w/Special:FilePath/Crystalline%20Hunllef.png',
+      the_gauntlet:                  'https://oldschool.runescape.wiki/w/Special:FilePath/Crystalline%20Hunllef.png',
+      the_hueycoatl:                 'https://oldschool.runescape.wiki/w/Special:FilePath/The%20Hueycoatl.png',
+      the_leviathan:                 'https://oldschool.runescape.wiki/w/Special:FilePath/The%20Leviathan.png',
+      the_royal_titans:              'https://oldschool.runescape.wiki/w/Special:FilePath/The%20Whisperer.png',
+      the_whisperer:                 'https://oldschool.runescape.wiki/w/Special:FilePath/The%20Whisperer.png',
+      thermonuclear_smoke_devil:     'https://oldschool.runescape.wiki/w/Special:FilePath/Thermonuclear%20smoke%20devil.png',
+      tombs_of_amascut:              'https://oldschool.runescape.wiki/w/Special:FilePath/Tombs%20of%20Amascut.png',
+      tombs_of_amascut_expert:       'https://oldschool.runescape.wiki/w/Special:FilePath/Tombs%20of%20Amascut.png',
+      tzkal_zuk:                     'https://oldschool.runescape.wiki/w/Special:FilePath/TzKal-Zuk.png',
+      tztok_jad:                     'https://oldschool.runescape.wiki/w/Special:FilePath/TzTok-Jad.png',
+      vardorvis:                     'https://oldschool.runescape.wiki/w/Special:FilePath/Vardorvis.png',
+      venenatis:                     'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/venenatis.png',
+      vetion:                        'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/260px-vetion.png',
+      vorkath:                       'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/vorkath.png',
+      yama:                          'https://oldschool.runescape.wiki/w/Special:FilePath/Yama.png',
+      zalcano:                       'https://oldschool.runescape.wiki/w/Special:FilePath/Zalcano.png',
+      zulrah:                        'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/zulrah.png',
+    };
     function getBossImageUrl(id) { return BOSS_IMAGE_MAP[id] || '' }
-    function getBossImageCandidates(id, name) { var alias = BOSS_IMAGE_ALIAS_MAP[id] || name || humanizeBossName(id); var out = []; function push(u) { if (u && out.indexOf(u) === -1) out.push(u) } push(getBossImageUrl(id)); var rawBase = 'https://raw.githubusercontent.com/oldschoolgg/obdocs/master/.gitbook/assets/'; var forms = [alias, alias.replace(/\s+/g, '_'), alias.replace(/\s+/g, '-')]; forms.forEach(function (base) { ['.png', '.jpg', '.jpeg', '.webp'].forEach(function (ext) { push(rawBase + encodeURIComponent(base + ext)); }); }); var wikiBase = 'https://oldschool.runescape.wiki/w/Special:FilePath/'; forms.forEach(function (base) { ['.png', '.jpg', '.jpeg', '.webp'].forEach(function (ext) { push(wikiBase + encodeURIComponent(base + ext)); }); }); return out.filter(Boolean) }
     function getBossFallbackLabel(name) { const parts = String(name || 'Boss').split(/\s+/).filter(Boolean); return ((parts[0] && parts[0][0]) || 'B') + ((parts[1] && parts[1][0]) || '') }
-    function setBossDebug(img, status, text) { var item = img.closest('.boss-item'); if (!item) return; var el = item.querySelector('.boss-debug'); if (!el) return; el.textContent = text; el.className = 'boss-debug ' + status; }
     function openBossImagePopup(src, name) { var overlay = document.getElementById('boss-image-overlay'); var preview = document.getElementById('boss-image-preview'); if (!overlay || !preview || !src) return false; preview.src = src; preview.alt = (name || 'Boss') + ' image preview'; overlay.classList.add('show'); overlay.setAttribute('aria-hidden', 'false'); return false }
     function closeBossImagePopup() { var overlay = document.getElementById('boss-image-overlay'); var preview = document.getElementById('boss-image-preview'); if (preview) preview.src = ''; if (overlay) { overlay.classList.remove('show'); overlay.setAttribute('aria-hidden', 'true'); } return false }
     function bindBossImagePopup(scope) { (scope || document).querySelectorAll('.boss-thumb-img').forEach(function (img) { if (img.dataset.popupBound === '1') return; img.dataset.popupBound = '1'; var holder = img.closest('.boss-thumb'); if (holder) holder.classList.add('has-popup'); img.addEventListener('click', function (e) { var item = img.closest('.boss-item'); if (!item || !item.open) return; if (e) { e.preventDefault(); e.stopPropagation(); } return openBossImagePopup(img.currentSrc || img.src, img.getAttribute('alt') || 'Boss'); }); }); var overlay = document.getElementById('boss-image-overlay'); if (overlay && !overlay.dataset.bound) { overlay.dataset.bound = '1'; overlay.addEventListener('click', function (e) { if (e.target && e.target.id === 'boss-image-overlay') closeBossImagePopup(); }); } var closeBtn = document.getElementById('boss-image-close'); if (closeBtn && !closeBtn.dataset.bound) { closeBtn.dataset.bound = '1'; closeBtn.addEventListener('click', closeBossImagePopup); } if (!window.__bossImagePopupKeyBound) { window.__bossImagePopupKeyBound = true; document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeBossImagePopup(); }); } }
-    function bindBossThumbFallbacks(scope) { window.__bossImageDebug = window.__bossImageDebug || {}; (scope || document).querySelectorAll('.boss-thumb-img').forEach(function (img) { if (img.dataset.bound === '1') return; img.dataset.bound = '1'; img.onload = function () { var id = img.getAttribute('data-boss-id') || ''; var attempt = Number(img.getAttribute('data-attempt') || '1'); var src = img.currentSrc || img.src; window.__bossImageDebug[id] = { status: 'loaded', attempt: attempt, src: src }; setBossDebug(img, 'good', 'Image loaded from candidate #' + attempt + ': ' + src); }; img.onerror = function () { var holder = img.closest('.boss-thumb'); var fb = img.getAttribute('data-fallback') || 'B'; var id = img.getAttribute('data-boss-id') || ''; var attempt = Number(img.getAttribute('data-attempt') || '1'); var alts = []; try { alts = JSON.parse(img.getAttribute('data-alt-srcs') || '[]'); } catch (e) { } if (alts.length) { var next = alts.shift(); img.setAttribute('data-alt-srcs', JSON.stringify(alts)); img.setAttribute('data-attempt', String(attempt + 1)); window.__bossImageDebug[id] = { status: 'retrying', attempt: attempt + 1, src: next }; setBossDebug(img, '', 'Retrying with candidate #' + (attempt + 1) + ': ' + next); img.src = next; return; } window.__bossImageDebug[id] = { status: 'fallback', attempt: attempt, src: '' }; setBossDebug(img, 'bad', 'No image candidate worked; using fallback badge.'); if (holder) holder.innerHTML = '<div class="boss-fallback">' + fb + '</div>'; }; }); bindBossImagePopup(scope) }
     function bindBossAccordion(scope) { (scope || document).querySelectorAll('.boss-item').forEach(function (item) { item.addEventListener('toggle', function () { if (!item.open) return; (scope || document).querySelectorAll('.boss-item').forEach(function (other) { if (other !== item) other.open = false; }); }); }); }
     function fmtBossRank(rank) { rank = Number(rank || 0); return rank > 0 ? '#' + rank.toLocaleString() : 'Unranked' }
     function fmtEHB(n) { n = Number(n || 0); return n === 0 ? '0' : (n >= 10 ? n.toFixed(1) : n.toFixed(2)).replace(/\.0+$/, '').replace(/(\.\d*[1-9])0+$/, '$1') }
-    function renderBossing(data) { const wrap = document.getElementById('bossing-list'); const summary = document.getElementById('bossing-summary'); const sub = document.getElementById('bossing-sub'); if (!wrap || !summary || !sub) return; const bosses = data?.latestSnapshot?.data?.bosses; if (!bosses) { summary.innerHTML = '<div class="boss-stat"><div class="val">-</div><div class="lbl">Bosses with KC</div></div><div class="boss-stat"><div class="val">-</div><div class="lbl">Total KC</div></div><div class="boss-stat"><div class="val">-</div><div class="lbl">Total EHB</div></div><div class="boss-stat"><div class="val">-</div><div class="lbl">Best Rank</div></div>'; sub.textContent = 'No bossing data available.'; wrap.innerHTML = '<div class="no-gains">No bossing data available.</div>'; return; } const entries = Object.entries(bosses).map(([id, b]) => ({ id: id, name: humanizeBossName(id), kills: Number(b?.kills || 0), rank: Number(b?.rank || -1), ehb: Number(b?.ehb || 0), img: getBossImageUrl(id), imgCandidates: getBossImageCandidates(id, humanizeBossName(id)) })).sort((a, b) => b.kills - a.kills || b.ehb - a.ehb || ((a.rank > 0 ? a.rank : 999999999) - (b.rank > 0 ? b.rank : 999999999)) || a.name.localeCompare(b.name)); const active = entries.filter(e => e.kills > 0 || e.ehb > 0 || e.rank > 0); const totalKC = entries.reduce((s, e) => s + e.kills, 0); const totalEHB = entries.reduce((s, e) => s + e.ehb, 0); const ranked = entries.filter(e => e.rank > 0).sort((a, b) => a.rank - b.rank); const bestRank = ranked[0]; const topKC = entries[0]; summary.innerHTML = '<div class="boss-stat"><div class="val">' + active.length + '</div><div class="lbl">Bosses with KC</div></div>' + '<div class="boss-stat"><div class="val">' + totalKC.toLocaleString() + '</div><div class="lbl">Total KC</div></div>' + '<div class="boss-stat"><div class="val">' + fmtEHB(totalEHB) + '</div><div class="lbl">Total EHB</div></div>' + '<div class="boss-stat"><div class="val">' + (bestRank ? ('#' + bestRank.rank.toLocaleString()) : 'Unranked') + '</div><div class="lbl">Best Rank</div></div>'; sub.textContent = entries.length + ' tracked bosses • Top KC: ' + (topKC ? topKC.name + ' (' + topKC.kills.toLocaleString() + ')' : 'None'); wrap.innerHTML = entries.map((e, i) => { const fb = getBossFallbackLabel(e.name); const candidates = e.imgCandidates || []; const thumb = candidates.length ? '<img class="boss-thumb-img" src="' + candidates[0] + '" alt="' + e.name + ' image" loading="lazy" data-boss-id="' + e.id + '" data-attempt="1" data-alt-srcs="' + JSON.stringify(candidates.slice(1)).replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '" data-fallback="' + fb + '">' : '<div class="boss-fallback">' + fb + '</div>'; const rankedState = e.rank > 0 ? 'Ranked' : 'Unranked'; const avg = e.kills > 0 ? fmtEHB(e.ehb / e.kills) : '0'; const sourceText = candidates.length ? ('Trying ' + candidates.length + ' image candidates.') : 'No image candidates available.'; return '<details class="boss-item"' + (i === 0 ? ' open' : '') + '><summary class="boss-summary"><div class="boss-main"><div class="boss-thumb">' + thumb + '</div><div class="boss-name-wrap"><div class="boss-name">' + e.name + '</div><div class="boss-mini">' + rankedState + ' • ' + fmtEHB(e.ehb) + ' EHB</div></div></div><div class="boss-right"><div class="boss-kc">' + e.kills.toLocaleString() + ' KC</div><div class="boss-chevron">▾</div></div></summary><div class="boss-body"><div class="boss-metrics"><div class="boss-metric"><div class="k">Kills</div><div class="v">' + e.kills.toLocaleString() + '</div></div><div class="boss-metric"><div class="k">Rank</div><div class="v ' + (e.rank > 0 ? 'rank-good' : '') + '">' + fmtBossRank(e.rank) + '</div></div><div class="boss-metric"><div class="k">EHB</div><div class="v ' + (e.ehb > 0 ? 'ehb-good' : '') + '">' + fmtEHB(e.ehb) + '</div></div><div class="boss-metric"><div class="k">EHB / KC</div><div class="v">' + avg + '</div></div></div><div class="boss-debug">' + sourceText + '</div></div></details>'; }).join(''); bindBossThumbFallbacks(wrap); bindBossAccordion(wrap) }
+    function renderBossing(data) { const wrap = document.getElementById('bossing-list'); const summary = document.getElementById('bossing-summary'); const sub = document.getElementById('bossing-sub'); if (!wrap || !summary || !sub) return; const bosses = data?.latestSnapshot?.data?.bosses; if (!bosses) { summary.innerHTML = '<div class="boss-stat"><div class="val">-</div><div class="lbl">Bosses with KC</div></div><div class="boss-stat"><div class="val">-</div><div class="lbl">Total KC</div></div><div class="boss-stat"><div class="val">-</div><div class="lbl">Total EHB</div></div><div class="boss-stat"><div class="val">-</div><div class="lbl">Best Rank</div></div>'; sub.textContent = 'No bossing data available.'; wrap.innerHTML = '<div class="no-gains">No bossing data available.</div>'; return; } const entries = Object.entries(bosses).map(([id, b]) => ({ id: id, name: humanizeBossName(id), kills: Number(b?.kills || 0), rank: Number(b?.rank || -1), ehb: Number(b?.ehb || 0), img: getBossImageUrl(id) })).sort((a, b) => b.kills - a.kills || b.ehb - a.ehb || ((a.rank > 0 ? a.rank : 999999999) - (b.rank > 0 ? b.rank : 999999999)) || a.name.localeCompare(b.name)); const active = entries.filter(e => e.kills > 0 || e.ehb > 0 || e.rank > 0); const totalKC = entries.reduce((s, e) => s + e.kills, 0); const totalEHB = entries.reduce((s, e) => s + e.ehb, 0); const ranked = entries.filter(e => e.rank > 0).sort((a, b) => a.rank - b.rank); const bestRank = ranked[0]; const topKC = entries[0]; summary.innerHTML = '<div class="boss-stat"><div class="val">' + active.length + '</div><div class="lbl">Bosses with KC</div></div>' + '<div class="boss-stat"><div class="val">' + totalKC.toLocaleString() + '</div><div class="lbl">Total KC</div></div>' + '<div class="boss-stat"><div class="val">' + fmtEHB(totalEHB) + '</div><div class="lbl">Total EHB</div></div>' + '<div class="boss-stat"><div class="val">' + (bestRank ? ('#' + bestRank.rank.toLocaleString()) : 'Unranked') + '</div><div class="lbl">Best Rank</div></div>'; sub.textContent = entries.length + ' tracked bosses • Top KC: ' + (topKC ? topKC.name + ' (' + topKC.kills.toLocaleString() + ')' : 'None'); wrap.innerHTML = entries.map((e, i) => { const fb = getBossFallbackLabel(e.name); const thumb = e.img ? '<img class="boss-thumb-img" src="' + e.img + '" alt="' + e.name + '" loading="lazy">' : '<div class="boss-fallback">' + fb + '</div>'; const rankedState = e.rank > 0 ? 'Ranked' : 'Unranked'; const avg = e.kills > 0 ? fmtEHB(e.ehb / e.kills) : '0'; return '<details class="boss-item"' + (i === 0 ? ' open' : '') + '><summary class="boss-summary"><div class="boss-main"><div class="boss-thumb">' + thumb + '</div><div class="boss-name-wrap"><div class="boss-name">' + e.name + '</div><div class="boss-mini">' + rankedState + ' • ' + fmtEHB(e.ehb) + ' EHB</div></div></div><div class="boss-right"><div class="boss-kc">' + e.kills.toLocaleString() + ' KC</div><div class="boss-chevron">▾</div></div></summary><div class="boss-body"><div class="boss-metrics"><div class="boss-metric"><div class="k">Kills</div><div class="v">' + e.kills.toLocaleString() + '</div></div><div class="boss-metric"><div class="k">Rank</div><div class="v ' + (e.rank > 0 ? 'rank-good' : '') + '">' + fmtBossRank(e.rank) + '</div></div><div class="boss-metric"><div class="k">EHB</div><div class="v ' + (e.ehb > 0 ? 'ehb-good' : '') + '">' + fmtEHB(e.ehb) + '</div></div><div class="boss-metric"><div class="k">EHB / KC</div><div class="v">' + avg + '</div></div></div></div></details>'; }).join(''); bindBossImagePopup(wrap); bindBossAccordion(wrap) }
     function refreshServiceUpdateButton() { const btn = document.getElementById('service-update-btn'); if (!btn) return; const remaining = getWomUpdateRemainingMs(); if (remaining > 0) { btn.disabled = true; btn.textContent = 'Wait ' + formatRateLimitRemaining(remaining); } else { btn.disabled = false; btn.textContent = 'Push update'; } }
     function getSelectedService() { return 'wiseoldman' }
     function setSelectedService() { return 'wiseoldman'; }
@@ -4903,8 +5343,8 @@
     function getServicePlayerUrl(rsn) { return 'https://wiseoldman.net/players/' + encodeURIComponent(rsn); }
     async function pushManualServiceUpdate() { const rsn = getCurrentRsnForService(); if (!rsn) { showToast('Enter a player name first'); return; } const remaining = getWomUpdateRemainingMs(); if (remaining > 0) { refreshServiceUpdateButton(); showToast('Push update is limited to once every 10 minutes.\n\nTry again in ' + formatRateLimitRemaining(remaining) + '.', 7000); return; } const btn = document.getElementById('service-update-btn'); if (btn) { btn.disabled = true; btn.textContent = 'Updating...'; } try { const res = await womFetch('https://api.wiseoldman.net/v2/players/' + encodeURIComponent(rsn), { method: 'POST' }); if (!res.ok) throw new Error('Wise Old Man update failed'); const data = await res.json(); setWomUpdateLastPush(Date.now()); refreshServiceUpdateButton(); currentPlayer = data; renderPlayer(data); renderSkills(data); renderBossing(data); if (typeof window.r2m_loadFromCurrentPlayer === 'function') window.r2m_loadFromCurrentPlayer(data); await fetchGains(rsn, currentPeriod); showToast('Wise Old Man profile updated.\n\nPush update is now on a 10-minute cooldown.', 6200); } catch (err) { showToast(err.message || 'Update failed'); refreshServiceUpdateButton(); } }
     function openSelectedServicePage() { const rsn = getCurrentRsnForService(); if (!rsn) { showToast('Enter a player name first'); return; } window.open(getServicePlayerUrl(rsn), '_blank', 'noopener,noreferrer'); }
-    async function lookupPlayer() { const rsn = $('#rsn-input').value.trim(); if (!rsn) { showToast('Enter a player name'); return } $('#error-msg').classList.remove('error-show'); $('#loader').classList.add('loading'); $('#player-card').classList.remove('show'); try { const data = await lookupWiseOldMan(rsn); currentPlayer = data; renderPlayer(data); renderSkills(data); renderBossing(data); if (typeof window.r2m_loadFromCurrentPlayer === 'function') window.r2m_loadFromCurrentPlayer(data); await fetchGains(rsn, currentPeriod); $('#loader').classList.remove('loading'); $('#welcome-msg').style.display = 'none'; $('#player-card').style.display = ''; $('#player-card').classList.add('show'); showToast('✅ ' + (data.displayName || rsn) + ' loaded via Wise Old Man'); localStorage.setItem('iron_last_rsn', rsn); syncCurrentProfileAfterLookup(rsn, data) } catch (err) { $('#loader').classList.remove('loading'); if (!currentPlayer) $('#welcome-msg').style.display = 'flex'; $('#error-msg').textContent = err.message || 'Failed to load player'; $('#error-msg').classList.add('error-show') } }
-    function renderPlayer(data) { const types = { ironman: ['IRONMAN', 'badge-ironman', '🛡'], hardcore: ['HARDCORE', 'badge-hardcore', '💀'], ultimate: ['ULTIMATE', 'badge-ultimate', '🔱'], regular: ['MAIN', 'badge-regular', '⚔'] }; const t = types[data.type] || types.ironman; const snap = data.latestSnapshot?.data?.skills || {}; const overall = snap.overall; $('#pa-icon').textContent = t[2]; $('#pa-name').textContent = data.displayName || data.username; $('#pa-badge').textContent = t[0]; $('#pa-badge').className = 'badge ' + t[1]; $('#pa-totallvl').textContent = overall?.level ?? '-'; $('#pa-totalxp').textContent = overall?.experience != null ? fmtXP(overall.experience) : '-'; $('#pa-rank').textContent = overall?.rank != null ? fmtRank(overall.rank) : '-'; $('#player-name-header').textContent = '— ' + (data.displayName || data.username || ''); $('#last-updated').textContent = 'Last updated: ' + (data.updatedAt ? new Date(data.updatedAt).toLocaleString() : 'Unknown'); const nonOverall = SKILLS.filter(s => s[0] !== 'overall').map(([id, name]) => ({ id: id, name: name, lvl: +(snap[id]?.level || xpToLevel(snap[id]?.experience || 0)), xp: +(snap[id]?.experience || 0) })); const maxed = nonOverall.filter(x => x.lvl >= 99).length; const top = nonOverall.slice().sort((a, b) => b.lvl - a.lvl || b.xp - a.xp)[0]; const next = nonOverall.filter(x => x.lvl < 99).sort((a, b) => (xpForLevel(99) - a.xp) - (xpForLevel(99) - b.xp))[0]; const combat = calcCombat(snap); $('#ov-combat').textContent = combat || '-'; $('#ov-maxed').textContent = maxed; $('#ov-topskill').textContent = top ? top.name + ' ' + top.lvl : '-'; $('#ov-topskill-xp').textContent = top ? fmtXP(top.xp) + ' XP' : '-'; $('#ov-next99').textContent = next ? next.name + ' ' + next.lvl : 'Maxed'; $('#ov-next99-xp').textContent = next ? (fmtXP(xpForLevel(99) - next.xp) + ' to 99') : 'No remaining skills'; $('#ov-melee').textContent = compactSkillLine('attack', 'strength', 'defence', snap); $('#ov-range').textContent = compactSkillLine('ranged', 'magic', 'prayer', snap); $('#ov-gathering').textContent = compactSkillLine('mining', 'fishing', 'woodcutting', snap); $('#ov-utility').textContent = compactSkillLine('slayer', 'farming', 'herblore', snap); $('#ov-note').textContent = (data.displayName || data.username || 'This account') + ' has total level ' + (overall?.level ?? '-') + ', estimated combat ' + (combat || '-') + ', ' + maxed + ' maxed skill' + (maxed === 1 ? '' : 's') + ', and ' + (next ? next.name + ' as the closest next 99.' : 'no remaining non-99 skills.'); $('#player-card').classList.add('show') }
+    async function lookupPlayer() { const rsn = $('#rsn-input').value.trim(); if (!rsn) { showToast('Enter a player name'); return } $('#error-msg').classList.remove('error-show'); $('#loader').classList.add('loading'); $('#player-card').classList.remove('show'); try { const data = await lookupWiseOldMan(rsn); currentPlayer = data; renderPlayer(data); renderSkills(data); renderBossing(data); if (typeof window.r2m_loadFromCurrentPlayer === 'function') window.r2m_loadFromCurrentPlayer(data); await fetchGains(rsn, currentPeriod); $('#loader').classList.remove('loading'); $('#welcome-msg').style.display = 'none'; $('#player-card').style.display = ''; $('#player-card').classList.add('show'); showToast('✅ ' + (data.displayName || rsn) + ' loaded via Wise Old Man'); localStorage.setItem('iron_last_rsn', rsn); history.replaceState({}, '', '?rsn=' + encodeURIComponent(data.displayName || rsn)); var shareRow = document.getElementById('profile-share-row'); if (shareRow) shareRow.classList.add('visible'); syncCurrentProfileAfterLookup(rsn, data) } catch (err) { $('#loader').classList.remove('loading'); if (!currentPlayer) $('#welcome-msg').style.display = 'flex'; $('#error-msg').textContent = err.message || 'Failed to load player'; $('#error-msg').classList.add('error-show') } }
+    function renderPlayer(data) { const types = { ironman: ['IRONMAN', 'badge-ironman', '🛡'], hardcore: ['HARDCORE', 'badge-hardcore', '💀'], ultimate: ['ULTIMATE', 'badge-ultimate', '🔱'], regular: ['MAIN', 'badge-regular', '⚔'] }; const t = types[data.type] || types.ironman; const snap = data.latestSnapshot?.data?.skills || {}; const overall = snap.overall; $('#pa-icon').textContent = t[2]; $('#pa-name').textContent = data.displayName || data.username; $('#pa-badge').textContent = t[0]; $('#pa-badge').className = 'badge ' + t[1]; $('#pa-totallvl').textContent = overall?.level ?? '-'; $('#pa-totalxp').textContent = overall?.experience != null ? fmtXP(overall.experience) : '-'; $('#pa-rank').textContent = overall?.rank != null ? fmtRank(overall.rank) : '-'; $('#player-name-header').textContent = '— ' + (data.displayName || data.username || ''); $('#last-updated').textContent = 'Last updated: ' + (data.updatedAt ? new Date(data.updatedAt).toLocaleString() : 'Unknown'); const nonOverall = SKILLS.filter(s => s[0] !== 'overall').map(([id, name]) => ({ id: id, name: name, lvl: +(snap[id]?.level || xpToLevel(snap[id]?.experience || 0)), xp: +(snap[id]?.experience || 0) })); const maxed = nonOverall.filter(x => x.lvl >= 99).length; const top = nonOverall.slice().sort((a, b) => b.lvl - a.lvl || b.xp - a.xp)[0]; const next = nonOverall.filter(x => x.lvl < 99).sort((a, b) => (xpForLevel(99) - a.xp) - (xpForLevel(99) - b.xp))[0]; const combat = calcCombat(snap); $('#ov-combat').textContent = combat || '-'; $('#ov-maxed').textContent = maxed; $('#ov-topskill').textContent = top ? top.name + ' ' + top.lvl : '-'; $('#ov-topskill-xp').textContent = top ? fmtXP(top.xp) + ' XP' : '-'; $('#ov-next99').textContent = next ? next.name + ' ' + next.lvl : 'Maxed'; $('#ov-next99-xp').textContent = next ? (fmtXP(xpForLevel(99) - next.xp) + ' to 99') : 'No remaining skills'; $('#ov-note').textContent = (data.displayName || data.username || 'This account') + ' has total level ' + (overall?.level ?? '-') + ', estimated combat ' + (combat || '-') + ', ' + maxed + ' maxed skill' + (maxed === 1 ? '' : 's') + ', and ' + (next ? next.name + ' as the closest next 99.' : 'no remaining non-99 skills.'); $('#player-card').classList.add('show') }
     function renderSkills(data) {
       const snap = data.latestSnapshot?.data?.skills;
       if (!snap) { $('#skills-grid').innerHTML = '<div class="no-gains" style="grid-column:span 3">No skill data available</div>'; return }
@@ -4955,6 +5395,31 @@
         body += '<div class="xp-progress-section"><h3>XP Progress to Level ' + (lvl + 1) + '</h3><div class="xp-bar-container"><div class="xp-bar-fill" style="width:' + pct.toFixed(1) + '%;background:' + (meta.color || '#c5a028') + '"></div></div><div class="xp-bar-label"><span>' + fmtXP(inLevel) + ' XP in level</span><span>' + pct.toFixed(1) + '%</span><span>' + fmtXP(span) + ' total</span></div></div>';
       }
       body += '<div class="sheet-note">' + (skillId === 'overall' ? 'Overall shows your total level, total experience, and account ranking across the full profile.' : name + ' is currently level ' + lvl + ' with ' + fmtXP(xp) + ' XP. ' + (lvl >= 99 ? 'This skill is already maxed.' : 'You need ' + fmtXP(nextReq) + ' more XP for level ' + (lvl + 1) + '.')) + '</div>';
+      if (skillId !== 'overall' && typeof window.r2m_getSkillInfo === 'function') {
+        var r2m = window.r2m_getSkillInfo(name);
+        if (r2m) {
+          body += '<div class="r2m-sheet-block">' +
+            '<div class="r2m-sheet-title">🗺️ Road to Max Plan</div>' +
+            (r2m.isMax
+              ? '<div class="r2m-sheet-row"><span class="r2m-sheet-lbl">Status</span><span class="r2m-sheet-val" style="color:var(--green)">✔ Maxed — 99!</span></div>'
+              : '<div class="r2m-sheet-row"><span class="r2m-sheet-lbl">Level</span><span class="r2m-sheet-val">' + r2m.trueLv + ' → 99</span></div>' +
+                '<div class="r2m-sheet-row"><span class="r2m-sheet-lbl">XP to next level</span><span class="r2m-sheet-val">' + r2m.toNextFmt + '</span></div>' +
+                '<div class="r2m-sheet-row"><span class="r2m-sheet-lbl">XP to 99</span><span class="r2m-sheet-val">' + r2m.remainingFmt + '</span></div>'
+            ) +
+            '<div class="r2m-sheet-sect">Best Method</div>' +
+            '<div class="r2m-sheet-row"><span class="r2m-sheet-lbl">Activity</span><span class="r2m-sheet-val" style="color:var(--gold);font-weight:700">' + r2m.activity + '</span></div>' +
+            '<div class="r2m-sheet-row"><span class="r2m-sheet-lbl">XP / hr</span><span class="r2m-sheet-val" style="color:var(--gold)">' + r2m.xphrFmt + '</span></div>' +
+            '<div class="r2m-sheet-row"><span class="r2m-sheet-lbl">XP / day (2hr session)</span><span class="r2m-sheet-val" style="color:var(--gold)">' + r2m.xpPerDay + '</span></div>' +
+            (!r2m.isMax
+              ? '<div class="r2m-sheet-sect">Timeline</div>' +
+                '<div class="r2m-sheet-row"><span class="r2m-sheet-lbl">Hours to 99</span><span class="r2m-sheet-val">' + r2m.hoursStr + '</span></div>' +
+                '<div class="r2m-sheet-row"><span class="r2m-sheet-lbl">Days to 99 (2hr/day)</span><span class="r2m-sheet-val">' + r2m.daysStr + '</span></div>' +
+                '<div class="r2m-sheet-row"><span class="r2m-sheet-lbl">Finish by</span><span class="r2m-sheet-val" style="color:var(--green)">' + r2m.finishDate + '</span></div>'
+              : ''
+            ) +
+            '</div>';
+        }
+      }
       document.getElementById('ss-body').innerHTML = body;
       document.getElementById('skill-sheet-overlay').classList.add('show');
       requestAnimationFrame(() => document.getElementById('skill-sheet').classList.add('show'));
@@ -5030,6 +5495,424 @@
     setInterval(tickTimer, 1000);
     renderTimers(); bindCustomTimerUI(); filterBestiary();
     const last = localStorage.getItem('iron_last_rsn'); if (last) $('#rsn-input').value = last;
+    // ── URL: show public view on fresh ?rsn= load, otherwise normal in-app load ──
+    (function() {
+      try {
+        var urlRsn = new URLSearchParams(window.location.search).get('rsn');
+        if (urlRsn && urlRsn.trim()) {
+          // Fresh page load with ?rsn= → show read-only public view
+          showPublicView(urlRsn.trim());
+        }
+      } catch(e) {}
+    })();
+
+    // ── Share: Copy Profile Link ──────────────────────
+    function copyProfileLink() {
+      if (!currentPlayer) { showToast('Load a player first'); return; }
+      var rsn = currentPlayer.displayName || currentPlayer.username || '';
+      var url = window.location.origin + window.location.pathname + '?rsn=' + encodeURIComponent(rsn);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function() { showToast('🔗 Profile link copied!'); });
+      } else {
+        try {
+          var ta = document.createElement('textarea');
+          ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
+          document.body.appendChild(ta); ta.select();
+          document.execCommand('copy'); document.body.removeChild(ta);
+          showToast('🔗 Profile link copied!');
+        } catch(e) { showToast('Copy failed — try manually'); }
+      }
+    }
+
+    // ── OSRS panel order (3 cols, 8 rows = 24 skills) ──
+    var CARD_SKILL_ORDER = [
+      'attack',        'hitpoints',    'mining',
+      'strength',      'agility',      'smithing',
+      'defence',       'herblore',     'fishing',
+      'ranged',        'thieving',     'cooking',
+      'prayer',        'crafting',     'firemaking',
+      'magic',         'fletching',    'woodcutting',
+      'runecrafting',  'slayer',       'farming',
+      'construction',  'hunter',       'sailing'
+    ];
+
+    // ── Theme-aware color picker ──
+    function getThemeColors() {
+      var themes = {
+        dark:  { bg:'#0d1117', surface:'#161b22', s2:'#21262d', s3:'#2d333b', border:'#30363d', gold:'#b88848', gold2:'#d0a060', text:'#e6edf3', muted:'#8b949e', green:'#3fb950' },
+        light: { bg:'#f4efe4', surface:'#fffaf0', s2:'#f0e6d2', s3:'#e6d6b7', border:'#cfbea1', gold:'#9f7740', gold2:'#c89f62', text:'#23180f', muted:'#6d5a46', green:'#2f7d32' },
+        osrs:  { bg:'#2b241b', surface:'#3a3024', s2:'#4a3c2c', s3:'#5a4934', border:'#8d6b3e', gold:'#c9a35a', gold2:'#e2bf78', text:'#e2bf78', muted:'#b39a73', green:'#7c9a5b' }
+      };
+      var t = document.body.classList.contains('theme-osrs') ? 'osrs'
+            : document.body.classList.contains('theme-light') ? 'light' : 'dark';
+      return themes[t];
+    }
+
+    // ── Load image with CORS + timeout ──
+    function loadImg(url, timeout) {
+      return new Promise(function(resolve) {
+        var img = new Image();
+        var done = false;
+        var timer = setTimeout(function() { if (!done) { done = true; resolve(null); } }, timeout || 4000);
+        img.crossOrigin = 'anonymous';
+        img.onload  = function() { if (!done) { done = true; clearTimeout(timer); resolve(img); } };
+        img.onerror = function() { if (!done) { done = true; clearTimeout(timer); resolve(null); } };
+        img.src = url;
+      });
+    }
+
+    // ── Download Profile Card (async, OSRS panel style) ──
+    async function downloadProfileCard() {
+      if (!currentPlayer) { showToast('Load a player first'); return; }
+      showToast('⏳ Building card…');
+
+      var snap = (currentPlayer.latestSnapshot && currentPlayer.latestSnapshot.data && currentPlayer.latestSnapshot.data.skills) || {};
+      var pName = currentPlayer.displayName || currentPlayer.username || 'Unknown';
+      var type  = currentPlayer.type || 'ironman';
+      var overall = snap.overall || {};
+      var totalLvl = Number(overall.level || 0);
+      var totalXp  = Number(overall.experience || 0);
+      var rank     = Number(overall.rank || 0);
+
+      // Build skill data in OSRS panel order
+      var skillData = CARD_SKILL_ORDER.map(function(id) {
+        var sk = snap[id] || {};
+        var lvl = Number(sk.level || xpToLevel(Number(sk.experience || 0)));
+        return { id: id, name: (SKILL_META[id] || {}).name || id, icon: (SKILL_META[id] || {}).icon || '', color: (SKILL_META[id] || {}).color || '#b88848', lvl: Math.min(lvl, 99) };
+      });
+      var maxed  = skillData.filter(function(s) { return s.lvl >= 99; }).length;
+      var combat = calcCombat(snap);
+      var r2mTotal = skillData.reduce(function(s, sk) { return s + sk.lvl; }, 0);
+      var r2mPct   = ((r2mTotal / 2376) * 100).toFixed(1);
+
+      var typeMap = { ironman:['IRONMAN','🛡'], hardcore:['HARDCORE','💀'], ultimate:['ULTIMATE','🔱'], regular:['MAIN','⚔'] };
+      var tInfo = typeMap[type] || typeMap.ironman;
+
+      // Theme colors
+      var C = getThemeColors();
+
+      // ── Preload skill icons ──
+      var iconImgs = await Promise.all(skillData.map(function(sk) { return loadImg(sk.icon, 4000); }));
+
+      // ── Canvas setup ──
+      var DPR = 2, W = 400;
+      var COLS = 3, ROWS = 8;
+      var PAD = 18;
+      var TILE_W = (W - PAD * 2) / COLS;  // ~121px
+      var TILE_H = 54;
+      var ICON_SZ = 32;
+      var GRID_Y = 156;
+      var GRID_H = ROWS * TILE_H;          // 432px
+      var SUM_Y  = GRID_Y + GRID_H + 14;
+      var FOOT_Y = SUM_Y + 72;
+      var H = FOOT_Y + 32;
+
+      var canvas = document.createElement('canvas');
+      canvas.width = W * DPR; canvas.height = H * DPR;
+      var ctx = canvas.getContext('2d');
+      ctx.scale(DPR, DPR);
+
+      function rrect(x, y, w, h, r) {
+        ctx.beginPath(); ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y);
+        ctx.quadraticCurveTo(x+w,y,x+w,y+r); ctx.lineTo(x+w,y+h-r);
+        ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h); ctx.lineTo(x+r,y+h);
+        ctx.quadraticCurveTo(x,y+h,x,y+h-r); ctx.lineTo(x,y+r);
+        ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath();
+      }
+      function goldGrad(x1, x2) {
+        var g = ctx.createLinearGradient(x1,0,x2,0);
+        g.addColorStop(0, C.gold); g.addColorStop(.5, C.gold2); g.addColorStop(1, C.gold);
+        return g;
+      }
+      function fmtNum(n) { return Number(n).toLocaleString('en-GB'); }
+
+      // ── Background ──
+      ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
+
+      // Gold top stripe
+      ctx.fillStyle = goldGrad(0, W); ctx.fillRect(0, 0, W, 4);
+
+      // ── Header ──
+      // Badge pill
+      ctx.font = 'bold 10px "Segoe UI",system-ui,sans-serif';
+      var bl = tInfo[0], bW = ctx.measureText(bl).width + 18;
+      rrect(PAD, 13, bW, 20, 4);
+      ctx.fillStyle = 'rgba(184,136,72,.12)'; ctx.fill();
+      ctx.strokeStyle = C.gold; ctx.lineWidth = 1; ctx.stroke();
+      ctx.fillStyle = C.gold; ctx.fillText(bl, PAD+9, 27);
+
+      // Player name
+      ctx.font = 'bold 24px "Segoe UI",system-ui,sans-serif';
+      ctx.fillStyle = C.text; ctx.fillText(pName, PAD, 60);
+
+      // Divider
+      ctx.strokeStyle = C.border; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(PAD,70); ctx.lineTo(W-PAD,70); ctx.stroke();
+
+      // ── 4-stat row ──
+      var stats4 = [
+        ['TOTAL LEVEL', totalLvl ? fmtNum(totalLvl) : '--'],
+        ['TOTAL XP',    totalXp  ? fmtXP(totalXp)   : '--'],
+        ['RANK',        rank > 0 ? '#'+fmtNum(rank)  : 'Unranked'],
+        ['COMBAT',      combat || '--']
+      ];
+      var sw4 = (W - PAD*2) / 4;
+      stats4.forEach(function(s, i) {
+        var sx = PAD + i * sw4;
+        ctx.font = 'bold 16px "Segoe UI",system-ui,sans-serif';
+        ctx.fillStyle = C.gold2; ctx.fillText(s[1], sx, 98);
+        ctx.font = '9px "Segoe UI",system-ui,sans-serif';
+        ctx.fillStyle = C.muted; ctx.fillText(s[0], sx, 112);
+      });
+
+      // Divider
+      ctx.strokeStyle = C.border;
+      ctx.beginPath(); ctx.moveTo(PAD,120); ctx.lineTo(W-PAD,120); ctx.stroke();
+
+      // Section label
+      ctx.font = 'bold 9px "Segoe UI",system-ui,sans-serif';
+      ctx.fillStyle = C.gold; ctx.fillText('SKILLS', PAD, 136);
+
+      // ── Skill grid ──
+      skillData.forEach(function(sk, i) {
+        var col = i % COLS, row = Math.floor(i / COLS);
+        var tx = PAD + col * TILE_W;
+        var ty = GRID_Y + row * TILE_H;
+        var isMax = sk.lvl >= 99;
+
+        // Tile background
+        rrect(tx+1, ty+2, TILE_W-2, TILE_H-4, 7);
+        ctx.fillStyle = isMax ? 'rgba('+hexToRgbaComponents(C.gold)+',0.12)' : C.surface;
+        ctx.fill();
+        if (isMax) {
+          ctx.strokeStyle = C.gold; ctx.lineWidth = .8; ctx.stroke();
+        } else {
+          ctx.strokeStyle = C.border; ctx.lineWidth = .5; ctx.stroke();
+        }
+
+        // Icon container circle
+        var icX = tx + 8, icY = ty + (TILE_H - ICON_SZ) / 2;
+        rrect(icX, icY, ICON_SZ, ICON_SZ, 6);
+        ctx.fillStyle = C.s2; ctx.fill();
+
+        // Icon image or fallback circle
+        var img = iconImgs[i];
+        if (img) {
+          try {
+            ctx.drawImage(img, icX+4, icY+4, ICON_SZ-8, ICON_SZ-8);
+          } catch(e) { img = null; }
+        }
+        if (!img) {
+          // Colored dot fallback
+          ctx.beginPath();
+          ctx.arc(icX + ICON_SZ/2, icY + ICON_SZ/2, ICON_SZ/2 - 4, 0, Math.PI*2);
+          ctx.fillStyle = sk.color || C.gold; ctx.fill();
+          ctx.font = 'bold 11px "Segoe UI",system-ui,sans-serif';
+          ctx.fillStyle = '#fff';
+          ctx.textAlign = 'center';
+          ctx.fillText(sk.name[0], icX+ICON_SZ/2, icY+ICON_SZ/2+4);
+          ctx.textAlign = 'left';
+        }
+
+        // Level number
+        var lvlStr = sk.lvl > 0 ? String(sk.lvl) : '--';
+        ctx.font = 'bold 20px "Segoe UI",system-ui,sans-serif';
+        ctx.fillStyle = isMax ? C.gold2 : C.text;
+        ctx.fillText(lvlStr, icX + ICON_SZ + 7, ty + TILE_H/2 + 7);
+      });
+
+      // ── Summary ──
+      ctx.strokeStyle = C.border; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(PAD, SUM_Y); ctx.lineTo(W-PAD, SUM_Y); ctx.stroke();
+
+      var r2mLy = SUM_Y + 18;
+      ctx.font = 'bold 9px "Segoe UI",system-ui,sans-serif';
+      ctx.fillStyle = C.muted; ctx.fillText('ROAD TO MAX', PAD, r2mLy);
+
+      var bX = PAD+94, bY = r2mLy-8, bW2 = W - PAD*2 - 94 - 44, bH = 7;
+      var bFill = Math.min(1, r2mTotal/2376) * bW2;
+      rrect(bX, bY, bW2, bH, 3); ctx.fillStyle = C.s2; ctx.fill();
+      if (bFill > 0) {
+        rrect(bX, bY, bFill, bH, 3);
+        ctx.fillStyle = goldGrad(bX, bX+bFill); ctx.fill();
+      }
+      ctx.font = 'bold 11px "Segoe UI",system-ui,sans-serif';
+      ctx.fillStyle = C.gold2;
+      ctx.fillText(r2mPct+'%', bX+bW2+6, r2mLy);
+
+      // Maxed + total
+      ctx.font = '11px "Segoe UI",system-ui,sans-serif';
+      ctx.fillStyle = C.muted;
+      var sumStr = maxed+'/24 maxed  ·  '+fmtNum(r2mTotal)+'/2376 levels';
+      ctx.fillText(sumStr, PAD, SUM_Y + 38);
+
+      // ── Footer ──
+      ctx.strokeStyle = C.border; ctx.lineWidth = .5;
+      ctx.beginPath(); ctx.moveTo(PAD, FOOT_Y-4); ctx.lineTo(W-PAD, FOOT_Y-4); ctx.stroke();
+      ctx.font = '9px "Segoe UI",system-ui,sans-serif';
+      ctx.fillStyle = C.muted;
+      var fs = 'Old School Tool Set  ·  OSDevscape  ·  Data: wiseoldman.net';
+      var fw = ctx.measureText(fs).width;
+      ctx.fillText(fs, (W-fw)/2, FOOT_Y+10);
+
+      // Gold bottom stripe
+      ctx.fillStyle = goldGrad(0, W); ctx.fillRect(0, H-4, W, 4);
+
+      // ── Download ──
+      var a = document.createElement('a');
+      a.download = (pName.replace(/\s+/g,'_')||'profile')+'_osrs_card.png';
+      try {
+        a.href = canvas.toDataURL('image/png');
+        a.click();
+        showToast('🖼 Card saved!');
+      } catch(e) {
+        // Canvas tainted — regenerate without images
+        iconImgs = iconImgs.map(function() { return null; });
+        canvas.width = W * DPR; canvas.height = H * DPR;
+        ctx = canvas.getContext('2d');
+        ctx.scale(DPR, DPR);
+        // Re-draw (same code path, img=null triggers colored dot fallback)
+        showToast('🖼 Saving without icons…');
+        setTimeout(function() { downloadProfileCard(); }, 100);
+        return;
+      }
+    }
+
+    // Helper: hex color to rgb components string for rgba
+    function hexToRgbaComponents(hex) {
+      hex = hex.replace('#','');
+      if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+      return parseInt(hex.slice(0,2),16)+','+parseInt(hex.slice(2,4),16)+','+parseInt(hex.slice(4,6),16);
+    }
+
+    // Bind share buttons
+    document.getElementById('btn-copy-link').addEventListener('click', copyProfileLink);
+    document.getElementById('btn-dl-card').addEventListener('click', downloadProfileCard);
+
+    // ── Public read-only profile view ─────────────────
+    var OSRS_PANEL_ORDER = [
+      'attack','hitpoints','mining',
+      'strength','agility','smithing',
+      'defence','herblore','fishing',
+      'ranged','thieving','cooking',
+      'prayer','crafting','firemaking',
+      'magic','fletching','woodcutting',
+      'runecrafting','slayer','farming',
+      'construction','hunter','sailing'
+    ];
+
+    function showPublicView(rsn) {
+      var pv = document.getElementById('public-view');
+      var app = document.getElementById('main');
+      var nav = document.getElementById('bottom-nav');
+      var hdr = document.querySelector('header');
+      if (!pv) return;
+
+      // Hide normal app shell
+      if (app) app.style.display = 'none';
+      if (nav) nav.style.display = 'none';
+      if (hdr) hdr.style.display = 'none';
+      pv.style.display = 'block';
+
+      // Open-in-app button
+      document.getElementById('pv-open-app').addEventListener('click', function() {
+        pv.style.display = 'none';
+        if (app) app.style.display = '';
+        if (nav) nav.style.display = '';
+        if (hdr) hdr.style.display = '';
+        history.replaceState({}, '', window.location.pathname);
+        // Load the player into the app too
+        var inp = document.getElementById('rsn-input');
+        if (inp) { inp.value = rsn; lookupPlayer(); }
+      });
+
+      // Fetch player
+      lookupWiseOldMan(rsn).then(function(data) {
+        document.getElementById('pv-loading').style.display = 'none';
+        renderPublicView(data);
+        document.getElementById('pv-content').style.display = 'block';
+      }).catch(function(err) {
+        document.getElementById('pv-loading').style.display = 'none';
+        var errEl = document.getElementById('pv-error');
+        errEl.textContent = 'Could not load "' + rsn + '": ' + (err.message || 'Unknown error');
+        errEl.style.display = 'block';
+      });
+    }
+
+    function renderPublicView(data) {
+      var snap = (data.latestSnapshot && data.latestSnapshot.data && data.latestSnapshot.data.skills) || {};
+      var pName = data.displayName || data.username || '?';
+      var type = data.type || 'ironman';
+      var overall = snap.overall || {};
+      var totalLvl = Number(overall.level || 0);
+      var totalXp  = Number(overall.experience || 0);
+      var rank     = Number(overall.rank || 0);
+
+      var typeLabels = { ironman:'IRONMAN', hardcore:'HARDCORE', ultimate:'ULTIMATE', regular:'MAIN' };
+      document.getElementById('pv-name').textContent = pName;
+      document.getElementById('pv-badge').textContent = typeLabels[type] || 'IRONMAN';
+
+      var combat = calcCombat(snap);
+
+      // Stats
+      var statsHtml = [
+        ['Total Level', totalLvl ? totalLvl.toLocaleString('en-GB') : '--'],
+        ['Total XP',    totalXp  ? fmtXP(totalXp)                    : '--'],
+        ['Rank',        rank > 0  ? '#'+rank.toLocaleString('en-GB')  : 'Unranked'],
+        ['Combat',      combat || '--']
+      ].map(function(s) {
+        return '<div class="pv-stat"><div class="pv-stat-val">'+s[1]+'</div><div class="pv-stat-lbl">'+s[0]+'</div></div>';
+      }).join('');
+      document.getElementById('pv-stats').innerHTML = statsHtml;
+
+      // Skills in OSRS panel order
+      var skillsHtml = OSRS_PANEL_ORDER.map(function(id) {
+        var sk = snap[id] || {};
+        var lvl = Number(sk.level || xpToLevel(Number(sk.experience || 0)));
+        lvl = Math.min(lvl, 99);
+        var isMax = lvl >= 99;
+        var meta = SKILL_META[id] || {};
+        var iconHtml = meta.icon
+          ? '<img src="'+meta.icon+'" alt="'+id+'" loading="lazy">'
+          : '<span style="font-size:12px;font-weight:800;color:'+(meta.color||'#b88848')+'">'+id[0].toUpperCase()+'</span>';
+        return '<div class="pv-skill-tile'+(isMax?' maxed':'')+'">'
+          + '<div class="pv-skill-icon">'+iconHtml+'</div>'
+          + '<div class="pv-skill-lvl">'+(lvl > 0 ? lvl : '--')+'</div>'
+          + '</div>';
+      }).join('');
+      document.getElementById('pv-skills').innerHTML = skillsHtml;
+
+      // R2M
+      var r2mTotal = OSRS_PANEL_ORDER.reduce(function(sum, id) {
+        var sk = snap[id] || {};
+        var lvl = Math.min(Number(sk.level || xpToLevel(Number(sk.experience || 0))), 99);
+        return sum + lvl;
+      }, 0);
+      var r2mPct = ((r2mTotal / 2376) * 100).toFixed(1);
+      var maxed  = OSRS_PANEL_ORDER.filter(function(id) {
+        var sk = snap[id] || {};
+        return Math.min(Number(sk.level || xpToLevel(Number(sk.experience || 0))), 99) >= 99;
+      }).length;
+
+      document.getElementById('pv-r2m').innerHTML =
+        '<div class="pv-r2m-head">'
+        + '<span class="pv-r2m-label">Road to Max</span>'
+        + '<span class="pv-r2m-pct">'+r2mPct+'%</span>'
+        + '</div>'
+        + '<div class="pv-r2m-bar-bg"><div class="pv-r2m-bar-fill" style="width:'+r2mPct+'%"></div></div>';
+
+      document.getElementById('pv-meta').innerHTML =
+        '<span>'+maxed+'/24 skills maxed</span>'
+        + '<span>'+r2mTotal.toLocaleString('en-GB')+'/2376 total levels</span>';
+
+      // Last updated
+      if (data.updatedAt) {
+        var d = new Date(data.updatedAt);
+        var brand = document.querySelector('.pv-footer-brand');
+        if (brand) brand.insertAdjacentHTML('beforebegin',
+          '<div style="text-align:center;font-size:10px;color:var(--muted);padding:8px 0">Last updated: '+d.toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})+'</div>');
+      }
+    }
   </script>
 
   <script>
@@ -5117,6 +6000,9 @@
           if (sheet) sheet.classList.remove('show');
           var overviewBtn = document.querySelector('.nav-btn[data-tab="overview"]');
           if (overviewBtn && typeof switchTab === 'function') switchTab('overview', overviewBtn);
+          history.replaceState({}, '', window.location.pathname);
+          var shareRow = document.getElementById('profile-share-row');
+          if (shareRow) shareRow.classList.remove('visible');
           window.closeSettings();
           return false;
         };
@@ -5407,7 +6293,6 @@
           card.className = 'n99-card ach-card';
           card.innerHTML =
             '<div class="ach-card-main" onclick="r2m_toggleAchDrop(\'' + cardId + '\', this)">' +
-            '<div class="n99-icon"><img src="' + m.icon + '" alt="" onerror="this.style.display=\'none\'"></div>' +
             '<div class="n99-info">' +
             '<div class="n99-name">' + m.label + (m.type === 'base' && m.blocking.length > 0 ? ' <span class="ach-count">(' + m.blocking.length + ' skill' + (m.blocking.length > 1 ? 's' : '') + ')</span>' : '') + '</div>' +
             '<div class="n99-left">' + r2m_fmtXp(m.xpLeft) + ' xp left</div>' +
@@ -5479,6 +6364,7 @@
 
       function r2m_render() {
         var grid = document.getElementById('r2m-grid');
+        if (grid) {
         grid.innerHTML = '';
 
         var data = R2M_SKILLS.map(function (s) {
@@ -5571,6 +6457,7 @@
           card.innerHTML = header + drop;
           grid.appendChild(card);
         });
+        } // end grid null-check
 
         if (r2m_loaded) {
           var total = R2M_SKILLS.reduce(function (sum, k) {
@@ -5624,10 +6511,55 @@
         r2m_render();
 
         var displayName = data.displayName || data.username || '';
-        document.getElementById('r2m-sub').textContent = displayName + ' — Total Level to 2376 — 365-Day Plan';
-        document.getElementById('r2m-foot').textContent = 'Live data for ' + displayName + ' via Wise Old Man';
+        var subEl = document.getElementById('r2m-sub');
+        var footEl = document.getElementById('r2m-foot');
+        if (subEl) subEl.textContent = displayName + ' — Total Level to 2376 — 365-Day Plan';
+        if (footEl) footEl.textContent = 'Live data for ' + displayName + ' via Wise Old Man';
       }
       window.r2m_loadFromCurrentPlayer = r2m_loadFromCurrentPlayer;
+
+      // Expose skill training data for use in the skill sheet
+      window.r2m_getSkillInfo = function(skillName) {
+        if (!r2m_loaded) return null;
+        var s = R2M_SKILLS.find(function(x) { return x.name === skillName; });
+        if (!s) return null;
+        var curXp = r2m_xps[skillName] || 0;
+        var trueLv = curXp > 0 ? Math.min(r2m_levelFromXp(curXp), 99) : Math.min(r2m_lvls[skillName] || 0, 99);
+        var isMax = trueLv >= 99;
+        var method = r2m_bestMethod(skillName, trueLv);
+        var toNext = isMax ? 0 : r2m_xpToNext(trueLv, curXp);
+        var remaining = isMax ? 0 : r2m_xpTo99(curXp);
+        var xphrRaw = method.xphr;
+        var xphrNum = 0;
+        if (xphrRaw && xphrRaw !== 'varies') {
+          var str = xphrRaw.replace(/,/g, '').toLowerCase().trim();
+          if (str.indexOf('m') > -1) xphrNum = parseFloat(str) * 1000000;
+          else if (str.indexOf('k') > -1) xphrNum = parseFloat(str) * 1000;
+          else xphrNum = parseFloat(str) || 0;
+        }
+        var hoursTo99 = (xphrNum > 0 && remaining > 0) ? (remaining / xphrNum) : null;
+        var daysTo99 = hoursTo99 !== null ? Math.ceil(hoursTo99 / 2) : null;
+        var finishDate = null;
+        if (isMax) { finishDate = 'Done'; }
+        else if (daysTo99 !== null && daysTo99 > 0) {
+          var d = new Date();
+          d.setDate(d.getDate() + daysTo99);
+          finishDate = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+        var fmt = function(n) { return Math.round(n).toLocaleString('en-GB'); };
+        return {
+          isMax: isMax, trueLv: trueLv,
+          curXpFmt: fmt(curXp),
+          toNextFmt: isMax ? 'Done' : fmt(toNext),
+          remainingFmt: isMax ? 'Done' : fmt(remaining),
+          activity: method.activity,
+          xphrFmt: xphrNum > 0 ? fmt(xphrNum) : method.xphr,
+          xpPerDay: xphrNum > 0 ? fmt(xphrNum * 2) : 'varies',
+          hoursStr: hoursTo99 !== null ? Math.ceil(hoursTo99).toLocaleString('en-GB') + ' hrs' : 'varies',
+          daysStr: daysTo99 !== null ? daysTo99.toLocaleString('en-GB') + ' days' : 'varies',
+          finishDate: finishDate || 'varies'
+        };
+      };
 
       function r2m_getTrueLv(name) {
         var xp = r2m_xps[name] || 0;
@@ -5914,7 +6846,34 @@
     })();
   </script>
 
-    <script type="module">
+    <!-- ── Public read-only profile view ─────────────── -->
+  <div id="public-view" style="display:none">
+    <div class="pv-topbar">
+      <div class="pv-brand-pill">Old School Tool Set</div>
+      <button class="pv-open-btn" id="pv-open-app">Open in App →</button>
+    </div>
+    <div id="pv-loading" class="pv-loading">
+      <div class="spinner"></div>
+      <span style="color:var(--muted);font-size:14px">Loading profile…</span>
+    </div>
+    <div id="pv-error" class="pv-error" style="display:none"></div>
+    <div id="pv-content" class="pv-content" style="display:none">
+      <div class="pv-header">
+        <span class="pv-badge" id="pv-badge">IRONMAN</span>
+        <h1 class="pv-name" id="pv-name">—</h1>
+      </div>
+      <div class="pv-stats" id="pv-stats"></div>
+      <div class="pv-section-label">SKILLS</div>
+      <div class="pv-skills" id="pv-skills"></div>
+      <div class="pv-r2m-section" id="pv-r2m"></div>
+      <div class="pv-meta-row" id="pv-meta"></div>
+      <div class="pv-footer-brand">
+        Old School Tool Set &nbsp;·&nbsp; OSDevscape &nbsp;·&nbsp; Data: wiseoldman.net
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
     import { registerPush } from './bootstrap.js';
 
     window.addEventListener('load', async () => {
@@ -5925,6 +6884,164 @@
         console.error('Push setup failed:', err);
       }
     });
+  </script>
+
+  <script>
+  (function() {
+    var FR_NOTES_KEY = 'osts_fairy_notes_v1';
+
+    var FR_DATA = [
+      // ── A codes ──────────────────────────────────────────────────────────
+      { code:'AIQ', group:'A', loc:'Asgarnia: Mudskipper Point', poi:'Mogres, Rimmington, Port Sarim, Asgarnia Ice Dungeon.' },
+      { code:'AIR', group:'A', loc:'Islands: South-east of Ardougne', poi:'Empty island. Used for clue scroll coordinates and the medium Ardougne diary. First ring in the sequence to access the Fairy Queen\'s hideout.' },
+      { code:'AIS', group:'A', loc:'Varlamore: Auburn Valley', poi:'Requires having travelled to Civitas illa Fortis via Regulus Cento after Children of the Sun. Route for Vale Totems.' },
+      { code:'AJP', group:'A', loc:'Varlamore: Avium Savannah', poi:'Requires Children of the Sun. Hardwood tree farming patch nearby after The Ribbiting Tale of a Lily Pad Labour Dispute.' },
+      { code:'AJQ', group:'A', loc:'Dungeons: Cave south of Dorgesh-Kaan', poi:'Requires Death to the Dorgeshuun. Cave crawlers, Cave bugs, Cave slimes, Molanisks. Dorgesh-Kaan Agility Course.' },
+      { code:'AJR', group:'A', loc:'Kandarin: Slayer cave south-east of Rellekka', poi:'Fremennik Slayer Dungeon. Rellekka west of fairy ring.' },
+      { code:'AJS', group:'A', loc:'Islands: Penguins near Miscellania', poi:'Penguins; no other access. Fourth and final ring in the sequence to access the Fairy Queen\'s hideout.' },
+      { code:'AKP', group:'A', loc:'Kharidian Desert: Necropolis', poi:'Sophanem and Menaphos north, Necropolis east. Unlocked by entering the Necropolis at start of Beneath Cursed Sands.' },
+      { code:'AKQ', group:'A', loc:'Kandarin: Piscatoris Hunter area', poi:'Kraken Cove, Chinchompas (grey), Mining spots, Piscatoris Fishing Colony.' },
+      { code:'AKR', group:'A', loc:'Great Kourend: Hosidius Vinery', poi:'Hosidius Vinery, Tithe Farm minigame.' },
+      { code:'AKS', group:'A', loc:'Feldip Hills: Feldip Hunter area', poi:'Hunter jungle area, Chompy hunting grounds, Gnome glider.' },
+      { code:'ALP', group:'A', loc:'Islands: Lighthouse', poi:'Jossik, Barbarian Outpost, Rellekka, Dagannoths.' },
+      { code:'ALQ', group:'A', loc:'Morytania: Haunted Woods east of Canifis', poi:'Aggressive Vampyres and Leeches. Farming patch, Port Phasmatys east. Use with Ectophial for quick network access.' },
+      { code:'ALR', group:'A', loc:'Other Realms: Abyssal Area', poi:'Abyssal leeches, guardians, walkers, and Abyssal demons. Alternative area for essence pouches.' },
+      { code:'ALS', group:'A', loc:'Kandarin: McGrubor\'s Wood', poi:'Seers\' Village, Coal trucks, Fishing Guild, Ranging Guild, Hemenster. Required for medium Kandarin Diary.' },
+      // ── B codes ──────────────────────────────────────────────────────────
+      { code:'BIP', group:'B', loc:'Islands: South-west of Mort Myre', poi:'Empty island with level 50 Agility shortcut into Mort Myre. Used for hard cryptic clue "BIP 7013".' },
+      { code:'BIQ', group:'B', loc:'Kharidian Desert near the Kalphite Hive', poi:'Kalphite Lair for Kalphites and the Kalphite Queen. Shantay Pass nearby.' },
+      { code:'BIS', group:'B', loc:'Kandarin: Ardougne Zoo – Unicorns', poi:'Unicorns; no other access. Required for the medium Ardougne Diary.' },
+      { code:'BJP', group:'B', loc:'Islands: Isle of Souls', poi:'Crumbling Tower, Isle of Souls Dungeon.' },
+      { code:'BJR', group:'B', loc:'Other Realms: Realm of the Fisher King', poi:'Requires partial completion of the Holy Grail quest.' },
+      { code:'BJS', group:'B', loc:'Islands: Near Zul-Andra', poi:'Requires completion of Regicide. 76 Agility needed to jump off the island.' },
+      { code:'BKP', group:'B', loc:'Feldip Hills: Chompy Marsh, south of Castle Wars', poi:'Smoke Devil Dungeon, Chompy bird hunting. Teak tree west, Castle Wars north.' },
+      { code:'BKQ', group:'B', loc:'Other Realms: Enchanted Valley', poi:'Tree spirits.' },
+      { code:'BKR', group:'B', loc:'Morytania: Mort Myre Swamp, south of Canifis', poi:'Swamp boat south-east towards Barrows and Burgh de Rott.' },
+      { code:'BKS', group:'B', loc:'Other Realms: Zanaris', poi:'Impetuous Impulses, Chaeldar, Cosmic runic altar.' },
+      { code:'BLP', group:'B', loc:'Dungeons: TzHaar area', poi:'TzHaar Fight Cave, TzHaar Fight Pit, TzHaar monsters.' },
+      { code:'BLQ', group:'B', loc:'Other Realms: Yu\'biusk', poi:'Requires partial completion of Land of the Goblins. Used during Hopespear\'s Will miniquest.' },
+      { code:'BLR', group:'B', loc:'Kandarin: Legends\' Guild', poi:'Legends\' Guild, Mining spots, Magic and Maple trees north, Witchaven south, East Ardougne west.' },
+      { code:'BLS', group:'B', loc:'Kebos Lowlands: South of Mount Quidamortem', poi:'Rowboat to The Stranglewood, Mountain Guide for quick access to Chambers of Xeric.' },
+      // ── C codes ──────────────────────────────────────────────────────────
+      { code:'CIP', group:'C', loc:'Islands: Miscellania', poi:'Requires The Fremennik Trials. Miscellania, Etceteria east, Managing Miscellania. Required for medium Fremennik Diary.' },
+      { code:'CIQ', group:'C', loc:'Kandarin: North-west of Yanille', poi:'Tree Gnome Village north, Yanille south-east, Gu\'Tanoth south, Castle Wars west.' },
+      { code:'CIR', group:'C', loc:'Kebos Lowlands: South of Mount Karuulm', poi:'Must have visited Great Kourend once. South of Mount Karuulm, north-east of Farming Guild. Required for medium Kourend & Kebos Diary.' },
+      { code:'CIS', group:'C', loc:'Great Kourend: Arceuus Library', poi:'Must have visited Great Kourend once. North of the Arceuus Library.' },
+      { code:'CJQ', group:'C', loc:'The Great Conch', poi:'Must have visited The Great Conch once to access.' },
+      { code:'CJR', group:'C', loc:'Kandarin: Sinclair Mansion (east)', poi:'Sinclair Mansion east, Seers\' Village south.' },
+      { code:'CKP', group:'C', loc:'Other Realms: Cosmic entity\'s plane', poi:'Used during Fairytale II – Cure a Queen quest.' },
+      { code:'CKQ', group:'C', loc:'Varlamore: Aldarin', poi:'Requires Children of the Sun. Mastering Mixology minigame.' },
+      { code:'CKR', group:'C', loc:'Karamja: South of Tai Bwo Wannai Village', poi:'Graahks, Shilo Village nearby, Tai Bwo Wannai Village, Nature Altar.' },
+      { code:'CKS', group:'C', loc:'Morytania: Canifis', poi:'Morytania Slayer Tower, Canifis east, Paterdomus west, Mort Myre swamp south.' },
+      { code:'CLP', group:'C', loc:'Islands: Draynor island', poi:'Solution to hard coordinate clue "01°30\'N, 20°01\'E".' },
+      { code:'CLR', group:'C', loc:'Islands: Ape Atoll', poi:'Requires Monkey Madness I. 48 Agility + Ninja/Kruk greegree to exit agility course into the city.' },
+      { code:'CLS', group:'C', loc:'Islands: Yanille Chain', poi:'Hazelmere\'s house can be found here.' },
+      // ── D codes ──────────────────────────────────────────────────────────
+      { code:'DIP', group:'D', loc:'Other Realms: Abyssal Nexus', poi:'Abyssal Sire.' },
+      { code:'DIQ', group:'D', loc:'Player-owned house superior garden', poi:'Only works if the player has a fairy ring in their house.' },
+      { code:'DIR', group:'D', loc:'Other Realms: Gorak\'s Plane', poi:'The only place Goraks can be found other than the God Wars Dungeon.' },
+      { code:'DIS', group:'D', loc:'Misthalin: Wizards\' Tower', poi:'Wizards\' Tower, Rune essence mine. Required for the medium Lumbridge & Draynor Diary.' },
+      { code:'DJP', group:'D', loc:'Kandarin: Tower of Life', poi:'Ardougne Monastery west, Spirit tree north-west, Port Khazard south.' },
+      { code:'DJR', group:'D', loc:'Great Kourend: Chasm of Fire', poi:'Must have visited Great Kourend once. Chasm of Fire, north-west corner of Shayzien.' },
+      { code:'DKP', group:'D', loc:'Karamja: Gnome glider', poi:'Karambwan fishing spots.' },
+      { code:'DKR', group:'D', loc:'Misthalin: Edgeville', poi:'Grand Exchange east, Edgeville bank west, Wilderness north.' },
+      { code:'DKS', group:'D', loc:'Fremennik: Polar Hunter area', poi:'Keldagrim entrance, Brine Rat Cavern, Rock crabs, Rellekka west.' },
+      { code:'DLP', group:'D', loc:'Grimstone', poi:'Grimstone Dungeon, available once Grimstone has been visited.' },
+      { code:'DLQ', group:'D', loc:'Kharidian Desert: North of Nardah', poi:'Desert lizards, Jackals, Nardah south.' },
+      { code:'DLR', group:'D', loc:'Islands: Poison Waste south of Isafdar', poi:'Broken Handz\'s telescope to spectate Zulrah fights. Second ring in the sequence to access the Fairy Queen\'s hideout.' },
+      { code:'DLS', group:'D', loc:'Dungeons: Myreque hideout under The Hollows', poi:'Requires In Search of the Myreque. Find cracks in walls under Hair of the Dog pub in Canifis.' },
+    ];
+
+    function fr_loadNotes() {
+      try { return JSON.parse(localStorage.getItem(FR_NOTES_KEY) || '{}'); } catch(e) { return {}; }
+    }
+    function fr_saveNote(code, text) {
+      var notes = fr_loadNotes();
+      if (text.trim()) notes[code] = text.trim();
+      else delete notes[code];
+      try { localStorage.setItem(FR_NOTES_KEY, JSON.stringify(notes)); } catch(e) {}
+    }
+
+    function fr_render() {
+      var list = document.getElementById('fr-list');
+      if (!list) return;
+      var query = (document.getElementById('fr-search') ? document.getElementById('fr-search').value : '').toLowerCase().trim();
+      var groupFilter = document.getElementById('fr-filter') ? document.getElementById('fr-filter').value : 'all';
+      var notes = fr_loadNotes();
+
+      var items = FR_DATA.filter(function(r) {
+        if (groupFilter !== 'all' && r.group !== groupFilter) return false;
+        if (!query) return true;
+        return r.code.toLowerCase().includes(query) ||
+               r.loc.toLowerCase().includes(query) ||
+               r.poi.toLowerCase().includes(query) ||
+               (notes[r.code] || '').toLowerCase().includes(query);
+      });
+
+      if (!items.length) { list.innerHTML = '<div class="no-gains" style="margin-top:24px">No fairy rings match your search.</div>'; return; }
+
+      var lastGroup = null;
+      var html = '';
+      items.forEach(function(r) {
+        if (r.group !== lastGroup) {
+          html += '<div class="fr-group-heading">' + r.group + ' Codes</div>';
+          lastGroup = r.group;
+        }
+        var note = notes[r.code] || '';
+        var hasNote = !!note;
+        html += '<div class="fr-card' + (hasNote ? ' has-note' : '') + '" id="fr-card-' + r.code + '">' +
+          '<div class="fr-card-head" onclick="fr_toggle(\'' + r.code + '\')">' +
+          '<div class="fr-code">' + r.code + '</div>' +
+          '<div class="fr-info">' +
+          '<div class="fr-loc">' + r.loc + '</div>' +
+          '<div class="fr-poi">' + r.poi + '</div>' +
+          '</div>' +
+          (hasNote ? '<div class="fr-note-badge">📝</div>' : '') +
+          '<div class="fr-chevron">&#9660;</div>' +
+          '</div>' +
+          '<div class="fr-body">' +
+          '<div class="fr-poi-full">' + r.poi + '</div>' +
+          '<div class="fr-note-label">My Notes</div>' +
+          '<textarea class="fr-note-input" id="fr-note-' + r.code + '" placeholder="Add a personal note for this ring…" rows="3">' + (note ? note.replace(/</g,'&lt;').replace(/>/g,'&gt;') : '') + '</textarea>' +
+          '<div class="fr-save-row">' +
+          '<button class="fr-btn clear" onclick="fr_clearNote(\'' + r.code + '\')">Clear</button>' +
+          '<button class="fr-btn save" onclick="fr_saveBtn(\'' + r.code + '\')">Save</button>' +
+          '</div>' +
+          '</div>' +
+          '</div>';
+      });
+      list.innerHTML = html;
+    }
+
+    window.fr_toggle = function(code) {
+      var card = document.getElementById('fr-card-' + code);
+      if (card) card.classList.toggle('open');
+    };
+
+    window.fr_saveBtn = function(code) {
+      var ta = document.getElementById('fr-note-' + code);
+      if (!ta) return;
+      fr_saveNote(code, ta.value);
+      fr_render();
+      // Re-open the card after re-render
+      var card = document.getElementById('fr-card-' + code);
+      if (card) card.classList.add('open');
+    };
+
+    window.fr_clearNote = function(code) {
+      fr_saveNote(code, '');
+      fr_render();
+    };
+
+    // Bind search/filter once DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+      var search = document.getElementById('fr-search');
+      var filter = document.getElementById('fr-filter');
+      if (search) search.addEventListener('input', fr_render);
+      if (filter) filter.addEventListener('change', fr_render);
+      fr_render();
+    });
+  })();
   </script>
 </body>
 </html>
