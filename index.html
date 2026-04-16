@@ -5762,8 +5762,9 @@
       // Maxed + total
       ctx.font = '11px "Segoe UI",system-ui,sans-serif';
       ctx.fillStyle = C.muted;
-      var sumStr = maxed+'/24 maxed  ·  '+fmtNum(r2mTotal)+'/2376 levels';
-      ctx.fillText(sumStr, PAD, SUM_Y + 38);
+      var sumStr = maxed+'/24 Maxed';
+      var smW = ctx.measureText(sumStr).width;
+      ctx.fillText(sumStr, (W - smW) / 2, SUM_Y + 38);
 
       // ── Footer ──
       ctx.strokeStyle = C.border; ctx.lineWidth = .5;
