@@ -1,0 +1,59 @@
+Levels 801–900
+Monster	Members	Combat level	Hitpoints	Attack level	Defence level	Magic level	Ranged level	Stab defence	Slash defence	Crush defence	Magic defence	Light Ranged defence	Standard Ranged defence	Heavy Ranged defence	Flat armour	Elemental weakness
+Doom of Mokhaiotl - Delve 6	Doom of Mokhaiotl
+Delve 6	
+Members
+808	650	300	90	275	110	300	300	60	160	160	160	160	0	
+Doom of Mokhaiotl - Delve 6	Doom of Mokhaiotl
+Delve 6	
+Members
+808	650	300	90	275	110	300	300	60	160	160	160	160	0	
+Doom of Mokhaiotl - Delve 6	Doom of Mokhaiotl
+Delve 6	
+Members
+808	650	300	90	275	110	300	300	60	160	160	160	160	0	
+The Nightmare	The Nightmare	
+Members
+814	2400	150	150	150	150	120	180	40	600	600	600	600	0	
+Doom of Mokhaiotl - Delve 7	Doom of Mokhaiotl
+Delve 7	
+Members
+858	650	300	90	275	110	300	300	60	160	160	160	160	0	
+Doom of Mokhaiotl - Delve 7	Doom of Mokhaiotl
+Delve 7	
+Members
+858	650	300	90	275	110	300	300	60	160	160	160	160	0	
+Doom of Mokhaiotl - Delve 7	Doom of Mokhaiotl
+Delve 7	
+Members
+858	650	300	90	275	110	300	300	60	160	160	160	160	0	
+Pestilent Bloat - Normal	Pestilent Bloat
+Normal	
+Members
+870	2000	250	100	150	180	40	20	40	600	800	800	800	0	
+Araxxor - In combat	Araxxor
+In combat	
+Members
+890	1020	320	135	190	210	160	75	15	237	218	218	218	0	Fire elemental weakness
+50%
+Araxxor - Enraged	Araxxor
+Enraged	
+Members
+890	1020	320	170	218	241	160	75	15	237	218	218	218	0	Fire elemental weakness
+50%
+Jaguar warrior (Deadman) - Annihilation	Jaguar warrior (Deadman)
+Annihilation	
+Members
+893	3000	200	100	100	160	50	50	50	100	50	50	50	0	
+Corrupted Hunllef	Corrupted Hunllef	
+Members
+894	1000	240	240	240	240	20	20	20	20	20	20	20	0	
+Yama (Deadman) - Factions	Yama (Deadman)
+Factions	
+Members
+899	2500	320	225	250	210	100	80	333	60	333	200	333	0	Water elemental weakness
+50%
+JalTok-Jad	JalTok-Jad	
+Members
+900	350	750	480	510	1020	0	0	0	0	0	0	0	0	Water elemental weakness
+40%

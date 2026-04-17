@@ -1,0 +1,919 @@
+Bestiary/Levels 1 to 10
+This page lists all monsters within the 1 to 10 combat level bracket.
+
+List
+Monster	Members	Combat level	Hitpoints	Attack level	Defence level	Magic level	Ranged level	Stab defence	Slash defence	Crush defence	Magic defence	Light Ranged defence	Standard Ranged defence	Heavy Ranged defence	Flat armour	Elemental weakness
+
+Halla (Miscellania)	Halla (Miscellania)	
+Members
+1	1	1	1	1	1	0	0	0	0	0	0	0	0	
+Target - Standing	Target
+Standing	
+Members
+1	1	1	1	1	1	0	0	0	0	0	0	0	0	
+Target - Fallen	Target
+Fallen	
+Members
+1	1	1	1	1	1	0	0	0	0	0	0	0	0	
+Spider (Ape Atoll)	Spider (Ape Atoll)	
+Members
+1	2	1	1	1	1	0	1	0	1	0	0	0	0	Fire elemental weakness
+50%
+Chicken - Gordon and Mary's Farm	Chicken
+Gordon and Mary's Farm	
+Members
+1	3	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Thorhild	Thorhild	
+Members
+1	1	1	1	1	1	0	0	0	0	0	0	0	0	
+Chinchompa (Hunter)	Chinchompa (Hunter)	
+Members
+1	1	1	1	1	1	0	0	0	0	0	0	0	0	
+Undead chicken	Undead chicken	
+Members
+1	3	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	Fire elemental weakness
+50%
+Chicken - Miscellania	Chicken
+Miscellania	
+Members
+1	3	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Spider - Common	Spider
+Common	
+Free-to-play
+1	2	1	1	1	1	-53	-53	-53	-53	-53	-53	-53	0	Fire elemental weakness
+50%
+Spider - Underground Pass	Spider
+Underground Pass	
+Members
+1	2	1	1	1	1	-53	-53	-53	-53	-53	-53	-53	0	Fire elemental weakness
+50%
+Einar	Einar	
+Members
+1	1	1	1	1	1	0	0	0	0	0	0	0	0	
+Evil Creature - Standard	Evil Creature
+Standard	
+Members
+1	1	1	1	1	1	0	0	0	0	0	0	0	0	
+Chicken - Falador Farm	Chicken
+Falador Farm	
+Free-to-play
+1	3	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Evil Creature - Izzie	Evil Creature
+Izzie	
+Members
+1	1	1	1	1	1	0	0	0	0	0	0	0	0	
+Chicken - Normal	Chicken
+Normal	
+Free-to-play
+1	3	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Cuthbert	Cuthbert	
+Members
+1	1	1	1	1	1	0	0	0	0	0	0	0	0	
+Scorpion - Level 1	Scorpion
+Level 1	
+Members
+1	2	1	1	1	1	-53	-53	-53	-53	-53	-53	-53	0	Fire elemental weakness
+25%
+Duckling	Duckling	
+Free-to-play
+1	3	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Gnome - Level 1, 1	Gnome
+Level 1, 1	
+Members
+1	3	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Gnome troop - Level 1	Gnome troop
+Level 1	
+Members
+1	3	1	1	1	1	3	4	5	2	4	4	4	0	
+Rat - Stronghold of Security	Rat
+Stronghold of Security	
+Free-to-play
+1	2	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Rat - Regular	Rat
+Regular	
+Free-to-play
+1	2	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Ragnar (Miscellania)	Ragnar (Miscellania)	
+Members
+1	1	1	1	1	1	0	0	0	0	0	0	0	0	
+Gnome woman - 2	Gnome woman
+2	
+Members
+1	2	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Gnome woman - 1	Gnome woman
+1	
+Members
+1	2	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Alrik	Alrik	
+Members
+1	1	1	1	1	1	0	0	0	0	0	0	0	0	
+Gnome - Level 1, 2	Gnome
+Level 1, 2	
+Members
+1	3	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Rabbit - Enchanted Valley	Rabbit
+Enchanted Valley	
+Members
+1	1	1	1	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+20%
+Gnome child - Blue	Gnome child
+Blue	
+Members
+1	2	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Gnome - Level 1, 4	Gnome
+Level 1, 4	
+Members
+1	3	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Gnome - Level 1, 3	Gnome
+Level 1, 3	
+Members
+1	3	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Gnome child - Green	Gnome child
+Green	
+Members
+1	2	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Duck - Female	Duck
+Female	
+Free-to-play
+1	3	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Gnome child - Normal	Gnome child
+Normal	
+Members
+1	2	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Duck - Male	Duck
+Male	
+Free-to-play
+1	3	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Entrana firebird	Entrana firebird	
+Members
+2	5	1	1	1	1	-26	-26	-26	-26	-26	-26	-26	0	Water elemental weakness
+100%
+Skraeling (Etceteria) - Battleaxe	Skraeling (Etceteria)
+Battleaxe	
+Members
+2	1	3	3	1	1	-12	-12	-12	-12	-12	-12	-12	0	
+Man - 1	Man
+1	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Man - 2	Man
+2	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Man - 5	Man
+5	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Embertailed jerboa	Embertailed jerboa	
+Members
+2	2	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Man - 3	Man
+3	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Skraeling (Miscellania) - Brown shirt	Skraeling (Miscellania)
+Brown shirt	
+Members
+2	1	3	3	1	1	-12	-12	-12	-12	-12	-12	-12	0	
+Skraeling (Miscellania) - Green shirt	Skraeling (Miscellania)
+Green shirt	
+Members
+2	1	3	3	1	1	-12	-12	-12	-12	-12	-12	-12	0	
+Skraeling (Etceteria) - Sword	Skraeling (Etceteria)
+Sword	
+Members
+2	1	3	3	1	1	-12	-12	-12	-12	-12	-12	-12	0	
+Rooster - Level 2	Rooster
+Level 2	
+Members
+2	5	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Jonny the Beard	Jonny the Beard	
+Free-to-play
+2	8	1	1	1	1	0	0	0	0	0	0	0	0	
+Giant spider - Level 2	Giant spider
+Level 2	
+Free-to-play
+2	5	1	1	1	1	-10	-10	-10	-10	-10	-10	-10	0	Fire elemental weakness
+50%
+Ram - 2	Ram
+2	
+Free-to-play
+2	8	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	Fire elemental weakness
+20%
+Hengel	Hengel	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Ram - Sheared	Ram
+Sheared	
+Free-to-play
+2	8	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	Fire elemental weakness
+20%
+Goblin - Level 2 (armed)	Goblin
+Level 2 (armed)	
+Members
+2	5	3	4	1	1	-15	-15	-15	-15	-15	-15	-15	0	
+Ram - Monastery	Ram
+Monastery	
+Free-to-play
+2	8	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	Fire elemental weakness
+20%
+Penguin (monster)	Penguin (monster)	
+Members
+2	4	1	2	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+25%
+Ram - 3	Ram
+3	
+Free-to-play
+2	8	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	Fire elemental weakness
+20%
+Imp - Normal	Imp
+Normal	
+Free-to-play
+2	8	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	Water elemental weakness
+10%
+Seagull - Level 2	Seagull
+Level 2	
+Free-to-play
+2	6	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	Air elemental weakness
+20%
+Ram - 1	Ram
+1	
+Free-to-play
+2	8	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	Fire elemental weakness
+20%
+Jeff	Jeff	
+Free-to-play
+2	7	1	1	1	1	-10	-10	-10	-10	-10	-10	-10	0	
+Ragnvald	Ragnvald	
+Members
+2	1	3	3	1	1	-12	-12	-12	-12	-12	-12	-12	0	
+Rusty	Rusty	
+Free-to-play
+2	7	1	1	1	1	-15	-15	-15	-15	-15	-15	-15	0	
+Man - 4	Man
+4	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Man - 4, Musa Point	Man
+4, Musa Point	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Man - Shayzien, 2	Man
+Shayzien, 2	
+Members
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Undead cow	Undead cow	
+Members
+2	8	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	Fire elemental weakness
+50%
+Valgerd	Valgerd	
+Members
+2	1	3	3	1	1	-12	-12	-12	-12	-12	-12	-12	0	
+Woman - Varrock	Woman
+Varrock	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Woman - 3	Woman
+3	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Black chinchompa (Hunter)	Black chinchompa (Hunter)	
+Members
+2	1	2	2	2	2	0	0	0	0	0	0	0	0	
+Broddi	Broddi	
+Members
+2	1	3	3	1	1	-12	-12	-12	-12	-12	-12	-12	0	
+Thora (Miscellania)	Thora (Miscellania)	
+Members
+2	1	3	3	1	1	-12	-12	-12	-12	-12	-12	-12	0	
+Man - Al Kharid	Man
+Al Kharid	
+Free-to-play
+2	7	1	1	1	1	0	0	0	0	0	0	0	0	
+Bunny - 1	Bunny
+1	
+Members
+2	5	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Carnivorous chinchompa	Carnivorous chinchompa	
+Members
+2	1	2	2	2	2	0	0	0	0	0	0	0	0	
+Woman - 2	Woman
+2	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Woman - Shayzien, 1	Woman
+Shayzien, 1	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Narf	Narf	
+Free-to-play
+2	7	1	1	1	1	-5	-5	-5	-5	-5	-5	-5	0	
+Wormbrain	Wormbrain	
+Free-to-play
+2	5	1	1	1	1	0	0	0	0	0	0	0	0	
+Anja	Anja	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Woman - 4	Woman
+4	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Rabbit - Varlamore	Rabbit
+Varlamore	
+Members
+2	5	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	Fire elemental weakness
+20%
+Woman - Shayzien, 2	Woman
+Shayzien, 2	
+Members
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Woman (East Ardougne)	Woman (East Ardougne)	
+Members
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Woman - 1	Woman
+1	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Rabbit - Tirannwn	Rabbit
+Tirannwn	
+Free-to-play
+2	5	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	Fire elemental weakness
+20%
+Bunny - 2	Bunny
+2	
+Members
+2	5	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Goblin - Level 2	Goblin
+Level 2	
+Free-to-play
+2	5	1	1	1	1	-15	-15	-15	-15	-15	-15	-15	0	
+Cow calf - Farmland	Cow calf
+Farmland	
+Free-to-play
+2	6	1	1	1	1	-26	-26	-26	-26	-26	-26	-26	0	
+Cow calf - 1	Cow calf
+1	
+Free-to-play
+2	6	1	1	1	1	-26	-26	-26	-26	-26	-26	-26	0	
+Rabbit - Miscellania	Rabbit
+Miscellania	
+Members
+2	5	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	Fire elemental weakness
+20%
+Cow (Nightmare Zone) - Normal Mode	Cow (Nightmare Zone)
+Normal Mode	
+Members
+2	8	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Cow calf - 2	Cow calf
+2	
+Free-to-play
+2	6	1	1	1	1	-26	-26	-26	-26	-26	-26	-26	0	
+Rannveig	Rannveig	
+Members
+2	1	3	3	1	1	-12	-12	-12	-12	-12	-12	-12	0	
+Man - Varrock	Man
+Varrock	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Man - Shayzien, 1	Man
+Shayzien, 1	
+Members
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Man - Falador	Man
+Falador	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Cow - Zanaris	Cow
+Zanaris	
+Members
+2	8	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Cow - 2	Cow
+2	
+Free-to-play
+2	8	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Rabbit (Prifddinas)	Rabbit (Prifddinas)	
+Members
+2	2000	600	450	300	1	150	150	150	150	200	200	200	0	
+Man - Falador, 2	Man
+Falador, 2	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Cow - Isle of Souls	Cow
+Isle of Souls	
+Members
+2	8	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Man (East Ardougne)	Man (East Ardougne)	
+Members
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Cow - 1	Cow
+1	
+Free-to-play
+2	8	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Man - Karamja	Man
+Karamja	
+Free-to-play
+2	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Cow - 3	Cow
+3	
+Free-to-play
+2	8	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Pheasant - 1 tail	Pheasant
+1 tail	
+Free-to-play
+3	5	3	3	1	1	0	0	0	0	0	0	0	0	
+Pheasant - 2 tails	Pheasant
+2 tails	
+Free-to-play
+3	5	3	3	1	1	0	0	0	0	0	0	0	0	
+Zombie rat - 3	Zombie rat
+3	
+Free-to-play
+3	5	2	2	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Monk - Level 3	Monk
+Level 3	
+Members
+3	5	2	3	1	1	0	0	0	0	0	0	0	0	
+Pheasant - 3 tails	Pheasant
+3 tails	
+Free-to-play
+3	5	3	3	1	1	0	0	0	0	0	0	0	0	
+Monkey (monster) - Mos Le'Harmless	Monkey (monster)
+Mos Le'Harmless	
+Members
+3	6	2	2	1	1	0	0	0	0	0	0	0	0	
+Monkey (monster) - Common	Monkey (monster)
+Common	
+Free-to-play
+3	6	2	2	1	1	0	0	0	0	0	0	0	0	
+Zombie rat - 2	Zombie rat
+2	
+Free-to-play
+3	5	2	2	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Rooster - Level 3	Rooster
+Level 3	
+Members
+3	7	2	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	
+Gnome troop - Level 3	Gnome troop
+Level 3	
+Members
+3	3	1	1	1	5	3	4	5	2	4	4	4	0	
+Sleepwalker (Phosani's Nightmare)	Sleepwalker (Phosani's Nightmare)	
+Members
+3	10	1	0	0	0	-100	-100	-100	-100	-100	-100	-100	0	
+Chicken (Tutorial Island)	Chicken (Tutorial Island)	
+Free-to-play
+3	3	1	1	1	1								0	
+Sleepwalker (monster) - 4	Sleepwalker (monster)
+4	
+Members
+3	10	1	0	0	0	-100	-100	-100	-100	-100	-100	-100	0	
+Sleepwalker (monster) - 5	Sleepwalker (monster)
+5	
+Members
+3	10	1	0	0	0	-100	-100	-100	-100	-100	-100	-100	0	
+Cuffs	Cuffs	
+Free-to-play
+3	7	1	3	1	1	5	5	5	5	5	5	5	0	
+Sleepwalker (monster) - 2	Sleepwalker (monster)
+2	
+Members
+3	10	1	0	0	0	-100	-100	-100	-100	-100	-100	-100	0	
+Cave goblin (monster) - Beige	Cave goblin (monster)
+Beige	
+Members
+3	10	1	1	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+40%
+Cave goblin (monster) - Backpack	Cave goblin (monster)
+Backpack	
+Members
+3	10	1	1	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+40%
+Woman (West Ardougne) - Level 3 (1)	Woman (West Ardougne)
+Level 3 (1)	
+Members
+3	10	2	1	1	1	1	1	1	0	0	0	0	0	
+Zombie rat - 1	Zombie rat
+1	
+Free-to-play
+3	5	2	2	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Cave goblin (monster) - Blue	Cave goblin (monster)
+Blue	
+Members
+3	10	1	1	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+40%
+Woman (West Ardougne) - Level 3 (3)	Woman (West Ardougne)
+Level 3 (3)	
+Members
+3	10	1	2	1	1	0	0	0	0	0	0	0	0	
+Cave goblin (monster) - Brown	Cave goblin (monster)
+Brown	
+Members
+3	10	1	1	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+40%
+Woman (West Ardougne) - Level 3 (2)	Woman (West Ardougne)
+Level 3 (2)	
+Members
+3	10	2	1	1	1	1	1	1	0	0	0	0	0	
+Drunken man	Drunken man	
+Free-to-play
+3	7	1	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Sleepwalker (monster) - 6	Sleepwalker (monster)
+6	
+Members
+3	10	1	0	0	0	-100	-100	-100	-100	-100	-100	-100	0	
+Sleepwalker (monster) - 1	Sleepwalker (monster)
+1	
+Members
+3	10	1	0	0	0	-100	-100	-100	-100	-100	-100	-100	0	
+Giant rat (Tutorial Island) - Unused, 1	Giant rat (Tutorial Island)
+Unused, 1	
+Free-to-play
+3	3	1	1	1	1	-100	-100	-100	0	-100	-100	-100	0	
+Giant rat (Tutorial Island) - Used	Giant rat (Tutorial Island)
+Used	
+Free-to-play
+3	3	1	1	1	1	-100	-100	-100	0	-100	-100	-100	0	
+Giant rat - Level 3	Giant rat
+Level 3	
+Free-to-play
+3	5	2	2	1	1	0	0	0	0	0	0	0	0	
+Sleepwalker (monster) - 3	Sleepwalker (monster)
+3	
+Members
+3	10	1	0	0	0	-100	-100	-100	-100	-100	-100	-100	0	
+Giant rat (Tutorial Island) - 2020	Giant rat (Tutorial Island)
+2020	
+Free-to-play
+3	3	1	1	1	1	-100	-100	-100	0	-100	-100	-100	0	
+Gnome - Level 3, 2	Gnome
+Level 3, 2	
+Members
+3	3	1	1	1	5	-42	-42	-42	-42	-42	-42	-42	0	
+Giant rat (Tutorial Island) - Unused, 2	Giant rat (Tutorial Island)
+Unused, 2	
+Free-to-play
+3	3	1	1	1	1	-100	-100	-100	0	-100	-100	-100	0	
+Gnome - Level 3, 1	Gnome
+Level 3, 1	
+Members
+3	3	1	1	1	5	-42	-42	-42	-42	-42	-42	-42	0	
+Gardener - Level 3	Gardener
+Level 3	
+Free-to-play
+3	7	2	5	1	1	0	0	0	0	0	0	0	0	
+Pheasant - 4 tails	Pheasant
+4 tails	
+Free-to-play
+3	5	3	3	1	1	0	0	0	0	0	0	0	0	
+Seagull - Level 3	Seagull
+Level 3	
+Free-to-play
+3	10	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	Air elemental weakness
+20%
+Seagull (Icyene Graveyard)	Seagull (Icyene Graveyard)	
+Members
+3	10	1	1	1	1	-42	-42	-42	-42	-42	-42	-42	0	Air elemental weakness
+20%
+Woman (West Ardougne) - Level 4 (1)	Woman (West Ardougne)
+Level 4 (1)	
+Members
+4	13	2	1	1	1	1	1	1	0	0	0	0	0	
+Porcupine	Porcupine	
+Members
+4	5	4	2	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+20%
+Eadburg	Eadburg	
+Members
+4	10	3	3	1	1	-12	-12	-12	-12	-12	-12	-12	0	
+Woman (West Ardougne) - Level 4 (2)	Woman (West Ardougne)
+Level 4 (2)	
+Members
+4	13	2	1	1	1	0	0	0	0	0	0	0	0	
+Man (level 4) - Normal	Man (level 4)
+Normal	
+Free-to-play
+4	13	2	1	1	1	1	1	1	0	0	0	0	0	
+Man (level 4) - Unused	Man (level 4)
+Unused	
+Free-to-play
+4	13	2	1	1	1	1	1	1	0	0	0	0	0	
+Gardener - Level 4	Gardener
+Level 4	
+Free-to-play
+4	7	1	7	1	1	0	0	0	0	0	0	0	0	
+Ceolburg	Ceolburg	
+Members
+4	10	3	3	1	1	-12	-12	-12	-12	-12	-12	-12	0	
+Hygd	Hygd	
+Members
+4	10	3	3	1	1	-12	-12	-12	-12	-12	-12	-12	0	
+Snake (desert)	Snake (desert)	
+Members
+5	6	4	3	1	1	0	0	0	0	0	0	0	0	
+Snake - 3	Snake
+3	
+Free-to-play
+5	6	4	3	1	1	0	0	0	0	0	0	0	0	
+Snake - 1	Snake
+1	
+Free-to-play
+5	6	4	3	1	1	0	0	0	0	0	0	0	0	
+Servant (Burthorpe)	Servant (Burthorpe)	
+Members
+5	10	3	3	1	1	-12	-12	-12	-12	-12	-12	-12	0	
+Snake - 2	Snake
+2	
+Free-to-play
+5	6	4	3	1	1	0	0	0	0	0	0	0	0	
+Goblin (Vault of War) - Level 5	Goblin (Vault of War)
+Level 5	
+Free-to-play
+5	5	7	4	1	1	0	0	0	0	0	0	0	0	
+Gnome Archer	Gnome Archer	
+Members
+5	10	1	1	1	6	-30	-30	-30	-30	-30	-30	-30	0	
+Goblin - Level 5	Goblin
+Level 5	
+Free-to-play
+5	12	3	4	1	1	0	0	0	0	0	0	0	0	
+Goblin (Goblin Village) - Green	Goblin (Goblin Village)
+Green	
+Free-to-play
+5	12	3	4	1	1	0	0	0	0	0	0	0	0	
+Highwayman - No hood	Highwayman
+No hood	
+Free-to-play
+5	13	2	2	1	1	0	3	2	0	2	2	2	0	
+Gnome Mage	Gnome Mage	
+Members
+5	10	3	1	1	5	-30	-30	-30	-30	-30	-30	-30	0	
+Breoca	Breoca	
+Members
+5	10	3	3	1	1	-12	-12	-12	-12	-12	-12	-12	0	
+Gnome Driver	Gnome Driver	
+Members
+5	10	3	3	1	1	-30	-30	-30	-30	-30	-30	-30	0	
+Frog	Frog	
+Free-to-play
+5	8	5	3	1	1	0	0	0	0	0	0	0	0	Earth elemental weakness
+40%
+Highwayman - Hood	Highwayman
+Hood	
+Free-to-play
+5	13	2	4	1	1	0	3	2	0	2	2	2	0	
+Goblin (Goblin Village) - Red	Goblin (Goblin Village)
+Red	
+Free-to-play
+5	12	3	4	1	1	0	0	0	0	0	0	0	0	
+Boar - Level 5	Boar
+Level 5	
+Free-to-play
+5	8	5	3	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+20%
+Ocga	Ocga	
+Members
+5	10	3	3	1	1	-12	-12	-12	-12	-12	-12	-12	0	
+Bird - Level 5	Bird
+Level 5	
+Members
+5	5	5	5	5	1	0	0	0	0	0	0	0	0	Air elemental weakness
+25%
+Penda	Penda	
+Members
+5	10	3	3	1	1	-12	-12	-12	-12	-12	-12	-12	0	
+Monk - Level 5	Monk
+Level 5	
+Free-to-play
+5	15	2	3	1	1	0	0	0	0	0	0	0	0	
+Cave bug - Level 6	Cave bug
+Level 6	
+Members
+6	5	6	6	1	1	10	10	5	5	10	10	10	0	Fire elemental weakness
+50%
+Giant rat - Level 6	Giant rat
+Level 6	
+Free-to-play
+6	10	6	2	1	1	0	0	0	0	0	0	0	0	
+Bat	Bat	
+Members
+6	8	5	5	1	1	2	2	5	2	0	0	0	0	Air elemental weakness
+35%
+Chompy bird	Chompy bird	
+Members
+6	10	5	3	0	0	0	0	0	0	0	0	0	0	
+Mugger - Varlamore	Mugger
+Varlamore	
+Free-to-play
+6	8	5	5	1	1	0	0	0	0	0	0	0	0	
+Mugger - Regular	Mugger
+Regular	
+Free-to-play
+6	8	5	5	1	1	0	0	0	0	0	0	0	0	
+Farmer - Straw hat, brown hair	Farmer
+Straw hat, brown hair	
+Free-to-play
+7	12	3	8	1	1	0	0	0	0	0	0	0	0	
+Farmer - Khaki shirt, bracers	Farmer
+Khaki shirt, bracers	
+Free-to-play
+7	12	3	8	1	1	0	0	0	0	0	0	0	0	
+Dwarf - Worker (8)	Dwarf
+Worker (8)	
+Free-to-play
+7	10	6	6	1	1	0	0	0	5	10	10	10	0	
+Farmer - Straw hat, black hair	Farmer
+Straw hat, black hair	
+Free-to-play
+7	12	3	8	1	1	0	0	0	0	0	0	0	0	
+Dark wizard - Level 7	Dark wizard
+Level 7	
+Free-to-play
+7	12	5	5	6	1	0	0	0	3	0	0	0	0	
+Farmer - Green shirt, long sleeves	Farmer
+Green shirt, long sleeves	
+Free-to-play
+7	12	3	8	1	1	0	0	0	0	0	0	0	0	
+Passionate Supporter	Passionate Supporter	
+Members
+7	10	1	1	1	1	0	0	0	0	0	0	0	0	
+Farmer - Khaki shirt, no bracers	Farmer
+Khaki shirt, no bracers	
+Free-to-play
+7	12	3	8	1	1	0	0	0	0	0	0	0	0	
+Farmer - Straw hat, blonde hair	Farmer
+Straw hat, blonde hair	
+Free-to-play
+7	12	3	8	1	1	0	0	0	0	0	0	0	0	
+Boar - Level 7	Boar
+Level 7	
+Members
+7	12	6	4	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+20%
+Revenant imp	Revenant imp	
+Members
+7	10	5	4	9	5	0	0	0	5	0	0	0	0	Air elemental weakness
+30%
+Crawling Hand - Level 7	Crawling Hand
+Level 7	
+Members
+7	15	7	3	1	1	0	0	0	0	0	0	0	0	
+Farmer - Green shirt, short sleeves	Farmer
+Green shirt, short sleeves	
+Free-to-play
+7	12	3	8	1	1	0	0	0	0	0	0	0	0	
+Imp - GWD	Imp
+GWD	
+Members
+7	10	5	6	1	1	-42	-42	-42	-42	-42	-42	-42	0	Water elemental weakness
+10%
+Barbarian - Level 8 (Blue Moon Inn)	Barbarian
+Level 8 (Blue Moon Inn)	
+Free-to-play
+8	14	6	5	1	1	1	1	0	0	0	0	0	0	
+Crawling Hand - Level 8 (3)	Crawling Hand
+Level 8 (3)	
+Members
+8	16	8	4	1	1	0	0	0	0	0	0	0	0	
+Crawling Hand - Level 8 (1)	Crawling Hand
+Level 8 (1)	
+Members
+8	16	8	4	1	1	0	0	0	0	0	0	0	0	
+Crawling Hand - Level 8 (4)	Crawling Hand
+Level 8 (4)	
+Members
+8	16	8	4	1	1	0	0	0	0	0	0	0	0	
+Dark warrior - Level 8	Dark warrior
+Level 8	
+Free-to-play
+8	17	5	5	1	1	96	79	59	0	0	0	0	0	
+Scarab Swarm (Tombs of Amascut)	Scarab Swarm (Tombs of Amascut)	
+Members
+8	10	1	0	1	1	-100	-100	-100	-100	-100	-100	-100	0	
+Crawling Hand - Level 8 (2)	Crawling Hand
+Level 8 (2)	
+Members
+8	16	8	4	1	1	0	0	0	0	0	0	0	0	
+Jubbly bird	Jubbly bird	
+Members
+9	20	5	6	1	1	0	0	0	0	0	0	0	0	
+Al Kharid warrior	Al Kharid warrior	
+Free-to-play
+9	19	7	4	1	1	12	15	10	-1	12	12	12	0	
+Blessed giant rat - 1	Blessed giant rat
+1	
+Members
+9	30	5	1	1	1	-24	-24	-24	-24	-24	-24	-24	0	
+Blessed giant rat - 2	Blessed giant rat
+2	
+Members
+9	30	5	1	1	1	-24	-24	-24	-24	-24	-24	-24	0	
+Barbarian - Level 9 (Sieglinde)	Barbarian
+Level 9 (Sieglinde)	
+Free-to-play
+9	20	6	3	1	1	9	10	10	-3	5	5	5	0	
+Wizard	Wizard	
+Free-to-play
+9	14	8	5	10	1	0	0	0	3	0	0	0	0	
+Myre Blamish Snail - Round	Myre Blamish Snail
+Round	
+Members
+9	8	0	22	1	5	5	5	30	5	50	50	50	0	Earth elemental weakness
+25%
+Barbarian (Barbarian Camp) - Level 9	Barbarian (Barbarian Camp)
+Level 9	
+Members
+9	20	6	3	1	1	0	10	10	-3	5	5	5	0	
+Buffalo	Buffalo	
+Members
+9	20	6	1	1	1	-21	-21	-21	-21	-21	-21	-21	0	
+Barbarian - Level 10 (Adelino)	Barbarian
+Level 10 (Adelino)	
+Free-to-play
+10	18	8	3	1	1	0	3	2	-3	2	2	2	0	
+Barbarian - Level 10 (Hagen)	Barbarian
+Level 10 (Hagen)	
+Free-to-play
+10	18	8	3	1	1	0	3	2	-3	2	2	2	0	
+Barbarian - Level 10 (Gutrune)	Barbarian
+Level 10 (Gutrune)	
+Free-to-play
+10	18	8	3	1	1	0	3	2	-3	2	2	2	0	
+Ochre Blamish Snail - Round	Ochre Blamish Snail
+Round	
+Members
+10	10	0	18	1	7	5	5	30	5	50	50	50	0	Earth elemental weakness
+25%
+Barbarian - Level 10 (Wotan)	Barbarian
+Level 10 (Wotan)	
+Free-to-play
+10	18	8	3	1	1	0	3	2	-3	2	2	2	0	
+Barbarian - Level 10 (Siegfried)	Barbarian
+Level 10 (Siegfried)	
+Free-to-play
+10	18	8	3	1	1	0	3	2	-3	2	2	2	0	
+Barbarian - Level 10 (Lydspor)	Barbarian
+Level 10 (Lydspor)	
+Free-to-play
+10	18	8	3	1	1	0	3	2	-3	2	2	2	0	
+Barbarian - Level 10 (Adolpho)	Barbarian
+Level 10 (Adolpho)	
+Free-to-play
+10	18	8	3	1	1	0	3	2	-3	2	2	2	0	
+Barbarian - Level 10 (Acelin)	Barbarian
+Level 10 (Acelin)	
+Free-to-play
+10	18	8	3	1	1	0	3	2	-3	2	2	2	0	
+Barbarian - Level 10 (Fafner)	Barbarian
+Level 10 (Fafner)	
+Free-to-play
+10	18	8	3	1	1	0	3	2	-3	2	2	2	0	
+Barbarian (Barbarian Camp) - Level 10 (greataxe)	Barbarian (Barbarian Camp)
+Level 10 (greataxe)	
+Members
+10	18	8	3	1	1	0	3	2	-3	2	2	2	0	
+Barbarian (Barbarian Camp) - Level 10 (spear)	Barbarian (Barbarian Camp)
+Level 10 (spear)	
+Members
+10	18	8	3	1	1	0	3	2	-3	2	2	2	0	
+Rowdy slave	Rowdy slave	
+Members
+10	16	7	7	0	0	0	0	0	0	0	0	0	0	
+Dwarf - Worker (5)	Dwarf
+Worker (5)	
+Free-to-play
+10	12	8	8	1	1	0	0	0	5	10	10	10	0	
+Dwarf - Standard	Dwarf
+Standard	
+Free-to-play
+10	16	8	6	1	1	0	0	0	5	0	0	0	0	
+Barbarian - Level 10 (Edelschwarz)	Barbarian
+Level 10 (Edelschwarz)	
+Free-to-play
+10	18	8	3	1	1	0	3	2	-3	2	2	2	0	
+Guard (dwarf)	Guard (dwarf)	
+Free-to-play
+10	16	8	9	1	1	3	4	4	2	3	3	3	0	
+Thug	Thug	
+Members
+10	18	7	9	1	1	2	3	3	0	0	0	0	0	
+Myre Blamish Snail - Pointed	Myre Blamish Snail
+Pointed	
+Members
+10	13	0	12	1	8	5	5	30	5	50	50	50	0	Earth elemental weakness
+25%
+Barbarian (Barbarian Camp) - Level 10 (2h sword)	Barbarian (Barbarian Camp)
+Level 10 (2h sword)	
+Members
+10	18	8	3	1	1	0	3	2	-3	2	2	2	0	
+Big frog - Level 10	Big frog
+Level 10	
+Free-to-play
+10	18	8	4	1	1	0	0	0	0	0	0	0	0	Earth elemental weakness
+25%
+Dwarf - Mining Guild (3)	Dwarf
+Mining Guild (3)	
+Free-to-play
+10	12	8	10	1	1	0	0	0	5	0	0	0	0	

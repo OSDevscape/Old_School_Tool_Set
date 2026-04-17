@@ -67,7 +67,7 @@
   });
 
   // Firebase Messaging bootstrap
-  import { registerPush } from './fcm-bootstrap.js';
+  import { registerPush } from './bootstrap.js';
 
   registerPush().then(token => {
     console.log('FCM token:', token);
@@ -4145,7 +4145,7 @@
 
 <body>
   <header>
-    <h1>Old School Tool Set <span id="player-name-header"></span></h1>
+    <h1>OSTS<span id="player-name-header"></span></h1>
     <div class="header-actions">
       <button id="profile-switcher" class="profile-switcher" aria-label="Saved profiles" type="button"
         onclick="event.preventDefault();event.stopPropagation();return openProfileMenu();">
@@ -4161,7 +4161,6 @@
   <div id="settings-panel" class="settings-panel" aria-hidden="true">
     <div class="settings-head">
       <div>
-        <div class="settings-kicker">Appearance</div>
         <h2>Settings</h2>
       </div>
       <button id="settings-close" type="button" class="settings-close" aria-label="Close settings"
@@ -4172,7 +4171,7 @@
       <div class="theme-options">
         <button class="theme-chip active" type="button" data-theme="dark">Dark</button>
         <button class="theme-chip" type="button" data-theme="light">Light</button>
-        <button class="theme-chip" type="button" data-theme="osrs">OSRS</button>
+        <button class="theme-chip" type="button" data-theme="osrs">Brown</button>
       </div>
 
     </div>
@@ -4180,10 +4179,9 @@
       <div class="settings-label">Account</div>
       <input id="rsn-input" class="settings-rsn-input" type="text" placeholder="Enter RSN..." autocomplete="off"
         autocorrect="off" spellcheck="false">
-      <div class="settings-sub-label">Tracking service</div>
-      <div class="settings-static-value">Wise Old Man</div>
+
       <div class="settings-update-row settings-update-row-single">
-        <button id="service-update-btn" class="settings-update-btn partyhat-blue" type="button">Push update</button>
+        <button id="service-update-btn" class="settings-update-btn partyhat-blue" type="button">Push to update</button>
       </div>
       <div class="settings-account-row settings-account-row-search-only">
         <input id="account-type" type="hidden" value="ironman">
@@ -4289,8 +4287,8 @@
         </div>
         <div id="last-updated"></div>
         <div class="profile-share-row" id="profile-share-row">
-          <button class="profile-share-btn" id="btn-copy-link">🔗 Copy Link</button>
-          <button class="profile-share-btn" id="btn-dl-card">🖼 Save Card</button>
+
+          <button class="profile-share-btn" id="btn-dl-card">🃏 Save Card</button>
         </div>
       </div>
       <div id="loader">
@@ -5578,8 +5576,7 @@
       var skillData = CARD_SKILL_ORDER.map(function(id) {
         var sk = snap[id] || {};
         var lvl = Number(sk.level || xpToLevel(Number(sk.experience || 0)));
-        var xp  = Number(sk.experience || 0);
-        return { id: id, name: (SKILL_META[id] || {}).name || id, icon: (SKILL_META[id] || {}).icon || '', color: (SKILL_META[id] || {}).color || '#b88848', lvl: Math.min(lvl, 99), xp: xp };
+        return { id: id, name: (SKILL_META[id] || {}).name || id, icon: (SKILL_META[id] || {}).icon || '', color: (SKILL_META[id] || {}).color || '#b88848', lvl: Math.min(lvl, 99) };
       });
       var maxed  = skillData.filter(function(s) { return s.lvl >= 99; }).length;
       var combat = calcCombat(snap);
@@ -5634,32 +5631,13 @@
       ctx.fillStyle = goldGrad(0, W); ctx.fillRect(0, 0, W, 4);
 
       // ── Header ──
-      // Build UTC timestamp string upfront (used in header)
-      var now = new Date();
-      var mm  = String(now.getUTCMonth()+1).padStart(2,'0');
-      var dd  = String(now.getUTCDate()).padStart(2,'0');
-      var yy  = String(now.getUTCFullYear()).slice(-2);
-      var hh  = String(now.getUTCHours()).padStart(2,'0');
-      var min = String(now.getUTCMinutes()).padStart(2,'0');
-      
-
-      // Badge pill (left)
+      // Badge pill
       ctx.font = 'bold 10px "Segoe UI",system-ui,sans-serif';
       var bl = tInfo[0], bW = ctx.measureText(bl).width + 18;
       rrect(PAD, 13, bW, 20, 4);
       ctx.fillStyle = 'rgba(184,136,72,.12)'; ctx.fill();
       ctx.strokeStyle = C.gold; ctx.lineWidth = 1; ctx.stroke();
       ctx.fillStyle = C.gold; ctx.fillText(bl, PAD+9, 27);
-
-      // Timestamp — 2 lines, right-aligned (date on top, time on bottom)
-      ctx.font = '10px "Segoe UI",system-ui,sans-serif';
-      ctx.fillStyle = C.muted;
-      var dateStr = mm+'/'+dd+'/'+yy;
-      var timeStr = hh+':'+min+' UTC';
-      var dW = ctx.measureText(dateStr).width;
-      var tW2 = ctx.measureText(timeStr).width;
-      ctx.fillText(dateStr, W - PAD - dW, 21);
-      ctx.fillText(timeStr, W - PAD - tW2, 33);
 
       // Player name
       ctx.font = 'bold 24px "Segoe UI",system-ui,sans-serif';
@@ -5739,20 +5717,6 @@
         ctx.font = 'bold 20px "Segoe UI",system-ui,sans-serif';
         ctx.fillStyle = isMax ? C.gold2 : C.text;
         ctx.fillText(lvlStr, icX + ICON_SZ + 7, ty + TILE_H/2 + 7);
-
-        // XP progress bar
-        var BAR_H = 3, BAR_PAD = 5, BAR_Y = ty + TILE_H - 4 - BAR_H;
-        var BAR_X = tx + BAR_PAD + 1, BAR_W = TILE_W - BAR_PAD * 2 - 2;
-        var prog = isMax ? 1 : xpProg(sk.xp, sk.lvl);
-        // Track (background)
-        rrect(BAR_X, BAR_Y, BAR_W, BAR_H, 1);
-        ctx.fillStyle = C.s2; ctx.fill();
-        // Fill
-        if (prog > 0) {
-          var fillW = Math.max(BAR_H, prog * BAR_W);
-          rrect(BAR_X, BAR_Y, fillW, BAR_H, 1);
-          ctx.fillStyle = sk.color || C.gold; ctx.fill();
-        }
       });
 
       // ── Summary ──
@@ -5777,9 +5741,8 @@
       // Maxed + total
       ctx.font = '11px "Segoe UI",system-ui,sans-serif';
       ctx.fillStyle = C.muted;
-      var sumStr = maxed+'/24 Maxed';
-      var smW = ctx.measureText(sumStr).width;
-      ctx.fillText(sumStr, (W - smW) / 2, SUM_Y + 38);
+      var sumStr = maxed+'/24 maxed  ·  '+fmtNum(r2mTotal)+'/2376 levels';
+      ctx.fillText(sumStr, PAD, SUM_Y + 38);
 
       // ── Footer ──
       ctx.strokeStyle = C.border; ctx.lineWidth = .5;

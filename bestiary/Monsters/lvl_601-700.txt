@@ -1,0 +1,162 @@
+Levels 601–700
+Monster	Members	Combat level	Hitpoints	Attack level	Defence level	Magic level	Ranged level	Stab defence	Slash defence	Crush defence	Magic defence	Light Ranged defence	Standard Ranged defence	Heavy Ranged defence	Flat armour	Elemental weakness
+Thermonuclear smoke devil (Echo)	Thermonuclear smoke devil (Echo)	
+Members
+602	1200	230	324	15	387	11	4	9	800	900	900	900	0	
+Galvek - Earth	Galvek
+Earth	
+Members
+608	1200	632	188	160	246	80	140	140	280	86	86	86	0	Water elemental weakness
+40%
+Doom of Mokhaiotl - Delve 2	Doom of Mokhaiotl
+Delve 2	
+Members
+608	550	300	90	275	110	300	300	60	160	160	160	160	0	
+Galvek - Fire	Galvek
+Fire	
+Members
+608	1200	632	188	160	246	80	140	140	280	86	86	86	0	Water elemental weakness
+40%
+Doom of Mokhaiotl - Delve 2	Doom of Mokhaiotl
+Delve 2	
+Members
+608	550	300	90	275	110	300	300	60	160	160	160	160	0	
+Galvek - Water	Galvek
+Water	
+Members
+608	1200	632	188	160	246	80	140	140	280	86	86	86	0	Water elemental weakness
+40%
+Galvek - Air	Galvek
+Air	
+Members
+608	1200	632	188	160	246	80	140	140	280	86	86	86	0	Water elemental weakness
+40%
+General Graardor	General Graardor	
+Members
+624	255	280	250	80	350	90	90	90	298	90	90	90	0	Earth elemental weakness
+40%
+General Graardor (PvM Arena)	General Graardor (PvM Arena)	
+Members
+624	255	280	250	80	350	90	90	90	298	90	90	90	0	
+General Graardor (Deadman) - Armageddon	General Graardor (Deadman)
+Armageddon	
+Members
+624	1500	280	250	80	350	90	90	90	201	90	90	90	0	Earth elemental weakness
+40%
+General Graardor (Deadman) - Annihilation	General Graardor (Deadman)
+Annihilation	
+Members
+624	2000	280	250	80	350	90	90	90	201	90	90	90	0	Earth elemental weakness
+40%
+General Graardor (Deadman) - Apocalypse	General Graardor (Deadman)
+Apocalypse	
+Members
+624	1000	280	250	80	350	90	90	90	201	90	90	90	0	
+The Hueycoatl - Normal	The Hueycoatl
+Normal	
+Members
+642	2500	150	125	50	50	100	100	0	200	350	350	350	0	Earth elemental weakness
+60%
+The Hueycoatl - Defeated	The Hueycoatl
+Defeated	
+Members
+642	2500	150	125	50	50	100	100	0	200	350	350	350	0	Earth elemental weakness
+60%
+The Hueycoatl - Tail	The Hueycoatl
+Tail	
+Members
+642	300	150	125	50	50	100	100	0	200	350	350	350	0	Earth elemental weakness
+60%
+The Hueycoatl - Body	The Hueycoatl
+Body	
+Members
+642	250	150	125	50	50	100	100	0	200	350	350	350	0	Earth elemental weakness
+60%
+The Hueycoatl - Tail (broken)	The Hueycoatl
+Tail (broken)	
+Members
+642	300	150	125	50	50	100	100	0	200	350	350	350	0	Earth elemental weakness
+60%
+The Hueycoatl - Shielded	The Hueycoatl
+Shielded	
+Members
+642	2500	150	125	50	50	100	100	0	200	350	350	350	0	Earth elemental weakness
+60%
+Splatter (Deadman)	Splatter (Deadman)	
+Members
+648	2000	200	10	300	1	0	0	0	0	0	0	0	0	
+K'ril Tsutsaroth (Deadman) - Armageddon	K'ril Tsutsaroth (Deadman)
+Armageddon	
+Members
+650	1000	340	270	200	1	80	80	80	130	80	80	80	0	Water elemental weakness
+30%
+K'ril Tsutsaroth (Deadman) - Annihilation	K'ril Tsutsaroth (Deadman)
+Annihilation	
+Members
+650	1500	340	270	200	1	80	80	80	130	80	80	80	0	Water elemental weakness
+30%
+K'ril Tsutsaroth	K'ril Tsutsaroth	
+Members
+650	255	340	270	200	1	70	80	80	80	80	80	80	0	Water elemental weakness
+30%
+K'ril Tsutsaroth (Deadman) - Apocalypse	K'ril Tsutsaroth (Deadman)
+Apocalypse	
+Members
+650	1000	340	270	200	1	80	80	80	130	80	80	80	0	
+K'ril Tsutsaroth (PvM Arena)	K'ril Tsutsaroth (PvM Arena)	
+Members
+650	255	340	270	200	1	80	80	80	130	80	80	80	0	
+Derwen (Deadman) - Annihilation	Derwen (Deadman)
+Annihilation	
+Members
+655	2000	250	100	180	1	200	200	200	-60	200	200	200	0	
+Porazdir (Deadman) - Annihilation	Porazdir (Deadman)
+Annihilation	
+Members
+655	2000	250	100	180	1	200	200	200	-60	200	200	200	0	
+Grotesque Guardians (Echo) - Dusk	Grotesque Guardians (Echo)
+Dusk	
+Members
+656	1080	345	187	262	387	0	0	0	0	0	0	0	0	
+Doom of Mokhaiotl - Delve 3	Doom of Mokhaiotl
+Delve 3	
+Members
+658	575	300	90	275	110	300	300	60	160	160	160	160	0	
+Doom of Mokhaiotl - Delve 3	Doom of Mokhaiotl
+Delve 3	
+Members
+658	575	300	90	275	110	300	300	60	160	160	160	160	0	
+Malevolent Mage (Deadman) - Annihilation	Malevolent Mage (Deadman)
+Annihilation	
+Members
+661	2000	1	150	255	1	0	0	0	300	0	0	0	0	Water elemental weakness
+50%
+Dharok the Wretched (Deadman) - Armageddon	Dharok the Wretched (Deadman)
+Armageddon	
+Members
+666	200	100	200	1	1	252	250	244	-11	249	249	249	0	Air elemental weakness
+50%
+Dharok the Wretched (Deadman) - Apocalypse	Dharok the Wretched (Deadman)
+Apocalypse	
+Members
+666	200	100	100	1	1	252	250	244	-11	249	249	249	0	
+Dharok the Wretched (Deadman) - Annihilation	Dharok the Wretched (Deadman)
+Annihilation	
+Members
+666	300	100	200	1	1	252	250	244	-11	249	249	249	0	Air elemental weakness
+50%
+Sol Heredit (Deadman)	Sol Heredit (Deadman)	
+Members
+668	1500	350	200	300	350	65	5	30	750	825	825	825	0	
+Bee Swarm (Deadman) - Armageddon	Bee Swarm (Deadman)
+Armageddon	
+Members
+670	2000	400	30	1	1	10	10	10	0	0	0	0	0	Fire elemental weakness
+50%
+Crystalline Hunllef	Crystalline Hunllef	
+Members
+674	600	240	240	240	240	20	20	20	20	20	20	20	0	
+Dagannoth Kings (Echo) - Supreme	Dagannoth Kings (Echo)
+Supreme	
+Members
+681		255	255	255	550	10	10	10	255	550	550	550	0	

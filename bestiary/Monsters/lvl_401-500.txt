@@ -1,0 +1,228 @@
+Bestiary/Levels higher than 400
+< Bestiary
+This page lists all monsters with a combat level of more than 400.
+
+
+Contents
+Levels 401–500
+Levels 501–600
+Levels 601–700
+Levels 701–800
+Levels 801–900
+Levels 901–1000
+Levels over 1000
+Levels 401–500
+Monster	Members	Combat level	Hitpoints	Attack level	Defence level	Magic level	Ranged level	Stab defence	Slash defence	Crush defence	Magic defence	Light Ranged defence	Standard Ranged defence	Heavy Ranged defence	Flat armour	Elemental weakness
+Greater abyssal demon (Deadman) - Armageddon	Greater abyssal demon (Deadman)
+Armageddon	
+Members
+407	750	300	150	1	1	50	50	50	0	50	50	50	0	
+Vitreous warped Jelly (Deadman) - Armageddon	Vitreous warped Jelly (Deadman)
+Armageddon	
+Members
+408	1000	200	50	180	1	0	0	0	0	0	0	0	0	Earth elemental weakness
+30%
+King Black Dragon (Echo)	King Black Dragon (Echo)	
+Members
+414	840	300	300	252	1	60	90	90	80	70	70	50	0	Water elemental weakness
+50%
+Dagannoth Rex (Deadman) - Apocalypse	Dagannoth Rex (Deadman)
+Apocalypse	
+Members
+417	750	255	255	0	255	255	255	255	10	255	255	255	0	
+Dagannoth Prime (Deadman) - Apocalypse	Dagannoth Prime (Deadman)
+Apocalypse	
+Members
+417	750	255	255	255	0	255	255	255	255	10	10	10	0	
+Big Evil Chicken - Factions	Big Evil Chicken
+Factions	
+Members
+422	1000	255	25	300	0	25	25	25	255	0	0	0	0	
+Verzik Vitur - Entry mode, Phase 1	Verzik Vitur
+Entry mode, Phase 1	
+Members
+425	1200	180	10	180	180	10	10	10	10	10	10	10	0	
+Hespori (Echo)	Hespori (Echo)	
+Members
+426	900	1	120	250	200	60	20	60	80	80	80	80	0	Fire elemental weakness
+100%
+Alchemical Hydra - Serpentine	Alchemical Hydra
+Serpentine	
+Members
+426	1100	100	100	260	260	75	150	150	150	45	45	45	0	Earth elemental weakness
+50%
+Alchemical Hydra - Fire	Alchemical Hydra
+Fire	
+Members
+426	1100	100	100	260	260	75	150	150	150	45	45	45	0	Earth elemental weakness
+50%
+Alchemical Hydra - Electric	Alchemical Hydra
+Electric	
+Members
+426	1100	100	100	260	260	75	150	150	150	45	45	45	0	Earth elemental weakness
+50%
+Alchemical Hydra - Extinguished	Alchemical Hydra
+Extinguished	
+Members
+426	1100	100	100	260	260	75	150	150	150	45	45	45	0	Earth elemental weakness
+50%
+Greater abyssal demon (Deadman) - Apocalypse	Greater abyssal demon (Deadman)
+Apocalypse	
+Members
+429	750	300	240	1	1	50	50	50	0	50	50	50	0	
+Cerberus (Deadman) - Apocalypse, Armageddon	Cerberus (Deadman)
+Apocalypse, Armageddon	
+Members
+430	1000	220	150	220	220	50	100	25	100	100	100	100	0	Water elemental weakness
+40%
+Glough	Glough	
+Members
+431	575	260	248	250	262	0	0	0	0	0	0	0	0	
+Dagannoth Supreme (Deadman) - Armageddon	Dagannoth Supreme (Deadman)
+Armageddon	
+Members
+436	1000	255	84	255	255	10	10	10	255	550	550	550	0	Earth elemental weakness
+35%
+The Untouchable (Nightmare Zone) - Hard Mode	The Untouchable (Nightmare Zone)
+Hard Mode	
+Members
+440	180	374	434	1	1	0	0	0	0	0	0	0	0	
+Phantom Muspah (Deadman) - Factions	Phantom Muspah (Deadman)
+Factions	
+Members
+444	850	280	200	100	280	185	134	120	34	261	261	261	0	Air elemental weakness
+65%
+Tumeken's Warden (Deadman) - Factions	Tumeken's Warden (Deadman)
+Factions	
+Members
+445	1000	300	100	190	350	70	70	70	-30	70	70	70	0	Earth elemental weakness
+50%
+Dagannoth Prime (Deadman) - Armageddon	Dagannoth Prime (Deadman)
+Armageddon	
+Members
+447	1000	255	125	255	0	255	255	255	255	10	10	10	0	Earth elemental weakness
+35%
+Tormented Demon - 1	Tormented Demon
+1	
+Members
+450	600	255	150	255	255	75	175	68	5	140	150	90	0	Water elemental weakness
+30%
+Tormented Demon - 2	Tormented Demon
+2	
+Members
+450	600	255	150	255	255	75	175	68	5	140	150	90	0	Water elemental weakness
+30%
+Tormented Demon - 3	Tormented Demon
+3	
+Members
+450	600	255	150	255	255	75	175	68	5	140	150	90	0	Water elemental weakness
+30%
+Tormented Demon - 4	Tormented Demon
+4	
+Members
+450	600	255	150	255	255	75	175	68	5	140	150	90	0	Water elemental weakness
+30%
+Dagannoth Kings (Echo) - Prime	Dagannoth Kings (Echo)
+Prime	
+Members
+454	1800	255	255	400	0	255	255	255	255	10	10	10	0	
+Dagannoth Kings (Echo) - Rex	Dagannoth Kings (Echo)
+Rex	
+Members
+454	1800	400	255	0	255	255	255	255	10	255	255	255	0	
+Vet'ion - Enraged	Vet'ion
+Enraged	
+Members
+454	255	430	395	300	1	201	200	-10	250	270	270	270	0	
+Vet'ion - Normal	Vet'ion
+Normal	
+Members
+454	255	430	395	300	1	201	200	-10	250	270	270	270	0	
+Night beast (Deadman) - Annihilation	Night beast (Deadman)
+Annihilation	
+Members
+457	1000	270	100	300	1	75	80	120	100	100	100	100	0	
+Vanstrom Klause - Sins of the Father	Vanstrom Klause
+Sins of the Father	
+Members
+459	750	0	180	180	0	34	34	34	34	34	34	34	0	
+Venenatis (PvM Arena)	Venenatis (PvM Arena)	
+Members
+464	255	470	490	150	1	260	260	260	850	100	100	100	0	
+Venenatis	Venenatis	
+Members
+464	850	300	321	300	350	100	100	10	300	150	150	150	0	Fire elemental weakness
+40%
+Magic Mark - Armageddon	Magic Mark
+Armageddon	
+Members
+467	1500	10	30	175	0	25	25	25	150	10	10	10	0	
+Scurrius (Deadman) - Factions	Scurrius (Deadman)
+Factions	
+Members
+470	1000	300	100	100	100	20	20	20	10	20	20	20	0	
+Callisto (PvM Arena)	Callisto (PvM Arena)	
+Members
+470	255	350	440	1	1	135	104	175	900	230	230	230	0	
+Callisto	Callisto	
+Members
+470	1000	350	225	140	200	150	130	125	0	50	50	50	0	Fire elemental weakness
+30%
+Ranging Ro - Armageddon	Ranging Ro
+Armageddon	
+Members
+473	1500	10	100	15	150	100	100	100	200	100	100	100	0	
+Cerberus (Echo)	Cerberus (Echo)	
+Members
+477	1620	275	115	275	275	50	100	25	100	100	100	100	0	Water elemental weakness
+40%
+Dagannoth Rex (Deadman) - Armageddon	Dagannoth Rex (Deadman)
+Armageddon	
+Members
+479	1000	255	255	0	255	255	255	255	10	255	255	255	0	Earth elemental weakness
+35%
+Verzik Vitur - Entry mode, Phase 2	Verzik Vitur
+Entry mode, Phase 2	
+Members
+488	1600	200	120	180	180	40	20	40	40	180	180	180	0	
+Elidinis' Warden - Core-ejected	Elidinis' Warden
+Core-ejected	
+Members
+489	4500	300	100	190	190	70	70	70	-30	70	70	70	0	Earth elemental weakness
+50%
+Tumeken's Warden - Active	Tumeken's Warden
+Active	
+Members
+489	140	300	100	190	190	70	70	70	-30	70	70	70	0	Earth elemental weakness
+50%
+Tumeken's Warden - Core-ejected	Tumeken's Warden
+Core-ejected	
+Members
+489	4500	300	100	190	190	70	70	70	-30	70	70	70	0	Earth elemental weakness
+50%
+Elidinis' Warden - Active	Elidinis' Warden
+Active	
+Members
+489	140	300	100	190	190	70	70	70	-30	70	70	70	0	Earth elemental weakness
+50%
+Jal-Zek	Jal-Zek	
+Members
+490	220	370	260	300	510	0	0	0	0	0	0	0	0	Water elemental weakness
+40%
+Jhallan	Jhallan	
+Members
+491	1	250	83	83	0	200	200	200	300	150	150	150	0	
+Jhallan	Jhallan	
+Members
+491	1500	250	250	250	0	200	200	200	300	150	150	150	0	
+Fragment of Seren	Fragment of Seren	
+Members
+494	1000	242	102	102	235	320	220	320	10	480	480	480	0	
+I DSCIM YOU	I DSCIM YOU	
+Members
+495	1500	150	25	100	25	25	25	25	50	10	10	10	0	Fire elemental weakness
+50%
+Kalphite Queen (Echo) - Crawling	Kalphite Queen (Echo)
+Crawling	
+Members
+499	561	375	300	165	1	50	50	10	100	100	100	100	0	

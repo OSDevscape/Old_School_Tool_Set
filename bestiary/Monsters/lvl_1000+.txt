@@ -1,0 +1,296 @@
+Levels over 1000
+Monster	Members	Combat level	Hitpoints	Attack level	Defence level	Magic level	Ranged level	Stab defence	Slash defence	Crush defence	Magic defence	Light Ranged defence	Standard Ranged defence	Heavy Ranged defence	Flat armour	Elemental weakness
+Nex	Nex	
+Members
+1001	3400	315	260	230	350	40	140	60	300	190	190	150	0	
+Giant goblin - Annihilation	Giant goblin
+Annihilation	
+Members
+1022	3500	150	200	1	1	-15	-15	-15	-15	-15	-15	-15	0	
+Yama (Deadman) - Annihilation	Yama (Deadman)
+Annihilation	
+Members
+1024	3000	320	225	250	210	100	80	333	60	333	200	333	0	Water elemental weakness
+50%
+Phosani's Nightmare	Phosani's Nightmare	
+Members
+1024	3200	150	150	150	150	120	180	40	600	600	600	600	0	
+Flaming pyrelord (Deadman) - Annihilation	Flaming pyrelord (Deadman)
+Annihilation	
+Members
+1026	3500	150	150	1	1	18	18	18	150	18	18	18	0	Water elemental weakness
+100%
+Verzik Vitur - Hard mode, Phase 1	Verzik Vitur
+Hard mode, Phase 1	
+Members
+1040	2000	400	20	400	400	20	20	20	20	20	20	20	0	
+Verzik Vitur - Normal mode, Phase 1	Verzik Vitur
+Normal mode, Phase 1	
+Members
+1040	2000	400	20	400	400	20	20	20	20	20	20	20	0	
+Great Olm - Head (Challenge Mode)	Great Olm
+Head (Challenge Mode)	
+Members
+1043	800	375	225	375	375	200	200	200	200	50	50	50	0	Earth elemental weakness
+50%
+Great Olm - Head (Normal)	Great Olm
+Head (Normal)	
+Members
+1043	800	250	150	250	250	200	200	200	200	50	50	50	0	Earth elemental weakness
+50%
+Pestilent Bloat - Hard	Pestilent Bloat
+Hard	
+Members
+1044	2400	250	100	150	180	40	20	40	600	800	800	800	0	
+Big Evil Chicken - Annihilation	Big Evil Chicken
+Annihilation	
+Members
+1047	3500	255	25	300	0	25	25	25	255	0	0	0	0	
+Duke Sucellus - Awakened, Defeated	Duke Sucellus
+Awakened, Defeated	
+Members
+1099	1697	435	316	465	0	255	65	190	440	320	320	320	0	
+Duke Sucellus - Awakened, Asleep	Duke Sucellus
+Awakened, Asleep	
+Members
+1099	1697	435	316	465	0	255	65	190	440	320	320	320	0	
+Duke Sucellus - Awakened, Awake	Duke Sucellus
+Awakened, Awake	
+Members
+1099	1697	435	316	465	0	255	65	190	440	320	320	320	0	
+Dagannoth Rex (Deadman) - Annihilation	Dagannoth Rex (Deadman)
+Annihilation	
+Members
+1104	3500	255	255	0	255	255	255	255	10	255	255	255	0	Earth elemental weakness
+35%
+Corrupted Hunllef (Echo)	Corrupted Hunllef (Echo)	
+Members
+1117	1100												0	
+The Maiden of Sugadinti - Hard Mode	The Maiden of Sugadinti
+Hard Mode	
+Members
+1128	3500	350	200	350	350	0	0	0	0	0	0	0	0	
+Vardorvis - Awakened	Vardorvis
+Awakened	
+Members
+1136	1400	420		215	0	215	65	85	580	580	580	580	0	Fire elemental weakness
+35%
+The Whisperer - Awakened	The Whisperer
+Awakened	
+Members
+1146	2700	378	300	225	243	180	300	220	10	300	300	300	0	Earth elemental weakness
+60%
+The Leviathan - Awakened	The Leviathan
+Awakened	
+Members
+1157	2700	525	287	280	280	260	190	230	280	50	50	25	0	
+Xarpus - Hard mode	Xarpus
+Hard mode	
+Members
+1160	6000	1	200	220	100	0	0	0	0	160	160	160	0	Air elemental weakness
+50%
+Sotetseg - Hard	Sotetseg
+Hard	
+Members
+1195	4000	350	200	250	250	70	70	70	30	150	150	150	0	
+Demonic Brutus - Ghost	Demonic Brutus
+Ghost	
+Members
+1224	750	380	200	272	1	182	65	216	520	460	418	110	0	Earth elemental weakness
+25%
+Demonic Brutus - Brutus	Demonic Brutus
+Brutus	
+Members
+1224	750	380	200	272	1	182	65	216	520	460	418	110	0	Earth elemental weakness
+25%
+Yama - Phase 3	Yama
+Phase 3	
+Members
+1238	2500	320	225	250	210	135	108	449	81	449	297	449	0	Water elemental weakness
+50%
+Yama - Normal	Yama
+Normal	
+Members
+1238	2500	320	225	250	210	100	80	333		333	220	333	0	Water elemental weakness
+50%
+Verzik Vitur - Hard mode, Phase 2	Verzik Vitur
+Hard mode, Phase 2	
+Members
+1265	3500	400	200	400	400	100	60	100	70	250	250	250	0	
+Verzik Vitur - Normal mode, Phase 2	Verzik Vitur
+Normal mode, Phase 2	
+Members
+1265	3500	400	200	400	400	100	60	100	70	250	250	250	0	
+Guard (Deadman Mode) - Gnome Stronghold (ranged)	Guard (Deadman Mode)
+Gnome Stronghold (ranged)	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Fremennik Isles	Guard (Deadman Mode)
+Fremennik Isles	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Port Phasmatys (ranged)	Guard (Deadman Mode)
+Port Phasmatys (ranged)	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Gnome Stronghold	Guard (Deadman Mode)
+Gnome Stronghold	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Sophanem	Guard (Deadman Mode)
+Sophanem	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Varrock (ranged)	Guard (Deadman Mode)
+Varrock (ranged)	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Lumbridge	Guard (Deadman Mode)
+Lumbridge	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - East Ardougne	Guard (Deadman Mode)
+East Ardougne	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Port Phasmatys	Guard (Deadman Mode)
+Port Phasmatys	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Kourend Castle	Guard (Deadman Mode)
+Kourend Castle	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Void Knights' Outpost (ranged)	Guard (Deadman Mode)
+Void Knights' Outpost (ranged)	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Prifddinas (ranged)	Guard (Deadman Mode)
+Prifddinas (ranged)	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Seers' Village (ranged)	Guard (Deadman Mode)
+Seers' Village (ranged)	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Falador (ranged)	Guard (Deadman Mode)
+Falador (ranged)	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Varrock	Guard (Deadman Mode)
+Varrock	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Warriors' Guild (ranged)	Guard (Deadman Mode)
+Warriors' Guild (ranged)	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Ruins of Unkah	Guard (Deadman Mode)
+Ruins of Unkah	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Prifddinas	Guard (Deadman Mode)
+Prifddinas	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - East Ardougne (ranged)	Guard (Deadman Mode)
+East Ardougne (ranged)	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Lumbridge (ranged)	Guard (Deadman Mode)
+Lumbridge (ranged)	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Catherby (ranged)	Guard (Deadman Mode)
+Catherby (ranged)	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Kourend Castle (ranged)	Guard (Deadman Mode)
+Kourend Castle (ranged)	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Warriors' Guild	Guard (Deadman Mode)
+Warriors' Guild	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Rellekka	Guard (Deadman Mode)
+Rellekka	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Wintertodt	Guard (Deadman Mode)
+Wintertodt	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Void Knights' Outpost	Guard (Deadman Mode)
+Void Knights' Outpost	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Sophanem (ranged)	Guard (Deadman Mode)
+Sophanem (ranged)	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Rellekka (ranged)	Guard (Deadman Mode)
+Rellekka (ranged)	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Yanille (ranged)	Guard (Deadman Mode)
+Yanille (ranged)	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Fremennik Isles (ranged)	Guard (Deadman Mode)
+Fremennik Isles (ranged)	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Yanille	Guard (Deadman Mode)
+Yanille	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Guard (Deadman Mode) - Falador	Guard (Deadman Mode)
+Falador	
+Members
+1337	800	800	300	1	1	8	9	7	0	8	8	8	0	
+Unbound JalTok-Jad	Unbound JalTok-Jad	
+Members
+1350	700	1125	600	637	765	0	0	0	0	0	0	0	0	
+TzKal-Zuk - Normal	TzKal-Zuk
+Normal	
+Members
+1400	1200	350	260	150	400	0	0	0	350	100	100	100	0	Water elemental weakness
+40%
+TzKal-Zuk - Enraged	TzKal-Zuk
+Enraged	
+Members
+1400	1200	350	260	150	400	0	0	0	350	100	100	100	0	Water elemental weakness
+40%
+Bee Swarm (Deadman) - Annihilation	Bee Swarm (Deadman)
+Annihilation	
+Members
+1420	5000	400	30	1	1	10	10	10	0	0	0	0	0	Fire elemental weakness
+50%
+Scurrius (Deadman) - Annihilation	Scurrius (Deadman)
+Annihilation	
+Members
+1470	5000	300	100	100	100	20	20	20	10	20	20	20	0	
+Verzik Vitur - Normal mode, Phase 3	Verzik Vitur
+Normal mode, Phase 3	
+Members
+1520	3500	400	150	300	300	70	30	70	100	230	230	230	0	Fire elemental weakness
+50%
+Verzik Vitur - Hard mode, Phase 3	Verzik Vitur
+Hard mode, Phase 3	
+Members
+1520	3500	400	150	300	300	70	30	70	100	230	230	230	0	Fire elemental weakness
+50%
+TzTok-Jad (Deadman) - Armageddon	TzTok-Jad (Deadman)
+Armageddon	
+Members
+1527	5000	350	200	450	450	0	0	0	0	0	0	0	0	Water elemental weakness
+40%
+Sol Heredit	Sol Heredit	
+Members
+1563	1500	350	200	300	350	65	5	30	750	825	825	825	0	
+TzTok-Jad (Deadman) - Annihilation	TzTok-Jad (Deadman)
+Annihilation	
+Members
+1758	5000	640	200	750	750	0	0	0	0	0	0	0	0	Water elemental weakness
+40%

@@ -1,0 +1,271 @@
+Bestiary/Levels 121 to 130
+This page lists all monsters within the 121 to 130 combat level bracket.
+
+List
+Monster	Members	Combat level	Hitpoints	Attack level	Defence level	Magic level	Ranged level	Stab defence	Slash defence	Crush defence	Magic defence	Light Ranged defence	Standard Ranged defence	Heavy Ranged defence	Flat armour	Elemental weakness
+Warped Tortoise	Warped Tortoise	
+Members
+121	200	78	78	50	0	50	50	0	0	60	60	20	0	Earth elemental weakness
+20%
+Paladin (Song of the Elves) - Level 121	Paladin (Song of the Elves)
+Level 121	
+Members
+121	82	54	64	1	1	87	84	76	-10	79	79	79	0	
+Redeyes	Redeyes	
+Members
+121	160	70	70	70	1	10	10	5	5	20	20	20	0	
+Scarred lesser demon - Level 121 (ranged)	Scarred lesser demon
+Level 121 (ranged)	
+Members
+121	100	110	110	110	110	0	0	0	0	0	0	0	0	Water elemental weakness
+40%
+Dessourt	Dessourt	
+Members
+121	130	99	99	1	1	10	150	150	0	0	0	0	0	
+Ice troll - Level 121	Ice troll
+Level 121	
+Members
+121	90	110	110	1	1	30	60	30	0	0	0	0	0	Fire elemental weakness
+100%
+Dessourt (Nightmare Zone) - Normal Mode	Dessourt (Nightmare Zone)
+Normal Mode	
+Members
+121	130	99	99	1	1	10	150	150	0	0	0	0	0	
+Scarred lesser demon - Level 121 (mage)	Scarred lesser demon
+Level 121 (mage)	
+Members
+121	100	110	110	110	110	0	0	0	0	0	0	0	0	Water elemental weakness
+40%
+Scarred lesser demon - Level 121 (melee)	Scarred lesser demon
+Level 121 (melee)	
+Members
+121	100	110	110	110	110	0	0	0	0	0	0	0	0	Water elemental weakness
+40%
+Scarred lesser demon - Level 121 (summoning circle)	Scarred lesser demon
+Level 121 (summoning circle)	
+Members
+121	70	120	90	1	1	0	0	0	0	0	0	0	0	Water elemental weakness
+40%
+Spiritual mage - Bandos	Spiritual mage
+Bandos	
+Members
+121	106	1	103	142	1	12	14	13	35	13	13	13	0	Air elemental weakness
+30%
+Spiritual mage - Zamorak	Spiritual mage
+Zamorak	
+Members
+121	75	1	61	180	1	0	0	0	0	0	0	0	0	Air elemental weakness
+30%
+Ice Troll King	Ice Troll King	
+Members
+122	150	100	80	1	1	45	45	45	2000	2000	2000	2000	0	Fire elemental weakness
+35%
+Ice Troll King (Nightmare Zone) - Normal Mode	Ice Troll King (Nightmare Zone)
+Normal Mode	
+Members
+122	150	100	80	1	1	45	45	45	2000	2000	2000	2000	0	Fire elemental weakness
+35%
+Sir Gawain	Sir Gawain	
+Members
+122	110	110	100	1	1	65	90	300	0	0	0	0	0	
+Spiritual ranger - Saradomin	Spiritual ranger
+Saradomin	
+Members
+122	106	1	100	1	146	3	5	13	16	23	23	23	0	Air elemental weakness
+30%
+Hellhound (Construction)	Hellhound (Construction)	
+Members
+122	116	105	102	1	1	0	0	0	0	0	0	0	0	Water elemental weakness
+50%
+Hellhound - Level 122	Hellhound
+Level 122	
+Members
+122	116	105	102	1	1	0	0	0	0	0	0	0	0	Water elemental weakness
+50%
+Spiritual mage - Armadyl	Spiritual mage
+Armadyl	
+Members
+123	86	1	111	150	1	9	12	5	45	28	28	28	0	Air elemental weakness
+30%
+Spiritual warrior - Armadyl	Spiritual warrior
+Armadyl	
+Members
+123	98	1	120	1	141	23	25	13	35	35	35	35	0	Air elemental weakness
+30%
+Ice troll - Level 123	Ice troll
+Level 123	
+Members
+123	80	120	100	1	1	30	60	30	0	0	0	0	0	Fire elemental weakness
+100%
+Mutated Bloodveld	Mutated Bloodveld	
+Members
+123	170	110	30	1	1	0	0	0	0	0	0	0	0	
+Abyssal demon - Catacombs of Kourend	Abyssal demon
+Catacombs of Kourend	
+Members
+124	150	97	135	1	1	20	20	20	0	20	20	20	0	
+Sir Kay	Sir Kay	
+Members
+124	110	110	100	1	1	45	300	65	0	0	0	0	0	
+Abyssal demon - Standard	Abyssal demon
+Standard	
+Members
+124	150	97	135	1	1	20	20	20	0	20	20	20	0	
+Abyssal demon - Wilderness Slayer Cave	Abyssal demon
+Wilderness Slayer Cave	
+Members
+124	150	97	135	1	1	20	20	20	0	20	20	20	0	
+Stone Guardian - Melee	Stone Guardian
+Melee	
+Members
+124	62	150	138	118	1	25	25	15	10	40	40	40	0	
+Stone Guardian - Ranged	Stone Guardian
+Ranged	
+Members
+124	62	1	138	118	128	10	10	0	55	25	25	25	0	
+Ice troll - Level 124	Ice troll
+Level 124	
+Members
+124	80	140	80	1	1	30	60	30	0	0	0	0	0	Fire elemental weakness
+100%
+Stone Guardian - Magic	Stone Guardian
+Magic	
+Members
+124	62	1	138	128	1	40	40	35	35	0	0	0	0	
+Arzinian Avatar of Ranging - Level 125	Arzinian Avatar of Ranging
+Level 125	
+Members
+125	100	10	120	0	110	15	15	15	80	20	20	20	0	
+Arzinian Avatar of Strength - Level 125	Arzinian Avatar of Strength
+Level 125	
+Members
+125	100	110	95	0	0	20	20	20	15	80	80	80	0	
+Arzinian Avatar of Magic - Level 125	Arzinian Avatar of Magic
+Level 125	
+Members
+125	100	10	120	120	0	80	80	80	20	15	15	15	0	
+Vyrewatch - Level 125	Vyrewatch
+Level 125	
+Members
+125	110	120	85	120	120	0	0	0	0	0	0	0	0	
+Daddy's special water	Daddy's special water	
+Members
+125	120	99	99	0	0	25	25	40	200	200	200	200	0	Earth elemental weakness
+40%
+Spiritual warrior - Saradomin	Spiritual warrior
+Saradomin	
+Members
+125	110	110	110	1	1	12	14	13	5	13	13	13	0	Air elemental weakness
+30%
+Tiger shark	Tiger shark	
+Members
+125	174	120	60	1	0	0	0	0	0	100	20	40	0	
+Bandosian guard	Bandosian guard	
+Members
+125	130	110	80	1	1	12	14	13	5	13	13	13	0	
+Revenant knight	Revenant knight	
+Members
+126	143	100	80	146	146	145	200	180	95	190	190	150	0	Air elemental weakness
+30%
+Sir Lancelot	Sir Lancelot	
+Members
+127	115	110	110	1	1	300	85	300	0	0	0	0	0	
+Spiritual ranger - Armadyl	Spiritual ranger
+Armadyl	
+Members
+127	89	1	130	1	150	17	16	8	35	41	41	41	0	Air elemental weakness
+30%
+Hellhound - Level 127	Hellhound
+Level 127	
+Members
+127	116	107	106	1	1	0	0	0	0	0	0	0	0	
+Rock lobster - Hidden	Rock lobster
+Hidden	
+Members
+127	150	100	100	1	1	100	100	50	50	150	150	90	0	Earth elemental weakness
+25%
+Rock lobster - Active	Rock lobster
+Active	
+Members
+127	150	100	100	1	1	100	100	50	50	150	150	90	0	Earth elemental weakness
+25%
+Cave kraken - Whirlpool	Cave kraken
+Whirlpool	
+Members
+127	125	1	150	120	1	0	0	0	-63	100	100	100	0	
+Cave kraken - Cave kraken	Cave kraken
+Cave kraken	
+Members
+127	125	1	150	120	1	0	0	0	-63	100	100	100	0	Earth elemental weakness
+50%
+Earthen Nagua - Reinforced	Earthen Nagua
+Reinforced	
+Members
+128	160	120	40	40	1	50	70	10	60	150	150	150	-4	Air elemental weakness
+15%
+Spined kraken	Spined kraken	
+Members
+128	177	1	75	135	1	0	0	0	-63	120	75	60	0	Earth elemental weakness
+50%
+Earthen Nagua - Weakened	Earthen Nagua
+Weakened	
+Members
+128	160	120	40	40	1	0	0	0	60	150	150	150	-4	Air elemental weakness
+15%
+Bryophyta	Bryophyta	
+Free-to-play
+128	115	130	100	90	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Earthen Nagua - Normal	Earthen Nagua
+Normal	
+Members
+128	160	120	40	40	1	30	50	50	60	150	150	150	-4	Air elemental weakness
+15%
+Brawler - Level 129	Brawler
+Level 129	
+Members
+129	143	67	118	0	0	0	0	0	0	0	0	0	0	
+Monkey Zombie - Level 129	Monkey Zombie
+Level 129	
+Members
+129	90	150	90	90	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Elder Chaos druid	Elder Chaos druid	
+Members
+129	150	98	65	110	1	0	0	0	0	0	0	0	0	
+Parasite (Phosani's Nightmare) - Regular	Parasite (Phosani's Nightmare)
+Regular	
+Members
+129	55	1	60	60	60	60	80	20	120	120	120	120	0	Fire elemental weakness
+50%
+Void Flare - Fire	Void Flare
+Fire	
+Members
+130	140	1	100	200	1	0	0	0	0	0	0	0	0	
+Void Flare - Shadow	Void Flare
+Shadow	
+Members
+130	140	1	100	200	1	0	0	0	0	0	0	0	0	
+Gelatinnoth Mother	Gelatinnoth Mother	
+Members
+130	240	78	81	1	50	150	150	150	50	50	50	50	0	
+Gelatinnoth Mother (Nightmare Zone) - Normal Mode	Gelatinnoth Mother (Nightmare Zone)
+Normal Mode	
+Members
+130	240	78	81	1	50	150	150	150	50	50	50	50	0	
+Skeleton thug	Skeleton thug	
+Members
+130	114	115	110	1	1	0	3	2	-3	2	2	2	1	Earth elemental weakness
+35%
+Feral Vampyre - Level 130 (Temple Trekking)	Feral Vampyre
+Level 130 (Temple Trekking)	
+Members
+130	185	120	30	0	0	0	0	0	0	0	0	0	0	
+Skeleton heavy	Skeleton heavy	
+Members
+130	114	115	110	1	1	0	3	2	-3	2	2	2	1	Earth elemental weakness
+35%
+Bandit - Level 130	Bandit
+Level 130	
+Members
+130	155	57	57	1	1	0	23	22	0	0	0	0	0	

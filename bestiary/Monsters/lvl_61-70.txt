@@ -1,0 +1,560 @@
+Bestiary/Levels 61 to 70
+This page lists all monsters within the 61 to 70 combat level bracket.
+
+List
+Monster	Members	Combat level	Hitpoints	Attack level	Defence level	Magic level	Ranged level	Stab defence	Slash defence	Crush defence	Magic defence	Light Ranged defence	Standard Ranged defence	Heavy Ranged defence	Flat armour	Elemental weakness
+Undead one - Level 61	Undead one
+Level 61	
+Members
+61	47	55	55	0	0	5	5	3	1	4	4	4	0	Earth elemental weakness
+50%
+Basilisk (The Fremennik Exiles) - 1	Basilisk (The Fremennik Exiles)
+1	
+Members
+61	75	30	75	1	1	20	20	0	20	0	0	0	0	Earth elemental weakness
+40%
+Ice spider - Settlement Ruins	Ice spider
+Settlement Ruins	
+Members
+61	65	50	43	1	1	20	17	12	13	13	13	13	0	Fire elemental weakness
+100%
+Basilisk (The Fremennik Exiles) - 2	Basilisk (The Fremennik Exiles)
+2	
+Members
+61	75	30	75	1	1	20	20	0	20	0	0	0	0	Earth elemental weakness
+40%
+Penance Fighter - Wave 7/10	Penance Fighter
+Wave 7/10	
+Members
+61	50	56	52	1	1	0	0	0	0	0	0	0	0	
+Basilisk (unused)	Basilisk (unused)	
+Members
+61	75	30	75	1	1	20	20	0	20	0	0	0	0	Earth elemental weakness
+40%
+Feral Vampyre - Level 61	Feral Vampyre
+Level 61	
+Members
+61	40	55	55	40	1	0	0	0	0	0	0	0	0	
+Basilisk	Basilisk	
+Members
+61	75	30	75	1	1	20	20	0	20	0	0	0	0	Earth elemental weakness
+40%
+Fremennik warrior (Sailing)	Fremennik warrior (Sailing)	
+Members
+61	45	60	30	1	1	20	21	1	0				0	
+Ice spider - Ruins of Tapoyauik	Ice spider
+Ruins of Tapoyauik	
+Members
+61	65	50	43	1	1	20	17	12	13	13	13	13	0	Fire elemental weakness
+100%
+Ice spider - Normal	Ice spider
+Normal	
+Members
+61	65	50	43	1	1	20	17	12	13	13	13	13	0	Fire elemental weakness
+100%
+Zombie (Tarn's Lair) - Level 61	Zombie (Tarn's Lair)
+Level 61	
+Members
+61	57	53	50	1	1	20	20	0	0	10	10	10	0	Fire elemental weakness
+50%
+Sea Snake Hatchling	Sea Snake Hatchling	
+Members
+62	50	60	50	1	1	0	0	0	0	0	0	0	0	Earth elemental weakness
+20%
+Sir Jerro	Sir Jerro	
+Members
+62	57	54	54	1	1	87	84	76	-10	79	79	79	0	
+Sir Carl	Sir Carl	
+Members
+62	57	54	54	1	1	87	84	76	-10	79	79	79	0	
+Sir Harry	Sir Harry	
+Members
+62	57	54	54	1	1	87	84	76	-10	79	79	79	0	
+Paladin - 5	Paladin
+5	
+Members
+62	57	54	54	1	1	87	84	76	-10	79	79	79	0	
+Dark warrior - Level 62	Dark warrior
+Level 62	
+Members
+62	80	50	40	20	1	10	20	40	0	0	0	0	0	
+Lizardman - Level 62	Lizardman
+Level 62	
+Members
+62	60	53	52	1	1	-20	20	5	0	-10	0	0	0	
+Paladin - 4	Paladin
+4	
+Members
+62	57	54	54	1	1	87	84	76	-10	79	79	79	0	
+Slug Prince	Slug Prince	
+Members
+62	70	50	50	1	1	30	30	30	99	99	99	99	0	
+Paladin - Female	Paladin
+Female	
+Members
+62	57	54	54	1	1	87	84	76	-10	79	79	79	0	
+Paladin - 1	Paladin
+1	
+Members
+62	57	54	54	1	1	87	84	76	-10	79	79	79	0	
+Paladin - 3	Paladin
+3	
+Members
+62	57	54	54	1	1	87	84	76	-10	79	79	79	0	
+Paladin	Paladin	
+Members
+62	57	54	54	1	1	87	84	76	-10	79	79	79	0	
+Paladin - Male	Paladin
+Male	
+Members
+62	57	54	54	1	1	87	84	76	-10	79	79	79	0	
+Paladin - 2	Paladin
+2	
+Members
+62	57	54	54	1	1	87	84	76	-10	79	79	79	0	
+Osprey	Osprey	
+Members
+63	72	60	40	1	0	0	0	0	0	30	30	10	0	
+Wild dog - Normal	Wild dog
+Normal	
+Members
+63	62	53	54	1	1	0	0	0	0	0	0	0	0	
+Wild dog - Unused	Wild dog
+Unused	
+Members
+63	62	53	54	1	1	0	0	0	0	0	0	0	0	
+Ogre - Level 63	Ogre
+Level 63	
+Members
+63	60	54	54	1	1	19	23	24	0	0	0	0	0	Earth elemental weakness
+20%
+Skeleton (Tarn's Lair) - Level 63	Skeleton (Tarn's Lair)
+Level 63	
+Members
+63	58	56	45	1	1	50	40	0	0	40	40	40	0	Earth elemental weakness
+35%
+Queen spawn	Queen spawn	
+Members
+63	45	60	50	1	1	0	0	0	0	0	0	0	0	
+Confusion beast - Level 63	Confusion beast
+Level 63	
+Members
+63	64	52	52	1	1	0	0	0	0	0	0	0	0	
+Khazard Ogre	Khazard Ogre	
+Members
+63	60	54	53	1	1	0	0	0	0	0	0	0	0	
+Crocodile - Water	Crocodile
+Water	
+Members
+63	62	53	54	1	1	20	12	22	10	20	20	20	0	Earth elemental weakness
+40%
+Shadow Hound	Shadow Hound	
+Members
+63	62	53	54	1	1	0	0	0	0	0	0	0	0	
+Crocodile - Land	Crocodile
+Land	
+Members
+63	62	53	54	1	1	20	12	22	10	20	20	20	0	Earth elemental weakness
+40%
+Crocodile - Water & land	Crocodile
+Water & land	
+Members
+63	62	53	54	1	1	20	12	22	10	20	20	20	0	Earth elemental weakness
+40%
+Penance Ranger - Wave 8	Penance Ranger
+Wave 8	
+Members
+64	54	69	68	1	70	0	0	0	0	0	0	0	0	
+Otherworldly being	Otherworldly being	
+Members
+64	66	56	46	1	1	15	10	20	-5	15	15	15	-2	Air elemental weakness
+35%
+Sigmund - Another Slice of H.A.M.	Sigmund
+Another Slice of H.A.M.	
+Members
+64	70	55	44	1	1	0	0	0	0	0	0	0	0	
+Jungle Wolf	Jungle Wolf	
+Members
+64	69	50	52	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+15%
+Poison spider - Level 64	Poison spider
+Level 64	
+Members
+64	64	50	52	1	1	20	17	10	14	14	14	14	0	Fire elemental weakness
+40%
+Golem (Zalcano)	Golem (Zalcano)	
+Members
+64	14	1	1	1	1	0	0	0	0	0	0	0	0	
+Zombified Spawn - Post-quest	Zombified Spawn
+Post-quest	
+Members
+64	38	82	6	1	1	3	3	3	-100	3	3	3	0	Fire elemental weakness
+50%
+Undead Lumberjack - Level 64	Undead Lumberjack
+Level 64	
+Members
+64	17	147	17	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Corrupted Unicorn	Corrupted Unicorn	
+Members
+64	44	75	24	24	0	0	0	0	0	0	0	0	0	
+Catablepon - Level 64	Catablepon
+Level 64	
+Free-to-play
+64	70	55	50	45	1	50	40	30	30	50	50	50	0	
+Wolf - Level 64 (Rellekka)	Wolf
+Level 64 (Rellekka)	
+Members
+64	69	50	52	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+25%
+Wolf - Level 64	Wolf
+Level 64	
+Members
+64	69	50	52	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+25%
+Crystalline Scorpion	Crystalline Scorpion	
+Members
+64	38	48	18	18	0	0	0	0	0	0	0	0	0	
+Tower Archer - West	Tower Archer
+West	
+Members
+64	90	10	10	1	80	0	0	0	34	66	66	66	0	
+Feral Vampyre - Level 64 (Juvenile/Juvinate)	Feral Vampyre
+Level 64 (Juvenile/Juvinate)	
+Members
+64	80	55	60	1	1	0	0	0	0	0	0	0	0	
+Splatter - Level 65	Splatter
+Level 65	
+Members
+65	53	37	113	37	0	0	0	0	0	0	0	0	0	
+Sea troll - Level 65	Sea troll
+Level 65	
+Members
+65	80	50	50	1	1	0	0	0	0	0	0	0	0	Earth elemental weakness
+15%
+Baby red dragon (Construction)	Baby red dragon (Construction)	
+Members
+65	65	55	55	1	1	30	50	50	40	30	30	30	0	Water elemental weakness
+50%
+Double agent - Level 65	Double agent
+Level 65	
+Members
+65	80	80	24	24	1	3	3	3	0	0	0	0	0	
+Zamorak wizard	Zamorak wizard	
+Members
+65	76	24	24	80	1	0	0	0	3	0	0	0	0	
+Bull shark	Bull shark	
+Members
+65	81	80	20	1	0	0	0	0	0	100	20	40	0	
+Black Guard Berserker - Green	Black Guard Berserker
+Green	
+Members
+66	50	60	60	1	1	60	60	60	0	60	60	60	0	
+Black Guard Berserker - Blue	Black Guard Berserker
+Blue	
+Members
+66	50	60	60	1	1	60	60	60	0	60	60	60	0	
+Black Guard Berserker - Red	Black Guard Berserker
+Red	
+Members
+66	50	60	60	1	1	60	60	60	0	60	60	60	0	
+Defiler - Level 66	Defiler
+Level 66	
+Members
+66	62	0	41	0	84	0	0	0	0	0	0	0	0	
+Scarab Mage - Level 66 (Contact!)	Scarab Mage
+Level 66 (Contact!)	
+Members
+66	50	90	90	70	1	40	90	90	34	0	0	0	0	Fire elemental weakness
+50%
+Infernal Mage	Infernal Mage	
+Members
+66	60	1	60	75	1	0	0	0	40	0	0	0	0	
+Torcher - Level 66	Torcher
+Level 66	
+Members
+66	45	0	57	85	0	0	0	0	0	0	0	0	0	
+Ice giant - Wilderness Slayer Cave 3	Ice giant
+Wilderness Slayer Cave 3	
+Members
+67	100	40	40	1	1	0	3	2	0	0	0	0	0	Fire elemental weakness
+100%
+Black jaguar	Black jaguar	
+Members
+67	80	55	55	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+30%
+Jaguar	Jaguar	
+Members
+67	80	55	55	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+10%
+Zombie (Tarn's Lair) - Level 67	Zombie (Tarn's Lair)
+Level 67	
+Members
+67	63	56	60	1	1	20	20	0	0	10	10	10	0	Fire elemental weakness
+50%
+Defiler - Level 67	Defiler
+Level 67	
+Members
+67	62	0	41	0	85	0	0	0	0	0	0	0	0	
+Pirate captain (Feldip Gulf)	Pirate captain (Feldip Gulf)	
+Members
+67	50	60	50			5	17	0	0				0	
+Thrower Troll	Thrower Troll	
+Members
+67	95	30	30	0	60	0	0	0	200	200	120	200	0	Earth elemental weakness
+20%
+Ice giant - Wilderness Slayer Cave 1	Ice giant
+Wilderness Slayer Cave 1	
+Members
+67	100	40	40	1	1	0	3	2	0	0	0	0	0	Fire elemental weakness
+100%
+Ice giant - Wilderness Slayer Cave 2	Ice giant
+Wilderness Slayer Cave 2	
+Members
+67	100	40	40	1	1	0	3	2	0	0	0	0	0	Fire elemental weakness
+100%
+White jaguar	White jaguar	
+Members
+67	80	55	55	1	1	0	0	0	0	0	0	0	0	
+Undead one - Level 68 (Skeletal)	Undead one
+Level 68 (Skeletal)	
+Members
+68	47	63	63	0	0	0	0	0	0	0	0	0	0	Earth elemental weakness
+50%
+Penance Fighter - Wave 8	Penance Fighter
+Wave 8	
+Members
+68	55	60	62	1	1	0	0	0	0	0	0	0	0	
+Undead one - Level 68 (Zombie)	Undead one
+Level 68 (Zombie)	
+Members
+68	47	63	63	0	0	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Thrower troll (Trollheim)	Thrower troll (Trollheim)	
+Members
+68	95	30	15	0	60	0	0	0	200	200	120	200	0	Earth elemental weakness
+20%
+Spawn of Sarachnis - Level 68	Spawn of Sarachnis
+Level 68	
+Members
+68	30	10	50	100	1	50	50	50	150	0	0	0	0	
+Skeleton (Stronghold of Security) - 4	Skeleton (Stronghold of Security)
+4	
+Free-to-play
+68	70	60	60	1	1	35	35	-5	0	35	35	35	0	Earth elemental weakness
+35%
+Locust rider - Ranger (Quest)	Locust rider
+Ranger (Quest)	
+Members
+68	90	105	50	1	90	50	90	50	34	66	66	66	-2	Fire elemental weakness
+40%
+Nylocas Matomenos - Entry Mode Verzik	Nylocas Matomenos
+Entry Mode Verzik	
+Members
+68		100	100	100	100	0	0	0	0	0	0	0	0	Fire elemental weakness
+15%
+Chasm Crawler - Standard	Chasm Crawler
+Standard	
+Members
+68	60	64	55	1	1	41	43	23	24	40	20	40	0	
+Catablepon - Level 68	Catablepon
+Level 68	
+Free-to-play
+68	50	65	60	60	1	50	40	30	30	50	50	50	0	
+Butterfly ray	Butterfly ray	
+Members
+68	83	100	15	1	0	0	0	0	0	50	50	20	0	
+Chasm Crawler - Icy	Chasm Crawler
+Icy	
+Members
+68	60	64	55	1	1	41	43	23	24	40	20	40	0	Fire elemental weakness
+50%
+Gorad	Gorad	
+Members
+68	80	54	54	1	1	15	27	21	0	0	0	0	0	
+Nylocas Matomenos - Entry Mode Maiden	Nylocas Matomenos
+Entry Mode Maiden	
+Members
+68	64	100	100	100	100	0	0	0	0	0	0	0	0	Fire elemental weakness
+15%
+Baboon Mage - Level 68	Baboon Mage
+Level 68	
+Members
+68	25	60	20	60	40	900	900	900	900	-50	-50	-50	0	
+Baboon Thrower - Level 68	Baboon Thrower
+Level 68	
+Members
+68	35	60	20	60	40	-50	-50	-50	900	900	900	900	0	
+Nazastarool (Nightmare Zone) - Skeleton (Normal Mode)	Nazastarool (Nightmare Zone)
+Skeleton (Normal Mode)	
+Members
+68	70	58	58	0	0	5	5	5	5	5	5	5	0	
+Nazastarool - Skeleton	Nazastarool
+Skeleton	
+Members
+68	70	58	58	0	0	5	5	5	5	5	5	5	0	Earth elemental weakness
+40%
+Lobstrosity	Lobstrosity	
+Members
+68	50	60	40	1	1	30	50	15	99	70	70	70	0	Earth elemental weakness
+25%
+Necromancer (Great Kourend)	Necromancer (Great Kourend)	
+Members
+68	80	56	50	60	1	8	8	8	4	0	0	0	0	
+Locust rider - Lancer (Quest)	Locust rider
+Lancer (Quest)	
+Members
+68	90	100	90	1	1	90	90	40	0	0	0	0	-2	Fire elemental weakness
+40%
+Baboon Brawler - Level 68	Baboon Brawler
+Level 68	
+Members
+68	30	60	20	60	40	900	900	900	-60	900	900	900	0	
+Hero - 1	Hero
+1	
+Members
+69	82	54	54	1	1	87	84	76	-10	79	79	79	0	
+The Draugen	The Draugen	
+Members
+69	60	60	60	1	1	100	100	100	500	500	500	500	0	Air elemental weakness
+50%
+Aviansie - Level 69	Aviansie
+Level 69	
+Members
+69	70	1	70	1	71	0	0	0	0	-20	0	0	0	Air elemental weakness
+45%
+Tarn - Ghost	Tarn
+Ghost	
+Members
+69	80	40	40	1	1	50	50	50	50	50	50	50	0	
+Hero - 3	Hero
+3	
+Members
+69	82	54	54	1	1	87	84	76	-10	79	79	79	0	
+Tarn - Mutant	Tarn
+Mutant	
+Members
+69	80	40	40	1	1	50	50	50	50	50	50	50	0	
+Animated Black Armour	Animated Black Armour	
+Members
+69	60	60	60	1	1	50	25	19	400	400	400	400	0	Earth elemental weakness
+30%
+Nail beast - Level 69	Nail beast
+Level 69	
+Members
+69	55	150	2	1	1	0	0	0	0	0	0	0	0	
+Mountain troll - Level 69	Mountain troll
+Level 69	
+Members
+69	90	40	40	0	0	0	0	10	200	200	40	200	0	Fire elemental weakness
+50%
+Hero - 2	Hero
+2	
+Members
+69	82	54	54	1	1	87	84	76	-10	79	79	79	0	
+Bandit champion	Bandit champion	
+Members
+70	50	59	50	0	0	9	8	10	0	0	0	0	0	
+Ungadulu - Normal	Ungadulu
+Normal	
+Members
+70	65	57	65	65	0	0	0	0	0	0	0	0	0	
+Brine rat	Brine rat	
+Members
+70	50	70	40	1	1	0	0	0	0	0	0	0	0	
+Armoured zombie (The Curse of Arrav) - 1	Armoured zombie (The Curse of Arrav)
+1	
+Members
+70	10	106	10	1	1	5	5	5	-50	-100	-100	-100	0	Fire elemental weakness
+50%
+Jungle horror - Worker	Jungle horror
+Worker	
+Members
+70	45	70	55	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+25%
+Screaming banshee	Screaming banshee	
+Members
+70	61	65	56	1	1	13	13	13	0	13	13	13	0	Air elemental weakness
+40%
+Salarin the twisted	Salarin the twisted	
+Members
+70	70	58	62	1	1	0	0	0	0	0	0	0	0	
+Armoured zombie (The Curse of Arrav) - 2	Armoured zombie (The Curse of Arrav)
+2	
+Members
+70	10	106	10	1	1	5	5	5	-50	-100	-100	-100	0	Fire elemental weakness
+50%
+Zombie (Tarn's Lair) - Level 70	Zombie (Tarn's Lair)
+Level 70	
+Members
+70	65	61	61	1	1	20	20	0	0	10	10	10	0	Fire elemental weakness
+50%
+Zombie (Kourend) - Level 70	Zombie (Kourend)
+Level 70	
+Members
+70	65	61	61	1	1	20	20	0	0	10	10	10	0	
+Jungle horror - Guard	Jungle horror
+Guard	
+Members
+70	45	70	55	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+25%
+Chaos Golem - Golem	Chaos Golem
+Golem	
+Members
+70	94	45	59	1	1	5	5	0	2	10	10	10	3	Earth elemental weakness
+35%
+Jal-AkRek-Xil	Jal-AkRek-Xil	
+Members
+70	15	1	95	1	120	0	0	0	0	25	25	25	0	Water elemental weakness
+40%
+Jungle horror - Warrior	Jungle horror
+Warrior	
+Members
+70	45	70	55	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+25%
+Jal-AkRek-Mej	Jal-AkRek-Mej	
+Members
+70	15	1	95	120	1	0	0	0	25	0	0	0	0	Water elemental weakness
+40%
+Jal-AkRek-Ket	Jal-AkRek-Ket	
+Members
+70	15	120	95	1	1	25	25	25	0	0	0	0	0	Water elemental weakness
+40%
+Feral Vampyre - Level 70 (Temple Trekking)	Feral Vampyre
+Level 70 (Temple Trekking)	
+Members
+70	75	90	30	0	0	0	0	0	0	0	0	0	0	
+Undead Lumberjack - Level 70	Undead Lumberjack
+Level 70	
+Members
+70	18	163	18	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+The Kendal	The Kendal	
+Members
+70	50	65	60	0	0	10	10	10	-10	20	20	20	0	
+Dagannoth fledgeling	Dagannoth fledgeling	
+Members
+70	100	50	50	1	1	0	0	0	0	0	0	0	0	Earth elemental weakness
+35%
+Chaos Golem - Rubble	Chaos Golem
+Rubble	
+Members
+70	94	45	59	1	1	5	5	0	2	10	10	10	3	Earth elemental weakness
+35%
+The Kendal (Nightmare Zone) - Normal Mode	The Kendal (Nightmare Zone)
+Normal Mode	
+Members
+70	50	65	60	0	0	10	10	10	-10	20	20	20	0	
+Jungle horror - Young warrior	Jungle horror
+Young warrior	
+Members
+70	45	70	55	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+25%
+Jungle horror - Young worker	Jungle horror
+Young worker	
+Members
+70	45	70	55	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+25%
+Soldier (tier 4)	Soldier (tier 4)	
+Members
+70	65	60	60	1	1	1	1	0	0	0	0	0	0	

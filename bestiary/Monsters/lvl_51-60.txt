@@ -1,0 +1,684 @@
+Bestiary/Levels 51 to 60
+This page lists all monsters within the 51 to 60 combat level bracket.
+
+List
+Monster	Members	Combat level	Hitpoints	Attack level	Defence level	Magic level	Ranged level	Stab defence	Slash defence	Crush defence	Magic defence	Light Ranged defence	Standard Ranged defence	Heavy Ranged defence	Flat armour	Elemental weakness
+Dark warrior - Level 51	Dark warrior
+Level 51	
+Members
+51	70	40	30	15	1	10	20	40	0	0	0	0	0	
+Icelord - Melee, 2	Icelord
+Melee, 2	
+Members
+51	60	40	40	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+30%
+Icelord - Melee, 1	Icelord
+Melee, 1	
+Members
+51	60	40	40	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+30%
+Icelord - Melee, 3	Icelord
+Melee, 3	
+Members
+51	60	40	40	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+30%
+Icelord - Ranged	Icelord
+Ranged	
+Members
+51	60	40	40	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+30%
+Brawler - Level 51	Brawler
+Level 51	
+Members
+51	53	27	43	0	0	0	0	0	0	0	0	0	0	
+Experiment - Level 51	Experiment
+Level 51	
+Members
+51	40	40	50	1	1	0	0	0	0	0	0	0	0	
+Earth warrior	Earth warrior	
+Members
+51	54	42	42	1	1	30	40	20	10	30	30	30	0	
+Zombies Champion	Zombies Champion	
+Members
+51	60	38	42	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Molanisk	Molanisk	
+Members
+51	52	40	50	0	1	45	45	35	30	55	55	55	0	Earth elemental weakness
+60%
+Mourner (Song of the Elves) - Level 51	Mourner (Song of the Elves)
+Level 51	
+Members
+51	29	40	30	1	1	20	40	40	30	20	20	20	0	
+Penance Ranger - Wave 6	Penance Ranger
+Wave 6	
+Members
+51	50	51	54	1	52	0	0	0	0	0	0	0	0	
+Pirate (Thieving) - 5	Pirate (Thieving)
+5	
+Members
+52	38	54	35	10	1	10	20	10	0	0	0	0	0	
+Pirate (The Red Reef) - 4	Pirate (The Red Reef)
+4	
+Members
+52	38	54	35	10									0	
+Pirate (The Red Reef) - 3	Pirate (The Red Reef)
+3	
+Members
+52	38	54	35	10									0	
+Shadow spider	Shadow spider	
+Members
+52	55	44	44	1	1	20	15	10	15	15	15	15	0	Fire elemental weakness
+40%
+Pirate (The Red Reef) - 2	Pirate (The Red Reef)
+2	
+Members
+52	38	54	35	10									0	
+Pirate (Thieving) - 1	Pirate (Thieving)
+1	
+Members
+52	38	54	35	10	1	10	20	10	0	0	0	0	0	
+Revenant pyrefiend	Revenant pyrefiend	
+Members
+52	48	60	33	67	40	45	40	50	15	10	10	10	0	Air elemental weakness
+30%
+Pirate (Thieving) - 2	Pirate (Thieving)
+2	
+Members
+52	38	54	35	10	1	10	20	10	0	0	0	0	0	
+Leech	Leech	
+Members
+52	45	80	35	1	1	0	0	0	0	0	0	0	0	
+Pirate (Thieving) - 3	Pirate (Thieving)
+3	
+Members
+52	38	54	35	10	1	10	20	10	0	0	0	0	0	
+Pirate (Thieving) - 4	Pirate (Thieving)
+4	
+Members
+52	38	54	35	10	1	10	20	10	0	0	0	0	0	
+Pirate (The Red Reef) - 1	Pirate (The Red Reef)
+1	
+Members
+52	38	54	35	10									0	
+Bloodworm	Bloodworm	
+Members
+52	45	80	35	1	1	0	0	0	0	0	0	0	0	
+Baboon Thrall	Baboon Thrall	
+Members
+52	2	40	12	40	40	0	0	0	0	0	0	0	0	
+Albino bat	Albino bat	
+Members
+52	33	57	30	1	1	0	0	0	0	0	0	0	0	Air elemental weakness
+40%
+Ice giant - Asgarnia Ice Dungeon 1	Ice giant
+Asgarnia Ice Dungeon 1	
+Free-to-play
+53	70	40	40	1	1	0	3	2	0	0	0	0	0	Fire elemental weakness
+100%
+Ice giant - Varlamore 1	Ice giant
+Varlamore 1	
+Members
+53	70	40	40	1	1	0	3	2	0	0	0	0	0	Fire elemental weakness
+100%
+Ice giant - Asgarnia Ice Dungeon 2	Ice giant
+Asgarnia Ice Dungeon 2	
+Free-to-play
+53	70	40	40	1	1	0	3	2	0	0	0	0	0	Fire elemental weakness
+100%
+Knight of Ardougne (Song of the Elves) - Level 53	Knight of Ardougne (Song of the Elves)
+Level 53	
+Members
+53	54	44	28	1	1	20	40	40	30	20	20	20	0	
+Zombie (Stronghold of Security) - Level 53, 2	Zombie (Stronghold of Security)
+Level 53, 2	
+Free-to-play
+53	50	55	48	1	1	19	18	0	20	21	21	21	0	
+Ravager - Level 53	Ravager
+Level 53	
+Members
+53	38	37	23	0	0	0	0	0	0	0	0	0	0	
+Witch's experiment - Wolf	Witch's experiment
+Wolf	
+Members
+53	51	48	49	1	1	0	0	0	0	0	0	0	0	
+Ice giant - Varlamore 2	Ice giant
+Varlamore 2	
+Members
+53	70	40	40	1	1	0	3	2	0	0	0	0	0	Fire elemental weakness
+100%
+Zombie (Stronghold of Security) - Level 53, 1	Zombie (Stronghold of Security)
+Level 53, 1	
+Free-to-play
+53	50	55	48	1	1	19	18	0	20	21	21	21	0	
+Zombie (Stronghold of Security) - Level 53, 3	Zombie (Stronghold of Security)
+Level 53, 3	
+Free-to-play
+53	50	55	48	1	1	19	18	0	20	21	21	21	0	
+Ice giant - 2	Ice giant
+2	
+Free-to-play
+53	70	40	40	1	1	0	3	2	0	0	0	0	0	Fire elemental weakness
+100%
+Ice giant - 3	Ice giant
+3	
+Free-to-play
+53	70	40	40	1	1	0	3	2	0	0	0	0	0	Fire elemental weakness
+100%
+Ice giant - 1	Ice giant
+1	
+Free-to-play
+53	70	40	40	1	1	0	3	2	0	0	0	0	0	Fire elemental weakness
+100%
+Witch's experiment (Nightmare Zone) - Wolf (Normal Mode)	Witch's experiment (Nightmare Zone)
+Wolf (Normal Mode)	
+Members
+53	51	48	49	1	1	0	0	0	0	0	0	0	0	
+Agile Scarab	Agile Scarab	
+Members
+53	30	60	5	30	40	0	0	0	0	0	0	0	0	
+Jogre - Normal	Jogre
+Normal	
+Members
+53	60	43	43	1	1	0	0	0	0	0	0	0	0	Earth elemental weakness
+25%
+Ogre - Level 53	Ogre
+Level 53	
+Members
+53	60	43	43	1	1	0	0	0	0	0	0	0	0	Earth elemental weakness
+20%
+Animated steel armour (Tarn's Lair)	Animated steel armour (Tarn's Lair)	
+Members
+53	50	50	2	2	2	50	25	25	400	400	400	400	0	Earth elemental weakness
+30%
+Lizardman - Level 53	Lizardman
+Level 53	
+Members
+53	60	43	43	1	43	-20	25	0	0	-10	0	0	0	
+Mogre (Sailing)	Mogre (Sailing)	
+Members
+54	59	40	40	1	60	0	0	0	0	0	0	0	0	Earth elemental weakness
+20%
+Abyssal leech (The Scar) - Level 54	Abyssal leech (The Scar)
+Level 54	
+Members
+54	20	120	30	1	1	50	50	100	50	10	10	10	0	
+Battle mage - Saradomin	Battle mage
+Saradomin	
+Members
+54	120	1	1	50	1	0	0	0	0	0	0	0	0	
+Vampyre Juvinate - Level 54 (Meiyerditch)	Vampyre Juvinate
+Level 54 (Meiyerditch)	
+Members
+54	85	40	30	1	1	0	0	0	0	0	0	0	0	
+Battle mage - Guthix	Battle mage
+Guthix	
+Members
+54	120	1	1	50	1	0	0	0	0	0	0	0	0	
+Battle mage - Zamorak	Battle mage
+Zamorak	
+Members
+54	120	1	1	50	1	0	0	0	0	0	0	0	0	
+Vampyre Juvinate - Level 54 (Darkmeyer)	Vampyre Juvinate
+Level 54 (Darkmeyer)	
+Members
+54	85	40	30	1	1	0	0	0	0	0	0	0	0	
+Vampyre Juvinate - Level 54 (Burgh de Rott)	Vampyre Juvinate
+Level 54 (Burgh de Rott)	
+Members
+54	85	40	30	1	1	0	0	0	0	0	0	0	0	
+Splatter - Level 54	Splatter
+Level 54	
+Members
+54	43	32	93	32	0	0	0	0	0	0	0	0	0	
+Hobgoblin guard	Hobgoblin guard	
+Members
+54	62	45	43	1	1	1	1	0	0	0	0	0	0	
+Wyrmling - Attacking	Wyrmling
+Attacking	
+Members
+55	65	20	40	60	15	20	50	50	50	20	20	20	0	Earth elemental weakness
+50%
+Undead Lumberjack - Level 55	Undead Lumberjack
+Level 55	
+Members
+55	15	133	15	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Wyrmling - Idle	Wyrmling
+Idle	
+Members
+55	65	20	40	60	15	20	50	50	50	20	20	20	0	Earth elemental weakness
+50%
+Spinner - Level 55	Spinner
+Level 55	
+Members
+55	53	22	68	52	0	0	0	0	0	0	0	0	0	
+Spawn	Spawn	
+Members
+55	15	120	10	1	50	0	0	0	-10	0	0	0	0	
+Zombie swab - 6	Zombie swab
+6	
+Members
+55	50	45	50	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Zombie swab - 3	Zombie swab
+3	
+Members
+55	50	45	50	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Swamp Crab - Normal	Swamp Crab
+Normal	
+Members
+55	75	1	50	50	1	100	100	100	100	-55	-55	-55	0	Earth elemental weakness
+35%
+Swamp Crab - Hidden	Swamp Crab
+Hidden	
+Members
+55	75	1	50	50	1	100	100	100	100	-55	-55	-55	0	Earth elemental weakness
+35%
+Zombie swab - 2	Zombie swab
+2	
+Members
+55	50	45	50	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Zombie swab - 4	Zombie swab
+4	
+Members
+55	50	45	50	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Swamp Crab - Bloomed	Swamp Crab
+Bloomed	
+Members
+55	75	1	50	50	1	100	100	100	100	-55	-55	-55	0	Earth elemental weakness
+35%
+Zombie swab - 1	Zombie swab
+1	
+Members
+55	50	45	50	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Zombie swab - 5	Zombie swab
+5	
+Members
+55	50	45	50	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Zombified Spawn - Dragon Slayer II	Zombified Spawn
+Dragon Slayer II	
+Members
+55	8	80	4	1	1	3	3	3	-100	3	3	3	0	Fire elemental weakness
+50%
+Blood spawn - Normal	Blood spawn
+Normal	
+Members
+55	120	1	0	0	1	0	0	0	0	0	0	0	0	
+Killerwatt - Attacking	Killerwatt
+Attacking	
+Members
+55	51	50	40	67	67	10	10	10	20	-10	-10	-10	0	Air elemental weakness
+60%
+Menaphite Thug - After Quest	Menaphite Thug
+After Quest	
+Members
+55	60	60	20	0	0	9	8	10	0	0	0	0	0	
+Killerwatt - Idle	Killerwatt
+Idle	
+Members
+55	51	50	40	67	67	10	10	10	20	-10	-10	-10	0	Air elemental weakness
+60%
+Blood spawn - Entry	Blood spawn
+Entry	
+Members
+55	7	1	0	0	1	0	0	0	0	0	0	0	0	
+Menaphite Thug - Before Quest	Menaphite Thug
+Before Quest	
+Members
+55	60	60	20	0	0	9	8	10	0	0	0	0	0	
+Fear reaper - Level 55	Fear reaper
+Level 55	
+Members
+55	57	45	45	1	1	0	0	0	0	0	0	0	0	
+Baboon Thrower - Level 56	Baboon Thrower
+Level 56	
+Members
+56	30	40	12	40	40	-50	-50	-50	900	900	900	900	0	
+Snailfeet	Snailfeet	
+Members
+56	80	30	30	30	30	10	10	5	5	20	20	20	0	
+Crypt spider	Crypt spider	
+Members
+56	60	45	45	1	1	20	20	10	17	20	20	20	0	Fire elemental weakness
+50%
+Zombie (Kourend) - Level 56	Zombie (Kourend)
+Level 56	
+Members
+56	50	50	47	1	1	20	20	0	0	10	10	10	0	
+Acidic Bloodveld	Acidic Bloodveld	
+Members
+56	5	80	2	1	1	-100	-100	-100	-100	-100	-100	-100	0	
+Cyclops - Level 56	Cyclops
+Level 56	
+Members
+56	75	47	26	1	1	0	0	0	0	0	0	0	0	
+Cyclops (Catacombs of Kourend) - Level 56	Cyclops (Catacombs of Kourend)
+Level 56	
+Members
+56	75	47	26	1	1	0	0	0	0	0	0	0	0	
+Cyclops (Ardougne Zoo)	Cyclops (Ardougne Zoo)	
+Members
+56	55	47	46	1	1	0	0	0	0	0	0	0	0	
+Hobgoblin Champion	Hobgoblin Champion	
+Members
+56	58	44	48	1	44	0	0	0	0	0	0	0	0	
+Giant Champion	Giant Champion	
+Members
+56	70	36	52	1	1	0	0	0	0	0	0	0	0	
+Bedabin Nomad Fighter	Bedabin Nomad Fighter	
+Members
+56	50	40	60	0	0	0	0	0	0	0	0	0	0	
+Bandit (Pollnivneach) - No beard	Bandit (Pollnivneach)
+No beard	
+Members
+56	30	59	30	1	1	0	9	8	10	0	0	0	0	
+Penance Fighter - Wave 6	Penance Fighter
+Wave 6	
+Members
+56	49	50	48	1	1	0	0	0	0	0	0	0	0	
+Scarab (Tombs of Amascut)	Scarab (Tombs of Amascut)	
+Members
+56	12	20	28	1	50	0	0	0	0	0	0	0	0	
+Baboon Brawler - Level 56	Baboon Brawler
+Level 56	
+Members
+56	25	40	12	40	40	900	900	900	-60	900	900	900	0	
+Baboon Mage - Level 56	Baboon Mage
+Level 56	
+Members
+56	20	40	12	40	40	900	900	900	900	-50	-50	-50	0	
+Zombie (Tarn's Lair) - Level 56	Zombie (Tarn's Lair)
+Level 56	
+Members
+56	50	50	47	1	1	20	20	0	0	10	10	10	0	Fire elemental weakness
+50%
+Zombie pirate (Harmony Island) - 19	Zombie pirate (Harmony Island)
+19	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 18	Zombie pirate (Harmony Island)
+18	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 25	Zombie pirate (Harmony Island)
+25	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 26	Zombie pirate (Harmony Island)
+26	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 21	Zombie pirate (Harmony Island)
+21	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 24	Zombie pirate (Harmony Island)
+24	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 20	Zombie pirate (Harmony Island)
+20	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Braindeath Island) - 6	Zombie pirate (Braindeath Island)
+6	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Zombie pirate (Harmony Island) - 22	Zombie pirate (Harmony Island)
+22	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 23	Zombie pirate (Harmony Island)
+23	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 2	Zombie pirate (Harmony Island)
+2	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 1	Zombie pirate (Harmony Island)
+1	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 13	Zombie pirate (Harmony Island)
+13	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 17	Zombie pirate (Harmony Island)
+17	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 16	Zombie pirate (Harmony Island)
+16	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 12	Zombie pirate (Harmony Island)
+12	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 10	Zombie pirate (Harmony Island)
+10	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 11	Zombie pirate (Harmony Island)
+11	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Bandit (Bandit Camp) - Level 57	Bandit (Bandit Camp)
+Level 57	
+Members
+57	50	50	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 9	Zombie pirate (Harmony Island)
+9	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 8	Zombie pirate (Harmony Island)
+8	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 6	Zombie pirate (Harmony Island)
+6	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 3	Zombie pirate (Harmony Island)
+3	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 15	Zombie pirate (Harmony Island)
+15	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 14	Zombie pirate (Harmony Island)
+14	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Braindeath Island) - 4	Zombie pirate (Braindeath Island)
+4	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Zombie pirate (Harmony Island) - 4	Zombie pirate (Harmony Island)
+4	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 5	Zombie pirate (Harmony Island)
+5	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Harmony Island) - 7	Zombie pirate (Harmony Island)
+7	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Braindeath Island) - 5	Zombie pirate (Braindeath Island)
+5	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Pirate - Cabin Fever	Pirate
+Cabin Fever	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Zombie pirate (Braindeath Island) - 3	Zombie pirate (Braindeath Island)
+3	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Ice warrior - Ice Queen's Lair	Ice warrior
+Ice Queen's Lair	
+Members
+57	59	47	47	1	1	30	40	20	10	30	30	30	0	Fire elemental weakness
+100%
+Ice warrior - Normal	Ice warrior
+Normal	
+Free-to-play
+57	59	47	47	1	1	30	40	20	10	30	30	30	0	Fire elemental weakness
+100%
+Ice warrior - Varlamore	Ice warrior
+Varlamore	
+Members
+57	59	47	47	1	1	30	40	20	10	30	30	30	0	Fire elemental weakness
+100%
+Sorebones - Jacket	Sorebones
+Jacket	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Sorebones - Apron	Sorebones
+Apron	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	
+Shifter - Level 57	Shifter
+Level 57	
+Members
+57	38	67	38	37	0	0	0	0	0	0	0	0	0	
+Ice warrior - Asgarnia Ice Dungeon	Ice warrior
+Asgarnia Ice Dungeon	
+Free-to-play
+57	59	47	47	1	1	30	40	20	10	30	30	30	0	Fire elemental weakness
+100%
+Zombie pirate (Braindeath Island) - 2	Zombie pirate (Braindeath Island)
+2	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Basilisk Youngling	Basilisk Youngling	
+Members
+57	60	25	70	1	1	20	20	0	20	0	0	0	0	Earth elemental weakness
+40%
+Zombie pirate (Braindeath Island) - 1	Zombie pirate (Braindeath Island)
+1	
+Members
+57	52	49	50	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Parasite - Weakened	Parasite
+Weakened	
+Members
+57	40	1	40	60	60	50	70	10	100	100	100	100	0	
+Penance Ranger - Wave 7/10	Penance Ranger
+Wave 7/10	
+Members
+57	50	63	61	1	62	0	0	0	0	0	0	0	0	
+Ogre - GWD	Ogre
+GWD	
+Members
+58	70	46	43	1	1	0	0	0	0	0	0	0	0	Earth elemental weakness
+20%
+Jogre - GWD	Jogre
+GWD	
+Members
+58	70	46	43	1	1	0	0	0	0	0	0	0	0	Earth elemental weakness
+25%
+Soldier (tier 3)	Soldier (tier 3)	
+Members
+58	55	50	50	1	1	0	0	0	0	-1	-1	-1	0	
+Scorpion - Level 59	Scorpion
+Level 59	
+Free-to-play
+59	55	50	50	1	1	5	15	15	0	55	55	55	0	Fire elemental weakness
+25%
+Skeleton (Tarn's Lair) - Level 59	Skeleton (Tarn's Lair)
+Level 59	
+Members
+59	53	50	62	1	1	50	40	0	0	40	40	40	0	Earth elemental weakness
+35%
+Abyssal guardian	Abyssal guardian	
+Members
+59	50	30	30	1	1	70	70	70	150	70	70	70	0	
+Tortured soul	Tortured soul	
+Members
+59	51	52	38	1	1	0	0	0	0	0	0	0	0	
+Vampyre Juvinate - Level 59 (Temple Trekking)	Vampyre Juvinate
+Level 59 (Temple Trekking)	
+Members
+59	50	95	45	50	50	0	0	0	0	0	0	0	0	
+Broodoo victim - White	Broodoo victim
+White	
+Members
+60	100	0	26	60	1	20	20	20	0	0	0	0	0	
+Mogre	Mogre	
+Members
+60	48	58	48	1	1	0	0	0	0	0	0	0	0	Earth elemental weakness
+20%
+Broodoo victim - Yellow	Broodoo victim
+Yellow	
+Members
+60	100	0	26	60	1	20	20	20	0	0	0	0	0	
+Phrin Shade - Shade	Phrin Shade
+Shade	
+Members
+60	56	64	42	0	0	0	0	0	0	0	0	0	-3	Air elemental weakness
+40%
+Phrin Shade - Shadow	Phrin Shade
+Shadow	
+Members
+60	56	64	42	0	0	0	0	0	0	0	0	0	-3	Air elemental weakness
+40%
+Pyrelord - 1	Pyrelord
+1	
+Members
+60	80	60	30	1	1	10	10	10	0	10	10	10	0	Water elemental weakness
+100%
+Pyrelord - 2	Pyrelord
+2	
+Members
+60	80	60	30	1	1	10	10	10	0	10	10	10	0	Water elemental weakness
+100%
+Revenant hobgoblin	Revenant hobgoblin	
+Members
+60	72	50	41	55	60	65	60	68	30	50	50	20	0	Air elemental weakness
+30%
+Skeleton (Stronghold of Security) - 3	Skeleton (Stronghold of Security)
+3	
+Free-to-play
+60	70	50	40	1	1	35	35	-5	0	35	35	35	0	Earth elemental weakness
+35%
+Skeleton fremennik - Level 60	Skeleton fremennik
+Level 60	
+Members
+60	40	72	40	1	1	14	18	15	-4	15	15	15	0	Earth elemental weakness
+35%
+Skeleton (Stronghold of Security) - 1	Skeleton (Stronghold of Security)
+1	
+Free-to-play
+60	70	50	40	1	1	35	35	-5	0	35	35	35	0	Earth elemental weakness
+35%
+Broodoo victim - Green	Broodoo victim
+Green	
+Members
+60	100	0	26	60	1	20	20	20	0	0	0	0	0	
+Undead Lumberjack - Level 60	Undead Lumberjack
+Level 60	
+Members
+60	16	137	16	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Skeleton (Stronghold of Security) - 2	Skeleton (Stronghold of Security)
+2	
+Free-to-play
+60	70	50	40	1	1	35	35	-5	0	35	35	35	0	Earth elemental weakness
+35%

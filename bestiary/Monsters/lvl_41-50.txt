@@ -1,0 +1,736 @@
+Bestiary/Levels 41 to 50
+< Bestiary
+This page lists all monsters within the 41 to 50 combat level bracket.
+
+List
+Monster	Members	Combat level	Hitpoints	Attack level	Defence level	Magic level	Ranged level	Stab defence	Slash defence	Crush defence	Magic defence	Light Ranged defence	Standard Ranged defence	Heavy Ranged defence	Flat armour	Elemental weakness
+Abyssal leech	Abyssal leech	
+Members
+41	10	95	25	1	1	50	50	100	50	10	10	10	0	
+Flesh Crawler - Level 41	Flesh Crawler
+Level 41	
+Free-to-play
+41	25	100	10	1	1	15	15	15	15	15	15	15	0	Fire elemental weakness
+20%
+Small scarab	Small scarab	
+Members
+41	40	55	55	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Bandit (Pollnivneach) - Bearded	Bandit (Pollnivneach)
+Bearded	
+Members
+41	30	40	20	1	1	0	9	8	10	0	0	0	0	
+White Knight - Partisan (m)	White Knight
+Partisan (m)	
+Free-to-play
+42	55	32	27	1	1	83	76	70	-11	85	85	65	0	
+Grizzly bear - Level 42	Grizzly bear
+Level 42	
+Members
+42	35	40	35	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+20%
+Hobgoblin - Hobgoblin (armed)	Hobgoblin
+Hobgoblin (armed)	
+Free-to-play
+42	49	33	36	1	1	1	1	0	0	0	0	0	0	
+Lizard	Lizard	
+Members
+42	40	38	35	1	1	5	15	15	0	5	5	5	0	
+Magic axe - Normal	Magic axe
+Normal	
+Members
+42	44	38	29	1	1	10	5	15	5	10	10	10	0	
+Goblin guard	Goblin guard	
+Members
+42	43	32	37	1	1	4	6	6	0	0	0	0	0	
+Witch's experiment (Nightmare Zone) - Bear (Normal Mode)	Witch's experiment (Nightmare Zone)
+Bear (Normal Mode)	
+Members
+42	41	38	39	1	1	0	0	0	0	0	0	0	0	
+Ghoul	Ghoul	
+Members
+42	50	30	30	1	1	0	0	0	0	0	0	0	0	
+Fear reaper - Level 42	Fear reaper
+Level 42	
+Members
+42	25	39	40	1	1	0	0	0	0	0	0	0	0	
+White Knight - Partisan (f)	White Knight
+Partisan (f)	
+Free-to-play
+42	55	32	27	1	1	83	76	70	-11	85	85	65	0	
+Magic axe - Catacombs of Kourend	Magic axe
+Catacombs of Kourend	
+Members
+42	44	38	29	1	1	10	5	15	5	10	10	10	0	
+Dagannoth spawn	Dagannoth spawn	
+Members
+42	35	50	25	1	1	0	0	0	0	0	0	0	0	Earth elemental weakness
+35%
+Witch's experiment - Bear	Witch's experiment
+Bear	
+Members
+42	41	38	39	1	1	0	0	0	0	0	0	0	0	
+Spidine	Spidine	
+Members
+42	35	37	36	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+25%
+Ugthanki	Ugthanki	
+Members
+42	45	35	35	0	0	0	0	0	0	0	0	0	0	
+Moss giant - Level 42 (Varlamore)	Moss giant
+Level 42 (Varlamore)	
+Members
+42	60	30	30	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Skeleton (Tarn's Lair) - Level 42 (Sword)	Skeleton (Tarn's Lair)
+Level 42 (Sword)	
+Members
+42	40	40	40	1	1	50	40	0	0	40	40	40	0	Earth elemental weakness
+35%
+Skeletal miner	Skeletal miner	
+Members
+42	39	35	38	1	1	9	11	-2	1	4	4	4	0	
+Skeleton (Tarn's Lair) - Level 42 (Hammer)	Skeleton (Tarn's Lair)
+Level 42 (Hammer)	
+Members
+42	42	36	30	1	1	50	40	0	0	40	40	40	0	Earth elemental weakness
+35%
+Penance Fighter - Wave 4	Penance Fighter
+Wave 4	
+Members
+42	37	36	37	1	1	0	0	0	0	0	0	0	0	
+Moss giant - Level 42	Moss giant
+Level 42	
+Free-to-play
+42	60	30	30	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Zombie (Tarn's Lair) - Level 42	Zombie (Tarn's Lair)
+Level 42	
+Members
+42	40	39	35	1	1	20	20	0	0	10	10	10	0	Fire elemental weakness
+50%
+Archer (Burthorpe)	Archer (Burthorpe)	
+Members
+42	50	0	40	1	40	39	50	49	18	45	45	45	0	
+Penance Ranger - Wave 5	Penance Ranger
+Wave 5	
+Members
+43	41	44	46	1	45	0	0	0	0	0	0	0	0	
+Melzar the Mad	Melzar the Mad	
+Free-to-play
+43	44	37	34	40	1	0	0	0	0	0	0	0	0	
+Confusion beast - Level 43 (crush)	Confusion beast
+Level 43 (crush)	
+Members
+43	28	42	40	1	1	0	0	0	0	0	0	0	0	
+Pyrefiend - Level 43	Pyrefiend
+Level 43	
+Members
+43	45	52	22	1	1	10	10	10	0	10	10	10	0	Water elemental weakness
+100%
+Confusion beast - Level 43 (stab)	Confusion beast
+Level 43 (stab)	
+Members
+43	28	42	40	1	1	0	0	0	0	0	0	0	0	
+Crypt rat	Crypt rat	
+Members
+43	35	70	20	1	1	0	0	0	0	0	0	0	0	
+Guardian of Armadyl - Female	Guardian of Armadyl
+Female	
+Members
+43	40	37	37	1	1	43	55	50	-12	51	51	51	0	
+Splatter - Level 44	Splatter
+Level 44	
+Members
+44	33	27	73	27	0	0	0	0	0	0	0	0	0	
+Eagle ray	Eagle ray	
+Members
+44	55	70	0	1	0	0	0	0	0	50	50	20	0	
+Guard dog - Hosidius	Guard dog
+Hosidius	
+Members
+44	49	35	37	1	1	0	0	0	0	0	0	0	0	
+Skogre - 2	Skogre
+2	
+Members
+44	71	20	35	1	1	0	0	0	0	0	0	0	0	
+Dwarf gang member - Level 44	Dwarf gang member
+Level 44	
+Members
+44	40	40	35	1	1	7	7	0	0	7	7	7	0	
+Guard dog (Construction)	Guard dog (Construction)	
+Members
+44	49	35	37	1	1	0	0	0	0	0	0	0	0	
+Guard dog - Normal	Guard dog
+Normal	
+Members
+44	49	35	37	1	1	0	0	0	0	0	0	0	0	
+Skogre - 1	Skogre
+1	
+Members
+44	71	20	35	1	1	0	0	0	0	0	0	0	0	
+Skogre - 3	Skogre
+3	
+Members
+44	71	20	35	1	1	0	0	0	0	0	0	0	0	
+Zombie (Stronghold of Security) - Level 44, 3	Zombie (Stronghold of Security)
+Level 44, 3	
+Free-to-play
+44	40	35	40	1	1	0	0	22	0	0	0	0	0	
+Zombie (Stronghold of Security) - Level 44, 2	Zombie (Stronghold of Security)
+Level 44, 2	
+Free-to-play
+44	40	35	40	1	1	0	0	22	0	0	0	0	0	
+Zombie (Stronghold of Security) - Level 44, 1	Zombie (Stronghold of Security)
+Level 44, 1	
+Free-to-play
+44	40	35	40	1	1	0	0	22	0	0	0	0	0	
+Khazard Scorpion	Khazard Scorpion	
+Members
+44	40	40	34	1	1	5	15	15	0	5	5	5	0	Fire elemental weakness
+25%
+Zogre	Zogre	
+Members
+44	71	20	35	1	1	0	0	0	0	0	0	0	0	
+Jungle spider	Jungle spider	
+Members
+44	50	35	35	1	1	20	20	10	17	20	20	20	-2	Fire elemental weakness
+40%
+Guard (Desert Mining Camp) - Bald	Guard (Desert Mining Camp)
+Bald	
+Members
+45	60	32	39	0	0	17	15	19	-3	19	19	19	0	
+Guard (Desert Mining Camp) - Bronze helm	Guard (Desert Mining Camp)
+Bronze helm	
+Members
+45	60	32	39	0	0	17	15	19	-3	19	19	19	0	
+Guard (Desert Mining Camp) - Brown hair	Guard (Desert Mining Camp)
+Brown hair	
+Members
+45	60	32	39	0	0	17	15	19	-3	19	19	19	0	
+Guard (Desert Mining Camp) - Iron helm	Guard (Desert Mining Camp)
+Iron helm	
+Members
+45	60	32	39	0	0	17	15	19	-3	19	19	19	0	
+Baby tanglefoot - Brown	Baby tanglefoot
+Brown	
+Members
+45	40	40	40	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+20%
+Monk of Zamorak - Level 45	Monk of Zamorak
+Level 45	
+Members
+45	40	38	42	40	1	0	0	0	0	0	0	0	0	
+Mercenary - Facemask	Mercenary
+Facemask	
+Members
+45	60	32	39	0	0	17	15	19	-3	19	19	19	0	
+Baby tanglefoot - Tan	Baby tanglefoot
+Tan	
+Members
+45	40	40	40	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+20%
+Guardian of Armadyl - Male	Guardian of Armadyl
+Male	
+Members
+45	50	37	37	1	1	43	55	50	-12	51	51	51	0	
+Mercenary - Brown beard	Mercenary
+Brown beard	
+Members
+45	60	32	39	0	0	17	15	19	-3	19	19	19	0	
+Mercenary - White beard	Mercenary
+White beard	
+Members
+45	60	32	39	0	0	17	15	19	-3	19	19	19	0	
+Mercenary - Coif	Mercenary
+Coif	
+Members
+45	60	32	39	0	0	17	15	19	-3	19	19	19	0	
+Guard (Desert Mining Camp) - Coif	Guard (Desert Mining Camp)
+Coif	
+Members
+45	60	32	39	0	0	17	15	19	-3	19	19	19	0	
+Gangster - Level 45 (1)	Gangster
+Level 45 (1)	
+Members
+45	40	40	50	1	1	0	0	10	0	0	0	0	0	
+Angry giant rat - Level 45	Angry giant rat
+Level 45	
+Members
+45	200	37	38	1	1								0	
+Vampyre Juvenile - Meiyerditch	Vampyre Juvenile
+Meiyerditch	
+Members
+45	60	40	30	1	1	0	0	0	0	0	0	0	0	
+Angry goblin - Level 45	Angry goblin
+Level 45	
+Members
+45	200	37	38	1	1								0	
+Angry unicorn - Level 45	Angry unicorn
+Level 45	
+Members
+45	200	37	38	1	1								0	
+Vampyre Juvenile - Darkmeyer	Vampyre Juvenile
+Darkmeyer	
+Members
+45	60	40	30	1	1	0	0	0	0	0	0	0	0	
+Crushing hand	Crushing hand	
+Members
+45	55	45	14	1	1	0	0	0	0	0	0	0	0	
+Vampyre Juvenile - Burgh de Rott and Crombwick Manor	Vampyre Juvenile
+Burgh de Rott and Crombwick Manor	
+Members
+45	60	40	30	1	1	0	0	0	0	0	0	0	0	
+Undead Lumberjack - Level 45	Undead Lumberjack
+Level 45	
+Members
+45	13	105	13	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Tz-Kek - Level 45	Tz-Kek
+Level 45	
+Members
+45	20	40	30	30	60	0	0	0	0	0	0	0	0	Water elemental weakness
+40%
+Skeleton - Level 45, 2	Skeleton
+Level 45, 2	
+Free-to-play
+45	59	32	36	1	1	9	11	-2	1	4	4	4	0	Earth elemental weakness
+35%
+Giant lobster	Giant lobster	
+Members
+45	50	40	40	1	1	30	30	15	99	70	50	70	0	Earth elemental weakness
+25%
+Skeleton - Level 45, 1	Skeleton
+Level 45, 1	
+Free-to-play
+45	59	32	36	1	1	9	11	-2	1	4	4	4	0	Earth elemental weakness
+35%
+Gangster - Level 45 (2)	Gangster
+Level 45 (2)	
+Members
+45	40	40	50	1	1	0	0	10	0	0	0	0	0	
+Abyssal leech (The Scar) - Level 46	Abyssal leech (The Scar)
+Level 46	
+Members
+46	30	1	1	1	1	0	0	0	0	0	0	0	0	
+Knight of Varlamore - 2	Knight of Varlamore
+2	
+Members
+46	52	38	31	1	1	39	40	36	-11	36	36	36	0	
+Knight of Varlamore - 5	Knight of Varlamore
+5	
+Members
+46	52	38	31	1	1	39	40	36	-11	36	36	36	0	
+Knight of Varlamore - 4	Knight of Varlamore
+4	
+Members
+46	52	38	31	1	1	39	40	36	-11	36	36	36	0	
+Knight of Varlamore - 6	Knight of Varlamore
+6	
+Members
+46	52	38	31	1	1	39	40	36	-11	36	36	36	0	
+Oomlie bird	Oomlie bird	
+Members
+46	40	40	40	1	1	0	0	0	0	0	0	0	0	
+Tolna - East head	Tolna
+East head	
+Members
+46	37	42	40	1	1	0	0	0	50	50	50	50	0	
+Animated Steel Armour	Animated Steel Armour	
+Members
+46	40	40	40	1	1	50	25	19	400	400	400	400	0	Earth elemental weakness
+30%
+Nylocas Hagios - Small (Entry mode)	Nylocas Hagios
+Small (Entry mode)	
+Members
+46	2	80	1	1	80	0	0	0	0	0	0	0	0	Fire elemental weakness
+15%
+Nylocas Ischyros - Small (Entry mode)	Nylocas Ischyros
+Small (Entry mode)	
+Members
+46	2	80	1	1	80	0	0	0	0	0	0	0	0	Fire elemental weakness
+15%
+Nylocas Toxobolos - Small (Entry mode)	Nylocas Toxobolos
+Small (Entry mode)	
+Members
+46	2	80	1	1	80	0	0	0	0	0	0	0	0	Fire elemental weakness
+15%
+Tolna - North head	Tolna
+North head	
+Members
+46	37	42	40	1	1	0	0	0	50	50	50	50	0	
+Knight of Varlamore - 3	Knight of Varlamore
+3	
+Members
+46	52	38	31	1	1	39	40	36	-11	36	36	36	0	
+Swordchick	Swordchick	
+Members
+46	35	41	45	1	1	0	0	0	0	0	0	0	0	
+Rock Golem (monster) - Level 46	Rock Golem (monster)
+Level 46	
+Members
+46	50	38	38	1	35	0	0	0	0	0	0	0	1	Earth elemental weakness
+40%
+Tolna - South head	Tolna
+South head	
+Members
+46	37	42	40	1	1	0	0	0	50	50	50	50	0	
+Knight of Varlamore - 1	Knight of Varlamore
+1	
+Members
+46	52	38	31	1	1	39	40	36	-11	36	36	36	0	
+Knight of Ardougne - Female	Knight of Ardougne
+Female	
+Members
+46	52	38	31	1	1	39	40	36	-11	36	36	36	0	
+Knight of Ardougne - West, male	Knight of Ardougne
+West, male	
+Members
+46	52	38	31	1	1	39	40	36	-11	36	36	36	0	
+Harpie Bug Swarm	Harpie Bug Swarm	
+Members
+46	25	54	32	1	1	10	5	10	5	10	10	10	0	Fire elemental weakness
+50%
+Corrupt Lizardman (Nightmare Zone) - Normal Mode	Corrupt Lizardman (Nightmare Zone)
+Normal Mode	
+Members
+46	50	38	38	1	38	-10	25	0	0	0	0	0	0	
+Corrupt Lizardman	Corrupt Lizardman	
+Members
+46	50	38	38	1	38	-10	25	0	0	0	0	0	0	
+Death spawn	Death spawn	
+Members
+46	60	67	30	1	1	20	20	20	0	20	20	20	0	
+Giant rat (Scurrius)	Giant rat (Scurrius)	
+Members
+46	15	100	10	1	1	0	0	0	0	0	0	0	0	
+Knight of Ardougne - Male	Knight of Ardougne
+Male	
+Members
+46	52	38	31	1	1	39	40	36	-11	36	36	36	0	
+Knight of Ardougne - West, female	Knight of Ardougne
+West, female	
+Members
+46	52	38	31	1	1	39	40	36	-11	36	36	36	0	
+Forgotten Soul (Soul Wars) - Level 46	Forgotten Soul (Soul Wars)
+Level 46	
+Members
+46	50	50	20	20	1	10	10	10	10	10	10	10	0	Air elemental weakness
+50%
+Phantom Hand - Left Hand	Phantom Hand
+Left Hand	
+Members
+47	12	100	8	8	1	0	0	0	0	0	0	0	0	
+Phantom Hand - Right Hand	Phantom Hand
+Right Hand	
+Members
+47	12	100	8	8	1	0	0	0	0	0	0	0	0	
+Angry unicorn - Level 47	Angry unicorn
+Level 47	
+Members
+47	50	38	38	1	1	0	0	0	0	0	0	0	0	
+Penance Fighter - Wave 5	Penance Fighter
+Wave 5	
+Members
+47	38	41	44	1	1	0	0	0	0	0	0	0	0	
+Angry goblin - Level 47	Angry goblin
+Level 47	
+Members
+47	50	38	38	1	1	0	0	0	0	0	0	0	0	
+Hobgoblin - Hobgoblin (GWD)	Hobgoblin
+Hobgoblin (GWD)	
+Members
+47	52	39	35	1	1	0	0	0	0	0	0	0	0	
+Mercenary Captain	Mercenary Captain	
+Members
+47	80	32	32	0	0	17	15	19	-3	19	19	19	0	
+Scorpia's guardian	Scorpia's guardian	
+Members
+47	70	1	60	30	30	0	0	0	0	0	0	0	0	
+King Roald - In combat	King Roald
+In combat	
+Members
+47	75	35	30	1	1	0	0	0	0	0	0	0	0	
+King Roald (Nightmare Zone) - Normal Mode	King Roald (Nightmare Zone)
+Normal Mode	
+Members
+47	75	35	30	1	1	0	0	0	0	0	0	0	0	
+Angry bear - Level 47	Angry bear
+Level 47	
+Members
+47	50	38	38	1	1	0	0	0	0	0	0	0	0	
+Witch's experiment (Nightmare Zone) - Skavid (Hard Mode)	Witch's experiment (Nightmare Zone)
+Skavid (Hard Mode)	
+Members
+47	63	54	19	1	1	0	0	0	0	0	0	0	0	
+Angry giant rat - Level 47	Angry giant rat
+Level 47	
+Members
+47	50	38	38	1	1	0	0	0	0	0	0	0	0	
+Jailer	Jailer	
+Members
+47	47	40	40	1	1	79	63	47	0	0	0	0	0	
+Zombie (Tarn's Lair) - Level 47	Zombie (Tarn's Lair)
+Level 47	
+Members
+47	42	42	42	1	1	20	20	0	0	10	10	10	0	Fire elemental weakness
+50%
+Black Guard - Level 48, 2	Black Guard
+Level 48, 2	
+Members
+48	40	40	45	1	1	40	40	40	0	40	40	40	0	
+Baby red dragon - 3	Baby red dragon
+3	
+Members
+48	50	40	40	1	1	0	50	50	40	30	30	10	0	Water elemental weakness
+50%
+Borrokar	Borrokar	
+Members
+48	50	40	40	1	1	0	0	0	0	0	0	0	0	
+Baby red dragon - 1	Baby red dragon
+1	
+Members
+48	50	40	40	1	1	0	50	50	40	30	30	10	0	Water elemental weakness
+50%
+Freidir	Freidir	
+Members
+48	50	40	40	1	1	0	0	0	0	0	0	0	0	
+Black Guard - Level 48, 4	Black Guard
+Level 48, 4	
+Members
+48	40	40	45	1	1	40	40	40	0	40	40	40	0	
+Dwarf gang member - Level 48	Dwarf gang member
+Level 48	
+Members
+48	25	80	25	1	1	7	7	0	0	7	7	7	0	
+Black Guard - Level 48, 3	Black Guard
+Level 48, 3	
+Members
+48	40	40	45	1	1	40	40	40	0	40	40	40	0	
+Chaos dwarf	Chaos dwarf	
+Free-to-play
+48	61	38	28	1	1	40	34	25	10	35	35	35	0	
+Shadow warrior	Shadow warrior	
+Members
+48	67	36	36	0	0	43	31	19	15	38	38	38	0	
+Warrior (Rellekka)	Warrior (Rellekka)	
+Members
+48	50	40	40	1	1	50	50	50	50	50	50	50	0	
+Black Guard - Level 48, 1	Black Guard
+Level 48, 1	
+Members
+48	40	40	45	1	1	40	40	40	0	40	40	40	0	
+Crystalline Unicorn	Crystalline Unicorn	
+Members
+48	44	50	24	24	0	0	0	0	0	0	0	0	0	
+Soldier (tier 2)	Soldier (tier 2)	
+Members
+48	50	40	40	1	1	0	0	0	0	0	0	0	0	
+Baby red dragon - 2	Baby red dragon
+2	
+Members
+48	50	40	40	1	1	0	50	50	40	30	30	10	0	Water elemental weakness
+50%
+Soldier (Burthorpe)	Soldier (Burthorpe)	
+Members
+48	50	40	40	1	0	15	23	21	6	14	14	14	0	
+Corrupted Bat	Corrupted Bat	
+Members
+48	14	36	2	2	0	0	0	0	0	0	0	0	0	
+Baby blue dragon - 3	Baby blue dragon
+3	
+Members
+48	50	40	40	1	1	0	50	50	40	30	30	5	0	Water elemental weakness
+50%
+Khazard commander	Khazard commander	
+Members
+48	22	50	50	1	1	0	0	0	0	0	0	0	0	
+Baby blue dragon - 2	Baby blue dragon
+2	
+Members
+48	50	40	40	1	1	0	50	50	40	30	30	5	0	Water elemental weakness
+50%
+Jennella	Jennella	
+Members
+48	50	40	40	1	1	0	0	0	0	0	0	0	0	
+Moss giant - Level 48	Moss giant
+Level 48	
+Members
+48	85	30	30	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Baby green dragon - 3	Baby green dragon
+3	
+Members
+48	50	40	40	1	1	0	50	50	40	30	30	30	0	Water elemental weakness
+50%
+Market Guard	Market Guard	
+Members
+48	50	40	40	1	1	50	50	50	50	50	50	50	0	
+Baby blue dragon - 1	Baby blue dragon
+1	
+Members
+48	50	40	40	1	1	0	50	50	40	30	30	5	0	Water elemental weakness
+50%
+Baby green dragon - 1	Baby green dragon
+1	
+Members
+48	50	40	40	1	1	0	50	50	40	30	30	30	0	Water elemental weakness
+50%
+Baby blue dragon - Ruins of Tapoyauik, 2	Baby blue dragon
+Ruins of Tapoyauik, 2	
+Members
+48	50	40	40	1	1	0	50	50	40	30	30	5	0	Fire elemental weakness
+50%
+Baby green dragon - 2	Baby green dragon
+2	
+Members
+48	50	40	40	1	1	0	50	50	40	30	30	30	0	Water elemental weakness
+50%
+Husk - Magic	Husk
+Magic	
+Members
+48	20	1	20	80	80	20	20	20	80	80	80	80	0	
+Poison spider (Escape Caves)	Poison spider (Escape Caves)	
+Members
+48	73	1	35	1	45	20	17	10	14	14	14	14	0	Fire elemental weakness
+40%
+Pyrefiend - Level 48	Pyrefiend
+Level 48	
+Members
+48	48	60	22	1	1	10	10	10	0	10	10	10	0	Water elemental weakness
+100%
+Lanzig	Lanzig	
+Members
+48	50	40	40	1	1	0	0	0	0	0	0	0	0	
+Husk - Ranged	Husk
+Ranged	
+Members
+48	20	1	20	80	80	20	20	20	80	80	80	80	0	
+Lensa	Lensa	
+Members
+48	50	40	40	1	1	0	0	0	0	0	0	0	0	
+Baby blue dragon - Ruins of Tapoyauik, 1	Baby blue dragon
+Ruins of Tapoyauik, 1	
+Members
+48	50	40	40	1	1	0	50	50	40	30	30	5	0	Fire elemental weakness
+50%
+Tower Archer - South	Tower Archer
+South	
+Members
+49	70	10	10	1	60	0	0	0	20	45	45	45	0	
+Catablepon - Level 49	Catablepon
+Level 49	
+Free-to-play
+49	40	45	40	60	1	40	30	20	20	40	40	40	0	
+Moonlight Cockatrice	Moonlight Cockatrice	
+Members
+49	52	31	39	1	1	14	14	0	14	0	0	0	0	
+Torcher - Level 49	Torcher
+Level 49	
+Members
+49	30	0	41	66	0	0	0	0	0	0	0	0	0	
+Tree spirit - Level 49	Tree spirit
+Level 49	
+Members
+49	60	38	38	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+35%
+Adala	Adala	
+Members
+49	60	50	10	5	1	0	0	0	0	0	0	0	0	
+Fever spider	Fever spider	
+Members
+49	40	60	40	1	1	20	15	10	15	15	15	15	0	Fire elemental weakness
+25%
+River troll - Level 49	River troll
+Level 49	
+Members
+49	60	38	38	1	1	0	0	0	0	0	0	0	0	Earth elemental weakness
+20%
+Mounted terrorbird gnome - Level 49	Mounted terrorbird gnome
+Level 49	
+Members
+49	55	40	40	1	1	16	16	18	15	10	10	10	0	
+Dwarf gang member - Level 49	Dwarf gang member
+Level 49	
+Members
+49	25	30	57	1	1	7	7	0	0	7	7	7	0	
+Wall beast - Beast	Wall beast
+Beast	
+Members
+49	105	30	16	1	1	0	0	0	0	0	0	0	0	
+Paladin (Song of the Elves) - Level 49	Paladin (Song of the Elves)
+Level 49	
+Members
+49	55	134	28	1	1	20	40	40	30	20	20	20	0	
+Wall beast - Hole	Wall beast
+Hole	
+Members
+49	105	30	16	1	1	0	0	0	0	0	0	0	0	
+Zombie (Tarn's Lair) - Level 50	Zombie (Tarn's Lair)
+Level 50	
+Members
+50	48	44	44	1	1	20	20	0	0	10	10	10	0	Fire elemental weakness
+50%
+Body Golem - Golem	Body Golem
+Golem	
+Free-to-play
+50	60	33	45	1	1	5	5	0	2	10	10	10	2	Earth elemental weakness
+35%
+Sigmund - Death to the Dorgeshuun	Sigmund
+Death to the Dorgeshuun	
+Members
+50	60	45	24	1	1	0	0	0	0	0	0	0	0	
+Body Golem - Rubble	Body Golem
+Rubble	
+Free-to-play
+50	60	33	45	1	1	5	5	0	2	10	10	10	2	Earth elemental weakness
+35%
+Possessed pickaxe - Catacombs of Kourend	Possessed pickaxe
+Catacombs of Kourend	
+Members
+50	40	40	40	1	1	15	10	5	5	10	10	10	0	
+Skeleton fremennik - Level 50	Skeleton fremennik
+Level 50	
+Members
+50	35	60	35	1	1	14	18	15	-4	15	15	15	0	Earth elemental weakness
+35%
+Possessed pickaxe - Regular	Possessed pickaxe
+Regular	
+Members
+50	40	40	40	1	1	15	10	5	5	10	10	10	0	
+Gangster - Level 50 (2)	Gangster
+Level 50 (2)	
+Members
+50	30	40	30	1	1	0	0	10	0	0	0	0	0	
+Vampyre Juvinate - Level 50 (In Aid of the Myreque)	Vampyre Juvinate
+Level 50 (In Aid of the Myreque)	
+Members
+50	60	50	30	1	1	0	0	0	0	0	0	0	0	
+Giant spider - Level 50	Giant spider
+Level 50	
+Free-to-play
+50	50	41	31	1	1	10	10	10	10	10	10	10	0	Fire elemental weakness
+50%
+Sulphur Lizard	Sulphur Lizard	
+Members
+50	50	50	30	1	1	15	25	25	0	15	15	15	-1	
+Undead Lumberjack - Level 50	Undead Lumberjack
+Level 50	
+Members
+50	14	117	14	1	1	0	0	0	0	0	0	0	0	Fire elemental weakness
+50%
+Defiler - Level 50	Defiler
+Level 50	
+Members
+50	45	0	29	0	66	0	0	0	0	0	0	0	0	
+Gangster - Level 50 (1)	Gangster
+Level 50 (1)	
+Members
+50	45	50	40	1	1	0	0	10	0	0	0	0	0	
+Grimy Lizard	Grimy Lizard	
+Members
+50	75	65	10	25	1	35	15	50	50	35	35	35	-2	
+Animated spade	Animated spade	
+Members
+50	40	40	40	1	1	15	10	5	5	10	10	10	0	Earth elemental weakness
+25%
