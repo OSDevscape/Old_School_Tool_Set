@@ -4,89 +4,48 @@ const APP_SHELL = [
   "./manifest.json"
 ];
 
-self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL))
-  );
+self.addEventListener('install', () => {
   self.skipWaiting();
 });
 
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys
-          .filter(key => key !== CACHE_NAME)
-          .map(key => caches.delete(key))
-      )
-    )
-  );
-  self.clients.claim();
+self.addEventListener('activate', (event) => {
+  event.waitUntil(self.clients.claim());
 });
 
-self.addEventListener("fetch", event => {
-  const request = event.request;
+self.addEventListener('push', (event) => {
+  let data = {};
 
-  if (request.method !== "GET") return;
+  try {
+    data = event.data ? event.data.json() : {};
+  } catch {
+    data = {
+      title: 'OSTS Notification',
+      body: event.data ? event.data.text() : 'New notification'
+    };
+  }
 
-  const url = new URL(request.url);
-
-  if (url.origin !== self.location.origin) return;
-  if (url.pathname.includes("/api/")) return;
-  if (url.pathname.endsWith("/sw.js")) return;
-
-  event.respondWith(
-    fetch(request)
-      .then(response => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
-        return response;
-      })
-      .catch(() =>
-        caches.match(request).then(cached => cached || caches.match("./"))
-      )
-  );
-});
-
-/* Firebase Messaging */
-importScripts("https://www.gstatic.com/firebasejs/12.12.0/firebase-app-compat.js");
-importScripts("https://www.gstatic.com/firebasejs/12.12.0/firebase-messaging-compat.js");
-
-firebase.initializeApp({
-  apiKey: "__FIREBASE_API_KEY__",
-  authDomain: "__FIREBASE_AUTH_DOMAIN__",
-  projectId: "__FIREBASE_PROJECT_ID__",
-  storageBucket: "__FIREBASE_STORAGE_BUCKET__",
-  messagingSenderId: "__FIREBASE_MESSAGING_SENDER_ID__",
-  appId: "__FIREBASE_APP_ID__",
-  measurementId: "__FIREBASE_MEASUREMENT_ID__"
-});
-
-const messaging = firebase.messaging();
-
-messaging.onBackgroundMessage(payload => {
-  const title = payload?.notification?.title || "Notification";
+  const title = data.title || 'OSTS Notification';
   const options = {
-    body: payload?.notification?.body || "You have a new update.",
-    icon: "./icon-192.png",
-    badge: "./icon-192.png",
+    body: data.body || 'You have a new notification.',
+    icon: '/Logoicon-192.png',
+    badge: '/Logoicon-192.png',
+    tag: data.tag || 'osts-push',
     data: {
-      url: payload?.fcmOptions?.link || "./"
+      url: data.url || '/'
     }
   };
 
-  self.registration.showNotification(title, options);
+  event.waitUntil(self.registration.showNotification(title, options));
 });
 
-self.addEventListener("notificationclick", event => {
+self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-
-  const targetUrl = event.notification?.data?.url || "./";
+  const targetUrl = event.notification.data?.url || '/';
 
   event.waitUntil(
-    clients.matchAll({ type: "window", includeUncontrolled: true }).then(windowClients => {
-      for (const client of windowClients) {
-        if ("focus" in client) {
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      for (const client of clientList) {
+        if ('focus' in client) {
           client.navigate(targetUrl);
           return client.focus();
         }

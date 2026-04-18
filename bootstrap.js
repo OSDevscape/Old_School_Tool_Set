@@ -1,49 +1,60 @@
-// Firebase Messaging bootstrap for OSTS
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import {
-  getMessaging,
-  getToken,
-  onMessage
-} from "https://www.gstatic.com/firebasejs/12.12.0/firebase-messaging.js";
+const VAPID_PUBLIC_KEY = 'PASTE_YOUR_PUBLIC_KEY_HERE';
 
-const firebaseConfig = {
-  apiKey: "__FIREBASE_API_KEY__",
-  authDomain: "__FIREBASE_AUTH_DOMAIN__",
-  projectId: "__FIREBASE_PROJECT_ID__",
-  storageBucket: "__FIREBASE_STORAGE_BUCKET__",
-  messagingSenderId: "__FIREBASE_MESSAGING_SENDER_ID__",
-  appId: "__FIREBASE_APP_ID__",
-  measurementId: "__FIREBASE_MEASUREMENT_ID__"
-};
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = atob(base64);
+  return Uint8Array.from([...rawData].map((c) => c.charCodeAt(0)));
+}
 
-const VAPID_KEY = "__VAPID_KEY__";
+async function saveSubscription(subscription) {
+  const response = await fetch('/.netlify/functions/save-subscription', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(subscription.toJSON())
+  });
 
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
-
-export async function registerPush() {
-  if (!("serviceWorker" in navigator) || !("Notification" in window)) {
-    return null;
+  if (!response.ok) {
+    throw new Error(await response.text());
   }
 
-  const perm = await Notification.requestPermission();
-  if (perm !== "granted") return null;
+  return response.json();
+}
 
-  const reg = await navigator.serviceWorker.register("./sw.js");
+export default async function registerPush() {
+  if (!('serviceWorker' in navigator)) {
+    throw new Error('Service workers are not supported');
+  }
 
-  const token = await getToken(messaging, {
-    vapidKey: VAPID_KEY,
-    serviceWorkerRegistration: reg
-  });
+  if (!('PushManager' in window)) {
+    throw new Error('Push notifications are not supported');
+  }
 
-  onMessage(messaging, payload => {
-    const title = payload?.notification?.title || "Timer update";
-    const body = payload?.notification?.body || "A timer needs attention.";
-    if (Notification.permission === "granted") {
-      new Notification(title, { body });
+  const registration = await navigator.serviceWorker.register('/sw.js');
+  await navigator.serviceWorker.ready;
+
+  if (Notification.permission === 'denied') {
+    throw new Error('Notifications are blocked');
+  }
+
+  if (Notification.permission !== 'granted') {
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+      throw new Error('Notification permission was not granted');
     }
-  });
+  }
 
-  console.log("FCM token:", token);
-  return token;
+  let subscription = await registration.pushManager.getSubscription();
+
+  if (!subscription) {
+    subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+    });
+  }
+
+  await saveSubscription(subscription);
+  return subscription;
 }
