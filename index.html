@@ -7,10 +7,29 @@
   <meta name="theme-color" content="#c5a028">
   <link rel="manifest" href="manifest.json">
   <title>Old School Tool Set</title>
- <!-- 1) Load Chart.js (no inline JS here) -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-<!-- 2) Your app + Firebase Messaging logic as a module -->
+  <meta name="description" content="Track your Old School RuneScape progress with skills, gains, bossing, timers, bestiary tools, fairy rings, and shareable public profiles.">
+  <link rel="canonical" href="https://osts.website/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Old School Tool Set">
+  <meta property="og:title" content="Old School Tool Set">
+  <meta property="og:description" content="Track your Old School RuneScape progress with skills, gains, bossing, timers, bestiary tools, fairy rings, and shareable public profiles.">
+  <meta property="og:url" content="https://osts.website/">
+  <meta property="og:image" content="https://osts.website/Logo/icon-192.png">
+  <meta property="og:image:secure_url" content="https://osts.website/Logo/icon-192.png">
+  <meta property="og:image:alt" content="Old School Tool Set logo">
+  <meta property="og:image:type" content="image/png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Old School Tool Set">
+  <meta name="twitter:description" content="Track your Old School RuneScape progress with skills, gains, bossing, timers, bestiary tools, fairy rings, and shareable public profiles.">
+  <meta name="twitter:image" content="https://osts.website/Logo/icon-192.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+  <link rel="stylesheet" href="style.css">
 <script type="module">
   const THEME_KEY = 'osts_theme_v61';
   function applyTheme(theme) {
@@ -3237,10 +3256,10 @@
 
   window.addEventListener('load', async () => {
     try {
-      const token = await registerPush();
-      console.log('FCM token:', token);
+      const endpoint = await registerPush();
+      console.log('Web Push registered:', endpoint);
     } catch (err) {
-      console.error('Push setup failed:', err);
+      console.warn('Push setup skipped:', err.message);
     }
   });
 </script>
