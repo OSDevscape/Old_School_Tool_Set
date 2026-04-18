@@ -60,18 +60,19 @@
     if (e.key === 'Escape') closeSettings();
   });
 
-  document.addEventListener('DOMContentLoaded', function () {
+     document.addEventListener('DOMContentLoaded', function () {
     var saved = 'dark';
-    try { saved = localStorage.getItem(THEME_KEY) || 'dark'; } catch (e) {}
+    try { saved = localStorage.getItem(THEMEKEY) || 'dark'; } catch (e) {}
     applyTheme(saved);
   });
 
-  // Firebase Messaging bootstrap
-  import { registerPush } from './bootstrap.js';
-
-  registerPush().then(token => {
-    console.log('FCM token:', token);
-    // TODO: save token so a backend can send timer-complete pushes
+  window.addEventListener('load', async () => {
+    try {
+      const sub = await registerPush();
+      console.log('Push ready:', sub.endpoint);
+    } catch (err) {
+      console.warn('Push setup skipped:', err.message);
+    }
   });
 </script>
   <style>
@@ -7365,18 +7366,18 @@
     </div>
   </div>
 
-  <script type="module">
-    import { registerPush } from './bootstrap.js';
+<script type="module">
+  import registerPush from './bootstrap.js';
 
-    window.addEventListener('load', async () => {
-      try {
-        const token = await registerPush();
-        console.log('FCM token:', token);
-      } catch (err) {
-        console.error('Push setup failed:', err);
-      }
-    });
-  </script>
+  window.addEventListener('load', async () => {
+    try {
+      const token = await registerPush();
+      console.log('FCM token:', token);
+    } catch (err) {
+      console.error('Push setup failed:', err);
+    }
+  });
+</script>
 
   <script>
   (function() {
