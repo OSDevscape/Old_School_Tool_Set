@@ -1,6 +1,6 @@
 {
   "id": "/",
-  "name": "OSTS",
+  "name": "Old School Tool Set",
   "short_name": "OSTS",
   "description": "Old School Tool Set (OSTS) for Old School RuneScape tools, tracking, bestiary, timers, and charts",
   "start_url": "./index.html",
