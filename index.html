@@ -1951,13 +1951,13 @@
 
       var snap = (currentPlayer.latestSnapshot && currentPlayer.latestSnapshot.data && currentPlayer.latestSnapshot.data.skills) || {};
       var pName = currentPlayer.displayName || currentPlayer.username || 'Unknown';
-      var type  = currentPlayer.type || 'ironman';
+      var rawType = currentPlayer.type || 'ironman';
+      var normalizedType = normalizeAccountType(rawType, 'ironman');
       var overall = snap.overall || {};
       var totalLvl = Number(overall.level || 0);
       var totalXp  = Number(overall.experience || 0);
       var rank     = Number(overall.rank || 0);
 
-      // Build skill data in OSRS panel order
       var skillData = CARD_SKILL_ORDER.map(function(id) {
         var sk = snap[id] || {};
         var lvl = Number(sk.level || xpToLevel(Number(sk.experience || 0)));
@@ -1969,24 +1969,60 @@
       var r2mTotal = skillData.reduce(function(s, sk) { return s + sk.lvl; }, 0);
       var r2mPct   = ((r2mTotal / 2376) * 100).toFixed(1);
 
-      var typeMap = { ironman:['IRONMAN','🛡'], hardcore:['HARDCORE','💀'], ultimate:['ULTIMATE','🔱'], regular:['MAIN','⚔'] };
-      var tInfo = typeMap[type] || typeMap.ironman;
+      var typeLabelMap = {
+        regular: 'MAIN',
+        ironman: 'IRONMAN',
+        hardcore: 'HARDCORE',
+        ultimate: 'ULTIMATE',
+        gim: 'GROUP IRONMAN',
+        ghcim: 'GROUP HARDCORE',
+        ugim: 'UNRANKED GROUP'
+      };
+      var typeLabel = typeLabelMap[normalizedType] || typeLabelMap.ironman;
 
-      // Theme colors
+      var avatarMap = {
+        regular: 'GE.png',
+        ironman: 'IM.png',
+        hardcore: 'HCIM.png',
+        ultimate: 'UIM.png',
+        gim: 'GIM.png',
+        ghcim: 'GHCIM.png',
+        ugim: 'GIM(un).png'
+      };
+      var avatarFile = avatarMap[normalizedType] || avatarMap.ironman;
+      var avatarPaths = [
+        'Assets/Account_Types/',
+        'assets/Account_Types/',
+        'Assets/account_types/',
+        'assets/account_types/',
+        'Account_Types/',
+        'account_types/'
+      ].map(function(base) {
+        return base + avatarFile;
+      });
+
+      async function loadFirstImage(paths, timeout) {
+        for (var i = 0; i < paths.length; i++) {
+          try {
+            var img = await loadImg(paths[i], timeout || 2500);
+            if (img) return img;
+          } catch (e) { }
+        }
+        return null;
+      }
+
       var C = getThemeColors();
-
-      // ── Preload skill icons ──
       var iconImgs = await Promise.all(skillData.map(function(sk) { return loadImg(sk.icon, 4000); }));
+      var typeImg = await loadFirstImage(avatarPaths, 2500);
 
-      // ── Canvas setup ──
       var DPR = 2, W = 400;
       var COLS = 3, ROWS = 8;
       var PAD = 18;
-      var TILE_W = (W - PAD * 2) / COLS;  // ~121px
+      var TILE_W = (W - PAD * 2) / COLS;
       var TILE_H = 54;
       var ICON_SZ = 32;
       var GRID_Y = 156;
-      var GRID_H = ROWS * TILE_H;          // 432px
+      var GRID_H = ROWS * TILE_H;
       var SUM_Y  = GRID_Y + GRID_H + 14;
       var FOOT_Y = SUM_Y + 72;
       var H = FOOT_Y + 32;
@@ -2010,31 +2046,16 @@
       }
       function fmtNum(n) { return Number(n).toLocaleString('en-GB'); }
 
-      // ── Background ──
       ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
-
-      // Gold top stripe
       ctx.fillStyle = goldGrad(0, W); ctx.fillRect(0, 0, W, 4);
 
-      // ── Header ──
-      // Build UTC timestamp string upfront (used in header)
       var now = new Date();
       var mm  = String(now.getUTCMonth()+1).padStart(2,'0');
       var dd  = String(now.getUTCDate()).padStart(2,'0');
       var yy  = String(now.getUTCFullYear()).slice(-2);
       var hh  = String(now.getUTCHours()).padStart(2,'0');
       var min = String(now.getUTCMinutes()).padStart(2,'0');
-      
 
-      // Badge pill (left)
-      ctx.font = 'bold 10px "Segoe UI",system-ui,sans-serif';
-      var bl = tInfo[0], bW = ctx.measureText(bl).width + 18;
-      rrect(PAD, 13, bW, 20, 4);
-      ctx.fillStyle = 'rgba(184,136,72,.12)'; ctx.fill();
-      ctx.strokeStyle = C.gold; ctx.lineWidth = 1; ctx.stroke();
-      ctx.fillStyle = C.gold; ctx.fillText(bl, PAD+9, 27);
-
-      // Timestamp — 2 lines, right-aligned (date on top, time on bottom)
       ctx.font = '10px "Segoe UI",system-ui,sans-serif';
       ctx.fillStyle = C.muted;
       var dateStr = mm+'/'+dd+'/'+yy;
@@ -2044,46 +2065,63 @@
       ctx.fillText(dateStr, W - PAD - dW, 21);
       ctx.fillText(timeStr, W - PAD - tW2, 33);
 
-      // Player name
+      var helmX = PAD;
+      var helmY = 18;
+      var helmSize = 42;
+      if (typeImg) {
+        try {
+          ctx.drawImage(typeImg, helmX, helmY, helmSize, helmSize);
+        } catch (e) { }
+      }
+
+      var nameX = PAD + 52;
+
       ctx.font = 'bold 24px "Segoe UI",system-ui,sans-serif';
-      ctx.fillStyle = C.text; ctx.fillText(pName, PAD, 60);
+      ctx.fillStyle = C.text;
+      ctx.fillText(pName, nameX, 45);
 
-      // Divider
+      ctx.font = 'bold 10px "Segoe UI",system-ui,sans-serif';
+      var bl = typeLabel;
+      var bW = ctx.measureText(bl).width + 18;
+      rrect(nameX, 56, bW, 20, 8);
+      ctx.fillStyle = 'rgba(184,136,72,.12)';
+      ctx.fill();
+      ctx.strokeStyle = C.gold;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.fillStyle = C.gold;
+      ctx.fillText(bl, nameX + 9, 70);
+
       ctx.strokeStyle = C.border; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(PAD,70); ctx.lineTo(W-PAD,70); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(PAD,85); ctx.lineTo(W-PAD,85); ctx.stroke();
 
-      // ── 4-stat row ──
       var stats4 = [
         ['TOTAL LEVEL', totalLvl ? fmtNum(totalLvl) : '--'],
         ['TOTAL XP',    totalXp  ? fmtXP(totalXp)   : '--'],
-        ['RANK',        rank > 0 ? '#'+fmtNum(rank)  : 'Unranked'],
+        ['RANK',        rank > 0 ? '#'+fmtNum(rank) : 'Unranked'],
         ['COMBAT',      combat || '--']
       ];
       var sw4 = (W - PAD*2) / 4;
       stats4.forEach(function(s, i) {
         var sx = PAD + i * sw4;
         ctx.font = 'bold 16px "Segoe UI",system-ui,sans-serif';
-        ctx.fillStyle = C.gold2; ctx.fillText(s[1], sx, 98);
+        ctx.fillStyle = C.gold2; ctx.fillText(s[1], sx, 113);
         ctx.font = '9px "Segoe UI",system-ui,sans-serif';
-        ctx.fillStyle = C.muted; ctx.fillText(s[0], sx, 112);
+        ctx.fillStyle = C.muted; ctx.fillText(s[0], sx, 127);
       });
 
-      // Divider
       ctx.strokeStyle = C.border;
-      ctx.beginPath(); ctx.moveTo(PAD,120); ctx.lineTo(W-PAD,120); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(PAD,135); ctx.lineTo(W-PAD,135); ctx.stroke();
 
-      // Section label
       ctx.font = 'bold 9px "Segoe UI",system-ui,sans-serif';
-      ctx.fillStyle = C.gold; ctx.fillText('SKILLS', PAD, 136);
+      ctx.fillStyle = C.gold; ctx.fillText('SKILLS', PAD, 151);
 
-      // ── Skill grid ──
       skillData.forEach(function(sk, i) {
         var col = i % COLS, row = Math.floor(i / COLS);
         var tx = PAD + col * TILE_W;
         var ty = GRID_Y + row * TILE_H;
         var isMax = sk.lvl >= 99;
 
-        // Tile background
         rrect(tx+1, ty+2, TILE_W-2, TILE_H-4, 7);
         ctx.fillStyle = isMax ? 'rgba('+hexToRgbaComponents(C.gold)+',0.12)' : C.surface;
         ctx.fill();
@@ -2093,12 +2131,10 @@
           ctx.strokeStyle = C.border; ctx.lineWidth = .5; ctx.stroke();
         }
 
-        // Icon container circle
         var icX = tx + 8, icY = ty + (TILE_H - ICON_SZ) / 2;
         rrect(icX, icY, ICON_SZ, ICON_SZ, 6);
         ctx.fillStyle = C.s2; ctx.fill();
 
-        // Icon image or fallback circle
         var img = iconImgs[i];
         if (img) {
           try {
@@ -2106,7 +2142,6 @@
           } catch(e) { img = null; }
         }
         if (!img) {
-          // Colored dot fallback
           ctx.beginPath();
           ctx.arc(icX + ICON_SZ/2, icY + ICON_SZ/2, ICON_SZ/2 - 4, 0, Math.PI*2);
           ctx.fillStyle = sk.color || C.gold; ctx.fill();
@@ -2117,20 +2152,16 @@
           ctx.textAlign = 'left';
         }
 
-        // Level number
         var lvlStr = sk.lvl > 0 ? String(sk.lvl) : '--';
         ctx.font = 'bold 20px "Segoe UI",system-ui,sans-serif';
         ctx.fillStyle = isMax ? C.gold2 : C.text;
         ctx.fillText(lvlStr, icX + ICON_SZ + 7, ty + TILE_H/2 + 7);
 
-        // XP progress bar
         var BAR_H = 3, BAR_PAD = 5, BAR_Y = ty + TILE_H - 4 - BAR_H;
         var BAR_X = tx + BAR_PAD + 1, BAR_W = TILE_W - BAR_PAD * 2 - 2;
         var prog = isMax ? 1 : xpProg(sk.xp, sk.lvl);
-        // Track (background)
         rrect(BAR_X, BAR_Y, BAR_W, BAR_H, 1);
         ctx.fillStyle = C.s2; ctx.fill();
-        // Fill
         if (prog > 0) {
           var fillW = Math.max(BAR_H, prog * BAR_W);
           rrect(BAR_X, BAR_Y, fillW, BAR_H, 1);
@@ -2138,7 +2169,6 @@
         }
       });
 
-      // ── Summary ──
       ctx.strokeStyle = C.border; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(PAD, SUM_Y); ctx.lineTo(W-PAD, SUM_Y); ctx.stroke();
 
@@ -2157,14 +2187,12 @@
       ctx.fillStyle = C.gold2;
       ctx.fillText(r2mPct+'%', bX+bW2+6, r2mLy);
 
-      // Maxed + total
       ctx.font = '11px "Segoe UI",system-ui,sans-serif';
       ctx.fillStyle = C.muted;
       var sumStr = maxed+'/24 Maxed';
       var smW = ctx.measureText(sumStr).width;
       ctx.fillText(sumStr, (W - smW) / 2, SUM_Y + 38);
 
-      // ── Footer ──
       ctx.strokeStyle = C.border; ctx.lineWidth = .5;
       ctx.beginPath(); ctx.moveTo(PAD, FOOT_Y-4); ctx.lineTo(W-PAD, FOOT_Y-4); ctx.stroke();
       ctx.font = '9px "Segoe UI",system-ui,sans-serif';
@@ -2173,10 +2201,8 @@
       var fw = ctx.measureText(fs).width;
       ctx.fillText(fs, (W-fw)/2, FOOT_Y+10);
 
-      // Gold bottom stripe
       ctx.fillStyle = goldGrad(0, W); ctx.fillRect(0, H-4, W, 4);
 
-      // ── Save / share ──
       var fileName = (pName.replace(/\s+/g,'_') || 'profile') + '_osrs_card.png';
       try {
         canvas.toBlob(async function(blob) {
@@ -2190,7 +2216,6 @@
             file = new File([blob], fileName, { type: 'image/png' });
           } catch (fileErr) { }
 
-          // 1) Auto share first, but do not stop here
           if (file && navigator.canShare && navigator.share) {
             try {
               if (navigator.canShare({ files: [file] })) {
@@ -2205,7 +2230,6 @@
             }
           }
 
-          // 2) Direct save picker when supported
           if (window.showSaveFilePicker) {
             try {
               var handle = await window.showSaveFilePicker({
@@ -2225,7 +2249,6 @@
             }
           }
 
-          // 3) Fallback browser download
           var url = URL.createObjectURL(blob);
           var a = document.createElement('a');
           a.download = fileName;
@@ -2258,7 +2281,6 @@
         }
       }
     }
-
     // Helper: hex color to rgb components string for rgba
     function hexToRgbaComponents(hex) {
       hex = hex.replace('#','');
