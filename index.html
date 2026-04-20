@@ -2190,6 +2190,7 @@
             file = new File([blob], fileName, { type: 'image/png' });
           } catch (fileErr) { }
 
+          // 1) Auto share first, but do not stop here
           if (file && navigator.canShare && navigator.share) {
             try {
               if (navigator.canShare({ files: [file] })) {
@@ -2197,12 +2198,34 @@
                   files: [file],
                   title: pName + ' OSRS Card'
                 });
-                showToast('🖼 Card saved/shared!');
-                return;
+                showToast('🖼 Card shared!');
               }
-            } catch (shareErr) { }
+            } catch (shareErr) {
+              console.warn('Share skipped:', shareErr);
+            }
           }
 
+          // 2) Direct save picker when supported
+          if (window.showSaveFilePicker) {
+            try {
+              var handle = await window.showSaveFilePicker({
+                suggestedName: fileName,
+                types: [{
+                  description: 'PNG image',
+                  accept: { 'image/png': ['.png'] }
+                }]
+              });
+              var writable = await handle.createWritable();
+              await writable.write(blob);
+              await writable.close();
+              showToast('🖼 Card saved!');
+              return;
+            } catch (pickerErr) {
+              console.warn('Save picker skipped:', pickerErr);
+            }
+          }
+
+          // 3) Fallback browser download
           var url = URL.createObjectURL(blob);
           var a = document.createElement('a');
           a.download = fileName;
@@ -2225,12 +2248,10 @@
           showToast('🖼 Card saved!');
           return;
         } catch (e2) {
-          // Canvas tainted — regenerate without images
           iconImgs = iconImgs.map(function() { return null; });
           canvas.width = W * DPR; canvas.height = H * DPR;
           ctx = canvas.getContext('2d');
           ctx.scale(DPR, DPR);
-          // Re-draw (same code path, img=null triggers colored dot fallback)
           showToast('🖼 Saving without icons…');
           setTimeout(function() { downloadProfileCard(); }, 100);
           return;
