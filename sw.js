@@ -1,4 +1,4 @@
-const CACHE_NAME = "osts-cache-v2";
+const CACHE_NAME = "osts-cache-v4";
 const APP_SHELL = [
   "./",
   "./manifest.json"

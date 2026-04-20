@@ -8,7 +8,7 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 async function saveSubscription(subscription) {
-  const response = await fetch('/.netlify/functions/save-subscription', {
+  const response = await fetch('netlify/functions/save-subscription', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
