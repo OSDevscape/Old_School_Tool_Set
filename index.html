@@ -60,9 +60,9 @@
   const THEME_KEY = 'osts_theme_v61';
   function applyTheme(theme) {
     var t = (theme || 'dark').toLowerCase();
-    document.body.classList.remove('theme-light', 'theme-osrs');
+    document.body.classList.remove('theme-light', 'theme-brown');
     if (t === 'light') document.body.classList.add('theme-light');
-    if (t === 'osrs') document.body.classList.add('theme-osrs');
+    if (t === 'brown') document.body.classList.add('theme-brown');
     document.querySelectorAll('.theme-chip[data-theme]').forEach(function (btn) {
       btn.classList.toggle('active', btn.getAttribute('data-theme') === t);
     });
@@ -107,7 +107,7 @@
 
      document.addEventListener('DOMContentLoaded', function () {
     var saved = 'dark';
-    try { saved = localStorage.getItem(THEMEKEY) || 'dark'; } catch (e) {}
+    try { saved = localStorage.getItem(THEME_KEY) || 'dark'; } catch (e) {}
     applyTheme(saved);
   });
 
@@ -151,7 +151,7 @@
       <div class="theme-options">
         <button class="theme-chip active" type="button" data-theme="dark">Dark</button>
         <button class="theme-chip" type="button" data-theme="light">Light</button>
-        <button class="theme-chip" type="button" data-theme="osrs">Brown</button>
+        <button class="theme-chip" type="button" data-theme="brown">Brown</button>
       </div>
 
     </div>
@@ -1926,7 +1926,7 @@
         light: { bg:'#f4efe4', surface:'#fffaf0', s2:'#f0e6d2', s3:'#e6d6b7', border:'#cfbea1', gold:'#9f7740', gold2:'#c89f62', text:'#23180f', muted:'#6d5a46', green:'#2f7d32' },
         osrs:  { bg:'#2b241b', surface:'#3a3024', s2:'#4a3c2c', s3:'#5a4934', border:'#8d6b3e', gold:'#c9a35a', gold2:'#e2bf78', text:'#e2bf78', muted:'#b39a73', green:'#7c9a5b' }
       };
-      var t = document.body.classList.contains('theme-osrs') ? 'osrs'
+      var t = document.body.classList.contains('theme-brown') ? 'brown'
             : document.body.classList.contains('theme-light') ? 'light' : 'dark';
       return themes[t];
     }
@@ -2345,9 +2345,9 @@
       }
       window.applyTheme = function (theme) {
         var t = (theme || 'dark').toLowerCase();
-        document.body.classList.remove('theme-light', 'theme-osrs');
+        document.body.classList.remove('theme-light', 'theme-brown');
         if (t === 'light') document.body.classList.add('theme-light');
-        else if (t === 'osrs') document.body.classList.add('theme-osrs');
+        else if (t === 'brown') document.body.classList.add('theme-brown');
         try { localStorage.setItem(THEME_KEY, t); } catch (e) { }
         syncThemeButtons(t);
         return false;

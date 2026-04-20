@@ -2372,7 +2372,7 @@
       --border: #cfbea1
     }
 
-    body.theme-osrs {
+    body.theme-brown {
       --bg: #2b241b;
       --surface: #3a3024;
       --surface2: #4a3c2c;
@@ -2388,15 +2388,15 @@
       --border: #8d6b3e
     }
 
-    body.theme-osrs header,
-    body.theme-osrs #search-bar,
-    body.theme-osrs .card,
-    body.theme-osrs details.monster-item {
+    body.theme-brown header,
+    body.theme-brown #search-bar,
+    body.theme-brown .card,
+    body.theme-brown details.monster-item {
       box-shadow: none
     }
 
     body.theme-light .welcome-logo,
-    body.theme-osrs .welcome-logo {
+    body.theme-brown .welcome-logo {
       filter: drop-shadow(0 3px 8px rgba(0, 0, 0, .18))
     }
 
@@ -2445,7 +2445,7 @@
       background: rgba(195, 75, 64, .10)
     }
 
-    body.theme-osrs .settings-danger {
+    body.theme-brown .settings-danger {
       background: rgba(147, 68, 60, .14)
     }
 
@@ -2498,7 +2498,7 @@
     }
 
     body.theme-light .skills-placeholder-logo,
-    body.theme-osrs .skills-placeholder-logo {
+    body.theme-brown .skills-placeholder-logo {
       filter: drop-shadow(0 3px 8px rgba(0, 0, 0, .18))
     }
 
