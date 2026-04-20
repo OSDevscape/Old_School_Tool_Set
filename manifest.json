@@ -5,8 +5,8 @@
   "description": "Old School Tool Set (OSTS) for Old School RuneScape tools, tracking, bestiary, timers, and charts",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0b1220",
-  "theme_color": "#0b1220",
+  "background_color": "#2b241b",
+  "theme_color": "#2b241b",
   "icons": [
      {
       "src": "./Assets/Logo/icon-192.png",
