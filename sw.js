@@ -1,4 +1,4 @@
-const CACHE_NAME = "osts-cache-v5.2.0";
+const CACHE_NAME = "osts-cache-v5.2.1";
 const APP_SHELL = [
   "./",
   "./manifest.json"
@@ -27,8 +27,8 @@ self.addEventListener('push', (event) => {
   const title = data.title || 'OSTS Notification';
   const options = {
     body: data.body || 'You have a new notification.',
-    icon: 'Logo/icon-192.png',
-    badge: 'Logo/icon-192.png',
+    icon: 'Assets/Logo/icon-192.png',
+    badge: 'Assets/Logo/icon-192.png',
     tag: data.tag || 'osts-push',
     data: {
       url: data.url || '/'
