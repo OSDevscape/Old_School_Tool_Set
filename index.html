@@ -1944,7 +1944,7 @@
       });
     }
 
-    // ── Download Profile Card (async, OSRS panel style) ──
+    // ── Download Profile Card (async, OSTS panel style) ──
     async function downloadProfileCard() {
       try {
         if (!currentPlayer) { showToast('Load a player first'); return; }
@@ -2002,11 +2002,6 @@
         var avatarFile = avatarMap[normalizedType] || avatarMap.ironman;
         var avatarPaths = [
           'Assets/Account_Types/',
-          'assets/Account_Types/',
-          'Assets/account_types/',
-          'assets/account_types/',
-          'Account_Types/',
-          'account_types/'
         ].map(function(base) {
           return base + avatarFile;
         });
