@@ -19,6 +19,7 @@
     .hero-text h1 { font-size: 20px; font-weight: 800; color: var(--gold); line-height: 1.1; }
     .hero-text p  { font-size: 12px; color: var(--muted); margin-top: 3px; }
 
+
     /* ── Section header ── */
     .section-head {
       display: flex; align-items: center; justify-content: space-between;
@@ -36,6 +37,7 @@
     .refresh-btn:hover { color: var(--gold); }
     .refresh-btn.spinning { display: inline-block; animation: spin .7s linear infinite; }
 
+
     /* ── Recent players ── */
     .recent-grid { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
     .recent-chip {
@@ -51,6 +53,7 @@
     .rc-name { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
     .rc-type { font-size: 10px; color: var(--muted); margin-top: 1px; }
 
+
     .src-badge {
       font-size: 9px; font-weight: 700; padding: 2px 7px;
       border-radius: 999px; vertical-align: middle; margin-left: 5px;
@@ -60,8 +63,10 @@
     .rc-time { font-size: 10px; color: var(--muted); padding-left: 8px; flex-shrink: 0; white-space: nowrap; }
     .recent-empty { font-size: 12px; color: var(--muted); padding: 4px 0 16px; line-height: 1.6; }
 
+
     /* ── News cards — each card is fully distinct ── */
     .news-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+
 
     .news-card {
       display: block; text-decoration: none;
@@ -73,6 +78,7 @@
     }
     .news-card:hover  { border-color: var(--gold); transform: translateY(-1px); }
     .news-card:active { transform: translateY(0); }
+
 
     /* Thumbnail */
     .news-thumb-wrap { position: relative; width: 100%; overflow: hidden; background: var(--surface2); }
@@ -89,6 +95,7 @@
     .news-card.featured .news-thumb-fallback { height: 100px; }
     .news-card:not(.featured) .news-thumb-fallback { height: 80px; }
 
+
     /* Meta row: category pill + date */
     .news-meta {
       display: flex; align-items: center; justify-content: space-between;
@@ -102,6 +109,7 @@
     }
     .news-date { font-size: 11px; color: var(--muted); white-space: nowrap; }
 
+
     /* Body */
     .news-body { padding: 8px 14px 14px; }
     .news-title {
@@ -114,6 +122,7 @@
       display: -webkit-box; -webkit-line-clamp: 3;
       -webkit-box-orient: vertical; overflow: hidden;
     }
+
 
     /* ── Skeletons ── */
     .skeleton { background: var(--surface2); border-radius: 8px; animation: shimmer 1.4s ease-in-out infinite; }
@@ -130,6 +139,7 @@
 </head>
 <body>
 
+
 <header>
   <h1>OSTS</h1>
   <div class="hdr-actions">
@@ -137,6 +147,7 @@
     <button class="hdr-btn icon-btn" id="settings-btn" aria-label="Settings">⚙️</button>
   </div>
 </header>
+
 
 <div id="settings-overlay"></div>
 <div id="settings-panel" aria-hidden="true">
@@ -161,8 +172,10 @@
   </div>
 </div>
 
+
 <div id="main">
   <div class="page active" id="page-home">
+
 
     <!-- Hero -->
     <div class="landing-hero">
@@ -175,6 +188,7 @@
         <p>OSRS tracking, bossing stats, farming timers &amp; more.</p>
       </div>
     </div>
+
 
     <!-- Global Recent Players -->
     <div class="section-head">
@@ -189,6 +203,7 @@
       </div>
     </div>
 
+
     <!-- Local Recent Players -->
     <div class="section-head" style="margin-top:4px">
       <h2>Your Recent Searches <span class="src-badge badge-local">LOCAL</span></h2>
@@ -201,6 +216,7 @@
         <div class="skeleton skel-chip"></div>
       </div>
     </div>
+
 
     <!-- OSRS News -->
     <div class="section-head">
@@ -215,10 +231,13 @@
       </div>
     </div>
 
+
   </div>
 </div>
 
+
 <nav id="bottom-nav"></nav>
+
 
 <div class="modal-overlay" id="more-menu-overlay">
   <div class="modal-sheet">
@@ -234,29 +253,35 @@
   </div>
 </div>
 
+
 <div id="toast"></div>
+
 
 <script type="module">
 import {
   initPage, showToast, normalizeAccountType,
 } from './JS/shared.js';
 
+
 initPage('home');
+
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const LOCAL_RECENT_KEY = 'osts_recent_players_v2';
+
 
 const TYPE_ICONS  = { ironman:'🛡', hardcore:'💀', ultimate:'🔱', regular:'⚔', gim:'👥', ghcim:'☠', ugim:'👥' };
 const TYPE_LABELS = { ironman:'Iron', hardcore:'HCIM', ultimate:'UIM', regular:'Regular', gim:'GIM', ghcim:'GHCIM', ugim:'UGIM' };
 const typeIcon  = t => TYPE_ICONS[normalizeAccountType(t)]  || '⚔';
 const typeLabel = t => TYPE_LABELS[normalizeAccountType(t)] || 'Iron';
 
+
 function timeAgo(iso) {
   if (!iso) return '';
   const s = Math.floor((Date.now() - new Date(iso)) / 1000);
   if (s < 60)    return 'just now';
   if (s < 3600)  return Math.floor(s / 60)   + 'm ago';
-  if (s < 86400) return Math.floor(s / 3600)  + 'h ago';
+  if (s < 86400) return Math.floor(s / 3600) + 'h ago';
   return Math.floor(s / 86400) + 'd ago';
 }
 function fmtDate(str) {
@@ -267,6 +292,7 @@ function fmtDate(str) {
     }).toUpperCase();
   } catch { return str; }
 }
+
 
 // ── Recent Players ────────────────────────────────────────────────────────────
 function recentChipsHtml(list) {
@@ -286,6 +312,7 @@ function recentChipsHtml(list) {
   }</div>`;
 }
 
+
 async function loadGlobalRecent() {
   const el = document.getElementById('recent-global-container');
   try {
@@ -303,6 +330,7 @@ async function loadGlobalRecent() {
   }
 }
 
+
 async function loadLocalRecent() {
   const el = document.getElementById('recent-local-container');
   try {
@@ -316,16 +344,20 @@ async function loadLocalRecent() {
     Search a player on the <a href="Pages/overview.html" style="color:var(--gold);font-weight:600">Overview</a> page to get started.</div>`;
 }
 
+
 // ── OSRS News ─────────────────────────────────────────────────────────────────
 const OSRS_RSS = 'https://secure.runescape.com/m=news/latest_news.rss?oldschool=true';
 const RSS2JSON = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(OSRS_RSS)}&api_key=&count=10`;
+
 
 function stripHtml(html) {
   return (html || '').replace(/<[^>]+>/g, '').replace(/&amp;/g,'&').replace(/&nbsp;/g,' ').replace(/&#\d+;/g,'').trim();
 }
 
+
 async function loadNews() {
   let items = [];
+
 
   // 1. Try Netlify proxy (production — avoids CORS)
   try {
@@ -335,6 +367,7 @@ async function loadNews() {
       if (Array.isArray(data) && data.length) items = data;
     }
   } catch {}
+
 
   // 2. Fallback: rss2json public API (works on localhost, no CORS issues)
   if (!items.length) {
@@ -354,18 +387,21 @@ async function loadNews() {
     } catch {}
   }
 
+
   renderNews(items);
 }
 
+
 function renderNews(items) {
   const el = document.getElementById('news-container');
+
 
   if (!items.length) {
     el.innerHTML = `
       <div class="news-list">
         <a class="news-card featured"
            href="https://oldschool.runescape.com/news" target="_blank" rel="noopener">
-          <div class="news-thumb-fallback news-card.featured" style="height:100px">📰</div>
+          <div class="news-thumb-fallback news-card featured" style="height:100px">📰</div>
           <div class="news-body">
             <div class="news-title">View OSRS News</div>
             <div class="news-desc">Open the official Old School RuneScape news page for the latest updates.</div>
@@ -375,16 +411,19 @@ function renderNews(items) {
     return;
   }
 
+
   const cards = items.slice(0, 8).map((item, i) => {
     const isFirst = i === 0;
+
 
     // Thumbnail
     const thumbHtml = item.thumbnail
       ? `<div class="news-thumb-wrap">
            <img src="${item.thumbnail}" alt="" loading="lazy"
-                onerror="this.parentElement.innerHTML='<div class=\\'news-thumb-fallback\\' style=\\'height:80px\\'>📰</div>'">
+                onerror="this.parentElement.innerHTML='<div class=\'news-thumb-fallback\' style=\'height:80px\'>📰</div>'">
          </div>`
       : `<div class="news-thumb-wrap"><div class="news-thumb-fallback" style="height:${isFirst ? '100' : '80'}px">📰</div></div>`;
+
 
     // Meta
     const metaHtml = (item.category || item.pubDate)
@@ -393,6 +432,7 @@ function renderNews(items) {
            ${item.pubDate  ? `<span class="news-date">${fmtDate(item.pubDate)}</span>` : ''}
          </div>`
       : '';
+
 
     return `<a class="news-card${isFirst ? ' featured' : ''}"
          href="${item.link || 'https://oldschool.runescape.com/news'}"
@@ -406,20 +446,24 @@ function renderNews(items) {
     </a>`;
   });
 
+
   el.innerHTML = `<div class="news-list">${cards.join('')}</div>`;
 }
+
 
 // ── Refresh ───────────────────────────────────────────────────────────────────
 async function withSpin(btn, fn) {
   btn.classList.add('spinning');
   try { await fn(); } finally { btn.classList.remove('spinning'); }
 }
+
 document.getElementById('refresh-recent-global').addEventListener('click', e =>
   withSpin(e.currentTarget, loadGlobalRecent));
 document.getElementById('refresh-recent-local').addEventListener('click', e =>
   withSpin(e.currentTarget, loadLocalRecent));
 document.getElementById('refresh-news').addEventListener('click', e =>
   withSpin(e.currentTarget, loadNews));
+
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
 loadGlobalRecent();
