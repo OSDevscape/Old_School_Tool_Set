@@ -3,7 +3,7 @@
   "name": "Old School Tool Set",
   "short_name": "OSTS",
   "description": "OSRS skill tracking, gains, bossing, timers, and bestiary.",
-  "start_url": "index.html",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#2b241b",
   "theme_color": "#2b241b",

@@ -4,355 +4,139 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#2b241b">
-  <link rel="manifest" href="../manifest.json">
-  <title>OSTS — Overview</title>
-  <meta name="description" content="Track your Old School RuneScape progress.">
-  <link rel="stylesheet" href="../style.css">
+  <link rel="manifest" href="manifest.json">
+  <title>OSTS — Home</title>
+  <meta name="description" content="Old School Tool Set — OSRS news and player tracking.">
+  <link rel="stylesheet" href="style.css">
   <style>
-    /* ── Overview-specific layout ── */
+    /* ── Hero ── */
+    .landing-hero {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 14px; margin-bottom: 14px;
+    }
+    .hero-logo { width: 48px; height: 48px; object-fit: contain; border-radius: 10px; flex-shrink: 0; }
+    .hero-text h1 { font-size: 20px; font-weight: 800; color: var(--gold); line-height: 1.1; }
+    .hero-text p  { font-size: 12px; color: var(--muted); margin-top: 3px; }
 
-    /* Sticky bottom action bar */
-    #action-bar {
-      display: none;
-      position: fixed; bottom: var(--nav-h); left: 0; right: 0;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      padding: 10px 12px;
-      gap: 8px;
-      z-index: 90;
-    }
-    #action-bar.visible { display: flex; }
-    .action-btn {
-      flex: 1; padding: 11px;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 10px; color: var(--text);
-      font-size: 13px; font-weight: 600; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 6px;
-      transition: border-color .15s;
-    }
-    .action-btn:hover  { border-color: var(--gold); }
-    .action-btn.gold   { background: var(--gold); color: #000; border-color: var(--gold); }
-    .action-btn:disabled { opacity: .5; cursor: not-allowed; }
-
-    /* Extra bottom padding when action bar is shown */
-    #main.has-action-bar { padding-bottom: 58px; }
-
-    /* ── Player header ── */
-    .ov-header {
-      display: flex; align-items: center; gap: 14px;
-      padding: 14px 14px 12px;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; margin-bottom: 10px;
-    }
-    .ov-avatar {
-      width: 52px; height: 52px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      background: var(--surface2); border: 2px solid var(--gold);
-      border-radius: 12px; overflow: hidden;
-    }
-    .ov-avatar img { width: 38px; height: 38px; object-fit: contain; }
-    .ov-avatar-emoji { font-size: 26px; }
-    .ov-player-info { flex: 1; min-width: 0; }
-    .ov-player-name { font-size: 22px; font-weight: 700; line-height: 1.1; }
-    .ov-source-row  { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
-
-    /* ── Top 3-stat row ── */
-    .ov-top-stats {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 8px; margin-bottom: 10px;
-    }
-    .ov-top-stat {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; padding: 14px 12px; text-align: center;
-    }
-    .ov-top-stat .v { font-size: 22px; font-weight: 700; color: var(--gold2, var(--gold)); }
-    .ov-top-stat .l { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; margin-top: 3px; }
-
-    /* ── 2-col quick stats ── */
-    .ov-quick-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr);
-      gap: 8px; margin-bottom: 10px;
-    }
-    .ov-quick-box {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; padding: 12px 14px;
-    }
-    .ov-quick-box .qk { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 4px; }
-    .ov-quick-box .qv { font-size: 20px; font-weight: 700; color: var(--text); }
-    .ov-quick-box .qs { font-size: 12px; color: var(--muted); margin-top: 2px; }
-    .ov-quick-box .qv.highlight { color: var(--gold); }
-
-    /* ── Road to Max section ── */
-    .ov-r2m {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; padding: 14px; margin-bottom: 10px;
-    }
-    .ov-r2m-head {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 13px; font-weight: 700; color: var(--gold);
-      text-transform: uppercase; letter-spacing: .5px;
-      margin-bottom: 14px;
-    }
-    .ov-r2m-head span { font-size: 16px; }
-    .ov-r2m-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    .r2m-cell .rk  { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 4px; }
-    .r2m-cell .rv  { font-size: 22px; font-weight: 700; color: var(--gold); }
-    .r2m-cell .rs  { font-size: 11px; color: var(--muted); margin-top: 1px; }
-
-    /* ── Collapsible sections ── */
-    .ov-collapse {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; margin-bottom: 10px; overflow: hidden;
-    }
-    .ov-collapse-head {
-      width: 100%; background: none; border: none;
+    /* ── Section header ── */
+    .section-head {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 16px; cursor: pointer; color: var(--text);
+      margin-bottom: 10px;
     }
-    .ov-collapse-head .ch-title {
-      font-size: 13px; font-weight: 700;
+    .section-head h2 {
+      font-size: 11px; font-weight: 700; color: var(--muted);
       text-transform: uppercase; letter-spacing: .6px;
     }
-    .ov-collapse-head .ch-caret {
-      color: var(--muted); font-size: 12px; transition: transform .2s;
+    .refresh-btn {
+      background: none; border: none; color: var(--muted);
+      font-size: 16px; cursor: pointer; padding: 2px 6px;
+      border-radius: 6px; transition: color .15s; line-height: 1;
     }
-    .ov-collapse.open .ch-caret { transform: rotate(180deg); }
-    .ov-collapse-body { border-top: 1px solid var(--border); padding: 12px 14px; display: none; }
-    .ov-collapse.open .ov-collapse-body { display: block; }
+    .refresh-btn:hover { color: var(--gold); }
+    .refresh-btn.spinning { display: inline-block; animation: spin .7s linear infinite; }
 
-    /* ── Nearest 99s cards ── */
-    .n99-card {
-      display: flex; align-items: center; gap: 12px;
-      padding: 12px 14px;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 12px; margin-bottom: 6px;
-    }
-    .n99-card:last-child { margin-bottom: 0; }
-    .n99-icon-wrap {
-      width: 42px; height: 42px; flex-shrink: 0;
-      background: var(--surface3); border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .n99-icon-wrap img { width: 30px; height: 30px; object-fit: contain; }
-    .n99-info  { flex: 1; min-width: 0; }
-    .n99-title { font-size: 14px; font-weight: 700; color: var(--text); }
-    .n99-sub   { font-size: 12px; color: var(--muted); margin-top: 2px; }
-
-    /* ── Circular progress ring ── */
-    .ring-wrap {
-      position: relative; width: 44px; height: 44px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .ring-wrap svg { position: absolute; top: 0; left: 0; transform: rotate(-90deg); }
-    .ring-track { fill: none; stroke: var(--surface3); }
-    .ring-fill  { fill: none; stroke-linecap: round; transition: stroke-dashoffset .4s; }
-    .ring-label {
-      position: relative; z-index: 1;
-      font-size: 10px; font-weight: 700; color: var(--gold);
-      text-align: center; line-height: 1;
-    }
-
-    /* ── Achievement groups ── */
-    .achv-group {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 12px; margin-bottom: 6px; overflow: hidden;
-    }
-    .achv-group:last-child { margin-bottom: 0; }
-    .achv-group-head {
-      display: flex; align-items: center; justify-content: flex-end;
-      gap: 10px; padding: 12px 14px; cursor: pointer;
-      background: none; border: none; width: 100%;
-    }
-    .achv-head-info { flex: 1; min-width: 0; text-align: left; }
-    .achv-head-title { font-size: 13px; font-weight: 700; color: var(--text); }
-    .achv-head-sub   { font-size: 11px; color: var(--muted); margin-top: 2px; }
-    .achv-caret { font-size: 10px; color: var(--muted); transition: transform .2s; }
-    .achv-group.open .achv-caret { transform: rotate(180deg); }
-    .achv-body { display: none; border-top: 1px solid var(--border); padding: 12px 14px; }
-    .achv-group.open .achv-body { display: block; }
-    .achv-table-head {
-      font-size: 10px; font-weight: 700; color: var(--muted);
-      text-transform: uppercase; letter-spacing: .5px;
-      display: grid; grid-template-columns: 1fr 60px 80px;
-      padding: 0 4px 6px; border-bottom: 1px solid var(--border); margin-bottom: 4px;
-    }
-    .achv-table-head span:not(:first-child) { text-align: right; }
-    .achv-skill-row {
-      display: grid; grid-template-columns: 1fr 60px 80px;
-      padding: 6px 4px; border-bottom: 1px solid var(--border);
-      font-size: 12px; align-items: center;
-    }
-    .achv-skill-row:last-child { border-bottom: none; }
-    .achv-skill-name { display: flex; align-items: center; gap: 6px; font-weight: 600; }
-    .achv-skill-name img { width: 18px; height: 18px; object-fit: contain; }
-    .achv-skill-lvl  { text-align: right; color: var(--muted); }
-    .achv-skill-xp   { text-align: right; font-weight: 600; color: var(--gold); }
-    .achv-section-label {
-      font-size: 10px; font-weight: 700; color: var(--muted);
-      text-transform: uppercase; letter-spacing: .5px;
-      margin: 6px 0 8px; padding: 4px 6px;
-      background: var(--surface3); border-radius: 6px; display: inline-block;
-    }
-
-    /* Account notes */
-    .ov-notes {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 12px; padding: 12px 14px; margin-bottom: 10px;
-    }
-    .ov-notes-title { font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
-    .ov-notes-body  { font-size: 12px; color: var(--muted); line-height: 1.5; }
-
-    /* Last updated */
-    .ov-last-updated { font-size: 11px; color: var(--muted); text-align: center; padding: 4px 0 10px; }
-
-    /* Push status */
-    .push-note { font-size: 11px; color: var(--muted); margin-top: 4px; }
-
-    /* Gold2 var fallback */
-    :root { --gold2: #d0a060; }
-    body.theme-light { --gold2: #c89f62; }
-    body.theme-brown { --gold2: #e2bf78; }
-
-    /* ── Profile dropdown (header) ── */
-    #profile-btn {
-      display: none; align-items: center; gap: 6px;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 8px; color: var(--text);
-      padding: 6px 10px 6px 12px; font-size: 13px; font-weight: 600;
-      cursor: pointer; transition: border-color .15s; max-width: 130px;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    #profile-btn.visible { display: flex; }
-    #profile-btn:hover { border-color: var(--gold); }
-    #profile-btn .pb-caret { font-size: 9px; color: var(--muted); flex-shrink: 0; }
-
-    /* ── Quick-switch modal ── */
-    #profiles-modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,.55);
-      z-index: 250; display: none; align-items: center; justify-content: center;
-      padding: 20px;
-    }
-    #profiles-modal-overlay.show { display: flex; }
-    #profiles-modal {
+    /* ── Recent players ── */
+    .recent-grid { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .recent-chip {
+      display: flex; align-items: center; gap: 8px;
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 16px; width: 100%; max-width: 400px;
-      max-height: 80vh; overflow-y: auto;
-      box-shadow: 0 16px 48px rgba(0,0,0,.4);
+      border-radius: 10px; padding: 9px 12px;
+      transition: border-color .15s, background .15s;
+      text-decoration: none;
     }
-    .pm-head {
-      display: flex; align-items: flex-start; justify-content: space-between;
-      padding: 16px 16px 12px; border-bottom: 1px solid var(--border);
-    }
-    .pm-head h3  { font-size: 16px; font-weight: 700; }
-    .pm-head .pm-count { font-size: 12px; color: var(--muted); margin-top: 2px; }
-    .pm-close { background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 8px; color: var(--muted); font-size: 14px;
-      cursor: pointer; padding: 4px 9px; line-height: 1.4; }
-    .pm-list { padding: 10px; display: flex; flex-direction: column; gap: 6px; }
-    .pm-profile-btn {
-      display: flex; align-items: center; gap: 12px;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 12px; padding: 12px 14px; cursor: pointer;
-      transition: border-color .15s; text-align: left; width: 100%;
-    }
-    .pm-profile-btn:hover  { border-color: var(--gold); }
-    .pm-profile-btn.active { border-color: var(--gold); background: rgba(184,136,72,.1); }
-    .pm-avatar {
-      width: 38px; height: 38px; flex-shrink: 0;
-      background: var(--surface3); border-radius: 9px;
-      display: flex; align-items: center; justify-content: center; font-size: 20px;
-    }
-    .pm-info { flex: 1; min-width: 0; }
-    .pm-nickname { font-size: 14px; font-weight: 700; }
-    .pm-rsn-type { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .recent-chip:hover { border-color: var(--gold); background: var(--surface2); }
+    .rc-icon { font-size: 18px; flex-shrink: 0; }
+    .rc-info { min-width: 0; }
+    .rc-name { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
+    .rc-type { font-size: 10px; color: var(--muted); margin-top: 1px; }
+    .rc-time { font-size: 10px; color: var(--muted); padding-left: 8px; flex-shrink: 0; white-space: nowrap; }
+    .recent-empty { font-size: 12px; color: var(--muted); padding: 4px 0 16px; line-height: 1.6; }
 
-    /* ── Settings: Saved Profiles section ── */
-    .sp-note { font-size: 12px; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
-    .sp-profile-card {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 11px; padding: 10px 12px; margin-bottom: 8px;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .sp-profile-card.active { border-color: var(--gold); }
-    .sp-avatar {
-      width: 36px; height: 36px; flex-shrink: 0;
-      background: var(--surface3); border-radius: 8px;
-      display: flex; align-items: center; justify-content: center; font-size: 18px;
-    }
-    .sp-info { flex: 1; min-width: 0; }
-    .sp-nickname { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .sp-rsn-type { font-size: 11px; color: var(--muted); }
-    .sp-btns { display: flex; gap: 5px; flex-shrink: 0; }
-    .sp-btn {
-      background: var(--surface3); border: 1px solid var(--border);
-      border-radius: 7px; color: var(--text); font-size: 11px; font-weight: 600;
-      padding: 5px 9px; cursor: pointer; transition: border-color .15s;
-    }
-    .sp-btn:hover { border-color: var(--gold); }
-    .sp-btn.danger { color: var(--red); border-color: rgba(248,81,73,.25); }
-    .sp-btn.danger:hover { background: rgba(248,81,73,.1); border-color: var(--red); }
-    .sp-save-row { display: flex; gap: 8px; margin-top: 4px; }
-    .sp-save-btn {
-      flex: 1; padding: 10px; border-radius: 10px;
-      font-size: 12px; font-weight: 700; cursor: pointer; transition: opacity .15s;
-    }
-    .sp-save-btn.secondary { background: var(--surface2); border: 1px solid var(--border); color: var(--text); }
-    .sp-save-btn.primary   { background: var(--gold); border: 1px solid var(--gold); color: #000; }
-    .sp-save-btn:hover { opacity: .85; }
-    .sp-save-btn:disabled { opacity: .4; cursor: not-allowed; }
+    /* ── News cards — each card is fully distinct ── */
+    .news-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 
-    /* ── Inline nickname input ── */
-    .sp-nickname-row {
-      display: none; gap: 6px; margin-top: 6px; align-items: center;
+    .news-card {
+      display: block; text-decoration: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: border-color .2s, transform .15s;
     }
-    .sp-nickname-row.show { display: flex; }
-    .sp-nickname-input {
-      flex: 1; background: var(--surface2); border: 1px solid var(--gold);
-      border-radius: 8px; color: var(--text); padding: 8px 12px;
-      font-size: 13px; outline: none;
+    .news-card:hover  { border-color: var(--gold); transform: translateY(-1px); }
+    .news-card:active { transform: translateY(0); }
+
+    /* Thumbnail */
+    .news-thumb-wrap { position: relative; width: 100%; overflow: hidden; background: var(--surface2); }
+    .news-thumb-wrap img {
+      width: 100%; display: block; object-fit: cover;
+      transition: opacity .2s;
     }
-    .sp-nickname-confirm {
-      background: var(--gold); color: #000; border: none;
-      border-radius: 8px; padding: 8px 14px; font-size: 13px;
-      font-weight: 700; cursor: pointer; white-space: nowrap;
+    .news-card.featured .news-thumb-wrap img { height: 210px; }
+    .news-card:not(.featured) .news-thumb-wrap img { height: 170px; }
+    .news-thumb-fallback {
+      display: flex; align-items: center; justify-content: center;
+      font-size: 40px; color: var(--muted);
     }
-    .sp-nickname-cancel {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 8px; padding: 8px 10px; font-size: 13px;
-      color: var(--muted); cursor: pointer;
+    .news-card.featured .news-thumb-fallback { height: 100px; }
+    .news-card:not(.featured) .news-thumb-fallback { height: 80px; }
+
+    /* Meta row: category pill + date */
+    .news-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px 0; gap: 8px;
     }
-    /* two-tap delete */
-    .sp-btn.danger-confirm {
-      background: var(--red) !important; color: #fff !important;
-      border-color: var(--red) !important;
+    .news-cat {
+      display: inline-block; padding: 3px 10px;
+      border-radius: 999px; font-size: 11px; font-weight: 700;
+      background: rgba(184,136,72,.15); border: 1px solid var(--gold);
+      color: var(--gold); white-space: nowrap;
     }
+    .news-date { font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+    /* Body */
+    .news-body { padding: 8px 14px 14px; }
+    .news-title {
+      font-size: 15px; font-weight: 700; color: var(--text);
+      line-height: 1.35; margin-bottom: 6px;
+    }
+    .news-card.featured .news-title { font-size: 17px; }
+    .news-desc {
+      font-size: 12px; color: var(--muted); line-height: 1.55;
+      display: -webkit-box; -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    /* ── Skeletons ── */
+    .skeleton { background: var(--surface2); border-radius: 8px; animation: shimmer 1.4s ease-in-out infinite; }
+    @keyframes shimmer { 0%,100%{opacity:1} 50%{opacity:.35} }
+    .skel-chip { width: 140px; height: 52px; border-radius: 10px; }
+    .skel-news-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+    }
+    .skel-thumb { width: 100%; height: 170px; border-radius: 0; }
+    .skel-body  { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 9px; }
+    .skel-line  { height: 11px; border-radius: 4px; }
   </style>
 </head>
 <body>
 
 <header>
   <h1>OSTS</h1>
-  <div class="hdr-actions" style="gap:6px">
+  <div class="hdr-actions">
     <button id="install-btn">Install</button>
-    <button id="profile-btn" aria-label="Switch profile" title="Saved profiles">
-      <span id="profile-btn-label">—</span>
-      <span class="pb-caret">▼</span>
-    </button>
     <button class="hdr-btn icon-btn" id="settings-btn" aria-label="Settings">⚙️</button>
   </div>
 </header>
 
-<!-- Settings Panel -->
 <div id="settings-overlay"></div>
 <div id="settings-panel" aria-hidden="true">
   <div class="settings-head">
     <h2>Settings</h2>
     <button class="settings-close" id="settings-close">✕</button>
   </div>
-
   <div class="settings-block">
     <div class="settings-label">Appearance</div>
     <div class="theme-options">
@@ -361,213 +145,61 @@
       <button class="theme-chip" data-theme="brown">Brown</button>
     </div>
   </div>
-
   <div class="settings-block">
-    <div class="settings-label">Account</div>
-    <input id="rsn-input" class="settings-rsn-input" type="text"
-           placeholder="Enter RSN…" autocomplete="off" spellcheck="false">
-    <div class="account-type-grid" id="account-type-grid">
-      <button class="acct-btn active" data-type="ironman">🛡 Ironman</button>
-      <button class="acct-btn" data-type="hardcore">💀 HCIM</button>
-      <button class="acct-btn" data-type="ultimate">🔱 UIM</button>
-      <button class="acct-btn" data-type="regular">⚔ Main</button>
-      <button class="acct-btn" data-type="gim">👥 GIM</button>
-      <button class="acct-btn" data-type="ghcim">☠ GHCIM</button>
+    <div class="settings-label">Player</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.5">
+      Manage your RSN, profiles, and push notifications from the
+      <a href="Pages/overview.html" style="color:var(--gold);font-weight:600">Overview</a> page.
     </div>
-    <button class="search-btn" id="push-update-btn">Push update</button>
-    <button class="push-btn"   id="search-btn">Search</button>
-    <button class="disconnect-btn" id="disconnect-btn">Disconnect RSN</button>
-  </div>
-
-  <div class="settings-block">
-    <div class="settings-label">Saved Profiles</div>
-    <div class="sp-note">Save multiple RSNs and switch between them instantly.</div>
-    <div id="sp-profile-list"></div>
-    <div class="sp-save-row">
-      <button class="sp-save-btn secondary" id="sp-save-current" disabled>Save current profile</button>
-      <button class="sp-save-btn primary"   id="sp-save-new"     disabled>Save as new</button>
-    </div>
-    <div class="sp-nickname-row" id="sp-nickname-row">
-      <input class="sp-nickname-input" id="sp-nickname-input" type="text"
-             placeholder="Nickname…" maxlength="20" autocomplete="off" spellcheck="false">
-      <button class="sp-nickname-confirm" id="sp-nickname-confirm">Save</button>
-      <button class="sp-nickname-cancel"  id="sp-nickname-cancel">✕</button>
-    </div>
-  </div>
-
-  <div class="settings-block">
-    <div class="settings-label">Notifications</div>
-    <div class="push-note" id="push-status">Push notifications not set up.</div>
-    <button class="push-btn" id="enable-push-btn" style="margin-top:8px">Enable Push Notifications</button>
   </div>
 </div>
 
-<!-- Main -->
 <div id="main">
-  <div class="page active" id="page-overview">
+  <div class="page active" id="page-home">
 
-    <div id="loader"></div>
-    <div class="error-msg" id="error-msg"></div>
-
-    <!-- Welcome state -->
-    <div class="welcome" id="welcome-msg">
-      <div class="welcome-icon">
-        <img src="https://gyazo.com/ec47322dca1b5586ef93be1810f250bf.png"
-             alt="OSTS" class="welcome-logo" loading="lazy">
+    <!-- Hero -->
+    <div class="landing-hero">
+      <img class="hero-logo"
+           src="https://gyazo.com/ec47322dca1b5586ef93be1810f250bf.png"
+           alt="OSTS" loading="lazy"
+           onerror="this.style.display='none'">
+      <div class="hero-text">
+        <h1>Old School Tool Set</h1>
+        <p>OSRS tracking, bossing stats, farming timers &amp; more.</p>
       </div>
-      <h2>Old School Tool Set</h2>
-      <p>Open settings ⚙️, enter your RSN, and start tracking.</p>
     </div>
 
-    <!-- Overview content (hidden until loaded) -->
-    <div id="ov-content" style="display:none">
-
-      <!-- ── Header ─────────────────────────────────────────────────── -->
-      <div class="ov-header">
-        <div class="ov-avatar" id="ov-avatar">
-          <span class="ov-avatar-emoji" id="ov-avatar-emoji">🛡</span>
-        </div>
-        <div class="ov-player-info">
-          <div class="ov-player-name" id="ov-name">—</div>
-          <div class="ov-source-row">
-            <span class="badge badge-ironman" id="ov-badge">IRONMAN</span>
-          </div>
-        </div>
+    <!-- Recent Players -->
+    <div class="section-head">
+      <h2>Recent Players</h2>
+      <button class="refresh-btn" id="refresh-recent" title="Refresh">↻</button>
+    </div>
+    <div id="recent-container">
+      <div class="recent-grid">
+        <div class="skeleton skel-chip"></div>
+        <div class="skeleton skel-chip"></div>
+        <div class="skeleton skel-chip"></div>
       </div>
+    </div>
 
-      <!-- ── Top 3 stats ────────────────────────────────────────────── -->
-      <div class="ov-top-stats">
-        <div class="ov-top-stat">
-          <div class="v" id="ov-total-level">—</div>
-          <div class="l">Total Level</div>
-        </div>
-        <div class="ov-top-stat">
-          <div class="v" id="ov-total-xp">—</div>
-          <div class="l">Total XP</div>
-        </div>
-        <div class="ov-top-stat">
-          <div class="v" id="ov-rank">—</div>
-          <div class="l">Rank</div>
-        </div>
+    <!-- OSRS News -->
+    <div class="section-head">
+      <h2>OSRS News</h2>
+      <button class="refresh-btn" id="refresh-news" title="Refresh">↻</button>
+    </div>
+    <div id="news-container">
+      <div class="news-list">
+        <div class="skel-news-card"><div class="skeleton skel-thumb" style="height:210px"></div><div class="skel-body"><div class="skeleton skel-line" style="width:30%"></div><div class="skeleton skel-line" style="width:100%"></div><div class="skeleton skel-line" style="width:70%"></div><div class="skeleton skel-line" style="width:55%"></div></div></div>
+        <div class="skel-news-card"><div class="skeleton skel-thumb"></div><div class="skel-body"><div class="skeleton skel-line" style="width:40%"></div><div class="skeleton skel-line" style="width:90%"></div><div class="skeleton skel-line" style="width:65%"></div></div></div>
+        <div class="skel-news-card"><div class="skeleton skel-thumb"></div><div class="skel-body"><div class="skeleton skel-line" style="width:25%"></div><div class="skeleton skel-line" style="width:85%"></div><div class="skeleton skel-line" style="width:75%"></div></div></div>
       </div>
-
-      <!-- ── Quick stats (2-col) ────────────────────────────────────── -->
-      <div class="ov-quick-grid">
-        <div class="ov-quick-box">
-          <div class="qk">Combat</div>
-          <div class="qv" id="ov-combat">—</div>
-          <div class="qs">Estimated from combat stats</div>
-        </div>
-        <div class="ov-quick-box">
-          <div class="qk">Maxed Skills</div>
-          <div class="qv" id="ov-maxed">—</div>
-          <div class="qs">Skills at level 99</div>
-        </div>
-        <div class="ov-quick-box">
-          <div class="qk">Highest Skill</div>
-          <div class="qv highlight" id="ov-top-skill">—</div>
-          <div class="qs" id="ov-top-skill-sub">—</div>
-        </div>
-        <div class="ov-quick-box">
-          <div class="qk">Next 99</div>
-          <div class="qv highlight" id="ov-next-99">—</div>
-          <div class="qs" id="ov-next-99-sub">—</div>
-        </div>
-      </div>
-
-      <!-- ── Road to Max ────────────────────────────────────────────── -->
-      <div class="ov-r2m">
-        <div class="ov-r2m-head"><span>🗺</span> Road to Max</div>
-        <div class="ov-r2m-grid">
-          <div class="r2m-cell">
-            <div class="rk">Current Total</div>
-            <div class="rv" id="r2m-total">—</div>
-            <div class="rs" id="r2m-total-sub">of 2376 max</div>
-          </div>
-          <div class="r2m-cell">
-            <div class="rk">Levels Needed</div>
-            <div class="rv" id="r2m-levels-needed">—</div>
-            <div class="rs" id="r2m-rate">—</div>
-          </div>
-          <div class="r2m-cell">
-            <div class="rk">Completion</div>
-            <div class="rv" id="r2m-pct">—</div>
-            <div class="rs">toward max cape</div>
-          </div>
-          <div class="r2m-cell">
-            <div class="rk">Combat Level</div>
-            <div class="rv" id="r2m-combat">—</div>
-            <div class="rs">of 126 max</div>
-          </div>
-        </div>
-        <!-- XP-based progress bar -->
-        <div style="margin-top:14px">
-          <div class="progress-wrap" style="height:8px;border-radius:4px">
-            <div class="progress-fill" id="r2m-bar" style="width:0%;border-radius:4px"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── Nearest 99s (collapsible) ─────────────────────────────── -->
-      <div class="ov-collapse" id="collapse-nearest99">
-        <button class="ov-collapse-head" data-collapse="nearest99">
-          <span class="ch-title">Nearest 99s</span>
-          <span class="ch-caret">▼</span>
-        </button>
-        <div class="ov-collapse-body" id="body-nearest99">
-          <div class="no-data">Loading…</div>
-        </div>
-      </div>
-
-      <!-- ── Nearest Skill Achievements (collapsible) ───────────────── -->
-      <div class="ov-collapse" id="collapse-achievements">
-        <button class="ov-collapse-head" data-collapse="achievements">
-          <span class="ch-title">Nearest Skill Achievements</span>
-          <span class="ch-caret">▼</span>
-        </button>
-        <div class="ov-collapse-body" id="body-achievements">
-          <div class="no-data">Loading…</div>
-        </div>
-      </div>
-
-      <!-- ── Account Notes ──────────────────────────────────────────── -->
-      <div class="ov-notes" id="ov-notes" style="display:none">
-        <div class="ov-notes-title">Account Notes</div>
-        <div class="ov-notes-body" id="ov-notes-body"></div>
-      </div>
-
-      <!-- Last updated -->
-      <div class="ov-last-updated" id="ov-last-updated"></div>
-
-    </div><!-- /ov-content -->
+    </div>
 
   </div>
 </div>
 
-<!-- Quick-switch Profiles Modal -->
-<div id="profiles-modal-overlay">
-  <div id="profiles-modal">
-    <div class="pm-head">
-      <div>
-        <h3>Saved Profiles</h3>
-        <div class="pm-count" id="pm-count">0 saved profiles</div>
-      </div>
-      <button class="pm-close" id="pm-close">✕</button>
-    </div>
-    <div class="pm-list" id="pm-list"></div>
-  </div>
-</div>
-
-<!-- Sticky action bar (Copy Link + Save Card) -->
-<div id="action-bar">
-  <button class="action-btn" id="btn-copy-link">🔗 Copy Link</button>
-  <button class="action-btn gold" id="btn-save-card">🖼 Save Card</button>
-</div>
-
-<!-- Bottom Nav -->
 <nav id="bottom-nav"></nav>
 
-<!-- More Menu -->
 <div class="modal-overlay" id="more-menu-overlay">
   <div class="modal-sheet">
     <div class="modal-head">
@@ -575,8 +207,9 @@
       <button class="modal-close" id="more-menu-close">✕</button>
     </div>
     <div class="modal-actions">
-      <a class="modal-action" href="timers.html">⏱ Timers</a>
-      <a class="modal-action" href="bestiary.html">🐉 Bestiary</a>
+      <a class="modal-action" href="Pages/bossing.html">🏆 Bossing</a>
+      <a class="modal-action" href="Pages/timers.html">⏱ Timers</a>
+      <a class="modal-action" href="Pages/bestiary.html">🐉 Bestiary</a>
     </div>
   </div>
 </div>
@@ -585,942 +218,193 @@
 
 <script type="module">
 import {
-  initPage, fetchPlayer, player, settings, showToast, storage, wom,
-  STORAGE_KEYS, ACCOUNT_TYPES, SKILLS, SKILL_MAP,
-  fmtXP, fmtNum, fmtRank, calcCombat,
-  xpToLevel, xpForLevel, xpProgress, normalizeAccountType,
-  sendLocalNotification,
-} from '../shared.js';
+  initPage, showToast, normalizeAccountType,
+} from './JS/shared.js';
 
+initPage('home');
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Profiles system
-// ─────────────────────────────────────────────────────────────────────────────
-const PROFILES_KEY    = 'osts_profiles_v2';
-const ACTIVE_PROF_KEY = 'osts_active_profile_v2';
+// ── Constants ─────────────────────────────────────────────────────────────────
+const LOCAL_RECENT_KEY = 'osts_recent_players_v2';
 
-const ACCOUNT_TYPE_LABELS = {
-  ironman:'Iron', hardcore:'HCIM', ultimate:'UIM',
-  regular:'Regular', gim:'GIM', ghcim:'GHCIM', ugim:'UGIM',
-};
-const ACCOUNT_TYPE_ICONS = {
-  ironman:'🛡', hardcore:'💀', ultimate:'🔱',
-  regular:'⚔', gim:'👥', ghcim:'☠', ugim:'👥',
-};
+const TYPE_ICONS  = { ironman:'🛡', hardcore:'💀', ultimate:'🔱', regular:'⚔', gim:'👥', ghcim:'☠', ugim:'👥' };
+const TYPE_LABELS = { ironman:'Iron', hardcore:'HCIM', ultimate:'UIM', regular:'Regular', gim:'GIM', ghcim:'GHCIM', ugim:'UGIM' };
+const typeIcon  = t => TYPE_ICONS[normalizeAccountType(t)]  || '⚔';
+const typeLabel = t => TYPE_LABELS[normalizeAccountType(t)] || 'Iron';
 
-function getProfiles()     { return storage.get(PROFILES_KEY, []); }
-function saveProfiles(arr) { storage.set(PROFILES_KEY, arr); }
-function getActiveId()     { return storage.get(ACTIVE_PROF_KEY, null); }
-function setActiveId(id)   { storage.set(ACTIVE_PROF_KEY, id); }
-
-function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,5); }
-
-function profileTypeLabel(type) {
-  return ACCOUNT_TYPE_LABELS[normalizeAccountType(type)] || 'Iron';
+function timeAgo(iso) {
+  if (!iso) return '';
+  const s = Math.floor((Date.now() - new Date(iso)) / 1000);
+  if (s < 60)    return 'just now';
+  if (s < 3600)  return Math.floor(s / 60)   + 'm ago';
+  if (s < 86400) return Math.floor(s / 3600)  + 'h ago';
+  return Math.floor(s / 86400) + 'd ago';
 }
-function profileTypeIcon(type) {
-  return ACCOUNT_TYPE_ICONS[normalizeAccountType(type)] || '🛡';
+function fmtDate(str) {
+  if (!str) return '';
+  try {
+    return new Date(str).toLocaleDateString('en-GB', {
+      day: 'numeric', month: 'short', year: 'numeric'
+    }).toUpperCase();
+  } catch { return str; }
 }
 
-// ── Quick-switch modal ────────────────────────────────────────────────────────
-function openProfilesModal() {
-  renderProfilesModal();
-  document.getElementById('profiles-modal-overlay').classList.add('show');
-}
-function closeProfilesModal() {
-  document.getElementById('profiles-modal-overlay').classList.remove('show');
-}
-document.getElementById('profile-btn').addEventListener('click', openProfilesModal);
-document.getElementById('pm-close').addEventListener('click', closeProfilesModal);
-document.getElementById('profiles-modal-overlay').addEventListener('click', e => {
-  if (e.target === document.getElementById('profiles-modal-overlay')) closeProfilesModal();
-});
+// ── Recent Players ────────────────────────────────────────────────────────────
+async function loadRecentPlayers() {
+  let list = [];
 
-function renderProfilesModal() {
-  const profiles  = getProfiles();
-  const activeId  = getActiveId();
-  const list      = document.getElementById('pm-list');
-  const countEl   = document.getElementById('pm-count');
-  countEl.textContent = `${profiles.length} saved profile${profiles.length !== 1 ? 's' : ''}`;
-  if (!profiles.length) {
-    list.innerHTML = '<div class="no-data" style="padding:12px">No saved profiles yet.</div>'; return;
-  }
-  list.innerHTML = profiles.map(p => `
-    <button class="pm-profile-btn${p.id === activeId ? ' active' : ''}" data-pid="${p.id}">
-      <div class="pm-avatar">${profileTypeIcon(p.type)}</div>
-      <div class="pm-info">
-        <div class="pm-nickname">${p.nickname}</div>
-        <div class="pm-rsn-type">${p.rsn} • ${profileTypeLabel(p.type)}</div>
-      </div>
-    </button>
-  `).join('');
-  list.querySelectorAll('[data-pid]').forEach(btn => {
-    btn.addEventListener('click', () => { switchToProfile(btn.dataset.pid); closeProfilesModal(); });
-  });
-}
+  // 1. Try Netlify Blobs (production)
+  try {
+    const res = await fetch('/netlify/functions/recent-players');
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length) {
+        list = data;
+      }
+    }
+  } catch {}
 
-// ── Settings panel profiles ───────────────────────────────────────────────────
-function renderSettingsProfiles() {
-  const profiles = getProfiles();
-  const activeId = getActiveId();
-  const list     = document.getElementById('sp-profile-list');
-
-  // Sort active first
-  const sorted = [...profiles].sort((a,b) => (b.id === activeId) - (a.id === activeId));
-
-  list.innerHTML = sorted.map(p => `
-    <div class="sp-profile-card${p.id === activeId ? ' active' : ''}" id="spc-${p.id}">
-      <div class="sp-avatar">${profileTypeIcon(p.type)}</div>
-      <div class="sp-info">
-        <div class="sp-nickname">${p.nickname}</div>
-        <div class="sp-rsn-type">${p.rsn} • ${profileTypeLabel(p.type)}</div>
-      </div>
-      <div class="sp-btns">
-        ${p.id !== activeId ? `<button class="sp-btn" data-load="${p.id}">Load</button>` : ''}
-        <button class="sp-btn" data-rename="${p.id}">Rename</button>
-        <button class="sp-btn danger" data-delete="${p.id}">Delete</button>
-      </div>
-    </div>
-  `).join('');
-
-  list.querySelectorAll('[data-load]').forEach(btn =>
-    btn.addEventListener('click', () => { switchToProfile(btn.dataset.load); settings.close(); }));
-  list.querySelectorAll('[data-rename]').forEach(btn =>
-    btn.addEventListener('click', () => renameProfile(btn.dataset.rename)));
-  list.querySelectorAll('[data-delete]').forEach(btn =>
-    btn.addEventListener('click', () => deleteProfile(btn.dataset.delete)));
-
-  // Enable/disable save buttons based on whether a player is loaded
-  const hasPlayer = !!player.get();
-  document.getElementById('sp-save-current').disabled = !hasPlayer || !activeId;
-  document.getElementById('sp-save-new').disabled     = !hasPlayer;
-}
-
-// ── Profile actions ───────────────────────────────────────────────────────────
-function switchToProfile(id) {
-  const profiles = getProfiles();
-  const p = profiles.find(x => x.id === id);
-  if (!p) { showToast('Profile not found'); return; }
-
-  setActiveId(id);
-
-  // Restore account type selector
-  currentAccountType = normalizeAccountType(p.type);
-  storage.set(STORAGE_KEYS.ACCOUNT_TYPE, currentAccountType);
-  document.querySelectorAll('.acct-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.type === currentAccountType);
-  });
-
-  // Restore RSN input
-  document.getElementById('rsn-input').value = p.rsn;
-
-  // Try cached data first for instant switch, then always re-fetch fresh
-  if (p.cachedData && p.cachedData.latestSnapshot) {
+  // 2. Fallback to localStorage (dev / offline)
+  if (!list.length) {
     try {
-      player.set(p.cachedData);
-      renderOverview(p.cachedData);
-      showToast('Switched to ' + p.nickname);
-    } catch (err) {
-      console.warn('[OSTS] renderOverview from cache failed:', err);
-      // Fall through to fresh fetch below
-      _doFetchSwitch(p);
-      return;
-    }
-  } else {
-    _doFetchSwitch(p);
-    return;
+      const local = JSON.parse(localStorage.getItem(LOCAL_RECENT_KEY) || '[]');
+      if (Array.isArray(local)) list = local;
+    } catch {}
   }
 
-  updateProfileBtn();
-  renderSettingsProfiles();
+  renderRecentPlayers(list);
 }
 
-async function _doFetchSwitch(p) {
-  showToast('Loading ' + p.nickname + '…');
-  setLoading(true);
-  clearError();
-  hideContent();
-  try {
-    const data = await fetchPlayer(p.rsn, normalizeAccountType(p.type));
-    player.set(data);
-    // Update cached copy in profile
-    const profiles = getProfiles();
-    const idx = profiles.findIndex(x => x.id === p.id);
-    if (idx !== -1) {
-      profiles[idx].cachedData = slimCache(data);
-      try { saveProfiles(profiles); } catch {}
-    }
-    renderOverview(data);
-    showToast('✅ Switched to ' + p.nickname);
-  } catch (err) {
-    showError('Could not load ' + p.nickname + ': ' + err.message);
-  } finally {
-    setLoading(false);
-  }
-  updateProfileBtn();
-  renderSettingsProfiles();
-}
-
-function saveCurrentProfile() {
-  const data = player.get(); if (!data) return;
-  const activeId = getActiveId();
-  if (!activeId) return;
-  const profiles = getProfiles();
-  const idx = profiles.findIndex(x => x.id === activeId);
-  if (idx === -1) return;
-  profiles[idx].cachedData = slimCache(data);
-  profiles[idx].rsn  = data.displayName || data.username || profiles[idx].rsn;
-  profiles[idx].type = data.type || profiles[idx].type;
-  try { saveProfiles(profiles); } catch {}
-  showToast('✅ Profile updated');
-  renderSettingsProfiles();
-}
-
-function saveAsNewProfile() {
-  const data = player.get(); if (!data) return;
-  // Show the inline nickname input row
-  const row   = document.getElementById('sp-nickname-row');
-  const input = document.getElementById('sp-nickname-input');
-  input.value = data.displayName || data.username || '';
-  row.classList.add('show');
-  input.focus();
-  input.select();
-}
-
-function commitSaveAsNew() {
-  const data = player.get(); if (!data) return;
-  const row   = document.getElementById('sp-nickname-row');
-  const input = document.getElementById('sp-nickname-input');
-  const nick  = input.value.trim() || data.displayName || data.username || 'Profile';
-  const rsn   = data.displayName || data.username || '';
-  const type  = normalizeAccountType(data.type);
-  const id    = genId();
-  const profiles = getProfiles();
-  profiles.push({ id, nickname: nick, rsn, type, cachedData: slimCache(data) });
-  try {
-    saveProfiles(profiles);
-  } catch (e) {
-    // Quota exceeded — save without cache, fetch fresh on switch
-    profiles[profiles.length - 1].cachedData = null;
-    try { saveProfiles(profiles); } catch {}
-    showToast('⚠️ Profile saved (no cache — will fetch on switch)');
-  }
-  setActiveId(id);
-  row.classList.remove('show');
-  input.value = '';
-  showToast('✅ Profile "' + nick + '" saved');
-  updateProfileBtn();
-  renderSettingsProfiles();
-}
-
-// Slim the WOM data down to only what OSTS needs to render, avoiding localStorage quota
-function slimCache(data) {
-  if (!data) return null;
-  return {
-    id:             data.id,
-    username:       data.username,
-    displayName:    data.displayName,
-    type:           data.type,
-    updatedAt:      data.updatedAt,
-    latestSnapshot: data.latestSnapshot,
-    _hiscoresBosses:   data._hiscoresBosses   || null,
-    _hiscoresActivities: data._hiscoresActivities || null,
-    _temple:        data._temple || null,
-  };
-}
-
-function renameProfile(id) {
-  const profiles = getProfiles();
-  const p = profiles.find(x => x.id === id); if (!p) return;
-  // Inline edit: replace nickname text with an input inside the card
-  const card = document.getElementById('spc-' + id);
-  if (!card) return;
-  const nameEl = card.querySelector('.sp-nickname');
-  if (!nameEl) return;
-  const original = p.nickname;
-  const inp = document.createElement('input');
-  inp.value     = original;
-  inp.className = 'sp-nickname-input';
-  inp.style.cssText = 'width:100%;margin:0;padding:4px 8px;font-size:13px;border-radius:6px';
-  inp.maxLength = 20;
-  nameEl.replaceWith(inp);
-  inp.focus(); inp.select();
-  function commit() {
-    const v = inp.value.trim() || original;
-    p.nickname = v;
-    saveProfiles(profiles);
-    updateProfileBtn();
-    renderSettingsProfiles();
-    showToast('Renamed to "' + v + '"');
-  }
-  inp.addEventListener('keydown', e => { if (e.key === 'Enter') commit(); if (e.key === 'Escape') renderSettingsProfiles(); });
-  inp.addEventListener('blur', commit);
-}
-
-function deleteProfile(id) {
-  const btn = document.querySelector(`.sp-btn.danger[data-delete="${id}"]`);
-  if (btn && !btn.dataset.confirming) {
-    btn.dataset.confirming = '1';
-    btn.classList.add('danger-confirm');
-    btn.textContent = 'Confirm?';
-    setTimeout(() => {
-      if (btn.dataset.confirming) {
-        delete btn.dataset.confirming;
-        btn.classList.remove('danger-confirm');
-        btn.textContent = 'Delete';
-      }
-    }, 3000);
-    return;
-  }
-  const profiles = getProfiles();
-  const p = profiles.find(x => x.id === id); if (!p) return;
-  const remaining = profiles.filter(x => x.id !== id);
-  saveProfiles(remaining);
-  if (getActiveId() === id) {
-    setActiveId(remaining[0]?.id || null);
-    if (remaining[0]?.cachedData) {
-      player.set(remaining[0].cachedData);
-      renderOverview(remaining[0].cachedData);
-    }
-  }
-  updateProfileBtn();
-  renderSettingsProfiles();
-  showToast('Profile deleted');
-}
-
-function updateProfileBtn() {
-  const btn      = document.getElementById('profile-btn');
-  const label    = document.getElementById('profile-btn-label');
-  const profiles = getProfiles();
-  const activeId = getActiveId();
-  const active   = profiles.find(x => x.id === activeId);
-  if (active) {
-    label.textContent = active.nickname;
-    btn.classList.add('visible');
-  } else {
-    btn.classList.remove('visible');
-  }
-}
-
-// Save buttons
-document.getElementById('sp-save-current').addEventListener('click', saveCurrentProfile);
-document.getElementById('sp-save-new').addEventListener('click', saveAsNewProfile);
-document.getElementById('sp-nickname-confirm').addEventListener('click', commitSaveAsNew);
-document.getElementById('sp-nickname-cancel').addEventListener('click', () => {
-  document.getElementById('sp-nickname-row').classList.remove('show');
-  document.getElementById('sp-nickname-input').value = '';
-});
-document.getElementById('sp-nickname-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter')  commitSaveAsNew();
-  if (e.key === 'Escape') {
-    document.getElementById('sp-nickname-row').classList.remove('show');
-    document.getElementById('sp-nickname-input').value = '';
-  }
-});
-
-// Re-render settings profiles when panel opens
-document.getElementById('settings-btn').addEventListener('click', () => renderSettingsProfiles(), true);
-
-initPage('overview');
-
-// ── OSRS canvas panel order (for share card) ─────────────────────────────
-const PANEL_ORDER = [
-  'attack','hitpoints','mining',
-  'strength','agility','smithing',
-  'defence','herblore','fishing',
-  'ranged','thieving','cooking',
-  'prayer','crafting','firemaking',
-  'magic','fletching','woodcutting',
-  'runecrafting','slayer','farming',
-  'construction','hunter','sailing',
-];
-
-const XP_FOR_99 = 13_034_431;
-
-// ── Account type buttons ─────────────────────────────────────────────────
-let currentAccountType = storage.get(STORAGE_KEYS.ACCOUNT_TYPE, 'ironman');
-document.querySelectorAll('.acct-btn[data-type]').forEach(btn => {
-  if (btn.dataset.type === currentAccountType) btn.classList.add('active');
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.acct-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentAccountType = btn.dataset.type;
-    storage.set(STORAGE_KEYS.ACCOUNT_TYPE, currentAccountType);
-  });
-});
-
-// ── Search ───────────────────────────────────────────────────────────────
-document.getElementById('search-btn').addEventListener('click', loadPlayer);
-
-async function loadPlayer() {
-  const rsn = document.getElementById('rsn-input').value.trim();
-  if (!rsn) { showToast('Enter a player name'); return; }
-  setLoading(true); clearError(); hideContent();
-  try {
-    const data = await fetchPlayer(rsn, currentAccountType);
-    player.set(data);
-    renderOverview(data);
-    settings.close();
-    showToast('✅ ' + (data.displayName || rsn) + ' loaded');
-  } catch (err) {
-    showError(err.message || 'Failed to load player');
-  } finally { setLoading(false); }
-}
-
-// ── WOM push update ──────────────────────────────────────────────────────
-document.getElementById('push-update-btn').addEventListener('click', async () => {
-  const rsn = player.getRsn() || document.getElementById('rsn-input').value.trim();
-  if (!rsn) { showToast('Load a player first'); return; }
-  const btn = document.getElementById('push-update-btn');
-  btn.disabled = true; btn.textContent = 'Updating…';
-  try {
-    const data = await wom.updatePlayer(rsn);
-    player.set(data); renderOverview(data);
-    showToast('✅ WOM profile updated');
-  } catch (err) { showToast(err.message, 6000); }
-  finally { btn.disabled = false; btn.textContent = 'Push WOM Update'; }
-});
-
-setInterval(() => {
-  const ms  = wom.getUpdateCooldownMs();
-  const btn = document.getElementById('push-update-btn');
-  if (!btn) return;
-  btn.disabled    = ms > 0;
-  btn.textContent = ms > 0 ? `Wait ${wom.formatCooldown(ms)}` : 'Push WOM Update';
-}, 1000);
-
-// ── Disconnect ───────────────────────────────────────────────────────────
-document.getElementById('disconnect-btn').addEventListener('click', () => {
-  player.clear(); hideContent();
-  document.getElementById('welcome-msg').style.display = '';
-  document.getElementById('rsn-input').value = '';
-  settings.close(); showToast('RSN disconnected');
-});
-
-// ── Push notifications ───────────────────────────────────────────────────
-updatePushStatus();
-document.getElementById('enable-push-btn').addEventListener('click', async () => {
-  try {
-    const { default: reg } = await import('./bootstrap.js');
-    await reg();
-    showToast('✅ Push notifications enabled');
-    updatePushStatus();
-  } catch (err) { showToast('Push setup failed: ' + err.message, 6000); }
-});
-function updatePushStatus() {
-  const el = document.getElementById('push-status');
-  if (!el || !('Notification' in window)) return;
-  el.textContent = { granted:'✅ Enabled', denied:'🚫 Blocked', default:'Not set up yet.' }[Notification.permission] || '';
-}
-
-// ── Collapsible sections ─────────────────────────────────────────────────
-document.querySelectorAll('.ov-collapse-head[data-collapse]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const section = document.getElementById('collapse-' + btn.dataset.collapse);
-    section.classList.toggle('open');
-  });
-});
-
-// ── Copy Link ────────────────────────────────────────────────────────────
-document.getElementById('btn-copy-link').addEventListener('click', () => {
-  const rsn = player.getRsn();
-  if (!rsn) { showToast('Load a player first'); return; }
-  const url = `${location.origin}${location.pathname}?rsn=${encodeURIComponent(rsn)}`;
-  if (navigator.clipboard?.writeText) {
-    navigator.clipboard.writeText(url).then(() => showToast('🔗 Profile link copied!'));
-  } else {
-    const ta = Object.assign(document.createElement('textarea'),
-      { value: url, style: 'position:fixed;opacity:0' });
-    document.body.append(ta); ta.select(); document.execCommand('copy'); ta.remove();
-    showToast('🔗 Profile link copied!');
-  }
-});
-
-// ── Save Card ────────────────────────────────────────────────────────────
-document.getElementById('btn-save-card').addEventListener('click', () => {
-  const data = player.get();
-  if (!data) { showToast('Load a player first'); return; }
-  drawProfileCard(data);
-});
-
-// ─────────────────────────────────────────────────────────────────────────
-// renderOverview
-// ─────────────────────────────────────────────────────────────────────────
-function renderOverview(data) {
-  const snap  = data.latestSnapshot?.data?.skills || {};
-  const type  = normalizeAccountType(data.type, 'ironman');
-  const meta  = ACCOUNT_TYPES[type] || ACCOUNT_TYPES.ironman;
-  const overall = snap.overall || {};
-  const name  = data.displayName || data.username || '—';
-
-  // Header
-  document.getElementById('ov-name').textContent = name;
-  document.getElementById('ov-avatar-emoji').textContent = meta.icon;
-  const badge = document.getElementById('ov-badge');
-  badge.className = `badge ${meta.badgeClass}`;
-  badge.textContent = meta.badge;
-
-  // Top 3 stats
-  document.getElementById('ov-total-level').textContent = fmtNum(overall.level || 0);
-  document.getElementById('ov-total-xp').textContent    = fmtXP(overall.experience || 0);
-  document.getElementById('ov-rank').textContent        = fmtRank(overall.rank);
-
-  // Skill entries
-  const skillEntries = SKILLS.filter(([id]) => id !== 'overall').map(([id]) => ({
-    id,
-    lvl: Number(snap[id]?.level || xpToLevel(snap[id]?.experience || 0)),
-    xp:  Number(snap[id]?.experience || 0),
-  }));
-  const skillCount = skillEntries.length;
-  const maxed      = skillEntries.filter(s => s.lvl >= 99).length;
-
-  // Sort by closest to 99 by XP remaining
-  const notMaxed   = skillEntries.filter(s => s.lvl < 99)
-    .sort((a, b) => (xpForLevel(99) - a.xp) - (xpForLevel(99) - b.xp));
-  const topSkill   = skillEntries.slice().sort((a, b) => b.lvl - a.lvl || b.xp - a.xp)[0];
-  const next99     = notMaxed[0];
-  const combat     = calcCombat(snap);
-
-  // Quick stats
-  document.getElementById('ov-combat').textContent      = combat || '—';
-  document.getElementById('ov-maxed').textContent       = maxed;
-  document.getElementById('ov-top-skill').textContent   = topSkill ? `${SKILL_MAP[topSkill.id]?.name} ${topSkill.lvl}` : '—';
-  document.getElementById('ov-top-skill-sub').textContent = topSkill ? fmtXP(topSkill.xp) + ' XP' : '—';
-  document.getElementById('ov-next-99').textContent     = next99 ? `${SKILL_MAP[next99.id]?.name} ${next99.lvl}` : 'Maxed!';
-  document.getElementById('ov-next-99-sub').textContent = next99 ? fmtXP(xpForLevel(99) - next99.xp) + ' to 99' : 'All skills maxed';
-
-  // Road to Max (XP-based %)
-  const r2mTotal  = skillEntries.reduce((s, e) => s + Math.min(e.lvl, 99), 0);
-  const maxTotal  = skillCount * 99;        // e.g. 2475 for 25 skills
-  const r2mXpSum  = skillEntries.reduce((s, e) => s + Math.min(e.xp, XP_FOR_99), 0);
-  const r2mPct    = ((r2mXpSum / (XP_FOR_99 * skillCount)) * 100).toFixed(1);
-  const levelsNeeded = maxTotal - r2mTotal;
-  const ratePerDay   = (levelsNeeded / 365).toFixed(1);
-
-  document.getElementById('r2m-total').textContent        = fmtNum(r2mTotal);
-  document.getElementById('r2m-total-sub').textContent    = `of ${fmtNum(maxTotal)} max`;
-  document.getElementById('r2m-levels-needed').textContent= fmtNum(levelsNeeded);
-  document.getElementById('r2m-rate').textContent         = `${ratePerDay} levels/day for 365 days`;
-  document.getElementById('r2m-pct').textContent          = r2mPct + '%';
-  document.getElementById('r2m-combat').textContent       = combat || '—';
-  document.getElementById('r2m-bar').style.width          = r2mPct + '%';
-
-  // Nearest 99s
-  renderNearest99s(notMaxed.slice(0, 3), snap);
-
-  // Nearest skill achievements (milestone levels: 50, 60, 70, 75, 80, 85, 90, 92, 95, 99)
-  renderAchievements(skillEntries);
-
-  // Account notes
-  const notes = `${name} has total level ${fmtNum(r2mTotal)}, estimated combat ${combat}, ` +
-    `${maxed} maxed skill${maxed !== 1 ? 's' : ''}, and ` +
-    `${next99 ? SKILL_MAP[next99.id]?.name + ' as the closest next 99' : 'all skills maxed'}.`;
-  document.getElementById('ov-notes-body').textContent = notes;
-  document.getElementById('ov-notes').style.display = '';
-
-  // Last updated
-  document.getElementById('ov-last-updated').textContent = data.updatedAt
-    ? 'Last updated: ' + new Date(data.updatedAt).toLocaleString() : '';
-
-  // Show content + action bar
-  document.getElementById('ov-content').style.display = '';
-  document.getElementById('welcome-msg').style.display = 'none';
-  document.getElementById('action-bar').classList.add('visible');
-  document.getElementById('main').classList.add('has-action-bar');
-
-  // Update active profile cache + header button
-  const _activeId = getActiveId();
-  if (_activeId) {
-    const _profiles = getProfiles();
-    const _idx = _profiles.findIndex(x => x.id === _activeId);
-    if (_idx !== -1) {
-      _profiles[_idx].cachedData = slimCache(data);
-      try { saveProfiles(_profiles); } catch {}
-    }
-  }
-  updateProfileBtn();
-  renderSettingsProfiles();
-}
-
-// ── Nearest 99s list ─────────────────────────────────────────────────────
-// ── Circular ring SVG helper ──────────────────────────────────────────────
-function ringHtml(pct, color) {
-  const R = 18, SZ = 44, CIRC = 2 * Math.PI * R;
-  const offset = CIRC * (1 - Math.max(0, Math.min(1, pct / 100)));
-  return `<div class="ring-wrap">
-    <svg width="44" height="44" viewBox="0 0 44 44">
-      <circle class="ring-track" cx="22" cy="22" r="${R}" stroke-width="4"/>
-      <circle class="ring-fill" cx="22" cy="22" r="${R}" stroke-width="4"
-        stroke="${color}" stroke-dasharray="${CIRC.toFixed(2)}"
-        stroke-dashoffset="${offset.toFixed(2)}"/>
-    </svg>
-    <div class="ring-label">${Math.round(pct)}%</div>
-  </div>`;
-}
-
-// ── Nearest 99s list ─────────────────────────────────────────────────────
-function renderNearest99s(sorted, snap) {
-  const container = document.getElementById('body-nearest99');
-  if (!sorted.length) {
-    container.innerHTML = '<div class="no-data">All skills are maxed! 🏆</div>'; return;
-  }
-  container.innerHTML = sorted.map(e => {
-    const meta     = SKILL_MAP[e.id] || {};
-    const xpNeeded = xpForLevel(99) - e.xp;
-    const pct      = (e.xp / XP_FOR_99) * 100;
-    const color    = meta.color || 'var(--gold)';
-    return `<div class="n99-card">
-      <div class="n99-icon-wrap">
-        <img src="${meta.icon || ''}" alt="${meta.name || e.id}" loading="lazy"
-             onerror="this.style.display='none'">
-      </div>
-      <div class="n99-info">
-        <div class="n99-title">99 ${meta.name || e.id}</div>
-        <div class="n99-sub">${fmtNum(xpNeeded)} xp left</div>
-      </div>
-      ${ringHtml(pct, color)}
+function renderRecentPlayers(list) {
+  const el = document.getElementById('recent-container');
+  if (!list.length) {
+    el.innerHTML = `<div class="recent-empty">
+      No recent searches yet.<br>
+      Search a player on the <a href="Pages/overview.html" style="color:var(--gold);font-weight:600">Overview</a> page to get started.
     </div>`;
-  }).join('');
-}
-
-// ── Nearest skill achievements (grouped by base milestone) ────────────────
-const BASE_MILESTONES = [50,60,70,80,85,90,92,95,99];
-const XP_MILESTONES   = [
-  { label: '50m Total XP',  xp: 50_000_000  },
-  { label: '100m Total XP', xp: 100_000_000 },
-  { label: '200m Total XP', xp: 200_000_000 },
-];
-
-function renderAchievements(entries) {
-  const container = document.getElementById('body-achievements');
-  const groups    = [];
-
-  // ── Base X Stats groups ───────────────────────────────────────────────
-  BASE_MILESTONES.forEach(target => {
-    const blocking = entries
-      .filter(e => e.lvl < target)
-      .map(e => ({
-        ...e,
-        meta:     SKILL_MAP[e.id] || {},
-        xpNeeded: Math.max(0, xpForLevel(target) - e.xp),
-      }))
-      .sort((a, b) => a.xpNeeded - b.xpNeeded);
-
-    if (!blocking.length) return;
-
-    const totalXpNeeded = blocking.reduce((s, e) => s + e.xpNeeded, 0);
-    const skillCount    = entries.length;
-    const atOrAbove     = entries.filter(e => e.lvl >= target).length;
-    const pct           = atOrAbove / skillCount * 100;
-
-    groups.push({ key: `base${target}`, title: `Base ${target} Stats`,
-      subtitle: `${blocking.length} skill${blocking.length !== 1 ? 's' : ''}`,
-      xpLeft: totalXpNeeded, pct, color: 'var(--gold)', blocking });
-  });
-
-  // ── Total XP milestones ───────────────────────────────────────────────
-  const totalXp = entries.reduce((s, e) => s + e.xp, 0);
-  XP_MILESTONES.forEach(({ label, xp }) => {
-    if (totalXp >= xp) return;
-    groups.push({ key: label.replace(/\s/g, '_'), title: label, subtitle: null,
-      xpLeft: xp - totalXp, pct: Math.min(99, totalXp / xp * 100),
-      color: 'var(--orange,#f0883e)', blocking: [] });
-  });
-
-  if (!groups.length) {
-    container.innerHTML = '<div class="no-data">All milestones reached! 🏆</div>'; return;
+    return;
   }
-
-  groups.sort((a, b) => a.xpLeft - b.xpLeft);
-
-  container.innerHTML = groups.map(g => {
-    const hasDropdown = g.blocking.length > 0;
-    const titleHtml = g.title + (g.subtitle
-      ? ` <span style="color:var(--muted);font-weight:400;font-size:11px">(${g.subtitle})</span>` : '');
-    const caretHtml = hasDropdown ? `<span class="achv-caret">▼</span>` : '';
-    const tableHtml = hasDropdown ? `
-      <div class="achv-body">
-        <div class="achv-section-label">Skills holding you back</div>
-        <div class="achv-table-head"><span>Skill</span><span>Level</span><span>XP needed</span></div>
-        ${g.blocking.map(b => `
-          <div class="achv-skill-row">
-            <div class="achv-skill-name">
-              <img src="${b.meta.icon || ''}" alt="${b.meta.name || b.id}" loading="lazy"
-                   onerror="this.style.display='none'">
-              ${b.meta.name || b.id}
-            </div>
-            <div class="achv-skill-lvl">${b.lvl}</div>
-            <div class="achv-skill-xp">${fmtNum(b.xpNeeded)}</div>
-          </div>`).join('')}
-      </div>` : '';
-
-    return `<div class="achv-group" id="achv-${g.key}">
-      <button class="achv-group-head" data-achv="${g.key}">
-        <div class="achv-head-info">
-          <div class="achv-head-title">${titleHtml}</div>
-          <div class="achv-head-sub">${fmtNum(g.xpLeft)} xp left</div>
+  el.innerHTML = `<div class="recent-grid">${
+    list.map(p => `
+      <a class="recent-chip"
+         href="Pages/overview.html?rsn=${encodeURIComponent(p.rsn)}"
+         title="Load ${p.rsn}">
+        <span class="rc-icon">${typeIcon(p.type)}</span>
+        <div class="rc-info">
+          <div class="rc-name">${p.rsn}</div>
+          <div class="rc-type">${typeLabel(p.type)}</div>
         </div>
-        ${ringHtml(g.pct, g.color)}
-        ${caretHtml}
-      </button>
-      ${tableHtml}
-    </div>`;
-  }).join('');
-
-  container.querySelectorAll('[data-achv]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.getElementById('achv-' + btn.dataset.achv)?.classList.toggle('open');
-    });
-  });
+        <span class="rc-time">${timeAgo(p.searchedAt)}</span>
+      </a>`
+    ).join('')
+  }</div>`;
 }
 
-// ─────────────────────────────────────────────────────────────────────────
-// Canvas card (unchanged logic, XP-based R2M fixed)
-// ─────────────────────────────────────────────────────────────────────────
-const THEMES = {
-  dark:  { bg:'#0d1117', surface:'#161b22', surface2:'#21262d', surface3:'#2d333b', border:'#30363d', gold:'#b88848', gold2:'#d0a060', text:'#e6edf3', muted:'#8b949e' },
-  light: { bg:'#f4efe4', surface:'#fffaf0', surface2:'#f0e6d2', surface3:'#e6d6b7', border:'#cfbea1', gold:'#9f7740', gold2:'#c89f62', text:'#23180f', muted:'#6d5a46' },
-  brown: { bg:'#2b241b', surface:'#3a3024', surface2:'#4a3c2c', surface3:'#5a4934', border:'#8d6b3e', gold:'#c9a35a', gold2:'#e2bf78', text:'#e2bf78', muted:'#b39a73' },
-};
-function getTheme() {
-  if (document.body.classList.contains('theme-light')) return THEMES.light;
-  if (document.body.classList.contains('theme-brown')) return THEMES.brown;
-  return THEMES.dark;
-}
-function hexToRgba(hex, a) {
-  hex = hex.replace('#','');
-  const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
-  return `rgba(${r},${g},${b},${a})`;
-}
-function loadImg(url, ms=4000) {
-  return new Promise(resolve => {
-    const img=new Image(); let done=false;
-    const t=setTimeout(()=>{done=true;resolve(null);},ms);
-    img.crossOrigin='anonymous';
-    img.onload =()=>{if(!done){clearTimeout(t);done=true;resolve(img);}};
-    img.onerror=()=>{if(!done){clearTimeout(t);done=true;resolve(null);}};
-    img.src=url;
-  });
+// ── OSRS News ─────────────────────────────────────────────────────────────────
+const OSRS_RSS = 'https://secure.runescape.com/m=news/latest_news.rss?oldschool=true';
+const RSS2JSON = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(OSRS_RSS)}&api_key=&count=10`;
+
+function stripHtml(html) {
+  return (html || '').replace(/<[^>]+>/g, '').replace(/&amp;/g,'&').replace(/&nbsp;/g,' ').replace(/&#\d+;/g,'').trim();
 }
 
-async function drawProfileCard(data) {
-  const btn = document.getElementById('btn-save-card');
-  btn.disabled=true; btn.textContent='⏳ Building…';
+async function loadNews() {
+  let items = [];
+
+  // 1. Try Netlify proxy (production — avoids CORS)
   try {
-    const snap = data.latestSnapshot?.data?.skills || {};
-    const type = normalizeAccountType(data.type,'ironman');
-    const C    = getTheme();
-    const DPR  = 2;
-
-    const W=400, PAD=18, COLS=3, ROWS=8;
-    const TILE_W=Math.floor((W-PAD*2)/COLS), TILE_H=60, BAR_H=3, ICON_S=30;
-
-    const Y_TOP_BAR=0, TOP_BAR_H=4;
-    const Y_HEADER=TOP_BAR_H+10, HEADER_H=74;
-    const Y_SEP1=Y_HEADER+HEADER_H+10;
-    const Y_STATS=Y_SEP1+8, STATS_H=48;
-    const Y_SEP2=Y_STATS+STATS_H+10;
-    const Y_SKL_LABEL=Y_SEP2+8, SKL_LABEL_H=18;
-    const Y_GRID=Y_SKL_LABEL+SKL_LABEL_H+4, GRID_H=ROWS*TILE_H;
-    const Y_SEP3=Y_GRID+GRID_H+8;
-    const Y_R2M=Y_SEP3+8, R2M_H=44;
-    const Y_SEP4=Y_R2M+R2M_H+8;
-    const Y_FOOTER=Y_SEP4+8, FOOTER_H=20;
-    const Y_BOT_BAR=Y_FOOTER+FOOTER_H+8;
-    const H=Y_BOT_BAR+TOP_BAR_H+2;
-
-    const canvas=document.createElement('canvas');
-    canvas.width=W*DPR; canvas.height=H*DPR;
-    const ctx=canvas.getContext('2d');
-    ctx.scale(DPR,DPR);
-
-    function rrect(x,y,w,h,r){
-      ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
-      ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);
-      ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);
-      ctx.closePath();
+    const res = await fetch('/netlify/functions/osrs-news');
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length) items = data;
     }
-    function goldGrad(x1,x2,y){
-      const g=ctx.createLinearGradient(x1,y,x2,y);
-      g.addColorStop(0,C.gold);g.addColorStop(0.5,C.gold2);g.addColorStop(1,C.gold);return g;
-    }
-    function sep(y){ctx.strokeStyle=C.border;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(PAD,y);ctx.lineTo(W-PAD,y);ctx.stroke();}
+  } catch {}
 
-    const skillData=PANEL_ORDER.map(id=>{
-      const meta=SKILL_MAP[id]||{};
-      const s=snap[id]||{};
-      const xp=Number(s.experience||0);
-      const lvl=Math.min(Number(s.level||xpToLevel(xp)),99);
-      const prog=lvl>=99?1:xpProgress(xp,lvl);
-      return{id,name:meta.name||id,icon:meta.icon||'',color:meta.color||C.gold,lvl,xp,prog};
-    });
-
-    const[iconImgs,avatarImg]=await Promise.all([
-      Promise.all(skillData.map(s=>loadImg(s.icon,3500))),
-      (async()=>{
-        const m={ironman:'https://oldschool.runescape.wiki/images/Ironman_chat_badge.png',
-          hardcore:'https://oldschool.runescape.wiki/images/Hardcore_ironman_chat_badge.png',
-          ultimate:'https://oldschool.runescape.wiki/images/Ultimate_ironman_chat_badge.png',
-          gim:'https://oldschool.runescape.wiki/images/Group_ironman_chat_badge.png',
-          ghcim:'https://oldschool.runescape.wiki/images/Hardcore_group_ironman_chat_badge.png',
-          ugim:'https://oldschool.runescape.wiki/images/Unranked_group_ironman_chat_badge.png'};
-        return m[type]?loadImg(m[type],3000):null;
-      })(),
-    ]);
-
-    // Background
-    ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,H);
-    // Top bar
-    ctx.fillStyle=goldGrad(0,W,0); ctx.fillRect(0,Y_TOP_BAR,W,TOP_BAR_H);
-
-    // Header
-    const AVA_X=PAD,AVA_Y=Y_HEADER,AVA_S=52;
-    ctx.fillStyle=hexToRgba(C.gold,0.15);rrect(AVA_X,AVA_Y,AVA_S,AVA_S,10);ctx.fill();
-    ctx.strokeStyle=C.gold;ctx.lineWidth=1.5;ctx.stroke();
-    if(avatarImg){try{ctx.drawImage(avatarImg,AVA_X+6,AVA_Y+6,AVA_S-12,AVA_S-12);}catch{}}
-    else{ctx.font='bold 26px "Segoe UI",system-ui,sans-serif';ctx.fillStyle=C.gold;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('⚔',AVA_X+AVA_S/2,AVA_Y+AVA_S/2);ctx.textAlign='left';ctx.textBaseline='alphabetic';}
-
-    const nameX=AVA_X+AVA_S+12;
-    ctx.font='bold 22px "Segoe UI",system-ui,sans-serif';ctx.fillStyle=C.text;ctx.textAlign='left';
-    ctx.fillText(data.displayName||data.username||'—',nameX,Y_HEADER+26);
-
-    const badgeLabels={ironman:'IRONMAN',hardcore:'HARDCORE',ultimate:'ULTIMATE',regular:'MAIN',gim:'GIM',ghcim:'GROUP HC',ugim:'UGIM'};
-    const bLabel=badgeLabels[type]||'IRONMAN';
-    ctx.font='bold 9px "Segoe UI",system-ui,sans-serif';
-    const bW=ctx.measureText(bLabel).width+16,bX=nameX,bY=Y_HEADER+34,bH=18;
-    rrect(bX,bY,bW,bH,9);ctx.fillStyle=hexToRgba(C.gold,0.15);ctx.fill();
-    ctx.strokeStyle=C.gold;ctx.lineWidth=1;ctx.stroke();
-    ctx.fillStyle=C.gold;ctx.textBaseline='middle';ctx.fillText(bLabel,bX+8,bY+bH/2);ctx.textBaseline='alphabetic';
-
-    const now=new Date();const p2=n=>String(n).padStart(2,'0');
-    ctx.font='10px "Segoe UI",system-ui,sans-serif';ctx.fillStyle=C.muted;ctx.textAlign='right';
-    ctx.fillText(`${p2(now.getUTCMonth()+1)}/${p2(now.getUTCDate())}/${String(now.getUTCFullYear()).slice(-2)}`,W-PAD,Y_HEADER+20);
-    ctx.fillText(`${p2(now.getUTCHours())}:${p2(now.getUTCMinutes())} UTC`,W-PAD,Y_HEADER+34);
-    ctx.textAlign='left';
-
-    sep(Y_SEP1);
-
-    // Stats row
-    const overall2=snap.overall||{};
-    const combat2=calcCombat(snap);
-    const statItems=[[fmtNum(overall2.level||0),'TOTAL LEVEL'],[fmtXP(Number(overall2.experience||0)),'TOTAL XP'],[Number(overall2.rank||0)>0?'#'+fmtNum(overall2.rank):'Unranked','RANK'],[String(combat2||'—'),'COMBAT']];
-    const sw=(W-PAD*2)/4;
-    statItems.forEach(([val,lbl],i)=>{
-      const sx=PAD+i*sw;
-      ctx.font='bold 16px "Segoe UI",system-ui,sans-serif';ctx.fillStyle=C.gold2;ctx.textAlign='left';ctx.fillText(val,sx,Y_STATS+22);
-      ctx.font='9px "Segoe UI",system-ui,sans-serif';ctx.fillStyle=C.muted;ctx.fillText(lbl,sx,Y_STATS+38);
-    });
-
-    sep(Y_SEP2);
-
-    ctx.font='bold 9px "Segoe UI",system-ui,sans-serif';ctx.fillStyle=C.gold;ctx.fillText('SKILLS',PAD,Y_SKL_LABEL+SKL_LABEL_H);
-
-    // Skill tiles
-    skillData.forEach((sk,i)=>{
-      const col=i%COLS,row=Math.floor(i/COLS);
-      const tx=PAD+col*TILE_W,ty=Y_GRID+row*TILE_H,tw=TILE_W-2,th=TILE_H-4;
-      rrect(tx+1,ty+2,tw,th,6);ctx.fillStyle=C.surface2;ctx.fill();ctx.strokeStyle=C.border;ctx.lineWidth=0.5;ctx.stroke();
-      const icX=tx+8,icY=ty+(th-ICON_S)/2+2;
-      rrect(icX,icY,ICON_S,ICON_S,5);ctx.fillStyle=C.surface3;ctx.fill();
-      const img=iconImgs[i];
-      if(img){try{ctx.drawImage(img,icX+3,icY+3,ICON_S-6,ICON_S-6);}catch{}}
-      else{ctx.font='bold 12px "Segoe UI",system-ui,sans-serif';ctx.fillStyle=sk.color;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(sk.name[0],icX+ICON_S/2,icY+ICON_S/2);ctx.textAlign='left';ctx.textBaseline='alphabetic';}
-      ctx.font='bold 21px "Segoe UI",system-ui,sans-serif';ctx.fillStyle=sk.lvl>=99?C.gold2:C.text;ctx.textAlign='left';
-      ctx.fillText(String(sk.lvl||'—'),icX+ICON_S+6,ty+th/2+8);
-      const barY2=ty+th-BAR_H,barX2=tx+2,barW2=tw-2,fillW=Math.max(0,Math.min(barW2,sk.prog*barW2));
-      rrect(barX2,barY2,barW2,BAR_H,1);ctx.fillStyle=C.surface3;ctx.fill();
-      if(fillW>0){rrect(barX2,barY2,fillW,BAR_H,1);ctx.fillStyle=sk.color;ctx.fill();}
-    });
-
-    sep(Y_SEP3);
-
-    // Road to Max — XP-based
-    const skillCount2=skillData.length;
-    const r2mXpSum2=skillData.reduce((s,sk)=>s+Math.min(sk.xp,XP_FOR_99),0);
-    const r2mPct2=((r2mXpSum2/(XP_FOR_99*skillCount2))*100).toFixed(1);
-    const maxedCnt=skillData.filter(sk=>sk.lvl>=99).length;
-
-    ctx.font='bold 9px "Segoe UI",system-ui,sans-serif';ctx.fillStyle=C.muted;ctx.textAlign='left';ctx.fillText('ROAD TO MAX',PAD,Y_R2M+14);
-    const barX3=PAD+100,barY3=Y_R2M+4,barW3=W-PAD*2-100-46,barH3=8;
-    const fillW3=Math.max(0,Math.min(barW3,(r2mXpSum2/(XP_FOR_99*skillCount2))*barW3));
-    rrect(barX3,barY3,barW3,barH3,4);ctx.fillStyle=C.surface3;ctx.fill();
-    if(fillW3>0){rrect(barX3,barY3,fillW3,barH3,4);ctx.fillStyle=goldGrad(barX3,barX3+fillW3,barY3);ctx.fill();}
-    ctx.font='bold 11px "Segoe UI",system-ui,sans-serif';ctx.fillStyle=C.gold2;ctx.textAlign='left';ctx.fillText(r2mPct2+'%',barX3+barW3+6,Y_R2M+13);
-    ctx.font='11px "Segoe UI",system-ui,sans-serif';ctx.fillStyle=C.muted;ctx.textAlign='center';ctx.fillText(`${maxedCnt}/${skillCount2} Maxed`,W/2,Y_R2M+34);
-
-    sep(Y_SEP4);
-
-    ctx.font='9px "Segoe UI",system-ui,sans-serif';ctx.fillStyle=C.muted;ctx.textAlign='center';
-    ctx.fillText('Old School Tool Set  ·  OSDevscape  ·  Data: wiseoldman.net',W/2,Y_FOOTER+14);
-
-    ctx.fillStyle=goldGrad(0,W,Y_BOT_BAR);ctx.fillRect(0,Y_BOT_BAR,W,TOP_BAR_H);
-
-    const playerName=(data.displayName||data.username||'profile').replace(/\s+/g,'_');
-    const fileName=`${playerName}_osts_card.png`;
-    canvas.toBlob(async blob=>{
-      if(!blob){showToast('Export failed');return;}
-      if(navigator.canShare&&navigator.share){
-        const file=new File([blob],fileName,{type:'image/png'});
-        if(navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:playerName+' OSRS Card'});return;}catch{}}
+  // 2. Fallback: rss2json public API (works on localhost, no CORS issues)
+  if (!items.length) {
+    try {
+      const res  = await fetch(RSS2JSON);
+      const data = res.ok ? await res.json() : null;
+      if (data?.status === 'ok' && Array.isArray(data.items)) {
+        items = data.items.map(i => ({
+          title:       i.title || '',
+          link:        i.link  || '',
+          description: stripHtml(i.description).slice(0, 220),
+          pubDate:     i.pubDate || '',
+          thumbnail:   i.enclosure?.link || i.thumbnail || '',
+          category:    Array.isArray(i.categories) ? i.categories[0] : (i.category || ''),
+        })).filter(i => i.title);
       }
-      if(window.showSaveFilePicker){
-        try{const h=await window.showSaveFilePicker({suggestedName:fileName,types:[{description:'PNG image',accept:{'image/png':['.png']}}]});const w=await h.createWritable();await w.write(blob);await w.close();showToast('🖼 Card saved!');return;}catch{}
-      }
-      const url=URL.createObjectURL(blob);
-      const a=Object.assign(document.createElement('a'),{download:fileName,href:url});
-      document.body.append(a);a.click();a.remove();
-      setTimeout(()=>URL.revokeObjectURL(url),1500);
-      showToast('🖼 Card saved!');
-    },'image/png');
-  } catch(err){
-    console.error('drawProfileCard error:',err);
-    showToast('Card generation failed: '+err.message,7000);
-  } finally { btn.disabled=false; btn.textContent='🖼 Save Card'; }
-}
-
-// ── UI helpers ────────────────────────────────────────────────────────────
-function setLoading(on) { document.getElementById('loader').classList.toggle('loading', on); }
-function clearError() { const e=document.getElementById('error-msg'); e.textContent=''; e.classList.remove('show'); }
-function showError(msg) {
-  const e=document.getElementById('error-msg'); e.textContent=msg; e.classList.add('show');
-  document.getElementById('welcome-msg').style.display='';
-}
-function hideContent() {
-  document.getElementById('ov-content').style.display='none';
-  document.getElementById('action-bar').classList.remove('visible');
-  document.getElementById('main').classList.remove('has-action-bar');
-}
-
-// ── Auto-load from cache / URL param ─────────────────────────────────────
-const urlRsn = new URLSearchParams(location.search).get('rsn');
-if (urlRsn) {
-  document.getElementById('rsn-input').value = urlRsn;
-  loadPlayer();
-} else {
-  // Try active profile first
-  const _bootProfiles = getProfiles();
-  const _bootActiveId = getActiveId();
-  const _bootProfile  = _bootProfiles.find(x => x.id === _bootActiveId);
-  if (_bootProfile?.cachedData) {
-    currentAccountType = normalizeAccountType(_bootProfile.type);
-    storage.set(STORAGE_KEYS.ACCOUNT_TYPE, currentAccountType);
-    document.querySelectorAll('.acct-btn').forEach(b =>
-      b.classList.toggle('active', b.dataset.type === currentAccountType));
-    document.getElementById('rsn-input').value = _bootProfile.rsn;
-    player.set(_bootProfile.cachedData);
-    renderOverview(_bootProfile.cachedData);
-  } else {
-    const cached = player.getFromCache();
-    if (cached) {
-      renderOverview(cached);
-    } else {
-      const lastRsn = storage.get(STORAGE_KEYS.RSN, '');
-      if (lastRsn) document.getElementById('rsn-input').value = lastRsn;
-    }
+    } catch {}
   }
+
+  renderNews(items);
 }
-updateProfileBtn();
-renderSettingsProfiles();
+
+function renderNews(items) {
+  const el = document.getElementById('news-container');
+
+  if (!items.length) {
+    el.innerHTML = `
+      <div class="news-list">
+        <a class="news-card featured"
+           href="https://oldschool.runescape.com/news" target="_blank" rel="noopener">
+          <div class="news-thumb-fallback news-card.featured" style="height:100px">📰</div>
+          <div class="news-body">
+            <div class="news-title">View OSRS News</div>
+            <div class="news-desc">Open the official Old School RuneScape news page for the latest updates.</div>
+          </div>
+        </a>
+      </div>`;
+    return;
+  }
+
+  const cards = items.slice(0, 8).map((item, i) => {
+    const isFirst = i === 0;
+
+    // Thumbnail
+    const thumbHtml = item.thumbnail
+      ? `<div class="news-thumb-wrap">
+           <img src="${item.thumbnail}" alt="" loading="lazy"
+                onerror="this.parentElement.innerHTML='<div class=\\'news-thumb-fallback\\' style=\\'height:80px\\'>📰</div>'">
+         </div>`
+      : `<div class="news-thumb-wrap"><div class="news-thumb-fallback" style="height:${isFirst ? '100' : '80'}px">📰</div></div>`;
+
+    // Meta
+    const metaHtml = (item.category || item.pubDate)
+      ? `<div class="news-meta">
+           ${item.category ? `<span class="news-cat">${item.category}</span>` : '<span></span>'}
+           ${item.pubDate  ? `<span class="news-date">${fmtDate(item.pubDate)}</span>` : ''}
+         </div>`
+      : '';
+
+    return `<a class="news-card${isFirst ? ' featured' : ''}"
+         href="${item.link || 'https://oldschool.runescape.com/news'}"
+         target="_blank" rel="noopener">
+      ${thumbHtml}
+      ${metaHtml}
+      <div class="news-body">
+        <div class="news-title">${item.title}</div>
+        ${item.description ? `<div class="news-desc">${item.description}</div>` : ''}
+      </div>
+    </a>`;
+  });
+
+  el.innerHTML = `<div class="news-list">${cards.join('')}</div>`;
+}
+
+// ── Refresh ───────────────────────────────────────────────────────────────────
+async function withSpin(btn, fn) {
+  btn.classList.add('spinning');
+  try { await fn(); } finally { btn.classList.remove('spinning'); }
+}
+document.getElementById('refresh-recent').addEventListener('click', e =>
+  withSpin(e.currentTarget, loadRecentPlayers));
+document.getElementById('refresh-news').addEventListener('click', e =>
+  withSpin(e.currentTarget, loadNews));
+
+// ── Boot ──────────────────────────────────────────────────────────────────────
+loadRecentPlayers();
+loadNews();
 </script>
 </body>
 </html>
