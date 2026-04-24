@@ -435,9 +435,9 @@ export const settings = {
 
 const NAV_PAGES = [
   { id: 'home',     label: 'Home',     icon: '🏠',  href: '../index.html' },
-  { id: 'overview', label: 'Overview', icon: null,   href: '/Pages/overview.html', imgIcon: 'https://oldschool.runescape.wiki/images/thumb/Skills_icon.png/80px-Skills_icon.png' },
-  { id: 'skills',   label: 'Skills',   icon: null,   href: '/Pages/skills.html',   imgIcon: 'https://oldschool.runescape.wiki/images/thumb/Skills_icon.png/80px-Skills_icon.png' },
-  { id: 'gains',    label: 'Gains',    icon: '📈',  href: '/Pages/gains.html' },
+  { id: 'overview', label: 'Overview', icon: null,   href: 'overview.html', imgIcon: 'https://oldschool.runescape.wiki/images/thumb/Skills_icon.png/80px-Skills_icon.png' },
+  { id: 'skills',   label: 'Skills',   icon: null,   href: 'skills.html',   imgIcon: 'https://oldschool.runescape.wiki/images/thumb/Skills_icon.png/80px-Skills_icon.png' },
+  { id: 'gains',    label: 'Gains',    icon: '📈',  href: 'gains.html' },
   { id: 'more',     label: 'More',     icon: '…',   href: null },
 ];
 
@@ -503,13 +503,14 @@ export async function requestPushPermission() {
 
 export async function sendLocalNotification(title, body, tag = 'osts') {
   try {
-    await requestPushPermission();
-    if (navigator.serviceWorker?.getRegistration) {
-      const reg = await navigator.serviceWorker.getRegistration();
-      if (reg?.showNotification) {
-        await reg.showNotification(title, { body, tag, renotify: true, silent: false, icon: 'Assets/Logo/icon-192.png' });
-        return true;
-      }
+    if (!('Notification' in window)) return false;
+    if (Notification.permission !== 'granted') return false;
+    const reg = await navigator.serviceWorker?.getRegistration('/');
+    if (reg?.showNotification) {
+      await reg.showNotification(title, {
+        body, tag, renotify: true, icon: '/Assets/Logo/icon-192.png',
+      });
+      return true;
     }
     new Notification(title, { body, tag });
     return true;
@@ -553,13 +554,10 @@ export function initPage(activePage) {
   const inp = document.getElementById('rsn-input');
   if (inp && lastRsn) inp.value = lastRsn;
 
-  // Push notification setup (non-blocking)
+  // Register service worker immediately (separate from push opt-in)
   if ('serviceWorker' in navigator) {
-    import('./bootstrap.js').then(m => {
-      window.addEventListener('load', async () => {
-        try { await m.default(); }
-        catch (err) { console.warn('[OSTS] Push setup skipped:', err.message); }
-      });
-    }).catch(() => {});
+    import('./bootstrap.js')
+      .then(({ registerSW }) => registerSW())
+      .catch(() => {});
   }
 }

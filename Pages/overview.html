@@ -1002,8 +1002,8 @@ document.getElementById('disconnect-btn').addEventListener('click', () => {
 updatePushStatus();
 document.getElementById('enable-push-btn').addEventListener('click', async () => {
   try {
-    const { default: reg } = await import('./bootstrap.js');
-    await reg();
+    const { registerPush } = await import('../JS/bootstrap.js');
+    await registerPush();
     showToast('✅ Push notifications enabled');
     updatePushStatus();
   } catch (err) { showToast('Push setup failed: ' + err.message, 6000); }

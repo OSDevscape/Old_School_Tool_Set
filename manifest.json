@@ -2,13 +2,71 @@
   "id": "/",
   "name": "Old School Tool Set",
   "short_name": "OSTS",
-  "description": "OSRS skill tracking, gains, bossing, timers, and bestiary.",
+  "description": "OSRS skill tracking, gains, bossing stats, farming timers, and more.",
   "start_url": "/index.html",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#2b241b",
   "theme_color": "#2b241b",
   "icons": [
-    { "src": "Assets/Logo/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "Assets/Logo/icon-512.png", "sizes": "512x512", "type": "image/png" }
+    {
+      "src": "Assets/Logo/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "Assets/Logo/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Overview",
+      "short_name": "Overview",
+      "url": "/Pages/overview.html",
+      "icons": [
+        {
+          "src": "Assets/Logo/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Skills",
+      "short_name": "Skills",
+      "url": "/Pages/skills.html",
+      "icons": [
+        {
+          "src": "Assets/Logo/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Gains",
+      "short_name": "Gains",
+      "url": "/Pages/gains.html",
+      "icons": [
+        {
+          "src": "Assets/Logo/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Timers",
+      "short_name": "Timers",
+      "url": "/Pages/timers.html",
+      "icons": [
+        {
+          "src": "Assets/Logo/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
   ]
 }
