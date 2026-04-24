@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2b241b">
+  <link rel="manifest" href="manifest.json">
+  <title>OSTS — Skills</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>OSTS<span id="player-name-header"></span></h1>
+  <div class="hdr-actions">
+    <button id="install-btn">Install</button>
+    <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
+  </div>
+</header>
+
+<div id="settings-overlay"></div>
+<div id="settings-panel" aria-hidden="true">
+  <div class="settings-head">
+    <h2>Settings</h2>
+    <button class="settings-close" id="settings-close">✕</button>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Appearance</div>
+    <div class="theme-options">
+      <button class="theme-chip" data-theme="dark">Dark</button>
+      <button class="theme-chip" data-theme="light">Light</button>
+      <button class="theme-chip" data-theme="brown">Brown</button>
+    </div>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Player</div>
+    <input id="rsn-input" class="settings-rsn-input" type="text" placeholder="Enter RSN…" autocomplete="off" spellcheck="false">
+    <button class="search-btn" id="search-btn">Search Player</button>
+  </div>
+</div>
+
+<div id="main">
+  <div class="page active" id="page-skills">
+
+    <div class="source-row">
+      <span class="source-chip hiscores">Official Hiscores</span>
+    </div>
+
+    <div id="loader"></div>
+    <div class="error-msg" id="error-msg"></div>
+
+    <div class="welcome" id="welcome-msg">
+      <div class="welcome-icon">
+        <img src="https://gyazo.com/b153ebb94f7120c15bac90b921466f81.png" alt="Skills" class="welcome-logo" loading="lazy">
+      </div>
+      <p>Search a player to view skills.</p>
+    </div>
+
+    <div id="skills-grid" class="skills-grid" style="display:none"></div>
+
+  </div>
+</div>
+
+<nav id="bottom-nav"></nav>
+
+<div class="modal-overlay" id="more-menu-overlay">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <div><div class="modal-title">More</div></div>
+      <button class="modal-close" id="more-menu-close">✕</button>
+    </div>
+    <div class="modal-actions">
+      <a class="modal-action" href="timers.html">⏱ Timers</a>
+      <a class="modal-action" href="bestiary.html">🐉 Bestiary</a>
+    </div>
+  </div>
+</div>
+
+<!-- Skill Detail Sheet -->
+<div class="skill-sheet-overlay" id="skill-sheet-overlay"></div>
+<div class="skill-sheet" id="skill-sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <div class="sheet-icon" id="ss-icon"></div>
+    <div class="sheet-title">
+      <h2 id="ss-name">Skill</h2>
+      <div class="sdesc" id="ss-desc"></div>
+    </div>
+    <button class="sheet-close" id="ss-close">✕</button>
+  </div>
+  <div class="sheet-body" id="ss-body"></div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+import {
+  initPage, fetchPlayer, player, settings, showToast, storage,
+  STORAGE_KEYS, SKILLS, SKILL_MAP, fmtXP, fmtRank,
+  xpToLevel, xpForLevel, xpProgress, normalizeAccountType,
+} from './shared.js';
+
+initPage('skills');
+
+let currentData = null;
+
+// ── Load cached or search ─────────────────────────────────────────────────────
+document.getElementById('search-btn').addEventListener('click', loadPlayer);
+
+async function loadPlayer() {
+  const rsn = document.getElementById('rsn-input').value.trim();
+  if (!rsn) { showToast('Enter a player name'); return; }
+  setLoading(true); clearError();
+  try {
+    const data = await fetchPlayer(rsn, storage.get(STORAGE_KEYS.ACCOUNT_TYPE, 'ironman'));
+    player.set(data);
+    currentData = data;
+    renderSkills(data);
+    settings.close();
+    showToast(`✅ ${data.displayName || rsn} loaded`);
+  } catch (err) {
+    showError(err.message);
+  } finally { setLoading(false); }
+}
+
+function renderSkills(data) {
+  const snap = data.latestSnapshot?.data?.skills || {};
+  const grid = document.getElementById('skills-grid');
+  grid.style.display = '';
+  document.getElementById('welcome-msg').style.display = 'none';
+  document.getElementById('player-name-header').textContent = ' — ' + (data.displayName || data.username || '');
+
+  grid.innerHTML = SKILLS.map(([id, name, icon, color]) => {
+    const s     = snap[id] || {};
+    const xp    = Number(s.experience || 0);
+    const lvl   = Number(s.level || (id === 'overall' ? 0 : xpToLevel(xp)));
+    const rank  = s.rank;
+    const prog  = id === 'overall' || lvl >= 99 ? 1 : xpProgress(xp, lvl);
+    const iconH = icon ? `<img class="sk-icon" src="${icon}" alt="${name}" loading="lazy">` : `<div class="sk-icon" style="font-size:14px;font-weight:800;color:${color}">${name[0]}</div>`;
+
+    if (id === 'overall') {
+      return `<div class="skill-card overall" style="border-top-color:${color}40">
+        ${iconH}
+        <div>
+          <div class="sk-name" style="font-size:12px">Overall</div>
+          <div class="sk-lvl" style="color:${color}">${lvl || '—'}</div>
+        </div>
+        <div style="margin-left:12px">
+          <div class="sk-xp">${fmtXP(xp)} XP</div>
+          <div class="sk-rank">${fmtRank(rank)}</div>
+        </div>
+      </div>`;
+    }
+
+    return `<div class="skill-card tappable" data-skill="${id}" style="border-top-color:${color}" title="${name}">
+      ${iconH}
+      <div class="sk-name">${name}</div>
+      <div class="sk-lvl" style="color:${color}">${lvl || '—'}</div>
+      <div class="sk-xp">${fmtXP(xp)}</div>
+      <div class="sk-rank">${fmtRank(rank)}</div>
+      <div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:${(prog * 100).toFixed(1)}%;background:${color}"></div></div>
+    </div>`;
+  }).join('');
+
+  grid.querySelectorAll('[data-skill]').forEach(card => {
+    card.addEventListener('click', () => openSkillSheet(card.dataset.skill, data));
+  });
+}
+
+// ── Skill Sheet ───────────────────────────────────────────────────────────────
+function openSkillSheet(skillId, data) {
+  const [id, name, icon, color] = SKILLS.find(s => s[0] === skillId) || [];
+  if (!id || !data) return;
+  const snap  = data.latestSnapshot?.data?.skills || {};
+  const s     = snap[id] || {};
+  const xp    = Number(s.experience || 0);
+  const lvl   = Number(s.level || (id === 'overall' ? 0 : xpToLevel(xp)));
+  const rank  = s.rank;
+  const nextReq  = id === 'overall' || lvl >= 99 ? 0 : Math.max(0, xpForLevel(lvl + 1) - xp);
+  const inLevel  = id === 'overall' || lvl >= 99 ? 0 : Math.max(0, xp - xpForLevel(lvl));
+  const span     = id === 'overall' || lvl >= 99 ? 0 : Math.max(1, xpForLevel(lvl + 1) - xpForLevel(lvl));
+  const pct      = id === 'overall' || lvl >= 99 ? 100 : (xpProgress(xp, lvl) * 100);
+
+  document.getElementById('ss-name').textContent = name;
+  document.getElementById('ss-desc').textContent = `Level ${lvl} · ${fmtXP(xp)} XP`;
+  document.getElementById('ss-icon').innerHTML   = icon ? `<img src="${icon}" alt="${name}" style="width:32px;height:32px;object-fit:contain">` : '';
+
+  let body = `<div class="detail-stats">
+    <div class="dstat"><div class="dval" style="color:${color}">${lvl || '—'}</div><div class="dlbl">Level</div></div>
+    <div class="dstat"><div class="dval">${fmtXP(xp)}</div><div class="dlbl">Total XP</div></div>
+    <div class="dstat"><div class="dval">${fmtRank(rank)}</div><div class="dlbl">Rank</div></div>
+    <div class="dstat"><div class="dval" style="color:var(--blue)">${id === 'overall' || lvl >= 99 ? 'MAX' : fmtXP(nextReq)}</div><div class="dlbl">To Next</div></div>
+  </div>`;
+
+  if (id !== 'overall' && lvl < 99) {
+    body += `<div style="margin:12px 0">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">XP Progress to Level ${lvl + 1}</div>
+      <div class="progress-wrap"><div class="progress-fill" style="width:${pct.toFixed(1)}%;background:${color}"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px">
+        <span>${fmtXP(inLevel)} in level</span>
+        <span>${pct.toFixed(1)}%</span>
+        <span>${fmtXP(span)} total</span>
+      </div>
+    </div>`;
+  }
+
+  document.getElementById('ss-body').innerHTML = body;
+  document.getElementById('skill-sheet-overlay').classList.add('show');
+  requestAnimationFrame(() => document.getElementById('skill-sheet').classList.add('show'));
+}
+
+function closeSkillSheet() {
+  document.getElementById('skill-sheet').classList.remove('show');
+  document.getElementById('skill-sheet-overlay').classList.remove('show');
+}
+
+document.getElementById('ss-close').addEventListener('click', closeSkillSheet);
+document.getElementById('skill-sheet-overlay').addEventListener('click', closeSkillSheet);
+
+// ── UI helpers ────────────────────────────────────────────────────────────────
+function setLoading(on) { document.getElementById('loader').classList.toggle('loading', on); }
+function clearError() { const e = document.getElementById('error-msg'); e.textContent=''; e.classList.remove('show'); }
+function showError(msg) { const e = document.getElementById('error-msg'); e.textContent=msg; e.classList.add('show'); document.getElementById('welcome-msg').style.display=''; }
+
+// ── Auto-load ─────────────────────────────────────────────────────────────────
+const cached = player.getFromCache();
+if (cached) renderSkills(cached);
+</script>
+</body>
+</html>

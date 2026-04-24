@@ -2,21 +2,13 @@
   "id": "/",
   "name": "Old School Tool Set",
   "short_name": "OSTS",
-  "description": "Old School Tool Set (OSTS) for Old School RuneScape tools, tracking, bestiary, timers, and charts",
+  "description": "OSRS skill tracking, gains, bossing, timers, and bestiary.",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#2b241b",
   "theme_color": "#2b241b",
   "icons": [
-     {
-      "src": "Assets/Logo/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "Assets/Logo/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
+    { "src": "Assets/Logo/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "Assets/Logo/icon-512.png", "sizes": "512x512", "type": "image/png" }
   ]
 }
