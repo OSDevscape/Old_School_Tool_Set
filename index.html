@@ -50,6 +50,13 @@
     .rc-info { min-width: 0; }
     .rc-name { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
     .rc-type { font-size: 10px; color: var(--muted); margin-top: 1px; }
+
+    .src-badge {
+      font-size: 9px; font-weight: 700; padding: 2px 7px;
+      border-radius: 999px; vertical-align: middle; margin-left: 5px;
+    }
+    .badge-global { background: rgba(63,185,80,.15); border: 1px solid var(--green); color: var(--green); }
+    .badge-local  { background: rgba(240,136,62,.15); border: 1px solid var(--orange,#f0883e); color: var(--orange,#f0883e); }
     .rc-time { font-size: 10px; color: var(--muted); padding-left: 8px; flex-shrink: 0; white-space: nowrap; }
     .recent-empty { font-size: 12px; color: var(--muted); padding: 4px 0 16px; line-height: 1.6; }
 
@@ -157,14 +164,37 @@
 <div id="main">
   <div class="page active" id="page-home">
 
-
-
-    <!-- Recent Players -->
-    <div class="section-head">
-      <h2>Recent Players</h2>
-      <button class="refresh-btn" id="refresh-recent" title="Refresh">↻</button>
+    <!-- Hero -->
+    <div class="landing-hero">
+      <img class="hero-logo"
+           src="https://gyazo.com/ec47322dca1b5586ef93be1810f250bf.png"
+           alt="OSTS" loading="lazy"
+           onerror="this.style.display='none'">
+      <div class="hero-text">
+        <h1>Old School Tool Set</h1>
+        <p>OSRS tracking, bossing stats, farming timers &amp; more.</p>
+      </div>
     </div>
-    <div id="recent-container">
+
+    <!-- Global Recent Players -->
+    <div class="section-head">
+      <h2>Recent Players <span class="src-badge badge-global">GLOBAL</span></h2>
+      <button class="refresh-btn" id="refresh-recent-global" title="Refresh global">↻</button>
+    </div>
+    <div id="recent-global-container">
+      <div class="recent-grid">
+        <div class="skeleton skel-chip"></div>
+        <div class="skeleton skel-chip"></div>
+        <div class="skeleton skel-chip"></div>
+      </div>
+    </div>
+
+    <!-- Local Recent Players -->
+    <div class="section-head" style="margin-top:4px">
+      <h2>Your Recent Searches <span class="src-badge badge-local">LOCAL</span></h2>
+      <button class="refresh-btn" id="refresh-recent-local" title="Refresh local">↻</button>
+    </div>
+    <div id="recent-local-container">
       <div class="recent-grid">
         <div class="skeleton skel-chip"></div>
         <div class="skeleton skel-chip"></div>
@@ -197,9 +227,9 @@
       <button class="modal-close" id="more-menu-close">✕</button>
     </div>
     <div class="modal-actions">
-      <a class="modal-action" href="/Pages/bossing.html">🏆 Bossing</a>
-      <a class="modal-action" href="/Pages/timers.html">⏱ Timers</a>
-      <a class="modal-action" href="/Pages/bestiary.html">🐉 Bestiary</a>
+      <a class="modal-action" href="Pages/bossing.html">🏆 Bossing</a>
+      <a class="modal-action" href="Pages/timers.html">⏱ Timers</a>
+      <a class="modal-action" href="Pages/bestiary.html">🐉 Bestiary</a>
     </div>
   </div>
 </div>
@@ -239,41 +269,8 @@ function fmtDate(str) {
 }
 
 // ── Recent Players ────────────────────────────────────────────────────────────
-async function loadRecentPlayers() {
-  let list = [];
-
-  // 1. Try Netlify Blobs (production)
-  try {
-    const res = await fetch('/netlify/functions/recent-players');
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data) && data.length) {
-        list = data;
-      }
-    }
-  } catch {}
-
-  // 2. Fallback to localStorage (dev / offline)
-  if (!list.length) {
-    try {
-      const local = JSON.parse(localStorage.getItem(LOCAL_RECENT_KEY) || '[]');
-      if (Array.isArray(local)) list = local;
-    } catch {}
-  }
-
-  renderRecentPlayers(list);
-}
-
-function renderRecentPlayers(list) {
-  const el = document.getElementById('recent-container');
-  if (!list.length) {
-    el.innerHTML = `<div class="recent-empty">
-      No recent searches yet.<br>
-      Search a player on the <a href="Pages/overview.html" style="color:var(--gold);font-weight:600">Overview</a> page to get started.
-    </div>`;
-    return;
-  }
-  el.innerHTML = `<div class="recent-grid">${
+function recentChipsHtml(list) {
+  return `<div class="recent-grid">${
     list.map(p => `
       <a class="recent-chip"
          href="Pages/overview.html?rsn=${encodeURIComponent(p.rsn)}"
@@ -287,6 +284,36 @@ function renderRecentPlayers(list) {
       </a>`
     ).join('')
   }</div>`;
+}
+
+async function loadGlobalRecent() {
+  const el = document.getElementById('recent-global-container');
+  try {
+    const res = await fetch('/netlify/functions/recent-players');
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length) {
+        el.innerHTML = recentChipsHtml(data);
+        return;
+      }
+    }
+    el.innerHTML = '<div class="recent-empty">No global searches recorded yet.</div>';
+  } catch {
+    el.innerHTML = '<div class="recent-empty">Could not load global list — database unavailable.</div>';
+  }
+}
+
+async function loadLocalRecent() {
+  const el = document.getElementById('recent-local-container');
+  try {
+    const local = JSON.parse(localStorage.getItem(LOCAL_RECENT_KEY) || '[]');
+    if (Array.isArray(local) && local.length) {
+      el.innerHTML = recentChipsHtml(local);
+      return;
+    }
+  } catch {}
+  el.innerHTML = `<div class="recent-empty">No local searches yet.<br>
+    Search a player on the <a href="Pages/overview.html" style="color:var(--gold);font-weight:600">Overview</a> page to get started.</div>`;
 }
 
 // ── OSRS News ─────────────────────────────────────────────────────────────────
@@ -387,13 +414,16 @@ async function withSpin(btn, fn) {
   btn.classList.add('spinning');
   try { await fn(); } finally { btn.classList.remove('spinning'); }
 }
-document.getElementById('refresh-recent').addEventListener('click', e =>
-  withSpin(e.currentTarget, loadRecentPlayers));
+document.getElementById('refresh-recent-global').addEventListener('click', e =>
+  withSpin(e.currentTarget, loadGlobalRecent));
+document.getElementById('refresh-recent-local').addEventListener('click', e =>
+  withSpin(e.currentTarget, loadLocalRecent));
 document.getElementById('refresh-news').addEventListener('click', e =>
   withSpin(e.currentTarget, loadNews));
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
-loadRecentPlayers();
+loadGlobalRecent();
+loadLocalRecent();
 loadNews();
 </script>
 </body>

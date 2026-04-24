@@ -385,25 +385,34 @@ export async function fetchPlayer(rsn, accountType = null) {
     console.warn('[OSTS] TempleOSRS fetch failed:', err.message);
   }
 
-  // Step 4: Log to recent players — write localStorage immediately, then sync to DB
+  // Step 4: Write to BOTH local and global recent players lists
   const _recentEntry = {
     rsn:        womData.displayName || womData.username || rsn,
     type,
     searchedAt: new Date().toISOString(),
   };
-  // Always write to localStorage so it works without Netlify
+
+  // Write 1: localStorage (immediate, always works, local to this device)
+  const _LOCAL_KEY = 'osts_recent_players_v2';
   try {
-    const _LOCAL_KEY = 'osts_recent_players_v2';
     let _local = JSON.parse(localStorage.getItem(_LOCAL_KEY) || '[]');
-    _local = [_recentEntry, ..._local.filter(p => p.rsn.toLowerCase() !== rsn.toLowerCase())].slice(0, 5);
+    _local = [_recentEntry, ..._local.filter(p => p.rsn.toLowerCase() !== _recentEntry.rsn.toLowerCase())].slice(0, 5);
     localStorage.setItem(_LOCAL_KEY, JSON.stringify(_local));
-  } catch {}
-  // Also POST to Netlify Blobs (non-blocking, best-effort)
+  } catch (err) {
+    console.warn('[OSTS] localStorage recent write failed:', err.message);
+  }
+
+  // Write 2: Global DB via Netlify function (non-blocking but logged)
   fetch('/netlify/functions/recent-players', {
-    method: 'POST',
+    method:  'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ rsn, type, displayName: _recentEntry.rsn }),
-  }).catch(() => {});
+    body:    JSON.stringify({ rsn: _recentEntry.rsn, type, displayName: _recentEntry.rsn }),
+  }).then(res => {
+    if (!res.ok) console.warn('[OSTS] Global recent write failed:', res.status);
+    else console.log('[OSTS] Global recent write OK:', _recentEntry.rsn);
+  }).catch(err => {
+    console.warn('[OSTS] Global recent write error:', err.message);
+  });
 
   return womData;
 }
