@@ -311,26 +311,23 @@ export const wom = {
   },
 };
 
-// ─── API: TempleOSRS ─────────────────────────────────────────────────────────
-
-const TEMPLE_BASE = 'https://templeosrs.com/api';
+// ─── API: TempleOSRS (via Netlify proxy to avoid CORS) ───────────────────────
 
 export const temple = {
   async getStats(rsn) {
-    const res = await fetch(`${TEMPLE_BASE}/player_stats.php?player=${encodeURIComponent(rsn)}&format=json`);
+    const res = await fetch(`/netlify/functions/temple?player=${encodeURIComponent(rsn)}&endpoint=stats`);
     if (!res.ok) throw new Error(`TempleOSRS error ${res.status}`);
     return res.json();
   },
 
   async getAchievements(rsn) {
-    const res = await fetch(`${TEMPLE_BASE}/player_achievements.php?player=${encodeURIComponent(rsn)}&format=json`);
+    const res = await fetch(`/netlify/functions/temple?player=${encodeURIComponent(rsn)}&endpoint=achievements`);
     if (!res.ok) throw new Error(`TempleOSRS achievements error ${res.status}`);
     return res.json();
   },
 
   async getGains(rsn, period = '7') {
-    // period in days: 1, 7, 31, 365
-    const res = await fetch(`${TEMPLE_BASE}/player_gains.php?player=${encodeURIComponent(rsn)}&time=${period}&format=json`);
+    const res = await fetch(`/netlify/functions/temple?player=${encodeURIComponent(rsn)}&endpoint=gains&time=${period}`);
     if (!res.ok) throw new Error(`TempleOSRS gains error ${res.status}`);
     return res.json();
   },
@@ -420,7 +417,7 @@ const NAV_PAGES = [
   { id: 'overview',  label: 'Home',     icon: '🏠',           href: 'index.html' },
   { id: 'skills',    label: 'Skills',   icon: null,            href: 'skills.html', imgIcon: 'https://oldschool.runescape.wiki/images/thumb/Skills_icon.png/80px-Skills_icon.png' },
   { id: 'gains',     label: 'Gains',    icon: '📈',           href: 'gains.html' },
-  { id: 'bossing',   label: 'Bossing',  icon: '🏆',           href:'bossing.html' },
+  { id: 'bossing',   label: 'Bossing',  icon: '🏆',           href: 'bossing.html' },
   { id: 'more',      label: 'More',     icon: '…',            href: null },
 ];
 
