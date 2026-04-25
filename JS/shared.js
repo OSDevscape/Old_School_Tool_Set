@@ -466,11 +466,11 @@ export const settings = {
   },
 };
 
-// ─── Navigation ──────────────────────────────────────────────────────────────Pages\overview.html
-
+// ─── Navigation ──────────────────────────────────────────────────────────────
+ 
 const NAV_PAGES = [
   { id: 'home',     label: 'Home',     icon: '🏠',  href: '../index.html' },
-  { id: 'overview', label: 'Overview', icon: '👤' ,   href: 'overview.html' },
+  { id: 'overview', label: 'Overview', icon: null,   href: 'overview.html', imgIcon: 'https://oldschool.runescape.wiki/images/thumb/Skills_icon.png/80px-Skills_icon.png' },
   { id: 'skills',   label: 'Skills',   icon: null,   href: 'skills.html',   imgIcon: 'https://oldschool.runescape.wiki/images/thumb/Skills_icon.png/80px-Skills_icon.png' },
   { id: 'gains',    label: 'Gains',    icon: '📈',  href: 'gains.html' },
   { id: 'more',     label: 'More',     icon: '…',   href: null },
