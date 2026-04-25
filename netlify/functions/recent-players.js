@@ -3,7 +3,7 @@
  * GET  → last 5 rows from recent_searches JOIN players
  * POST → upsert into players, insert into recent_searches
  */
-import mysql from 'mysql2/promise';
+const mysql = require('mysql2/promise');
 
 const DB_CONFIG = {
   host:           process.env.DB_HOST     || 'sql3.freesqldatabase.com',
@@ -27,7 +27,7 @@ const HEADERS = {
 
 const MAX_RECENT = 5;
 
-export const handler = async (event) => {
+exports.handler = async function(event) {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: { ...HEADERS, 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS' }, body: '' };
 
   // ── GET ──────────────────────────────────────────────────────────────────

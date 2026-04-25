@@ -4,7 +4,7 @@
  * Returns connection status, server info, and table row counts.
  * REMOVE THIS FILE before going to production.
  */
-import mysql from 'mysql2/promise';
+const mysql = require('mysql2/promise');
 
 const DB_CONFIG = {
   host:           process.env.DB_HOST     || 'sql3.freesqldatabase.com',
@@ -26,7 +26,7 @@ const HEADERS = {
 };
 
 
-export const handler = async () => {
+exports.handler = async function() {
   let conn;
   try {
     conn = await getConn();

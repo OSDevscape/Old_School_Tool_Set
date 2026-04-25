@@ -16,7 +16,7 @@ const PATHS = {
   gains:        (p, t) => `${BASE}/player_gains.php?player=${p}&time=${t}&format=json`,
 };
 
-export const handler = async (event) => {
+exports.handler = async function(event) {
   const { player, endpoint = 'stats', time = '7' } = event.queryStringParameters || {};
 
   if (!player) {

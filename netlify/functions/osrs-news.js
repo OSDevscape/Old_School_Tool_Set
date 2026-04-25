@@ -45,7 +45,7 @@ function parseRSS(xml) {
   return items;
 }
 
-export const handler = async () => {
+exports.handler = async function() {
   try {
     const res = await fetch(RSS_URL, {
       headers: { 'User-Agent': 'OSTS/2.0 (osdevscape.com)' },

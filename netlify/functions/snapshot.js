@@ -13,10 +13,30 @@
  *   totalXp:    number,
  * }
  */
-import { getConnection, HEADERS, optionsResponse } from './db.js';
+const mysql = require('mysql2/promise');
 
-export const handler = async (event) => {
-  if (event.httpMethod === 'OPTIONS') return optionsResponse();
+const DB_CONFIG = {
+  host:           process.env.DB_HOST     || 'sql3.freesqldatabase.com',
+  port:  Number(  process.env.DB_PORT)    || 3306,
+  database:       process.env.DB_NAME     || 'sql3823639',
+  user:           process.env.DB_USER     || 'sql3823639',
+  password:       process.env.DB_PASSWORD || 'VvNAQi7PZQ',
+  ssl:            { rejectUnauthorized: false },
+  connectTimeout: 8000,
+};
+
+async function getConn() {
+  return mysql.createConnection(DB_CONFIG);
+}
+
+const HEADERS = {
+  'Content-Type':                'application/json',
+  'Access-Control-Allow-Origin': '*',
+};
+
+
+exports.handler = async function(event) {
+  if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: { ...HEADERS, 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS' }, body: '' };
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, headers: HEADERS, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
@@ -30,7 +50,7 @@ export const handler = async (event) => {
 
   let conn;
   try {
-    conn = await getConnection();
+    conn = await getConn();
 
     const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 

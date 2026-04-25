@@ -17,7 +17,7 @@ const ENDPOINTS = {
   ugim:     'https://secure.runescape.com/m=hiscore_oldschool_group_ironman/index_lite.ws',
 };
 
-export const handler = async (event) => {
+exports.handler = async function(event) {
   const { player, type = 'ironman' } = event.queryStringParameters || {};
 
   if (!player) {

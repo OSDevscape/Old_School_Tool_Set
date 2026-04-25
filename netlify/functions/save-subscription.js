@@ -3,7 +3,7 @@
  * POST → upsert endpoint + keys into push_subscriptions
  * Body: { endpoint, keys: { p256dh, auth }, rsn? }
  */
-import mysql from 'mysql2/promise';
+const mysql = require('mysql2/promise');
 
 const DB_CONFIG = {
   host:           process.env.DB_HOST     || 'sql3.freesqldatabase.com',
@@ -25,7 +25,7 @@ const HEADERS = {
 };
 
 
-export const handler = async (event) => {
+exports.handler = async function(event) {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: { ...HEADERS, 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS' }, body: '' };
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, headers: HEADERS, body: JSON.stringify({ error: 'Method not allowed' }) };
