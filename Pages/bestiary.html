@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2b241b">
+  <link rel="manifest" href="../manifest.json">
+  <title>OSTS — Bestiary</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header>
+  <h1>OSTS — Bestiary</h1>
+  <div class="hdr-actions">
+    <button id="install-btn">Install</button>
+    <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
+  </div>
+</header>
+
+<div id="settings-overlay"></div>
+<div id="settings-panel" aria-hidden="true">
+  <div class="settings-head">
+    <h2>Settings</h2>
+    <button class="settings-close" id="settings-close">✕</button>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Appearance</div>
+    <div class="theme-options">
+      <button class="theme-chip" data-theme="dark">Dark</button>
+      <button class="theme-chip" data-theme="light">Light</button>
+      <button class="theme-chip" data-theme="brown">Brown</button>
+    </div>
+  </div>
+</div>
+
+<div id="main">
+  <div class="page active" id="page-bestiary">
+    <!-- Search / Filter bar -->
+    <input id="bestiary-search" class="timer-search" placeholder="Search monster, location, weakness…" style="margin-bottom:10px;width:100%">
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px" id="category-chips">
+      <button class="period-tab active" data-cat="All">All</button>
+      <button class="period-tab" data-cat="Slayer">🎯 Slayer</button>
+      <button class="period-tab" data-cat="Bosses">🏆 Bosses</button>
+      <button class="period-tab" data-cat="Demons">😈 Demons</button>
+      <button class="period-tab" data-cat="Dragons">🐉 Dragons</button>
+      <button class="period-tab" data-cat="Undead">💀 Undead</button>
+    </div>
+
+    <div id="loader"></div>
+
+    <div id="bestiary-list">
+      <div class="welcome">
+        <div class="welcome-icon">🐉</div>
+        <p>Bestiary is being rebuilt for OSTS v2. Coming soon.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav id="bottom-nav"></nav>
+
+<div class="modal-overlay" id="more-menu-overlay">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <div><div class="modal-title">More</div></div>
+      <button class="modal-close" id="more-menu-close">✕</button>
+    </div>
+    <div class="modal-actions">
+      <a class="modal-action" href="bossing.html">🏆 Bossing</a>
+      <a class="modal-action" href="timers.html">⏱ Timers</a>
+      <a class="modal-action" href="bestiary.html">🐉 Bestiary</a>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+import { initPage } from '../JS/shared.js';
+initPage('bestiary');
+
+// Bestiary full implementation — coming next.
+// Will pull monster stats from OSRS Wiki Cargo API,
+// with Anthropic API fallback (same pattern as original OSTS bestiary).
+</script>
+</body>
+</html>

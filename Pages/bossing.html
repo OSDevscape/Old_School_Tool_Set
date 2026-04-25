@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2b241b">
+  <link rel="manifest" href="../manifest.json">
+  <title>OSTS — Bossing</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header>
+  <h1>OSTS<span id="player-name-header"></span></h1>
+  <div class="hdr-actions">
+    <button id="install-btn">Install</button>
+    <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
+  </div>
+</header>
+
+<div id="settings-overlay"></div>
+<div id="settings-panel" aria-hidden="true">
+  <div class="settings-head">
+    <h2>Settings</h2>
+    <button class="settings-close" id="settings-close">✕</button>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Appearance</div>
+    <div class="theme-options">
+      <button class="theme-chip" data-theme="dark">Dark</button>
+      <button class="theme-chip" data-theme="light">Light</button>
+      <button class="theme-chip" data-theme="brown">Brown</button>
+    </div>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Player</div>
+    <input id="rsn-input" class="settings-rsn-input" type="text" placeholder="Enter RSN…" autocomplete="off" spellcheck="false">
+    <button class="search-btn" id="search-btn">Search Player</button>
+  </div>
+</div>
+
+<div id="main">
+  <div class="page active" id="page-bossing">
+
+    <div class="source-row">
+      <span class="source-chip hiscores">Official Hiscores (KC)</span>
+      <span class="source-chip wom">WOM (EHB/Rank)</span>
+    </div>
+
+    <div id="loader"></div>
+    <div class="error-msg" id="error-msg"></div>
+
+    <div class="welcome" id="welcome-msg">
+      <div class="welcome-icon">🏆</div>
+      <p>Search a player to view boss kill counts and rankings.</p>
+    </div>
+
+    <div id="bossing-content" style="display:none">
+      <!-- Summary row -->
+      <div class="boss-summary-row">
+        <div class="boss-stat-box"><div class="val" id="bs-count">—</div><div class="lbl">Bosses</div></div>
+        <div class="boss-stat-box"><div class="val" id="bs-total-kc">—</div><div class="lbl">Total KC</div></div>
+        <div class="boss-stat-box"><div class="val" id="bs-ehb">—</div><div class="lbl">Total EHB</div></div>
+        <div class="boss-stat-box"><div class="val" id="bs-best-rank">—</div><div class="lbl">Best Rank</div></div>
+      </div>
+
+      <!-- Boss list -->
+      <div class="data-label">Boss Kill Counts</div>
+      <div id="boss-list"></div>
+    </div>
+
+  </div>
+</div>
+
+<nav id="bottom-nav"></nav>
+
+<div class="modal-overlay" id="more-menu-overlay">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <div><div class="modal-title">More</div></div>
+      <button class="modal-close" id="more-menu-close">✕</button>
+    </div>
+    <div class="modal-actions">
+      <a class="modal-action" href="bossing.html">🏆 Bossing</a>
+      <a class="modal-action" href="timers.html">⏱ Timers</a>
+      <a class="modal-action" href="bestiary.html">🐉 Bestiary</a>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+import {
+  initPage, fetchPlayer, player, wom, settings, showToast, storage,
+  STORAGE_KEYS, fmtNum, fmtRank,
+} from '../JS/shared.js';
+
+initPage('bossing');
+
+// Boss display names (humanize snake_case)
+function humanizeBoss(id) {
+  const special = { ehp:'EHP', ehb:'EHB', toa:'ToA', cox:'CoX', tob:'ToB', tzkal:'TzKal', tztok:'TzTok', kril:'K\'ril', kreearra:'Kree\'arra' };
+  return id.split('_').map(w => special[w] || w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+}
+
+function fmtEHB(n) {
+  n = Number(n || 0);
+  return n === 0 ? '0' : n >= 10 ? n.toFixed(1) : n.toFixed(2);
+}
+
+// ── Search ────────────────────────────────────────────────────────────────────
+document.getElementById('search-btn').addEventListener('click', async () => {
+  const rsn = document.getElementById('rsn-input').value.trim();
+  if (!rsn) { showToast('Enter a player name'); return; }
+  setLoading(true); clearError();
+  try {
+    const data = await fetchPlayer(rsn, storage.get(STORAGE_KEYS.ACCOUNT_TYPE, 'ironman'));
+    player.set(data);
+    renderBossing(data);
+    settings.close();
+    showToast(`✅ ${data.displayName || rsn} loaded`);
+  } catch (err) { showError(err.message); }
+  finally { setLoading(false); }
+});
+
+// ── Render ────────────────────────────────────────────────────────────────────
+function renderBossing(data) {
+  document.getElementById('player-name-header').textContent = ' — ' + (data.displayName || data.username || '');
+  document.getElementById('welcome-msg').style.display   = 'none';
+  document.getElementById('bossing-content').style.display = '';
+
+  // WOM boss data (EHB, detailed ranks)
+  const womBosses = data.latestSnapshot?.data?.bosses || {};
+
+  // Hiscores boss KC (authoritative)
+  const hsBosses = data._hiscoresBosses || {};
+
+  // Merge: prefer hiscores KC, use WOM for EHB and rank
+  const entries = Object.entries(womBosses).map(([id, b]) => {
+    const hsKc = hsBosses[id]?.kills ?? -1;
+    const kc   = hsKc >= 0 ? hsKc : Number(b?.kills || 0);
+    const rank  = hsBosses[id]?.rank > 0 ? hsBosses[id].rank : Number(b?.rank || -1);
+    const ehb   = Number(b?.ehb || 0);
+    return { id, name: humanizeBoss(id), kc, rank, ehb };
+  }).sort((a, b) => b.kc - a.kc || b.ehb - a.ehb);
+
+  const active  = entries.filter(e => e.kc > 0);
+  const totalKC = entries.reduce((s, e) => s + e.kc, 0);
+  const totalEHB= entries.reduce((s, e) => s + e.ehb, 0);
+  const ranked  = entries.filter(e => e.rank > 0).sort((a, b) => a.rank - b.rank);
+
+  document.getElementById('bs-count').textContent    = active.length;
+  document.getElementById('bs-total-kc').textContent = fmtNum(totalKC);
+  document.getElementById('bs-ehb').textContent      = fmtEHB(totalEHB);
+  document.getElementById('bs-best-rank').textContent= ranked[0] ? '#' + fmtNum(ranked[0].rank) : 'Unranked';
+
+  if (!entries.length) {
+    document.getElementById('boss-list').innerHTML = '<div class="no-data">No boss data available.</div>';
+    return;
+  }
+
+  document.getElementById('boss-list').innerHTML = entries.map((e, i) => `
+    <details class="boss-item"${i === 0 ? ' open' : ''}>
+      <summary class="boss-summary">
+        <div class="boss-thumb">
+          <div class="boss-fallback">${e.name.split(' ').map(w => w[0]).join('').slice(0,2)}</div>
+        </div>
+        <div class="boss-name-wrap">
+          <div class="boss-name">${e.name}</div>
+          <div class="boss-mini">${e.rank > 0 ? 'Ranked' : 'Unranked'} · ${fmtEHB(e.ehb)} EHB</div>
+        </div>
+        <div class="boss-kc">${fmtNum(e.kc)} KC</div>
+        <div style="color:var(--muted);font-size:12px;padding-left:6px">▾</div>
+      </summary>
+      <div class="boss-body">
+        <div class="boss-metrics">
+          <div class="boss-metric"><div class="k">Kills</div><div class="v">${fmtNum(e.kc)}</div></div>
+          <div class="boss-metric"><div class="k">Rank</div><div class="v${e.rank > 0 ? ' style="color:var(--green)"' : ''}">${e.rank > 0 ? '#' + fmtNum(e.rank) : 'Unranked'}</div></div>
+          <div class="boss-metric"><div class="k">EHB</div><div class="v${e.ehb > 0 ? ' style="color:var(--gold)"' : ''}">${fmtEHB(e.ehb)}</div></div>
+          <div class="boss-metric"><div class="k">EHB/KC</div><div class="v">${e.kc > 0 ? fmtEHB(e.ehb / e.kc) : '0'}</div></div>
+        </div>
+      </div>
+    </details>
+  `).join('');
+
+  // One-open accordion
+  document.querySelectorAll('.boss-item').forEach(item => {
+    item.addEventListener('toggle', () => {
+      if (!item.open) return;
+      document.querySelectorAll('.boss-item').forEach(other => { if (other !== item) other.open = false; });
+    });
+  });
+}
+
+// ── UI helpers ────────────────────────────────────────────────────────────────
+function setLoading(on) { document.getElementById('loader').classList.toggle('loading', on); }
+function clearError() { const e = document.getElementById('error-msg'); e.textContent=''; e.classList.remove('show'); }
+function showError(msg) { const e = document.getElementById('error-msg'); e.textContent=msg; e.classList.add('show'); document.getElementById('welcome-msg').style.display=''; }
+
+// ── Auto-load ─────────────────────────────────────────────────────────────────
+const cached = player.getFromCache();
+if (cached) renderBossing(cached);
+</script>
+</body>
+</html>

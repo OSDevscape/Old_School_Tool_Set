@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2b241b">
+  <link rel="manifest" href="../manifest.json">
+  <title>OSTS — Gains</title>
+  <link rel="stylesheet" href="../style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<header>
+  <h1>OSTS<span id="player-name-header"></span></h1>
+  <div class="hdr-actions">
+    <button id="install-btn">Install</button>
+    <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
+  </div>
+</header>
+
+<div id="settings-overlay"></div>
+<div id="settings-panel" aria-hidden="true">
+  <div class="settings-head">
+    <h2>Settings</h2>
+    <button class="settings-close" id="settings-close">✕</button>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Appearance</div>
+    <div class="theme-options">
+      <button class="theme-chip" data-theme="dark">Dark</button>
+      <button class="theme-chip" data-theme="light">Light</button>
+      <button class="theme-chip" data-theme="brown">Brown</button>
+    </div>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Player</div>
+    <input id="rsn-input" class="settings-rsn-input" type="text" placeholder="Enter RSN…" autocomplete="off" spellcheck="false">
+    <button class="search-btn" id="search-btn">Search Player</button>
+  </div>
+</div>
+
+<div id="main">
+  <div class="page active" id="page-gains">
+
+    <div class="source-row">
+      <span class="source-chip wom">Wise Old Man</span>
+    </div>
+
+    <div id="loader"></div>
+    <div class="error-msg" id="error-msg"></div>
+
+    <div class="welcome" id="welcome-msg">
+      <div class="welcome-icon">📈</div>
+      <p>Search a player to view XP gains and progress charts.</p>
+    </div>
+
+    <div id="gains-content" style="display:none">
+      <!-- Period selector -->
+      <div class="period-tabs">
+        <button class="period-tab active" data-period="day">Day</button>
+        <button class="period-tab" data-period="week">Week</button>
+        <button class="period-tab" data-period="month">Month</button>
+        <button class="period-tab" data-period="year">Year</button>
+      </div>
+
+      <!-- Gains grid -->
+      <div class="data-label">XP Gains</div>
+      <div id="gains-grid" class="gains-grid"></div>
+
+      <!-- Progress Charts (WOM timeline) -->
+      <div style="margin-top:16px">
+        <div class="data-label">Progress Charts</div>
+        <div class="chart-section">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px" id="chart-skill-tabs"></div>
+          <div class="chart-wrap"><canvas id="chart-timeline" height="200"></canvas></div>
+        </div>
+
+        <div class="chart-section">
+          <h3>Current Skill Levels</h3>
+          <div class="chart-wrap"><canvas id="chart-levels" height="200"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<nav id="bottom-nav"></nav>
+
+<div class="modal-overlay" id="more-menu-overlay">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <div><div class="modal-title">More</div></div>
+      <button class="modal-close" id="more-menu-close">✕</button>
+    </div>
+    <div class="modal-actions">
+      <a class="modal-action" href="bossing.html">🏆 Bossing</a>
+      <a class="modal-action" href="timers.html">⏱ Timers</a>
+      <a class="modal-action" href="bestiary.html">🐉 Bestiary</a>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+import {
+  initPage, fetchPlayer, player, wom, settings, showToast, storage,
+  STORAGE_KEYS, SKILLS, SKILL_MAP, fmtXP, fmtRank, xpToLevel, normalizeAccountType,
+} from '../JS/shared.js';
+
+initPage('gains');
+
+let currentPeriod  = 'week';
+let currentRsn     = '';
+let chartTimeline  = null;
+let chartLevels    = null;
+
+// ── Period tabs ───────────────────────────────────────────────────────────────
+document.querySelectorAll('.period-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.period-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentPeriod = btn.dataset.period;
+    if (currentRsn) loadGains(currentRsn, currentPeriod);
+  });
+});
+
+// ── Search ────────────────────────────────────────────────────────────────────
+document.getElementById('search-btn').addEventListener('click', async () => {
+  const rsn = document.getElementById('rsn-input').value.trim();
+  if (!rsn) { showToast('Enter a player name'); return; }
+  setLoading(true); clearError();
+  try {
+    const data = await fetchPlayer(rsn, storage.get(STORAGE_KEYS.ACCOUNT_TYPE, 'ironman'));
+    player.set(data);
+    currentRsn = data.displayName || data.username || rsn;
+    document.getElementById('player-name-header').textContent = ' — ' + currentRsn;
+    renderLevelsChart(data);
+    await loadGains(currentRsn, currentPeriod);
+    settings.close();
+  } catch (err) { showError(err.message); }
+  finally { setLoading(false); }
+});
+
+async function loadGains(rsn, period) {
+  setLoading(true);
+  try {
+    const gains = await wom.getGains(rsn, period);
+    renderGains(gains);
+    document.getElementById('gains-content').style.display = '';
+    document.getElementById('welcome-msg').style.display   = 'none';
+    // Load timeline for default skill (overall)
+    loadTimeline(rsn, 'overall', period);
+  } catch (err) {
+    showError('Could not load gains: ' + err.message);
+  } finally { setLoading(false); }
+}
+
+// ── Render Gains Grid ─────────────────────────────────────────────────────────
+function renderGains(data) {
+  const skills = data?.data?.skills;
+  if (!skills) { document.getElementById('gains-grid').innerHTML = '<div class="no-data">No gains data.</div>'; return; }
+
+  const entries = SKILLS.filter(([id]) => id !== 'overall').map(([id, name, icon, color]) => {
+    const g = skills[id] || {};
+    const gained   = Number(g.experience?.gained  || 0);
+    const startLvl = Number(g.level?.start || 0);
+    const endLvl   = Number(g.level?.end   || 0);
+    return { id, name, icon, color, gained, lvlGained: endLvl - startLvl, endLvl };
+  }).filter(e => e.gained > 0).sort((a, b) => b.gained - a.gained);
+
+  if (!entries.length) {
+    document.getElementById('gains-grid').innerHTML = '<div class="no-data" style="grid-column:span 3">No XP gains in this period.</div>';
+    return;
+  }
+
+  document.getElementById('gains-grid').innerHTML = entries.map(e => `
+    <div class="gain-card" data-skill="${e.id}" style="border-color:${e.color}33" title="Click for chart">
+      <img class="gain-skill-icon" src="${e.icon}" alt="${e.name}" loading="lazy">
+      <div class="gain-skill-name">${e.name.length > 8 ? e.name.slice(0,7)+'…' : e.name}</div>
+      <div class="gain-xp">+${fmtXP(e.gained)}</div>
+      ${e.lvlGained > 0 ? `<div class="gain-lvl">+${e.lvlGained} lvl</div>` : ''}
+    </div>
+  `).join('');
+
+  // Click to show timeline chart for that skill
+  document.querySelectorAll('.gain-card[data-skill]').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.gain-card').forEach(c => c.style.borderColor = '');
+      card.style.borderColor = 'var(--gold)';
+      loadTimeline(currentRsn, card.dataset.skill, currentPeriod);
+    });
+  });
+}
+
+// ── Timeline Chart (WOM historical) ──────────────────────────────────────────
+const CHART_SKILLS_SELECT = ['overall','attack','defence','strength','hitpoints','ranged','prayer','magic','slayer','farming'];
+
+async function loadTimeline(rsn, metric, period) {
+  try {
+    const timeline = await wom.getTimeline(rsn, metric, period);
+    renderTimelineChart(timeline, metric);
+  } catch (err) {
+    console.warn('[OSTS] Timeline fetch failed:', err.message);
+  }
+}
+
+function renderTimelineChart(timeline, metric) {
+  const canvas = document.getElementById('chart-timeline');
+  if (!canvas) return;
+  if (chartTimeline) { chartTimeline.destroy(); chartTimeline = null; }
+
+  if (!timeline || !timeline.length) {
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+    return;
+  }
+
+  const skill = SKILL_MAP[metric];
+  const color = skill?.color || '#b88848';
+  const labels = timeline.map(p => new Date(p.date || p.createdAt).toLocaleDateString('en-GB', { month: 'short', day: 'numeric' }));
+  const values = timeline.map(p => {
+    const d = p.data?.skills?.[metric] || p.data;
+    return d?.experience ?? d?.level ?? 0;
+  });
+
+  chartTimeline = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        borderColor: color,
+        backgroundColor: color + '22',
+        borderWidth: 2,
+        pointRadius: 2,
+        fill: true,
+        tension: .4,
+      }],
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false }, title: { display: true, text: `${skill?.name || metric} — ${metric === 'overall' ? 'Total Level' : 'XP'}`, color: '#8b949e', font: { size: 12 } } },
+      scales: {
+        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxTicksLimit: 8 }, grid: { color: '#21262d' } },
+        y: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } },
+      },
+    },
+  });
+}
+
+// ── Levels Bar Chart (current snapshot) ──────────────────────────────────────
+function renderLevelsChart(data) {
+  const canvas = document.getElementById('chart-levels');
+  if (!canvas) return;
+  if (chartLevels) { chartLevels.destroy(); chartLevels = null; }
+
+  const snap   = data.latestSnapshot?.data?.skills || {};
+  const skills = SKILLS.filter(([id]) => id !== 'overall');
+  const labels = skills.map(([, name]) => name);
+  const levels = skills.map(([id]) => Number(snap[id]?.level || 0));
+  const colors = skills.map(([,,,color]) => color);
+
+  chartLevels = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data: levels,
+        backgroundColor: colors.map(c => c + '66'),
+        borderColor: colors,
+        borderWidth: 1,
+        borderRadius: 3,
+      }],
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#8b949e', font: { size: 8 } }, grid: { color: '#21262d' } },
+        y: { min: 0, max: 99, ticks: { color: '#8b949e' }, grid: { color: '#21262d' } },
+      },
+    },
+  });
+}
+
+// ── UI helpers ────────────────────────────────────────────────────────────────
+function setLoading(on) { document.getElementById('loader').classList.toggle('loading', on); }
+function clearError() { const e = document.getElementById('error-msg'); e.textContent=''; e.classList.remove('show'); }
+function showError(msg) { const e = document.getElementById('error-msg'); e.textContent=msg; e.classList.add('show'); }
+
+// ── Auto-load ─────────────────────────────────────────────────────────────────
+const cached = player.getFromCache();
+if (cached) {
+  currentRsn = cached.displayName || cached.username || '';
+  document.getElementById('player-name-header').textContent = ' — ' + currentRsn;
+  renderLevelsChart(cached);
+  if (currentRsn) loadGains(currentRsn, currentPeriod);
+}
+</script>
+</body>
+</html>
