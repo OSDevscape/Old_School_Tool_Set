@@ -27,18 +27,7 @@
     {
       "name": "Overview",
       "short_name": "Overview",
-      "url": "/Pages/overview.html",
-      "icons": [
-        {
-          "src": "Assets/Logo/icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Skills",
-      "short_name": "Skills",
-      "url": "/Pages/skills.html",
+      "url": "../Pages/overview.html",
       "icons": [
         {
           "src": "Assets/Logo/icon-192.png",
@@ -49,7 +38,7 @@
     {
       "name": "Gains",
       "short_name": "Gains",
-      "url": "/Pages/gains.html",
+      "url": "../Pages/gains.html",
       "icons": [
         {
           "src": "Assets/Logo/icon-192.png",
@@ -60,7 +49,7 @@
     {
       "name": "Timers",
       "short_name": "Timers",
-      "url": "/Pages/timers.html",
+      "url": "../Pages/timers.html",
       "icons": [
         {
           "src": "Assets/Logo/icon-192.png",
