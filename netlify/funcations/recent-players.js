@@ -1,109 +1,124 @@
 /**
- * OSTS — Recent Players (Global)
- * Stores the last 5 RSNs searched by ANY user, globally.
- * Uses Netlify Blobs in production; returns empty gracefully on localhost.
- *
- * GET  → returns last 5 global players
- * POST → { rsn, type, displayName } — prepends to global list
+ * OSTS — Recent Players
+ * GET  → last 5 rows from recent_searches JOIN players
+ * POST → upsert into players, insert into recent_searches
  */
+import { getConnection, HEADERS, optionsResponse } from './db.js';
 
 const MAX_RECENT = 5;
-const STORE_KEY  = 'recent-players-list';
-
-const HEADERS = {
-  'Content-Type':                'application/json',
-  'Access-Control-Allow-Origin': '*',
-};
-
-// Lazy-load Blobs so the function doesn't hard-crash when the env isn't set up
-async function getStore() {
-  const { getStore } = await import('@netlify/blobs');
-  return getStore({ name: 'osts-data', consistency: 'strong' });
-}
-
-async function readList(store) {
-  try {
-    const raw = await store.get(STORE_KEY, { type: 'text' });
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
-}
-
-async function writeList(store, list) {
-  await store.set(STORE_KEY, JSON.stringify(list));
-}
 
 export const handler = async (event) => {
-  // CORS preflight
-  if (event.httpMethod === 'OPTIONS') {
-    return {
-      statusCode: 204,
-      headers: { ...HEADERS, 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS' },
-      body: '',
-    };
-  }
+  if (event.httpMethod === 'OPTIONS') return optionsResponse();
 
   // ── GET ──────────────────────────────────────────────────────────────────
   if (event.httpMethod === 'GET') {
+    let conn;
     try {
-      const store = await getStore();
-      const list  = await readList(store);
+      conn = await getConnection();
+      const [rows] = await conn.execute(`
+        SELECT p.rsn, p.display_name, p.account_type AS type,
+               p.combat_level, p.total_level, p.total_xp,
+               p.search_count, rs.searched_at
+        FROM   recent_searches rs
+        JOIN   players p ON p.rsn = rs.rsn
+        ORDER  BY rs.searched_at DESC
+        LIMIT  ?
+      `, [MAX_RECENT]);
+
+      const list = rows.map(r => ({
+        rsn:         r.rsn,
+        displayName: r.display_name,
+        type:        r.type,
+        combatLevel: r.combat_level,
+        totalLevel:  r.total_level,
+        totalXp:     r.total_xp,
+        searchCount: r.search_count,
+        searchedAt:  r.searched_at instanceof Date
+          ? r.searched_at.toISOString()
+          : String(r.searched_at),
+      }));
+
       return { statusCode: 200, headers: HEADERS, body: JSON.stringify(list) };
     } catch (err) {
-      // Blobs not available (local dev) — return empty list, don't crash
-      console.warn('[recent-players] GET fallback (no Blobs):', err.message);
+      console.error('[recent-players GET]', err.message);
       return { statusCode: 200, headers: HEADERS, body: '[]' };
+    } finally {
+      conn?.end().catch(() => {});
     }
   }
 
   // ── POST ─────────────────────────────────────────────────────────────────
   if (event.httpMethod === 'POST') {
     let body;
+    try { body = JSON.parse(event.body || '{}'); }
+    catch { return { statusCode: 400, headers: HEADERS, body: JSON.stringify({ error: 'Invalid JSON' }) }; }
+
+    const { rsn, type = 'ironman', displayName, combatLevel = 3, totalLevel = 0, totalXp = 0 } = body;
+    const name = (displayName || rsn || '').trim().slice(0, 12);
+    if (!name) return { statusCode: 400, headers: HEADERS, body: JSON.stringify({ error: 'Invalid RSN' }) };
+
+    let conn;
     try {
-      body = JSON.parse(event.body || '{}');
-    } catch {
-      return { statusCode: 400, headers: HEADERS, body: JSON.stringify({ error: 'Invalid JSON' }) };
-    }
+      conn = await getConnection();
 
-    const { rsn, type = 'ironman', displayName } = body;
-    const name = (displayName || rsn || '').trim();
+      // 1. Upsert into players — create or update stats + last_seen + search_count
+      await conn.execute(`
+        INSERT INTO players (rsn, display_name, account_type, combat_level, total_level, total_xp, first_seen, last_seen, search_count)
+        VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), 1)
+        ON DUPLICATE KEY UPDATE
+          display_name  = VALUES(display_name),
+          account_type  = VALUES(account_type),
+          combat_level  = VALUES(combat_level),
+          total_level   = VALUES(total_level),
+          total_xp      = VALUES(total_xp),
+          last_seen     = NOW(),
+          search_count  = search_count + 1
+      `, [name, name, type, combatLevel, totalLevel, totalXp]);
 
-    if (!name || name.length > 12) {
-      return { statusCode: 400, headers: HEADERS, body: JSON.stringify({ error: 'Invalid RSN' }) };
-    }
+      // 2. Insert into recent_searches
+      await conn.execute(`
+        INSERT INTO recent_searches (rsn, searched_at) VALUES (?, NOW())
+      `, [name]);
 
-    const entry = {
-      rsn:        name,
-      type:       type || 'ironman',
-      searchedAt: new Date().toISOString(),
-    };
+      // 3. Prune recent_searches to last 100 rows globally
+      await conn.execute(`
+        DELETE FROM recent_searches
+        WHERE id NOT IN (
+          SELECT id FROM (
+            SELECT id FROM recent_searches ORDER BY searched_at DESC LIMIT 100
+          ) AS keep
+        )
+      `);
 
-    try {
-      const store = await getStore();
-      let list    = await readList(store);
+      // 4. Return updated list for the home page
+      const [rows] = await conn.execute(`
+        SELECT p.rsn, p.display_name, p.account_type AS type,
+               p.combat_level, p.total_level, p.total_xp,
+               p.search_count, rs.searched_at
+        FROM   recent_searches rs
+        JOIN   players p ON p.rsn = rs.rsn
+        ORDER  BY rs.searched_at DESC
+        LIMIT  ?
+      `, [5]);
 
-      // Deduplicate by RSN (case-insensitive), prepend new entry, cap at MAX_RECENT
-      list = [
-        entry,
-        ...list.filter(p => p.rsn.toLowerCase() !== name.toLowerCase()),
-      ].slice(0, MAX_RECENT);
+      const list = rows.map(r => ({
+        rsn:         r.rsn,
+        displayName: r.display_name,
+        type:        r.type,
+        combatLevel: r.combat_level,
+        totalLevel:  r.total_level,
+        searchCount: r.search_count,
+        searchedAt:  r.searched_at instanceof Date
+          ? r.searched_at.toISOString()
+          : String(r.searched_at),
+      }));
 
-      await writeList(store, list);
-
-      return {
-        statusCode: 200,
-        headers:    HEADERS,
-        body:       JSON.stringify({ success: true, list }),
-      };
+      return { statusCode: 200, headers: HEADERS, body: JSON.stringify({ success: true, list }) };
     } catch (err) {
-      // Blobs not available — acknowledge the write so the client doesn't error
-      console.warn('[recent-players] POST fallback (no Blobs):', err.message);
-      return {
-        statusCode: 200,
-        headers:    HEADERS,
-        body:       JSON.stringify({ success: false, reason: 'Blobs unavailable', entry }),
-      };
+      console.error('[recent-players POST]', err.message);
+      return { statusCode: 500, headers: HEADERS, body: JSON.stringify({ error: err.message }) };
+    } finally {
+      conn?.end().catch(() => {});
     }
   }
 

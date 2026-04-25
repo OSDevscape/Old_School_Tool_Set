@@ -1,38 +1,46 @@
 /**
- * OSTS — Save Push Subscription Function
- * Stores Web Push subscriptions.
- * In production, persist to a database (e.g. Fauna, PlanetScale, Supabase).
- * For now, acknowledges the subscription and logs it.
+ * OSTS — Save Push Subscription
+ * POST → upsert endpoint + keys into push_subscriptions
+ * Body: { endpoint, keys: { p256dh, auth }, rsn? }
  */
+import { getConnection, HEADERS, optionsResponse } from './db.js';
 
 export const handler = async (event) => {
+  if (event.httpMethod === 'OPTIONS') return optionsResponse();
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) };
+    return { statusCode: 405, headers: HEADERS, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
 
+  let body;
+  try { body = JSON.parse(event.body || '{}'); }
+  catch { return { statusCode: 400, headers: HEADERS, body: JSON.stringify({ error: 'Invalid JSON' }) }; }
+
+  const { endpoint, keys, rsn = null } = body;
+  const p256dh = keys?.p256dh || body.p256dh || '';
+  const auth   = keys?.auth   || body.auth   || '';
+
+  if (!endpoint || !p256dh || !auth) {
+    return { statusCode: 400, headers: HEADERS, body: JSON.stringify({ error: 'Missing endpoint, p256dh, or auth' }) };
+  }
+
+  let conn;
   try {
-    const subscription = JSON.parse(event.body || '{}');
+    conn = await getConnection();
 
-    if (!subscription.endpoint) {
-      return { statusCode: 400, body: JSON.stringify({ error: 'Invalid subscription object' }) };
-    }
+    await conn.execute(`
+      INSERT INTO push_subscriptions (endpoint, p256dh, auth, rsn, created_at)
+      VALUES (?, ?, ?, ?, NOW())
+      ON DUPLICATE KEY UPDATE
+        p256dh = VALUES(p256dh),
+        auth   = VALUES(auth),
+        rsn    = VALUES(rsn)
+    `, [endpoint, p256dh, auth, rsn || null]);
 
-    // TODO: Persist subscription to your database here.
-    // Example with Fauna:
-    //   const client = new faunadb.Client({ secret: process.env.FAUNA_SECRET });
-    //   await client.query(q.Create(q.Collection('subscriptions'), { data: subscription }));
-
-    console.log('[OSTS Push] Subscription saved:', subscription.endpoint.slice(0, 60) + '...');
-
-    return {
-      statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ success: true, message: 'Subscription saved' }),
-    };
+    return { statusCode: 200, headers: HEADERS, body: JSON.stringify({ success: true }) };
   } catch (err) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Failed to save subscription', details: err.message }),
-    };
+    console.error('[save-subscription]', err.message);
+    return { statusCode: 500, headers: HEADERS, body: JSON.stringify({ error: err.message }) };
+  } finally {
+    conn?.end().catch(() => {});
   }
 };

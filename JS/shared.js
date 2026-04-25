@@ -386,6 +386,10 @@ export async function fetchPlayer(rsn, accountType = null) {
   }
 
   // Step 4: Write to BOTH local and global recent players lists
+  const _snap    = womData.latestSnapshot?.data || {};
+  const _skills  = _snap.skills  || {};
+  const _bosses  = { ...(_snap.bosses || {}), ...(womData._hiscoresBosses || {}) };
+  const _overall = _skills.overall || {};
   const _recentEntry = {
     rsn:        womData.displayName || womData.username || rsn,
     type,
@@ -402,17 +406,39 @@ export async function fetchPlayer(rsn, accountType = null) {
     console.warn('[OSTS] localStorage recent write failed:', err.message);
   }
 
-  // Write 2: Global DB via Netlify function (non-blocking but logged)
+  // Write 2: Global DB — recent_searches + players table
   fetch('/netlify/functions/recent-players', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify({ rsn: _recentEntry.rsn, type, displayName: _recentEntry.rsn }),
+    body:    JSON.stringify({
+      rsn:         _recentEntry.rsn,
+      type,
+      displayName: _recentEntry.rsn,
+      combatLevel: Number(_overall.level ? calcCombat(_skills) : 3),
+      totalLevel:  Number(_overall.level || 0),
+      totalXp:     Number(_overall.experience || 0),
+    }),
   }).then(res => {
     if (!res.ok) console.warn('[OSTS] Global recent write failed:', res.status);
     else console.log('[OSTS] Global recent write OK:', _recentEntry.rsn);
-  }).catch(err => {
-    console.warn('[OSTS] Global recent write error:', err.message);
-  });
+  }).catch(err => console.warn('[OSTS] Global recent write error:', err.message));
+
+  // Write 3: Skill snapshot + boss KC — non-blocking
+  fetch('/netlify/functions/snapshot', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify({
+      rsn:        _recentEntry.rsn,
+      type,
+      skills:     _skills,
+      bosses:     _bosses,
+      totalLevel: Number(_overall.level || 0),
+      totalXp:    Number(_overall.experience || 0),
+    }),
+  }).then(res => {
+    if (!res.ok) console.warn('[OSTS] Snapshot write failed:', res.status);
+    else console.log('[OSTS] Snapshot write OK');
+  }).catch(err => console.warn('[OSTS] Snapshot write error:', err.message));
 
   return womData;
 }
