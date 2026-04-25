@@ -4,12 +4,32 @@
  * Returns connection status, server info, and table row counts.
  * REMOVE THIS FILE before going to production.
  */
-import { getConnection, HEADERS } from './db.js';
+import mysql from 'mysql2/promise';
+
+const DB_CONFIG = {
+  host:           process.env.DB_HOST     || 'sql3.freesqldatabase.com',
+  port:  Number(  process.env.DB_PORT)    || 3306,
+  database:       process.env.DB_NAME     || 'sql3823639',
+  user:           process.env.DB_USER     || 'sql3823639',
+  password:       process.env.DB_PASSWORD || 'VvNAQi7PZQ',
+  ssl:            { rejectUnauthorized: false },
+  connectTimeout: 8000,
+};
+
+async function getConn() {
+  return mysql.createConnection(DB_CONFIG);
+}
+
+const HEADERS = {
+  'Content-Type':                'application/json',
+  'Access-Control-Allow-Origin': '*',
+};
+
 
 export const handler = async () => {
   let conn;
   try {
-    conn = await getConnection();
+    conn = await getConn();
 
     const [[{ version }]]   = await conn.execute('SELECT VERSION() AS version');
     const [[{ players }]]   = await conn.execute('SELECT COUNT(*) AS players FROM players');

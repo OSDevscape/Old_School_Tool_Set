@@ -3,18 +3,38 @@
  * GET  → last 5 rows from recent_searches JOIN players
  * POST → upsert into players, insert into recent_searches
  */
-import { getConnection, HEADERS, optionsResponse } from './db.js';
+import mysql from 'mysql2/promise';
+
+const DB_CONFIG = {
+  host:           process.env.DB_HOST     || 'sql3.freesqldatabase.com',
+  port:  Number(  process.env.DB_PORT)    || 3306,
+  database:       process.env.DB_NAME     || 'sql3823639',
+  user:           process.env.DB_USER     || 'sql3823639',
+  password:       process.env.DB_PASSWORD || 'VvNAQi7PZQ',
+  ssl:            { rejectUnauthorized: false },
+  connectTimeout: 8000,
+};
+
+async function getConn() {
+  return mysql.createConnection(DB_CONFIG);
+}
+
+const HEADERS = {
+  'Content-Type':                'application/json',
+  'Access-Control-Allow-Origin': '*',
+};
+
 
 const MAX_RECENT = 5;
 
 export const handler = async (event) => {
-  if (event.httpMethod === 'OPTIONS') return optionsResponse();
+  if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: { ...HEADERS, 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS' }, body: '' };
 
   // ── GET ──────────────────────────────────────────────────────────────────
   if (event.httpMethod === 'GET') {
     let conn;
     try {
-      conn = await getConnection();
+      conn = await getConn();
       const [rows] = await conn.execute(`
         SELECT p.rsn, p.display_name, p.account_type AS type,
                p.combat_level, p.total_level, p.total_xp,
@@ -59,7 +79,7 @@ export const handler = async (event) => {
 
     let conn;
     try {
-      conn = await getConnection();
+      conn = await getConn();
 
       // 1. Upsert into players — create or update stats + last_seen + search_count
       await conn.execute(`
