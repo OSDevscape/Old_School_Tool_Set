@@ -521,57 +521,32 @@ async function fetchSkillAdvice(skillId, skillName, lvl, xp, xpTo99, color) {
   const wrap = document.getElementById('ai-advice-container');
   if (!wrap) return;
 
-  const dot = wrap.querySelector('.ai-dot');
-  const textEl = wrap.querySelector('.ai-text');
+  const dot      = wrap.querySelector('.ai-dot');
+  const textEl   = wrap.querySelector('.ai-text');
   const methodEl = wrap.querySelector('.ai-method-list');
 
-  // Show loading state
-  textEl.className = 'ai-text loading';
+  textEl.className   = 'ai-text loading';
   textEl.textContent = 'Generating personalized advice…';
   methodEl.innerHTML = '';
 
-  const prompt = `You are an Old School RuneScape expert coach. A player has level ${lvl} ${skillName} with ${Number(xp).toLocaleString()} XP. They need ${Number(xpTo99).toLocaleString()} XP to reach 99.
-
-Respond ONLY with a JSON object in this exact format, no other text:
-{
-  "advice": "2-3 sentences of personal, specific advice for this player at level ${lvl} ${skillName}. Be encouraging and specific to their exact level range.",
-  "methods": [
-    {
-      "name": "Method name",
-      "minLevel": ${lvl},
-      "xpRate": "~XX,XXX XP/hr",
-      "description": "One sentence description of the method and why it suits level ${lvl}."
-    }
-  ]
-}
-
-Include 3-4 methods appropriate for level ${lvl} ${skillName}, sorted by XP rate descending. Methods must be unlocked at level ${lvl} or below.`;
-
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
+    const res = await fetch('/.netlify/functions/skill-advice', {
+      method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 600,
-        messages: [{ role: 'user', content: prompt }],
-      }),
+      body:    JSON.stringify({ skill: skillName, level: lvl, xp, xpTo99 }),
     });
 
-    if (!res.ok) throw new Error('API error ' + res.status);
-    const data = await res.json();
-    const raw  = data.content?.[0]?.text || '';
+    if (!res.ok) throw new Error(`Server error ${res.status}`);
+    const { text, error } = await res.json();
+    if (error) throw new Error(error);
 
-    // Parse JSON from response
-    const jsonMatch = raw.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('No JSON in response');
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('Invalid response format');
     const parsed = JSON.parse(jsonMatch[0]);
 
-    // Render advice text
-    textEl.className  = 'ai-text';
+    textEl.className   = 'ai-text';
     textEl.textContent = parsed.advice || '';
 
-    // Render training methods
     if (parsed.methods?.length) {
       methodEl.innerHTML = parsed.methods.map(m => `
         <div class="ai-method">
@@ -584,11 +559,10 @@ Include 3-4 methods appropriate for level ${lvl} ${skillName}, sorted by XP rate
         </div>`).join('');
     }
 
-    // Mark done
     if (dot) { dot.classList.add('done'); }
 
   } catch (err) {
-    textEl.className  = 'ai-text';
+    textEl.className   = 'ai-text';
     textEl.textContent = `Could not load advice: ${err.message}`;
     if (dot) { dot.style.background = 'var(--red)'; dot.style.animation = 'none'; }
   }
