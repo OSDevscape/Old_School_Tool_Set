@@ -7,11 +7,33 @@
   <link rel="manifest" href="../manifest.json">
   <title>OSTS — Bossing</title>
   <link rel="stylesheet" href="../style.css">
+  <style>
+    .sp-profile-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 11px; padding: 10px 12px; margin-bottom: 6px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sp-profile-card.active { border-color: var(--gold); }
+    .sp-avatar {
+      width: 34px; height: 34px; flex-shrink: 0; background: var(--surface3);
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; font-size: 17px;
+    }
+    .sp-info { flex: 1; min-width: 0; }
+    .sp-nickname { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sp-rsn-type { font-size: 11px; color: var(--muted); }
+    .sp-btn {
+      background: var(--surface3); border: 1px solid var(--border);
+      border-radius: 7px; color: var(--text); font-size: 11px; font-weight: 600;
+      padding: 5px 9px; cursor: pointer; transition: border-color .15s;
+    }
+    .sp-btn:hover { border-color: var(--gold); }
+  </style>
 </head>
 <body>
 
 <header>
-  <h1>OSTS<span id="player-name-header"></span></h1>
+  <h1>OSTS</h1>
   <div class="hdr-actions">
     <button id="install-btn">Install</button>
     <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
@@ -34,42 +56,32 @@
   </div>
   <div class="settings-block">
     <div class="settings-label">Player Profiles</div>
-    <div id="sp-profile-list" style="margin-bottom:8px"></div>
-
-  </div>
+    <div id="sp-profile-list"></div>
   </div>
 </div>
 
 <div id="main">
   <div class="page active" id="page-bossing">
-
     <div class="source-row">
       <span class="source-chip hiscores">Official Hiscores (KC)</span>
       <span class="source-chip wom">WOM (EHB/Rank)</span>
     </div>
-
     <div id="loader"></div>
     <div class="error-msg" id="error-msg"></div>
-
     <div class="welcome" id="welcome-msg">
       <div class="welcome-icon">🏆</div>
-      <p>Search a player to view boss kill counts and rankings.</p>
+      <p>Select a profile to view boss kill counts and rankings.</p>
     </div>
-
     <div id="bossing-content" style="display:none">
-      <!-- Summary row -->
       <div class="boss-summary-row">
         <div class="boss-stat-box"><div class="val" id="bs-count">—</div><div class="lbl">Bosses</div></div>
         <div class="boss-stat-box"><div class="val" id="bs-total-kc">—</div><div class="lbl">Total KC</div></div>
         <div class="boss-stat-box"><div class="val" id="bs-ehb">—</div><div class="lbl">Total EHB</div></div>
         <div class="boss-stat-box"><div class="val" id="bs-best-rank">—</div><div class="lbl">Best Rank</div></div>
       </div>
-
-      <!-- Boss list -->
       <div class="data-label">Boss Kill Counts</div>
       <div id="boss-list"></div>
     </div>
-
   </div>
 </div>
 
@@ -93,51 +105,89 @@
 
 <script type="module">
 import {
-  initPage, fetchPlayer, player, wom, settings, showToast, storage,
-  STORAGE_KEYS, fmtNum, fmtRank,
+  initPage, fetchPlayer, player, settings, showToast, storage,
+  STORAGE_KEYS, fmtNum, fmtRank, normalizeAccountType,
 } from '../JS/shared.js';
 
 initPage('bossing');
 
-// Boss display names (humanize snake_case)
+// ── Profile system ────────────────────────────────────────────────────────────
+const PROFILES_KEY    = 'osts_profiles_v2';
+const ACTIVE_PROF_KEY = 'osts_active_profile_v2';
+const SP_ICONS  = { ironman:'🛡', hardcore:'💀', ultimate:'🔱', regular:'⚔', gim:'👥', ghcim:'☠', ugim:'👥' };
+const SP_LABELS = { ironman:'Iron', hardcore:'HCIM', ultimate:'UIM', regular:'Regular', gim:'GIM', ghcim:'GHCIM', ugim:'UGIM' };
+
+function getProfiles() { return storage.get(PROFILES_KEY, []); }
+function getActiveId() { return storage.get(ACTIVE_PROF_KEY, null); }
+function setActiveId(id) { storage.set(ACTIVE_PROF_KEY, id); }
+function norm(t) { return normalizeAccountType(t); }
+
+function renderProfilePanel() {
+  const list = document.getElementById('sp-profile-list');
+  if (!list) return;
+  const profiles = getProfiles();
+  const activeId = getActiveId();
+  if (!profiles.length) {
+    list.innerHTML = '<div style="font-size:12px;color:var(--muted)">No saved profiles.<br>Go to <a href="overview.html" style="color:var(--gold)">Overview</a> to create one.</div>';
+    return;
+  }
+  const sorted = [...profiles].sort((a, b) => (b.id === activeId) - (a.id === activeId));
+  list.innerHTML = sorted.map(p => `
+    <div class="sp-profile-card${p.id === activeId ? ' active' : ''}">
+      <div class="sp-avatar">${SP_ICONS[norm(p.type)] || '⚔'}</div>
+      <div class="sp-info">
+        <div class="sp-nickname">${p.nickname}</div>
+        <div class="sp-rsn-type">${p.rsn} · ${SP_LABELS[norm(p.type)] || 'Iron'}</div>
+      </div>
+      ${p.id !== activeId
+        ? `<button class="sp-btn" data-load="${p.id}">Load</button>`
+        : '<span style="font-size:10px;color:var(--gold)">Active</span>'}
+    </div>`).join('');
+
+  list.querySelectorAll('[data-load]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const p = getProfiles().find(x => x.id === btn.dataset.load);
+      if (!p) return;
+      setActiveId(p.id);
+      storage.set(STORAGE_KEYS.ACCOUNT_TYPE, norm(p.type));
+      storage.set(STORAGE_KEYS.RSN, p.rsn);
+      settings.close();
+      loadPlayer(p.rsn, norm(p.type));
+    });
+  });
+}
+
+document.getElementById('settings-btn')
+  ?.addEventListener('click', renderProfilePanel, true);
+
+// ── Load player ───────────────────────────────────────────────────────────────
+async function loadPlayer(rsn, accountType) {
+  if (!rsn) rsn = storage.get(STORAGE_KEYS.RSN, '');
+  if (!rsn) return;
+  if (!accountType) accountType = storage.get(STORAGE_KEYS.ACCOUNT_TYPE, 'ironman');
+  setLoading(true); clearError();
+  try {
+    const data = await fetchPlayer(rsn, accountType);
+    player.set(data);
+    renderBossing(data);
+    showToast('✅ ' + (data.displayName || rsn));
+  } catch (err) { showError(err.message); }
+  finally { setLoading(false); }
+}
+
+// ── Render bossing ────────────────────────────────────────────────────────────
 function humanizeBoss(id) {
-  const special = { ehp:'EHP', ehb:'EHB', toa:'ToA', cox:'CoX', tob:'ToB', tzkal:'TzKal', tztok:'TzTok', kril:'K\'ril', kreearra:'Kree\'arra' };
+  const special = { ehp:'EHP', ehb:'EHB', toa:'ToA', cox:'CoX', tob:'ToB', tzkal:'TzKal', tztok:'TzTok', kril:"K'ril", kreearra:"Kree'arra" };
   return id.split('_').map(w => special[w] || w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }
 
-function fmtEHB(n) {
-  n = Number(n || 0);
-  return n === 0 ? '0' : n >= 10 ? n.toFixed(1) : n.toFixed(2);
-}
-
-// ── Search ────────────────────────────────────────────────────────────────────
-document.getElementById('search-btn').addEventListener('click', async () => {
-  const rsn = document.getElementById('rsn-input').value.trim();
-  if (!rsn) { showToast('Enter a player name'); return; }
-  setLoading(true); clearError();
-  try {
-    const data = await fetchPlayer(rsn, storage.get(STORAGE_KEYS.ACCOUNT_TYPE, 'ironman'));
-    player.set(data);
-    renderBossing(data);
-    settings.close();
-    showToast(`✅ ${data.displayName || rsn} loaded`);
-  } catch (err) { showError(err.message); }
-  finally { setLoading(false); }
-});
-
-// ── Render ────────────────────────────────────────────────────────────────────
 function renderBossing(data) {
-  document.getElementById('player-name-header').textContent = ' — ' + (data.displayName || data.username || '');
-  document.getElementById('welcome-msg').style.display   = 'none';
+  document.getElementById('welcome-msg').style.display    = 'none';
   document.getElementById('bossing-content').style.display = '';
 
-  // WOM boss data (EHB, detailed ranks)
   const womBosses = data.latestSnapshot?.data?.bosses || {};
+  const hsBosses  = data._hiscoresBosses || {};
 
-  // Hiscores boss KC (authoritative)
-  const hsBosses = data._hiscoresBosses || {};
-
-  // Merge: prefer hiscores KC, use WOM for EHB and rank
   const entries = Object.entries(womBosses).map(([id, b]) => {
     const hsKc = hsBosses[id]?.kills ?? -1;
     const kc   = hsKc >= 0 ? hsKc : Number(b?.kills || 0);
@@ -146,14 +196,14 @@ function renderBossing(data) {
     return { id, name: humanizeBoss(id), kc, rank, ehb };
   }).sort((a, b) => b.kc - a.kc || b.ehb - a.ehb);
 
-  const active  = entries.filter(e => e.kc > 0);
-  const totalKC = entries.reduce((s, e) => s + e.kc, 0);
-  const totalEHB= entries.reduce((s, e) => s + e.ehb, 0);
-  const ranked  = entries.filter(e => e.rank > 0).sort((a, b) => a.rank - b.rank);
+  const active   = entries.filter(e => e.kc > 0);
+  const totalKC  = entries.reduce((s, e) => s + e.kc, 0);
+  const totalEHB = entries.reduce((s, e) => s + e.ehb, 0);
+  const ranked   = entries.filter(e => e.rank > 0).sort((a, b) => a.rank - b.rank);
 
   document.getElementById('bs-count').textContent    = active.length;
   document.getElementById('bs-total-kc').textContent = fmtNum(totalKC);
-  document.getElementById('bs-ehb').textContent      = fmtEHB(totalEHB);
+  document.getElementById('bs-ehb').textContent      = totalEHB.toFixed(1);
   document.getElementById('bs-best-rank').textContent= ranked[0] ? '#' + fmtNum(ranked[0].rank) : 'Unranked';
 
   if (!entries.length) {
@@ -169,7 +219,7 @@ function renderBossing(data) {
         </div>
         <div class="boss-name-wrap">
           <div class="boss-name">${e.name}</div>
-          <div class="boss-mini">${e.rank > 0 ? 'Ranked' : 'Unranked'} · ${fmtEHB(e.ehb)} EHB</div>
+          <div class="boss-mini">${e.rank > 0 ? 'Ranked' : 'Unranked'} · ${e.ehb.toFixed(1)} EHB</div>
         </div>
         <div class="boss-kc">${fmtNum(e.kc)} KC</div>
         <div style="color:var(--muted);font-size:12px;padding-left:6px">▾</div>
@@ -177,15 +227,13 @@ function renderBossing(data) {
       <div class="boss-body">
         <div class="boss-metrics">
           <div class="boss-metric"><div class="k">Kills</div><div class="v">${fmtNum(e.kc)}</div></div>
-          <div class="boss-metric"><div class="k">Rank</div><div class="v${e.rank > 0 ? ' style="color:var(--green)"' : ''}">${e.rank > 0 ? '#' + fmtNum(e.rank) : 'Unranked'}</div></div>
-          <div class="boss-metric"><div class="k">EHB</div><div class="v${e.ehb > 0 ? ' style="color:var(--gold)"' : ''}">${fmtEHB(e.ehb)}</div></div>
-          <div class="boss-metric"><div class="k">EHB/KC</div><div class="v">${e.kc > 0 ? fmtEHB(e.ehb / e.kc) : '0'}</div></div>
+          <div class="boss-metric"><div class="k">Rank</div><div class="v">${e.rank > 0 ? '#' + fmtNum(e.rank) : 'Unranked'}</div></div>
+          <div class="boss-metric"><div class="k">EHB</div><div class="v">${e.ehb.toFixed(1)}</div></div>
+          <div class="boss-metric"><div class="k">EHB/KC</div><div class="v">${e.kc > 0 ? (e.ehb / e.kc).toFixed(2) : '0'}</div></div>
         </div>
       </div>
-    </details>
-  `).join('');
+    </details>`).join('');
 
-  // One-open accordion
   document.querySelectorAll('.boss-item').forEach(item => {
     item.addEventListener('toggle', () => {
       if (!item.open) return;
@@ -196,77 +244,17 @@ function renderBossing(data) {
 
 // ── UI helpers ────────────────────────────────────────────────────────────────
 function setLoading(on) { document.getElementById('loader').classList.toggle('loading', on); }
-function clearError() { const e = document.getElementById('error-msg'); e.textContent=''; e.classList.remove('show'); }
-function showError(msg) { const e = document.getElementById('error-msg'); e.textContent=msg; e.classList.add('show'); document.getElementById('welcome-msg').style.display=''; }
+function clearError() { const el = document.getElementById('error-msg'); el.textContent = ''; el.classList.remove('show'); }
+function showError(msg) { const el = document.getElementById('error-msg'); el.textContent = msg; el.classList.add('show'); document.getElementById('welcome-msg').style.display = ''; }
 
-
-
-
-// ── Profile helpers ───────────────────────────────────────────────────────────
-const PROFILES_KEY    = 'osts_profiles_v2';
-const ACTIVE_PROF_KEY = 'osts_active_profile_v2';
-const TYPE_ICONS_SP   = { ironman:'🛡', hardcore:'💀', ultimate:'🔱', regular:'⚔', gim:'👥', ghcim:'☠', ugim:'👥' };
-const TYPE_LABELS_SP  = { ironman:'Iron', hardcore:'HCIM', ultimate:'UIM', regular:'Regular', gim:'GIM', ghcim:'GHCIM', ugim:'UGIM' };
-
-function getProfilesSP() { return storage.get(PROFILES_KEY, []); }
-function getActiveIdSP()  { return storage.get(ACTIVE_PROF_KEY, null); }
-function setActiveIdSP(id){ storage.set(ACTIVE_PROF_KEY, id); }
-
-function renderSettingsProfilesSP() {
-  const list      = document.getElementById('sp-profile-list');
-  if (!list) return;
-  const profiles  = getProfilesSP();
-  const activeId  = getActiveIdSP();
-  if (!profiles.length) {
-    list.innerHTML = '<div style="font-size:12px;color:var(--muted);margin-bottom:6px">No saved profiles. Search a player to create one.</div>';
-    return;
-  }
-  const sorted = [...profiles].sort((a,b) => (b.id === activeId) - (a.id === activeId));
-  list.innerHTML = sorted.map(p => `
-    <div class="sp-profile-card${p.id === activeId ? ' active' : ''}">
-      <div class="sp-avatar">${TYPE_ICONS_SP[normalizeAccountType(p.type)] || '⚔'}</div>
-      <div class="sp-info">
-        <div class="sp-nickname">${p.nickname}</div>
-        <div class="sp-rsn-type">${p.rsn} · ${TYPE_LABELS_SP[normalizeAccountType(p.type)] || 'Iron'}</div>
-      </div>
-      ${p.id !== activeId ? `<button class="sp-btn" data-sp-load="${p.id}">Load</button>` : '<span style="font-size:10px;color:var(--gold)">Active</span>'}
-    </div>
-  `).join('');
-
-  list.querySelectorAll('[data-sp-load]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const p = getProfilesSP().find(x => x.id === btn.dataset.spLoad);
-      if (!p) return;
-      setActiveIdSP(p.id);
-      currentAccountType = normalizeAccountType(p.type);
-      storage.set(STORAGE_KEYS.ACCOUNT_TYPE, currentAccountType);
-      document.querySelectorAll('.acct-btn').forEach(b =>
-        b.classList.toggle('active', b.dataset.type === currentAccountType));
-      document.getElementById('rsn-input').value = p.rsn;
-      settings.close();
-      document.getElementById('search-btn').click();
-    });
-  });
-}
-
-// Account type buttons
-let currentAccountType = storage.get(STORAGE_KEYS.ACCOUNT_TYPE, 'ironman');
-document.querySelectorAll('.acct-btn[data-type]').forEach(btn => {
-  if (btn.dataset.type === currentAccountType) btn.classList.add('active');
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.acct-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentAccountType = btn.dataset.type;
-    storage.set(STORAGE_KEYS.ACCOUNT_TYPE, currentAccountType);
-  });
-});
-
-// Render profiles when settings opens
-document.getElementById('settings-btn')?.addEventListener('click', renderSettingsProfilesSP, true);
-
-// ── Auto-load ─────────────────────────────────────────────────────────────────
+// ── Boot ──────────────────────────────────────────────────────────────────────
 const cached = player.getFromCache();
-if (cached) renderBossing(cached);
+if (cached) {
+  renderBossing(cached);
+} else {
+  const lastRsn = storage.get(STORAGE_KEYS.RSN, '');
+  if (lastRsn) loadPlayer(lastRsn);
+}
 </script>
 </body>
 </html>
