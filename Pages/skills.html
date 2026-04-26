@@ -33,9 +33,10 @@
     </div>
   </div>
   <div class="settings-block">
-    <div class="settings-label">Player</div>
-    <input id="rsn-input" class="settings-rsn-input" type="text" placeholder="Enter RSN…" autocomplete="off" spellcheck="false">
-    <button class="search-btn" id="search-btn">Search Player</button>
+    <div class="settings-label">Player Profiles</div>
+    <div id="sp-profile-list" style="margin-bottom:8px"></div>
+
+  </div>
   </div>
 </div>
 
@@ -222,6 +223,71 @@ document.getElementById('skill-sheet-overlay').addEventListener('click', closeSk
 function setLoading(on) { document.getElementById('loader').classList.toggle('loading', on); }
 function clearError() { const e = document.getElementById('error-msg'); e.textContent=''; e.classList.remove('show'); }
 function showError(msg) { const e = document.getElementById('error-msg'); e.textContent=msg; e.classList.add('show'); document.getElementById('welcome-msg').style.display=''; }
+
+
+
+
+// ── Profile helpers ───────────────────────────────────────────────────────────
+const PROFILES_KEY    = 'osts_profiles_v2';
+const ACTIVE_PROF_KEY = 'osts_active_profile_v2';
+const TYPE_ICONS_SP   = { ironman:'🛡', hardcore:'💀', ultimate:'🔱', regular:'⚔', gim:'👥', ghcim:'☠', ugim:'👥' };
+const TYPE_LABELS_SP  = { ironman:'Iron', hardcore:'HCIM', ultimate:'UIM', regular:'Regular', gim:'GIM', ghcim:'GHCIM', ugim:'UGIM' };
+
+function getProfilesSP() { return storage.get(PROFILES_KEY, []); }
+function getActiveIdSP()  { return storage.get(ACTIVE_PROF_KEY, null); }
+function setActiveIdSP(id){ storage.set(ACTIVE_PROF_KEY, id); }
+
+function renderSettingsProfilesSP() {
+  const list      = document.getElementById('sp-profile-list');
+  if (!list) return;
+  const profiles  = getProfilesSP();
+  const activeId  = getActiveIdSP();
+  if (!profiles.length) {
+    list.innerHTML = '<div style="font-size:12px;color:var(--muted);margin-bottom:6px">No saved profiles. Search a player to create one.</div>';
+    return;
+  }
+  const sorted = [...profiles].sort((a,b) => (b.id === activeId) - (a.id === activeId));
+  list.innerHTML = sorted.map(p => `
+    <div class="sp-profile-card${p.id === activeId ? ' active' : ''}">
+      <div class="sp-avatar">${TYPE_ICONS_SP[normalizeAccountType(p.type)] || '⚔'}</div>
+      <div class="sp-info">
+        <div class="sp-nickname">${p.nickname}</div>
+        <div class="sp-rsn-type">${p.rsn} · ${TYPE_LABELS_SP[normalizeAccountType(p.type)] || 'Iron'}</div>
+      </div>
+      ${p.id !== activeId ? `<button class="sp-btn" data-sp-load="${p.id}">Load</button>` : '<span style="font-size:10px;color:var(--gold)">Active</span>'}
+    </div>
+  `).join('');
+
+  list.querySelectorAll('[data-sp-load]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const p = getProfilesSP().find(x => x.id === btn.dataset.spLoad);
+      if (!p) return;
+      setActiveIdSP(p.id);
+      currentAccountType = normalizeAccountType(p.type);
+      storage.set(STORAGE_KEYS.ACCOUNT_TYPE, currentAccountType);
+      document.querySelectorAll('.acct-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.type === currentAccountType));
+      document.getElementById('rsn-input').value = p.rsn;
+      settings.close();
+      document.getElementById('search-btn').click();
+    });
+  });
+}
+
+// Account type buttons
+let currentAccountType = storage.get(STORAGE_KEYS.ACCOUNT_TYPE, 'ironman');
+document.querySelectorAll('.acct-btn[data-type]').forEach(btn => {
+  if (btn.dataset.type === currentAccountType) btn.classList.add('active');
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.acct-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentAccountType = btn.dataset.type;
+    storage.set(STORAGE_KEYS.ACCOUNT_TYPE, currentAccountType);
+  });
+});
+
+// Render profiles when settings opens
+document.getElementById('settings-btn')?.addEventListener('click', renderSettingsProfilesSP, true);
 
 // ── Auto-load ─────────────────────────────────────────────────────────────────
 const cached = player.getFromCache();
