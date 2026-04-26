@@ -3,7 +3,7 @@
  * Handles: theme · storage · player state · API routing · nav · toast · push
  *
  * Data sources:
- *   Hiscores  → /netlify/functions/hiscores (proxy to official OSRS hiscores)
+ *   Hiscores  → /.netlify/functions/hiscores (proxy to official OSRS hiscores)
  *   WOM       → https://api.wiseoldman.net/v2  (gains, charts, EHB, snapshots)
  *   Temple    → https://templeosrs.com/api      (achievements, supplemental data)
  */
@@ -246,7 +246,7 @@ export function parseHiscoresCSV(csv) {
 
 export async function fetchHiscores(rsn, accountType = 'ironman') {
   const type = normalizeAccountType(accountType);
-  const url = `/netlify/functions/hiscores?player=${encodeURIComponent(rsn)}&type=${type}`;
+  const url = `/.netlify/functions/hiscores?player=${encodeURIComponent(rsn)}&type=${type}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(res.status === 404 ? 'Player not found on Hiscores' : `Hiscores error ${res.status}`);
   const json = await res.json();
@@ -315,19 +315,19 @@ export const wom = {
 
 export const temple = {
   async getStats(rsn) {
-    const res = await fetch(`/netlify/functions/temple?player=${encodeURIComponent(rsn)}&endpoint=stats`);
+    const res = await fetch(`/.netlify/functions/temple?player=${encodeURIComponent(rsn)}&endpoint=stats`);
     if (!res.ok) throw new Error(`TempleOSRS error ${res.status}`);
     return res.json();
   },
 
   async getAchievements(rsn) {
-    const res = await fetch(`/netlify/functions/temple?player=${encodeURIComponent(rsn)}&endpoint=achievements`);
+    const res = await fetch(`/.netlify/functions/temple?player=${encodeURIComponent(rsn)}&endpoint=achievements`);
     if (!res.ok) throw new Error(`TempleOSRS achievements error ${res.status}`);
     return res.json();
   },
 
   async getGains(rsn, period = '7') {
-    const res = await fetch(`/netlify/functions/temple?player=${encodeURIComponent(rsn)}&endpoint=gains&time=${period}`);
+    const res = await fetch(`/.netlify/functions/temple?player=${encodeURIComponent(rsn)}&endpoint=gains&time=${period}`);
     if (!res.ok) throw new Error(`TempleOSRS gains error ${res.status}`);
     return res.json();
   },
@@ -407,7 +407,7 @@ export async function fetchPlayer(rsn, accountType = null) {
   }
 
   // Write 2: Global DB — recent_searches + players table
-  fetch('/netlify/functions/recent-players', {
+  fetch('/.netlify/functions/recent-players', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify({
@@ -424,7 +424,7 @@ export async function fetchPlayer(rsn, accountType = null) {
   }).catch(err => console.warn('[OSTS] Global recent write error:', err.message));
 
   // Write 3: Skill snapshot + boss KC — non-blocking
-  fetch('/netlify/functions/snapshot', {
+  fetch('/.netlify/functions/snapshot', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify({
@@ -467,12 +467,12 @@ export const settings = {
 };
 
 // ─── Navigation ──────────────────────────────────────────────────────────────
- 
+
 const NAV_PAGES = [
   { id: 'home',     label: 'Home',     icon: '🏠',  href: '../index.html' },
-  { id: 'overview', label: 'Overview', icon: '👀',   href: '../pages/overview.html' },
-  { id: 'skills',   label: 'Skills',   icon: null,   href: '../pages/skills.html',   imgIcon: 'https://oldschool.runescape.wiki/images/thumb/Skills_icon.png/80px-Skills_icon.png' },
-  { id: 'gains',    label: 'Gains',    icon: '📈',  href: '../pages/gains.html' },
+  { id: 'overview', label: 'Overview', icon: null,   href: '../Pages/overview.html', imgIcon: 'https://oldschool.runescape.wiki/images/thumb/Skills_icon.png/80px-Skills_icon.png' },
+  { id: 'skills',   label: 'Skills',   icon: null,   href: '../Pages/skills.html',   imgIcon: 'https://oldschool.runescape.wiki/images/thumb/Skills_icon.png/80px-Skills_icon.png' },
+  { id: 'gains',    label: 'Gains',    icon: '📈',  href: 'gains.html' },
   { id: 'more',     label: 'More',     icon: '…',   href: null },
 ];
 

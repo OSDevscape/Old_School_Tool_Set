@@ -111,8 +111,8 @@
     .news-card.featured .news-title { font-size: 17px; }
     .news-desc {
       font-size: 12px; color: var(--muted); line-height: 1.55;
-      display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3;
-      -webkit-box-orient: vertical; overflow: hidden;
+      display: -webkit-box; -webkit-line-clamp: 3;
+      line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
     }
 
     /* ── Skeletons ── */
@@ -228,7 +228,7 @@
     </div>
     <div class="modal-actions">
       <a class="modal-action" href="Pages/bossing.html">🏆 Bossing</a>
-      <a class="modal-action" href="Pages/timers.html">⏲️ Timers</a>
+      <a class="modal-action" href="Pages/timers.html">⏱ Timers</a>
       <a class="modal-action" href="Pages/bestiary.html">🐉 Bestiary</a>
     </div>
   </div>
@@ -296,17 +296,29 @@ function recentChipsHtml(list) {
 async function loadGlobalRecent() {
   const el = document.getElementById('recent-global-container');
   try {
-    const res = await fetch('/netlify/functions/recent-players');
+    const res = await fetch('/.netlify/functions/recent-players');
+    console.log('[OSTS] recent-players GET status:', res.status);
+
     if (res.ok) {
       const data = await res.json();
+      console.log('[OSTS] recent-players GET data:', data);
+
       if (Array.isArray(data) && data.length) {
         el.innerHTML = recentChipsHtml(data);
         return;
       }
+      // Connected but no rows yet
+      el.innerHTML = '<div class="recent-empty">No global searches recorded yet — be the first!</div>';
+      return;
     }
-    el.innerHTML = '<div class="recent-empty">No global searches recorded yet.</div>';
-  } catch {
-    el.innerHTML = '<div class="recent-empty">Could not load global list — database unavailable.</div>';
+
+    // Non-ok status (404 on localhost, 500 on DB error etc.)
+    const text = await res.text().catch(() => '');
+    console.warn('[OSTS] recent-players GET failed:', res.status, text);
+    el.innerHTML = `<div class="recent-empty">Global list unavailable (${res.status}) — deploy to Netlify to enable.</div>`;
+  } catch (err) {
+    console.warn('[OSTS] recent-players GET error:', err.message);
+    el.innerHTML = '<div class="recent-empty">Could not reach database — check Netlify deploy logs.</div>';
   }
 }
 
@@ -336,7 +348,7 @@ async function loadNews() {
 
   // 1. Try Netlify proxy (production — avoids CORS)
   try {
-    const res = await fetch('/netlify/functions/osrs-news');
+    const res = await fetch('/.netlify/functions/osrs-news');
     if (res.ok) {
       const data = await res.json();
       if (Array.isArray(data) && data.length) items = data;

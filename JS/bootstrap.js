@@ -38,7 +38,7 @@ export async function registerSW() {
 
 // ── Push subscription (opt-in only) ──────────────────────────────────────────
 async function saveSubscription(sub) {
-  const res = await fetch('/netlify/functions/save-subscription', {
+  const res = await fetch('/.netlify/functions/save-subscription', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(sub.toJSON()),
