@@ -538,6 +538,7 @@
 
       <!-- Last updated -->
       <div class="ov-last-updated" id="ov-last-updated"></div>
+      <div class="ov-last-updated" id="ov-search-count" style="opacity:.5;font-size:10px"></div>
 
     </div><!-- /ov-content -->
 
@@ -1122,6 +1123,19 @@ function renderOverview(data) {
   // Last updated
   document.getElementById('ov-last-updated').textContent = data.updatedAt
     ? 'Last updated: ' + new Date(data.updatedAt).toLocaleString() : '';
+
+  // Fetch global search count from DB (non-blocking, subtle display)
+  fetch(`/.netlify/functions/recent-players`)
+    .then(r => r.ok ? r.json() : [])
+    .then(list => {
+      const match = Array.isArray(list) && list.find(p =>
+        p.rsn?.toLowerCase() === (data.displayName || data.username || '').toLowerCase()
+      );
+      const el = document.getElementById('ov-search-count');
+      if (el && match?.searchCount > 0) {
+        el.textContent = `🔍 Searched ${match.searchCount.toLocaleString()} time${match.searchCount !== 1 ? 's' : ''} on OSTS`;
+      }
+    }).catch(() => {});
 
   // Show content + action bar
   document.getElementById('ov-content').style.display = '';
