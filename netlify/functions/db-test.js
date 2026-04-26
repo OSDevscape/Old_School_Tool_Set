@@ -12,7 +12,6 @@ const DB_CONFIG = {
   database:       process.env.DB_NAME     || 'sql3823639',
   user:           process.env.DB_USER     || 'sql3823639',
   password:       process.env.DB_PASSWORD || 'VvNAQi7PZQ',
-  ssl:            { rejectUnauthorized: false },
   connectTimeout: 8000,
 };
 
