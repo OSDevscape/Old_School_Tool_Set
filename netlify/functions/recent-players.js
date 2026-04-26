@@ -37,10 +37,12 @@ exports.handler = async function(event) {
       const [rows] = await conn.execute(`
         SELECT p.rsn, p.display_name, p.account_type AS type,
                p.combat_level, p.total_level, p.total_xp,
-               p.search_count, rs.searched_at
+               p.search_count, MAX(rs.searched_at) AS searched_at
         FROM   recent_searches rs
         JOIN   players p ON p.rsn = rs.rsn
-        ORDER  BY rs.searched_at DESC
+        GROUP  BY p.rsn, p.display_name, p.account_type,
+                  p.combat_level, p.total_level, p.total_xp, p.search_count
+        ORDER  BY searched_at DESC
         LIMIT  ?
       `, [MAX_RECENT]);
 
@@ -113,10 +115,12 @@ exports.handler = async function(event) {
       const [rows] = await conn.execute(`
         SELECT p.rsn, p.display_name, p.account_type AS type,
                p.combat_level, p.total_level, p.total_xp,
-               p.search_count, rs.searched_at
+               p.search_count, MAX(rs.searched_at) AS searched_at
         FROM   recent_searches rs
         JOIN   players p ON p.rsn = rs.rsn
-        ORDER  BY rs.searched_at DESC
+        GROUP  BY p.rsn, p.display_name, p.account_type,
+                  p.combat_level, p.total_level, p.total_xp, p.search_count
+        ORDER  BY searched_at DESC
         LIMIT  ?
       `, [5]);
 
