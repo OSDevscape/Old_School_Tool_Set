@@ -9,25 +9,99 @@
   <link rel="stylesheet" href="../style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
+    /* ── Period tabs ── */
+    .period-tabs { display: flex; gap: 6px; margin-bottom: 12px; }
+    .period-tab {
+      flex: 1; padding: 9px 4px; border-radius: 10px; font-size: 13px; font-weight: 700;
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--muted); cursor: pointer; transition: all .15s; text-align: center;
+    }
+    .period-tab.active {
+      background: var(--gold); color: #000; border-color: var(--gold);
+    }
+    .period-label {
+      display: flex; align-items: center; gap: 6px; margin-bottom: 10px;
+      font-size: 11px; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .5px;
+    }
+    .period-label .badge {
+      background: rgba(184,136,72,.2); border: 1px solid var(--gold);
+      color: var(--gold); border-radius: 999px; padding: 2px 10px;
+      font-size: 11px; font-weight: 700;
+    }
+
+    /* ── Flip card grid ── */
+    .gains-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+      perspective: 1000px;
+    }
+
+    .flip-card {
+      height: 100px;
+      cursor: pointer;
+    }
+    .flip-inner {
+      position: relative; width: 100%; height: 100%;
+      transform-style: preserve-3d;
+      transition: transform .45s cubic-bezier(.4,0,.2,1);
+    }
+    .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+
+    .flip-front, .flip-back {
+      position: absolute; inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 12px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 5px; padding: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .flip-back {
+      transform: rotateY(180deg);
+      background: var(--surface2);
+      border-color: var(--gold);
+    }
+
+    .fc-icon { width: 28px; height: 28px; object-fit: contain; }
+    .fc-name { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; }
+    .fc-lvl  {
+      font-size: 12px; font-weight: 700; color: var(--green);
+      background: rgba(63,185,80,.15); border: 1px solid var(--green);
+      border-radius: 999px; padding: 1px 8px;
+    }
+    .fc-lvl.no-lvl { color: var(--muted); border-color: var(--border); background: none; font-size: 10px; }
+
+    .fc-xp-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; }
+    .fc-xp-val   { font-size: 18px; font-weight: 800; color: var(--gold); }
+    .fc-hint     { font-size: 9px; color: var(--muted); }
+
+    /* ── Source chip ── */
+    .source-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+    .source-chip { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); background: var(--surface2); }
+    .source-chip.wom { border-color: var(--blue); color: var(--blue); background: rgba(88,166,255,.1); }
+
+    /* ── Charts ── */
+    .chart-section { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 12px; }
+    .chart-section h3 { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
+    .chart-wrap { overflow-x: auto; }
+
+    /* ── Profile cards ── */
     .sp-profile-card {
       background: var(--surface2); border: 1px solid var(--border);
       border-radius: 11px; padding: 10px 12px; margin-bottom: 6px;
       display: flex; align-items: center; gap: 10px;
     }
     .sp-profile-card.active { border-color: var(--gold); }
-    .sp-avatar {
-      width: 34px; height: 34px; flex-shrink: 0; background: var(--surface3);
-      border-radius: 8px; display: flex; align-items: center;
-      justify-content: center; font-size: 17px;
-    }
+    .sp-avatar { width: 34px; height: 34px; flex-shrink: 0; background: var(--surface3); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 17px; }
     .sp-info { flex: 1; min-width: 0; }
     .sp-nickname { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .sp-rsn-type { font-size: 11px; color: var(--muted); }
-    .sp-btn {
-      background: var(--surface3); border: 1px solid var(--border);
-      border-radius: 7px; color: var(--text); font-size: 11px; font-weight: 600;
-      padding: 5px 9px; cursor: pointer; transition: border-color .15s;
-    }
+    .sp-btn { background: var(--surface3); border: 1px solid var(--border); border-radius: 7px; color: var(--text); font-size: 11px; font-weight: 600; padding: 5px 9px; cursor: pointer; }
     .sp-btn:hover { border-color: var(--gold); }
   </style>
 </head>
@@ -63,34 +137,51 @@
 
 <div id="main">
   <div class="page active" id="page-gains">
+
     <div class="source-row">
       <span class="source-chip wom">Wise Old Man</span>
     </div>
+
     <div id="loader"></div>
     <div class="error-msg" id="error-msg"></div>
+
     <div class="welcome" id="welcome-msg">
       <div class="welcome-icon">📈</div>
       <p>Select a profile to view XP gains and progress charts.</p>
     </div>
+
     <div id="gains-content" style="display:none">
+
+      <!-- Period tabs -->
       <div class="period-tabs">
-        <button class="period-tab active" data-period="day">Day</button>
-        <button class="period-tab" data-period="week">Week</button>
+        <button class="period-tab" data-period="day">Day</button>
+        <button class="period-tab active" data-period="week">Week</button>
         <button class="period-tab" data-period="month">Month</button>
         <button class="period-tab" data-period="year">Year</button>
       </div>
-      <div class="data-label">XP Gains</div>
-      <div id="gains-grid" class="gains-grid"></div>
-      <div style="margin-top:16px">
-        <div class="data-label">Progress Charts</div>
-        <div class="chart-section">
-          <div class="chart-wrap"><canvas id="chart-timeline" height="200"></canvas></div>
-        </div>
-        <div class="chart-section">
-          <h3>Current Skill Levels</h3>
-          <div class="chart-wrap"><canvas id="chart-levels" height="200"></canvas></div>
-        </div>
+
+      <!-- Active period label -->
+      <div class="period-label">
+        Showing gains for <span class="badge" id="period-badge">This Week</span>
+        <span style="color:var(--muted);font-size:10px;margin-left:auto">tap a card to see XP</span>
       </div>
+
+      <!-- Flip card gains grid -->
+      <div id="gains-grid" class="gains-grid"></div>
+
+      <!-- Charts -->
+      <div class="data-label">Progress Charts</div>
+
+      <div class="chart-section">
+        <h3 id="timeline-title">Overall — XP Timeline</h3>
+        <div class="chart-wrap"><canvas id="chart-timeline" height="180"></canvas></div>
+      </div>
+
+      <div class="chart-section">
+        <h3>Current Skill Levels</h3>
+        <div class="chart-wrap"><canvas id="chart-levels" height="180"></canvas></div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -126,16 +217,23 @@ let currentRsn    = '';
 let chartTimeline = null;
 let chartLevels   = null;
 
+const PERIOD_LABELS = {
+  day:   'Today',
+  week:  'This Week',
+  month: 'This Month',
+  year:  'This Year',
+};
+
 // ── Profile system ────────────────────────────────────────────────────────────
 const PROFILES_KEY    = 'osts_profiles_v2';
 const ACTIVE_PROF_KEY = 'osts_active_profile_v2';
 const SP_ICONS  = { ironman:'🛡', hardcore:'💀', ultimate:'🔱', regular:'⚔', gim:'👥', ghcim:'☠', ugim:'👥' };
 const SP_LABELS = { ironman:'Iron', hardcore:'HCIM', ultimate:'UIM', regular:'Regular', gim:'GIM', ghcim:'GHCIM', ugim:'UGIM' };
 
+function norm(t) { return normalizeAccountType(t); }
 function getProfiles() { return storage.get(PROFILES_KEY, []); }
 function getActiveId() { return storage.get(ACTIVE_PROF_KEY, null); }
 function setActiveId(id) { storage.set(ACTIVE_PROF_KEY, id); }
-function norm(t) { return normalizeAccountType(t); }
 
 function renderProfilePanel() {
   const list = document.getElementById('sp-profile-list');
@@ -146,18 +244,19 @@ function renderProfilePanel() {
     list.innerHTML = '<div style="font-size:12px;color:var(--muted)">No saved profiles.<br>Go to <a href="overview.html" style="color:var(--gold)">Overview</a> to create one.</div>';
     return;
   }
-  const sorted = [...profiles].sort((a, b) => (b.id === activeId) - (a.id === activeId));
-  list.innerHTML = sorted.map(p => `
-    <div class="sp-profile-card${p.id === activeId ? ' active' : ''}">
-      <div class="sp-avatar">${SP_ICONS[norm(p.type)] || '⚔'}</div>
-      <div class="sp-info">
-        <div class="sp-nickname">${p.nickname}</div>
-        <div class="sp-rsn-type">${p.rsn} · ${SP_LABELS[norm(p.type)] || 'Iron'}</div>
-      </div>
-      ${p.id !== activeId
-        ? `<button class="sp-btn" data-load="${p.id}">Load</button>`
-        : '<span style="font-size:10px;color:var(--gold)">Active</span>'}
-    </div>`).join('');
+  list.innerHTML = [...profiles]
+    .sort((a, b) => (b.id === activeId) - (a.id === activeId))
+    .map(p => `
+      <div class="sp-profile-card${p.id === activeId ? ' active' : ''}">
+        <div class="sp-avatar">${SP_ICONS[norm(p.type)] || '⚔'}</div>
+        <div class="sp-info">
+          <div class="sp-nickname">${p.nickname}</div>
+          <div class="sp-rsn-type">${p.rsn} · ${SP_LABELS[norm(p.type)] || 'Iron'}</div>
+        </div>
+        ${p.id !== activeId
+          ? `<button class="sp-btn" data-load="${p.id}">Load</button>`
+          : '<span style="font-size:10px;color:var(--gold)">Active</span>'}
+      </div>`).join('');
 
   list.querySelectorAll('[data-load]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -172,8 +271,7 @@ function renderProfilePanel() {
   });
 }
 
-document.getElementById('settings-btn')
-  ?.addEventListener('click', renderProfilePanel, true);
+document.getElementById('settings-btn')?.addEventListener('click', renderProfilePanel, true);
 
 // ── Period tabs ───────────────────────────────────────────────────────────────
 document.querySelectorAll('.period-tab').forEach(btn => {
@@ -181,6 +279,7 @@ document.querySelectorAll('.period-tab').forEach(btn => {
     document.querySelectorAll('.period-tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentPeriod = btn.dataset.period;
+    document.getElementById('period-badge').textContent = PERIOD_LABELS[currentPeriod];
     if (currentRsn) loadGains(currentRsn, currentPeriod);
   });
 });
@@ -195,8 +294,6 @@ async function loadPlayer(rsn, accountType) {
     const data = await fetchPlayer(rsn, accountType);
     player.set(data);
     currentRsn = data.displayName || data.username || rsn;
-    document.getElementById('player-name-header')
-      && (document.getElementById('player-name-header').textContent = ' — ' + currentRsn);
     renderLevelsChart(data);
     await loadGains(currentRsn, currentPeriod);
     showToast('✅ ' + currentRsn);
@@ -211,77 +308,169 @@ async function loadGains(rsn, period) {
     renderGains(gains);
     document.getElementById('gains-content').style.display = '';
     document.getElementById('welcome-msg').style.display   = 'none';
+    // Load overall timeline by default
     loadTimeline(rsn, 'overall', period);
   } catch (err) { showError('Could not load gains: ' + err.message); }
   finally { setLoading(false); }
 }
 
-// ── Render gains ──────────────────────────────────────────────────────────────
+// ── Render flip cards ─────────────────────────────────────────────────────────
 function renderGains(data) {
   const skills = data?.data?.skills;
+  const grid   = document.getElementById('gains-grid');
+
   if (!skills) {
-    document.getElementById('gains-grid').innerHTML = '<div class="no-data">No gains data.</div>';
+    grid.innerHTML = '<div class="no-data" style="grid-column:span 3">No gains data for this period.</div>';
     return;
   }
+
   const entries = SKILLS.filter(([id]) => id !== 'overall').map(([id, name, icon, color]) => {
-    const g = skills[id] || {};
-    return { id, name, icon, color, gained: Number(g.experience?.gained || 0), lvlGained: Number((g.level?.end || 0) - (g.level?.start || 0)) };
+    const g        = skills[id] || {};
+    const gained   = Number(g.experience?.gained  || 0);
+    const lvlStart = Number(g.level?.start || 0);
+    const lvlEnd   = Number(g.level?.end   || 0);
+    const lvlGain  = Math.max(0, lvlEnd - lvlStart);
+    return { id, name, icon, color, gained, lvlGain, lvlEnd };
   }).filter(e => e.gained > 0).sort((a, b) => b.gained - a.gained);
 
   if (!entries.length) {
-    document.getElementById('gains-grid').innerHTML = '<div class="no-data" style="grid-column:span 3">No XP gains in this period.</div>';
+    grid.innerHTML = '<div class="no-data" style="grid-column:span 3">No XP gains in this period.</div>';
     return;
   }
-  document.getElementById('gains-grid').innerHTML = entries.map(e => `
-    <div class="gain-card" data-skill="${e.id}" style="border-color:${e.color}33">
-      <img class="gain-skill-icon" src="${e.icon}" alt="${e.name}" loading="lazy">
-      <div class="gain-skill-name">${e.name.length > 8 ? e.name.slice(0,7) + '…' : e.name}</div>
-      <div class="gain-xp">+${fmtXP(e.gained)}</div>
-      ${e.lvlGained > 0 ? `<div class="gain-lvl">+${e.lvlGained} lvl</div>` : ''}
+
+  grid.innerHTML = entries.map(e => `
+    <div class="flip-card" data-skill="${e.id}">
+      <div class="flip-inner">
+        <!-- FRONT: icon + level gained -->
+        <div class="flip-front" style="border-top:3px solid ${e.color}">
+          <img class="fc-icon" src="${e.icon}" alt="${e.name}" loading="lazy"
+               onerror="this.style.display='none'">
+          <div class="fc-name">${e.name.length > 9 ? e.name.slice(0,8)+'…' : e.name}</div>
+          ${e.lvlGain > 0
+            ? `<div class="fc-lvl">+${e.lvlGain} lvl${e.lvlGain > 1 ? 's' : ''}</div>`
+            : `<div class="fc-lvl no-lvl">Lvl ${e.lvlEnd}</div>`}
+        </div>
+        <!-- BACK: XP gained -->
+        <div class="flip-back">
+          <div class="fc-xp-label">${e.name}</div>
+          <div class="fc-xp-val" style="color:${e.color}">+${fmtXP(e.gained)}</div>
+          <div class="fc-hint">XP gained</div>
+        </div>
+      </div>
     </div>`).join('');
 
-  document.querySelectorAll('.gain-card[data-skill]').forEach(card => {
+  // Flip on tap
+  grid.querySelectorAll('.flip-card').forEach(card => {
     card.addEventListener('click', () => {
-      document.querySelectorAll('.gain-card').forEach(c => c.style.borderColor = '');
-      card.style.borderColor = 'var(--gold)';
-      loadTimeline(currentRsn, card.dataset.skill, currentPeriod);
+      card.classList.toggle('flipped');
+      // Also load timeline for this skill
+      if (currentRsn) {
+        const skillId = card.dataset.skill;
+        loadTimeline(currentRsn, skillId, currentPeriod);
+      }
     });
   });
 }
 
+// ── Timeline chart ────────────────────────────────────────────────────────────
 async function loadTimeline(rsn, metric, period) {
   try {
     const timeline = await wom.getTimeline(rsn, metric, period);
     renderTimelineChart(timeline, metric);
-  } catch {}
+  } catch (err) {
+    console.warn('[OSTS] Timeline fetch failed:', err.message);
+  }
 }
 
 function renderTimelineChart(timeline, metric) {
   const canvas = document.getElementById('chart-timeline');
+  const title  = document.getElementById('timeline-title');
   if (!canvas) return;
   if (chartTimeline) { chartTimeline.destroy(); chartTimeline = null; }
-  if (!timeline?.length) return;
-  const skill  = SKILL_MAP[metric];
-  const color  = skill?.color || '#b88848';
-  const labels = timeline.map(p => new Date(p.date || p.createdAt).toLocaleDateString('en-GB', { month:'short', day:'numeric' }));
-  const values = timeline.map(p => { const d = p.data?.skills?.[metric] || p.data; return d?.experience ?? d?.level ?? 0; });
+
+  const skill = SKILL_MAP[metric] || { name: metric, color: '#b88848' };
+  const color = skill.color || '#b88848';
+
+  title.textContent = `${skill.name || metric} — XP Over Time`;
+
+  if (!timeline?.length || timeline.length < 2) {
+    title.textContent += ' (not enough data)';
+    return;
+  }
+
+  // Extract XP values — WOM timeline has nested data
+  const points = timeline.map(p => {
+    const d   = p.data?.skills?.[metric] || p.data;
+    const xp  = d?.experience?.value ?? d?.experience ?? d?.value ?? null;
+    const date = new Date(p.date || p.createdAt);
+    return { x: date, y: xp };
+  }).filter(p => p.y !== null && !isNaN(p.y));
+
+  if (points.length < 2) {
+    title.textContent += ' (not enough data)';
+    return;
+  }
+
+  const labels = points.map(p => p.x.toLocaleDateString('en-GB', { month:'short', day:'numeric' }));
+  const values = points.map(p => p.y);
+
   chartTimeline = new Chart(canvas, {
     type: 'line',
-    data: { labels, datasets: [{ data: values, borderColor: color, backgroundColor: color + '22', borderWidth: 2, pointRadius: 2, fill: true, tension: .4 }] },
-    options: { responsive: true, plugins: { legend: { display: false }, title: { display: true, text: `${skill?.name || metric}`, color: '#8b949e', font: { size: 12 } } }, scales: { x: { ticks: { color:'#8b949e', font:{ size:9 }, maxTicksLimit:8 }, grid:{ color:'#21262d' } }, y: { ticks:{ color:'#8b949e' }, grid:{ color:'#21262d' } } } },
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        borderColor: color,
+        backgroundColor: color + '22',
+        borderWidth: 2,
+        pointRadius: 3,
+        fill: true,
+        tension: .3,
+      }],
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color:'#8b949e', font:{ size:9 }, maxTicksLimit:7 }, grid:{ color:'#21262d' } },
+        y: {
+          ticks: { color:'#8b949e', callback: v => v >= 1e6 ? (v/1e6).toFixed(1)+'M' : v >= 1e3 ? (v/1e3).toFixed(0)+'K' : v },
+          grid: { color:'#21262d' },
+        },
+      },
+    },
   });
 }
 
+// ── Levels bar chart ──────────────────────────────────────────────────────────
 function renderLevelsChart(data) {
   const canvas = document.getElementById('chart-levels');
   if (!canvas) return;
   if (chartLevels) { chartLevels.destroy(); chartLevels = null; }
+
   const snap   = data.latestSnapshot?.data?.skills || {};
   const skills = SKILLS.filter(([id]) => id !== 'overall');
+
   chartLevels = new Chart(canvas, {
     type: 'bar',
-    data: { labels: skills.map(([, n]) => n), datasets: [{ data: skills.map(([id]) => Number(snap[id]?.level || 0)), backgroundColor: skills.map(([,,, c]) => c + '66'), borderColor: skills.map(([,,, c]) => c), borderWidth: 1, borderRadius: 3 }] },
-    options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { color:'#8b949e', font:{ size:8 } }, grid:{ color:'#21262d' } }, y: { min:0, max:99, ticks:{ color:'#8b949e' }, grid:{ color:'#21262d' } } } },
+    data: {
+      labels: skills.map(([, n]) => n),
+      datasets: [{
+        data:            skills.map(([id]) => Number(snap[id]?.level || 0)),
+        backgroundColor: skills.map(([,,, c]) => c + '88'),
+        borderColor:     skills.map(([,,, c]) => c),
+        borderWidth: 1,
+        borderRadius: 3,
+      }],
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color:'#8b949e', font:{ size:8 } }, grid:{ color:'#21262d' } },
+        y: { min: 0, max: 99, ticks:{ color:'#8b949e' }, grid:{ color:'#21262d' } },
+      },
+    },
   });
 }
 
