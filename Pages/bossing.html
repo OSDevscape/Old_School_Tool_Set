@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#2b241b">
   <link rel="manifest" href="../manifest.json">
-  <title>OSTS — Gains</title>
+  <title>OSTS — Bossing</title>
   <link rel="stylesheet" href="../style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -42,46 +41,33 @@
 </div>
 
 <div id="main">
-  <div class="page active" id="page-gains">
+  <div class="page active" id="page-bossing">
 
     <div class="source-row">
-      <span class="source-chip wom">Wise Old Man</span>
+      <span class="source-chip hiscores">Official Hiscores (KC)</span>
+      <span class="source-chip wom">WOM (EHB/Rank)</span>
     </div>
 
     <div id="loader"></div>
     <div class="error-msg" id="error-msg"></div>
 
     <div class="welcome" id="welcome-msg">
-      <div class="welcome-icon">📈</div>
-      <p>Search a player to view XP gains and progress charts.</p>
+      <div class="welcome-icon">🏆</div>
+      <p>Search a player to view boss kill counts and rankings.</p>
     </div>
 
-    <div id="gains-content" style="display:none">
-      <!-- Period selector -->
-      <div class="period-tabs">
-        <button class="period-tab active" data-period="day">Day</button>
-        <button class="period-tab" data-period="week">Week</button>
-        <button class="period-tab" data-period="month">Month</button>
-        <button class="period-tab" data-period="year">Year</button>
+    <div id="bossing-content" style="display:none">
+      <!-- Summary row -->
+      <div class="boss-summary-row">
+        <div class="boss-stat-box"><div class="val" id="bs-count">—</div><div class="lbl">Bosses</div></div>
+        <div class="boss-stat-box"><div class="val" id="bs-total-kc">—</div><div class="lbl">Total KC</div></div>
+        <div class="boss-stat-box"><div class="val" id="bs-ehb">—</div><div class="lbl">Total EHB</div></div>
+        <div class="boss-stat-box"><div class="val" id="bs-best-rank">—</div><div class="lbl">Best Rank</div></div>
       </div>
 
-      <!-- Gains grid -->
-      <div class="data-label">XP Gains</div>
-      <div id="gains-grid" class="gains-grid"></div>
-
-      <!-- Progress Charts (WOM timeline) -->
-      <div style="margin-top:16px">
-        <div class="data-label">Progress Charts</div>
-        <div class="chart-section">
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px" id="chart-skill-tabs"></div>
-          <div class="chart-wrap"><canvas id="chart-timeline" height="200"></canvas></div>
-        </div>
-
-        <div class="chart-section">
-          <h3>Current Skill Levels</h3>
-          <div class="chart-wrap"><canvas id="chart-levels" height="200"></canvas></div>
-        </div>
-      </div>
+      <!-- Boss list -->
+      <div class="data-label">Boss Kill Counts</div>
+      <div id="boss-list"></div>
     </div>
 
   </div>
@@ -108,25 +94,21 @@
 <script type="module">
 import {
   initPage, fetchPlayer, player, wom, settings, showToast, storage,
-  STORAGE_KEYS, SKILLS, SKILL_MAP, fmtXP, fmtRank, xpToLevel, normalizeAccountType,
+  STORAGE_KEYS, fmtNum, fmtRank,
 } from '../JS/shared.js';
 
-initPage('gains');
+initPage('bossing');
 
-let currentPeriod  = 'week';
-let currentRsn     = '';
-let chartTimeline  = null;
-let chartLevels    = null;
+// Boss display names (humanize snake_case)
+function humanizeBoss(id) {
+  const special = { ehp:'EHP', ehb:'EHB', toa:'ToA', cox:'CoX', tob:'ToB', tzkal:'TzKal', tztok:'TzTok', kril:'K\'ril', kreearra:'Kree\'arra' };
+  return id.split('_').map(w => special[w] || w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+}
 
-// ── Period tabs ───────────────────────────────────────────────────────────────
-document.querySelectorAll('.period-tab').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.period-tab').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentPeriod = btn.dataset.period;
-    if (currentRsn) loadGains(currentRsn, currentPeriod);
-  });
-});
+function fmtEHB(n) {
+  n = Number(n || 0);
+  return n === 0 ? '0' : n >= 10 ? n.toFixed(1) : n.toFixed(2);
+}
 
 // ── Search ────────────────────────────────────────────────────────────────────
 document.getElementById('search-btn').addEventListener('click', async () => {
@@ -136,160 +118,86 @@ document.getElementById('search-btn').addEventListener('click', async () => {
   try {
     const data = await fetchPlayer(rsn, storage.get(STORAGE_KEYS.ACCOUNT_TYPE, 'ironman'));
     player.set(data);
-    currentRsn = data.displayName || data.username || rsn;
-    document.getElementById('player-name-header').textContent = ' — ' + currentRsn;
-    renderLevelsChart(data);
-    await loadGains(currentRsn, currentPeriod);
+    renderBossing(data);
     settings.close();
+    showToast(`✅ ${data.displayName || rsn} loaded`);
   } catch (err) { showError(err.message); }
   finally { setLoading(false); }
 });
 
-async function loadGains(rsn, period) {
-  setLoading(true);
-  try {
-    const gains = await wom.getGains(rsn, period);
-    renderGains(gains);
-    document.getElementById('gains-content').style.display = '';
-    document.getElementById('welcome-msg').style.display   = 'none';
-    // Load timeline for default skill (overall)
-    loadTimeline(rsn, 'overall', period);
-  } catch (err) {
-    showError('Could not load gains: ' + err.message);
-  } finally { setLoading(false); }
-}
+// ── Render ────────────────────────────────────────────────────────────────────
+function renderBossing(data) {
+  document.getElementById('player-name-header').textContent = ' — ' + (data.displayName || data.username || '');
+  document.getElementById('welcome-msg').style.display   = 'none';
+  document.getElementById('bossing-content').style.display = '';
 
-// ── Render Gains Grid ─────────────────────────────────────────────────────────
-function renderGains(data) {
-  const skills = data?.data?.skills;
-  if (!skills) { document.getElementById('gains-grid').innerHTML = '<div class="no-data">No gains data.</div>'; return; }
+  // WOM boss data (EHB, detailed ranks)
+  const womBosses = data.latestSnapshot?.data?.bosses || {};
 
-  const entries = SKILLS.filter(([id]) => id !== 'overall').map(([id, name, icon, color]) => {
-    const g = skills[id] || {};
-    const gained   = Number(g.experience?.gained  || 0);
-    const startLvl = Number(g.level?.start || 0);
-    const endLvl   = Number(g.level?.end   || 0);
-    return { id, name, icon, color, gained, lvlGained: endLvl - startLvl, endLvl };
-  }).filter(e => e.gained > 0).sort((a, b) => b.gained - a.gained);
+  // Hiscores boss KC (authoritative)
+  const hsBosses = data._hiscoresBosses || {};
+
+  // Merge: prefer hiscores KC, use WOM for EHB and rank
+  const entries = Object.entries(womBosses).map(([id, b]) => {
+    const hsKc = hsBosses[id]?.kills ?? -1;
+    const kc   = hsKc >= 0 ? hsKc : Number(b?.kills || 0);
+    const rank  = hsBosses[id]?.rank > 0 ? hsBosses[id].rank : Number(b?.rank || -1);
+    const ehb   = Number(b?.ehb || 0);
+    return { id, name: humanizeBoss(id), kc, rank, ehb };
+  }).sort((a, b) => b.kc - a.kc || b.ehb - a.ehb);
+
+  const active  = entries.filter(e => e.kc > 0);
+  const totalKC = entries.reduce((s, e) => s + e.kc, 0);
+  const totalEHB= entries.reduce((s, e) => s + e.ehb, 0);
+  const ranked  = entries.filter(e => e.rank > 0).sort((a, b) => a.rank - b.rank);
+
+  document.getElementById('bs-count').textContent    = active.length;
+  document.getElementById('bs-total-kc').textContent = fmtNum(totalKC);
+  document.getElementById('bs-ehb').textContent      = fmtEHB(totalEHB);
+  document.getElementById('bs-best-rank').textContent= ranked[0] ? '#' + fmtNum(ranked[0].rank) : 'Unranked';
 
   if (!entries.length) {
-    document.getElementById('gains-grid').innerHTML = '<div class="no-data" style="grid-column:span 3">No XP gains in this period.</div>';
+    document.getElementById('boss-list').innerHTML = '<div class="no-data">No boss data available.</div>';
     return;
   }
 
-  document.getElementById('gains-grid').innerHTML = entries.map(e => `
-    <div class="gain-card" data-skill="${e.id}" style="border-color:${e.color}33" title="Click for chart">
-      <img class="gain-skill-icon" src="${e.icon}" alt="${e.name}" loading="lazy">
-      <div class="gain-skill-name">${e.name.length > 8 ? e.name.slice(0,7)+'…' : e.name}</div>
-      <div class="gain-xp">+${fmtXP(e.gained)}</div>
-      ${e.lvlGained > 0 ? `<div class="gain-lvl">+${e.lvlGained} lvl</div>` : ''}
-    </div>
+  document.getElementById('boss-list').innerHTML = entries.map((e, i) => `
+    <details class="boss-item"${i === 0 ? ' open' : ''}>
+      <summary class="boss-summary">
+        <div class="boss-thumb">
+          <div class="boss-fallback">${e.name.split(' ').map(w => w[0]).join('').slice(0,2)}</div>
+        </div>
+        <div class="boss-name-wrap">
+          <div class="boss-name">${e.name}</div>
+          <div class="boss-mini">${e.rank > 0 ? 'Ranked' : 'Unranked'} · ${fmtEHB(e.ehb)} EHB</div>
+        </div>
+        <div class="boss-kc">${fmtNum(e.kc)} KC</div>
+        <div style="color:var(--muted);font-size:12px;padding-left:6px">▾</div>
+      </summary>
+      <div class="boss-body">
+        <div class="boss-metrics">
+          <div class="boss-metric"><div class="k">Kills</div><div class="v">${fmtNum(e.kc)}</div></div>
+          <div class="boss-metric"><div class="k">Rank</div><div class="v${e.rank > 0 ? ' style="color:var(--green)"' : ''}">${e.rank > 0 ? '#' + fmtNum(e.rank) : 'Unranked'}</div></div>
+          <div class="boss-metric"><div class="k">EHB</div><div class="v${e.ehb > 0 ? ' style="color:var(--gold)"' : ''}">${fmtEHB(e.ehb)}</div></div>
+          <div class="boss-metric"><div class="k">EHB/KC</div><div class="v">${e.kc > 0 ? fmtEHB(e.ehb / e.kc) : '0'}</div></div>
+        </div>
+      </div>
+    </details>
   `).join('');
 
-  // Click to show timeline chart for that skill
-  document.querySelectorAll('.gain-card[data-skill]').forEach(card => {
-    card.addEventListener('click', () => {
-      document.querySelectorAll('.gain-card').forEach(c => c.style.borderColor = '');
-      card.style.borderColor = 'var(--gold)';
-      loadTimeline(currentRsn, card.dataset.skill, currentPeriod);
+  // One-open accordion
+  document.querySelectorAll('.boss-item').forEach(item => {
+    item.addEventListener('toggle', () => {
+      if (!item.open) return;
+      document.querySelectorAll('.boss-item').forEach(other => { if (other !== item) other.open = false; });
     });
-  });
-}
-
-// ── Timeline Chart (WOM historical) ──────────────────────────────────────────
-const CHART_SKILLS_SELECT = ['overall','attack','defence','strength','hitpoints','ranged','prayer','magic','slayer','farming'];
-
-async function loadTimeline(rsn, metric, period) {
-  try {
-    const timeline = await wom.getTimeline(rsn, metric, period);
-    renderTimelineChart(timeline, metric);
-  } catch (err) {
-    console.warn('[OSTS] Timeline fetch failed:', err.message);
-  }
-}
-
-function renderTimelineChart(timeline, metric) {
-  const canvas = document.getElementById('chart-timeline');
-  if (!canvas) return;
-  if (chartTimeline) { chartTimeline.destroy(); chartTimeline = null; }
-
-  if (!timeline || !timeline.length) {
-    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-    return;
-  }
-
-  const skill = SKILL_MAP[metric];
-  const color = skill?.color || '#b88848';
-  const labels = timeline.map(p => new Date(p.date || p.createdAt).toLocaleDateString('en-GB', { month: 'short', day: 'numeric' }));
-  const values = timeline.map(p => {
-    const d = p.data?.skills?.[metric] || p.data;
-    return d?.experience ?? d?.level ?? 0;
-  });
-
-  chartTimeline = new Chart(canvas, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{
-        data: values,
-        borderColor: color,
-        backgroundColor: color + '22',
-        borderWidth: 2,
-        pointRadius: 2,
-        fill: true,
-        tension: .4,
-      }],
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false }, title: { display: true, text: `${skill?.name || metric} — ${metric === 'overall' ? 'Total Level' : 'XP'}`, color: '#8b949e', font: { size: 12 } } },
-      scales: {
-        x: { ticks: { color: '#8b949e', font: { size: 9 }, maxTicksLimit: 8 }, grid: { color: '#21262d' } },
-        y: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } },
-      },
-    },
-  });
-}
-
-// ── Levels Bar Chart (current snapshot) ──────────────────────────────────────
-function renderLevelsChart(data) {
-  const canvas = document.getElementById('chart-levels');
-  if (!canvas) return;
-  if (chartLevels) { chartLevels.destroy(); chartLevels = null; }
-
-  const snap   = data.latestSnapshot?.data?.skills || {};
-  const skills = SKILLS.filter(([id]) => id !== 'overall');
-  const labels = skills.map(([, name]) => name);
-  const levels = skills.map(([id]) => Number(snap[id]?.level || 0));
-  const colors = skills.map(([,,,color]) => color);
-
-  chartLevels = new Chart(canvas, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [{
-        data: levels,
-        backgroundColor: colors.map(c => c + '66'),
-        borderColor: colors,
-        borderWidth: 1,
-        borderRadius: 3,
-      }],
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { ticks: { color: '#8b949e', font: { size: 8 } }, grid: { color: '#21262d' } },
-        y: { min: 0, max: 99, ticks: { color: '#8b949e' }, grid: { color: '#21262d' } },
-      },
-    },
   });
 }
 
 // ── UI helpers ────────────────────────────────────────────────────────────────
 function setLoading(on) { document.getElementById('loader').classList.toggle('loading', on); }
 function clearError() { const e = document.getElementById('error-msg'); e.textContent=''; e.classList.remove('show'); }
-function showError(msg) { const e = document.getElementById('error-msg'); e.textContent=msg; e.classList.add('show'); }
+function showError(msg) { const e = document.getElementById('error-msg'); e.textContent=msg; e.classList.add('show'); document.getElementById('welcome-msg').style.display=''; }
 
 
 
@@ -358,12 +266,7 @@ document.getElementById('settings-btn')?.addEventListener('click', renderSetting
 
 // ── Auto-load ─────────────────────────────────────────────────────────────────
 const cached = player.getFromCache();
-if (cached) {
-  currentRsn = cached.displayName || cached.username || '';
-  document.getElementById('player-name-header').textContent = ' — ' + currentRsn;
-  renderLevelsChart(cached);
-  if (currentRsn) loadGains(currentRsn, currentPeriod);
-}
+if (cached) renderBossing(cached);
 </script>
 </body>
 </html>
