@@ -359,14 +359,24 @@ function renderGains(data) {
       </div>
     </div>`).join('');
 
-  // Flip on tap
+  // Flip on tap - only one card flipped at a time
   grid.querySelectorAll('.flip-card').forEach(card => {
     card.addEventListener('click', () => {
-      card.classList.toggle('flipped');
-      // Also load timeline for this skill
-      if (currentRsn) {
-        const skillId = card.dataset.skill;
-        loadTimeline(currentRsn, skillId, currentPeriod);
+      const isFlipped = card.classList.contains('flipped');
+
+      // Close all other cards first
+      grid.querySelectorAll('.flip-card').forEach(c => {
+        c.classList.remove('flipped');
+      });
+
+      // Toggle current card (if it wasn't flipped, flip it)
+      if (!isFlipped) {
+        card.classList.add('flipped');
+        // Load timeline for this skill
+        if (currentRsn) {
+          const skillId = card.dataset.skill;
+          loadTimeline(currentRsn, skillId, currentPeriod);
+        }
       }
     });
   });
