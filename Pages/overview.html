@@ -657,7 +657,7 @@ function renderProfilesModal() {
     </button>
   `).join('');
   list.querySelectorAll('[data-pid]').forEach(btn => {
-    btn.addEventListener('click', () => { switchToProfile(btn.dataset.pid); closeProfilesModal(); });
+    btn.addEventListener('click', () => switchToProfile(btn.dataset.pid));
   });
 }
 
@@ -686,7 +686,7 @@ function renderSettingsProfiles() {
   `).join('');
 
   list.querySelectorAll('[data-load]').forEach(btn =>
-    btn.addEventListener('click', () => { switchToProfile(btn.dataset.load); settings.close(); }));
+    btn.addEventListener('click', () => switchToProfile(btn.dataset.load)));
   list.querySelectorAll('[data-rename]').forEach(btn =>
     btn.addEventListener('click', () => renameProfile(btn.dataset.rename)));
   list.querySelectorAll('[data-delete]').forEach(btn =>
@@ -704,37 +704,27 @@ function switchToProfile(id) {
   const p = profiles.find(x => x.id === id);
   if (!p) { showToast('Profile not found'); return; }
 
+  // Close any open panels first
+  closeProfilesModal();
+  settings.close();
+
   setActiveId(id);
 
-  // Restore account type selector
+  // Update account type selector
   currentAccountType = normalizeAccountType(p.type);
   storage.set(STORAGE_KEYS.ACCOUNT_TYPE, currentAccountType);
   document.querySelectorAll('.acct-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.type === currentAccountType);
   });
 
-  // Restore RSN input
+  // Update RSN input
   document.getElementById('rsn-input').value = p.rsn;
 
-  // Try cached data first for instant switch, then always re-fetch fresh
-  if (p.cachedData && p.cachedData.latestSnapshot) {
-    try {
-      player.set(p.cachedData);
-      renderOverview(p.cachedData);
-      showToast('Switched to ' + p.nickname);
-    } catch (err) {
-      console.warn('[OSTS] renderOverview from cache failed:', err);
-      // Fall through to fresh fetch below
-      _doFetchSwitch(p);
-      return;
-    }
-  } else {
-    _doFetchSwitch(p);
-    return;
-  }
-
+  // Update header button immediately so it feels responsive
   updateProfileBtn();
-  renderSettingsProfiles();
+
+  // Always fresh fetch — cache is unreliable after storage round-trip
+  _doFetchSwitch(p);
 }
 
 async function _doFetchSwitch(p) {
@@ -745,7 +735,7 @@ async function _doFetchSwitch(p) {
   try {
     const data = await fetchPlayer(p.rsn, normalizeAccountType(p.type));
     player.set(data);
-    // Update cached copy in profile
+    // Update cached copy
     const profiles = getProfiles();
     const idx = profiles.findIndex(x => x.id === p.id);
     if (idx !== -1) {
@@ -753,14 +743,15 @@ async function _doFetchSwitch(p) {
       try { saveProfiles(profiles); } catch {}
     }
     renderOverview(data);
-    showToast('✅ Switched to ' + p.nickname);
+    showToast('✅ ' + p.nickname);
   } catch (err) {
     showError('Could not load ' + p.nickname + ': ' + err.message);
+    showToast('❌ Failed to load ' + p.nickname, 5000);
   } finally {
     setLoading(false);
+    updateProfileBtn();
+    renderSettingsProfiles();
   }
-  updateProfileBtn();
-  renderSettingsProfiles();
 }
 
 function saveCurrentProfile() {
