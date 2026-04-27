@@ -103,7 +103,44 @@
     .sp-rsn-type { font-size: 11px; color: var(--muted); }
     .sp-btn { background: var(--surface3); border: 1px solid var(--border); border-radius: 7px; color: var(--text); font-size: 11px; font-weight: 600; padding: 5px 9px; cursor: pointer; }
     .sp-btn:hover { border-color: var(--gold); }
-  </style>
+  
+  .type-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .type-tab {
+    flex: 1;
+    padding: 0.35rem 0.5rem;
+    border-radius: 999px;
+    border: none;
+    background: #161b22;
+    color: #c9d1d9;
+    font-size: 0.8rem;
+  }
+  .type-tab.active {
+    background: #238636;
+    color: #ffffff;
+  }
+
+  .boss-card {
+    background: #161b22;
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    cursor: pointer;
+  }
+  .boss-card-title {
+    font-weight: 600;
+  }
+  .boss-card-meta {
+    font-size: 0.75rem;
+    color: #8b949e;
+  }
+
+</style>
 </head>
 <body>
 
@@ -151,6 +188,13 @@
     </div>
 
     <div id="gains-content" style="display:none">
+
+      <!-- Type tabs -->
+      <div class="type-tabs">
+        <button class="type-tab active" data-type="skills">Skills</button>
+        <button class="type-tab" data-type="bosses">Bosses</button>
+      </div>
+
 
       <!-- Period tabs -->
       <div class="period-tabs">
@@ -212,8 +256,22 @@ import {
 
 initPage('gains');
 
+const typeTabs = Array.from(document.querySelectorAll('.type-tab'));
+typeTabs.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const type = btn.dataset.type;
+    if (!type || type === currentType) return;
+    currentType = type;
+    typeTabs.forEach(b => b.classList.toggle('active', b === btn));
+    if (currentRsn) {
+      loadGains(currentRsn, currentPeriod);
+    }
+  });
+});
+
 let currentPeriod = 'week';
 let currentRsn    = '';
+let currentType   = 'skills'; // 'skills' | 'bosses'
 let chartTimeline = null;
 let chartLevels   = null;
 
@@ -302,18 +360,37 @@ async function loadPlayer(rsn, accountType) {
 }
 
 async function loadGains(rsn, period) {
-  setLoading(true);
   try {
-    const gains = await wom.getGains(rsn, period);
-    renderGains(gains);
-    document.getElementById('gains-content').style.display = '';
-    document.getElementById('welcome-msg').style.display   = 'none';
-    // Load overall timeline by default
-    loadTimeline(rsn, 'overall', period);
-  } catch (err) { showError('Could not load gains: ' + err.message); }
-  finally { setLoading(false); }
-}
+    setLoading(true);
+    currentRsn    = rsn;
+    currentPeriod = period;
 
+    const gains = await wom.getGains(rsn, period);
+
+    if (currentType === 'skills') {
+      // Skills tab: original behavior
+      renderGains(gains);
+      if (typeof renderLevelChart === 'function') {
+        renderLevelChart(gains);
+      }
+      loadTimeline(rsn, 'overall', period);
+    } else {
+      // Bosses tab: only boss cards + shared timeline
+      renderBossGains(gains);
+      loadTimeline(rsn, 'overall', period);
+    }
+
+    document.getElementById('welcome').style.display       = 'none';
+    document.getElementById('gains-content').style.display = '';
+    document.getElementById('gains-empty').style.display   = 'none';
+    document.getElementById('welcome-msg').textContent     = '';
+    document.getElementById('welcome-msg').style.display   = 'none';
+  } catch (err) {
+    showError('Could not load gains: ' + err.message);
+  } finally {
+    setLoading(false);
+  }
+}
 // ── Render flip cards ─────────────────────────────────────────────────────────
 function renderGains(data) {
   const skills = data?.data?.skills;
@@ -398,12 +475,13 @@ function renderTimelineChart(timeline, metric) {
     return;
   }
 
-  // Extract XP values — WOM timeline is flat
-const points = timeline.map(p => {
-  const xp = p.value;                 // flat { value, rank, date }
-  const date = new Date(p.date);      // timeline always has .date
-  return { x: date, y: xp };
-}).filter(p => p.y !== null && !isNaN(p.y));
+  // Extract XP values — WOM timeline has nested data
+  const points = timeline.map(p => {
+    const d   = p.data?.skills?.[metric] || p.data;
+    const xp  = d?.experience?.value ?? d?.experience ?? d?.value ?? null;
+    const date = new Date(p.date || p.createdAt);
+    return { x: date, y: xp };
+  }).filter(p => p.y !== null && !isNaN(p.y));
 
   if (points.length < 2) {
     title.textContent += ' (not enough data)';
@@ -487,6 +565,50 @@ if (cached) {
 } else {
   const lastRsn = storage.get(STORAGE_KEYS.RSN, '');
   if (lastRsn) loadPlayer(lastRsn);
+}
+
+
+function renderBossGains(data) {
+  const bosses = data?.data?.bosses || {};
+  const grid   = document.getElementById('gains-grid');
+
+  const entries = Object.entries(bosses).map(([id, g]) => {
+    const name    = id.replace(/_/g, ' ');
+    const kcGain  = Number(g.kills?.gained || g.score?.gained || 0);
+    const kcStart = Number(g.kills?.start || g.score?.start || 0);
+    const kcEnd   = Number(g.kills?.end   || g.score?.end   || 0);
+    return { id, name, kcGain, kcStart, kcEnd };
+  }).filter(e => e.kcGain > 0).sort((a, b) => b.kcGain - a.kcGain);
+
+  if (!entries.length) {
+    grid.innerHTML = '<div class="no-data" style="grid-column:span 3">No bossing gains for this period.</div>';
+    return;
+  }
+
+  grid.innerHTML = entries.map(e => `
+    <button class="boss-card" data-boss-id="${e.id}">
+      <div class="boss-card-title">${e.name}</div>
+      <div class="boss-card-meta">+${e.kcGain} KC (${e.kcStart} → ${e.kcEnd})</div>
+    </button>
+  `).join('');
+
+  Array.from(grid.querySelectorAll('.boss-card')).forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.bossId;
+      const boss = entries.find(b => b.id === id);
+      if (!boss) return;
+      alert(
+        `${boss.name}
+
+` +
+        `KC gained: ${boss.kcGain}
+` +
+        `Start KC: ${boss.kcStart}
+` +
+        `End KC:   ${boss.kcEnd}`
+      );
+    });
+  });
 }
 </script>
 </body>
