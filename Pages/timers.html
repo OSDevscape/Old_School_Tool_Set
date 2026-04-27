@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#2b241b">
-  <link rel="manifest" href="../manifest.json">
+  <link rel="manifest" href="/manifest.json">
   <title>OSTS — Timers</title>
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="/style.css">
   <style>
     /* ── Create Timer Modal ── */
     #create-timer-overlay {
@@ -79,194 +79,7 @@
       background: rgba(184,136,72,.15); border: 1px solid var(--gold);
       color: var(--gold); margin-left: 5px; vertical-align: middle;
     }
-
-    .sp-profile-card {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 11px; padding: 10px 12px; margin-bottom: 6px;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .sp-profile-card.active { border-color: var(--gold); }
-    .sp-avatar {
-      width: 34px; height: 34px; flex-shrink: 0;
-      background: var(--surface3); border-radius: 8px;
-      display: flex; align-items: center; justify-content: center; font-size: 17px;
-    }
-    .sp-info { flex: 1; min-width: 0; }
-    .sp-nickname { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .sp-rsn-type { font-size: 11px; color: var(--muted); }
-    .sp-btn {
-      background: var(--surface3); border: 1px solid var(--border);
-      border-radius: 7px; color: var(--text); font-size: 11px; font-weight: 600;
-      padding: 5px 9px; cursor: pointer; transition: border-color .15s;
-    }
-    .sp-btn:hover { border-color: var(--gold); }
-  
-    /* Duration Picker Modal */
-    #duration-overlay,
-    #category-overlay,
-    #location-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.6);
-      z-index: 200;
-      display: none;
-      align-items: flex-end;
-    }
-
-    #duration-overlay.show,
-    #category-overlay.show,
-    #location-overlay.show {
-      display: flex;
-    }
-
-    #duration-sheet,
-    #category-sheet,
-    #location-sheet {
-      width: 100%;
-      background: var(--surface);
-      border-radius: 20px 20px 0 0;
-      border-top: 1px solid var(--border);
-      padding: 0 0 env(safe-area-inset-bottom, 12px);
-      transform: translateY(100%);
-      transition: transform .25s cubic-bezier(.25,.8,.25,1);
-      max-height: 70vh;
-      overflow-y: auto;
-    }
-
-    #duration-overlay.show #duration-sheet,
-    #category-overlay.show #category-sheet,
-    #location-overlay.show #location-sheet {
-      transform: translateY(0);
-    }
-
-    .modal-handle {
-      width: 40px;
-      height: 4px;
-      background: var(--border);
-      border-radius: 2px;
-      margin: 10px auto 0;
-    }
-
-    .modal-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 16px 12px;
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      background: var(--surface);
-      z-index: 1;
-    }
-
-    .modal-head h3 {
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .modal-close-btn {
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-size: 20px;
-      cursor: pointer;
-      padding: 2px 8px;
-    }
-
-    .modal-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      padding: 16px;
-    }
-
-    .modal-option {
-      padding: 16px 8px;
-      border-radius: 10px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all .15s;
-      text-align: center;
-    }
-
-    .modal-option:hover {
-      border-color: var(--gold);
-      background: rgba(184,136,72,.1);
-    }
-
-    .modal-option.selected {
-      border-color: var(--gold);
-      background: rgba(184,136,72,.15);
-      color: var(--gold);
-    }
-
-    .picker-button {
-      cursor: pointer;
-      text-align: left;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: var(--text);
-    }
-
-    .picker-button.placeholder {
-      color: var(--muted);
-    }
-
-    /* Reorder buttons for pinned timers */
-    .reorder-controls {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      margin-right: 8px;
-    }
-
-    .reorder-btn {
-      width: 24px;
-      height: 24px;
-      padding: 0;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all .15s;
-    }
-
-    .reorder-btn:hover {
-      background: var(--surface3);
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-
-    .reorder-btn:disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-      border-color: var(--border);
-      color: var(--muted);
-    }
-
-    .reorder-btn:disabled:hover {
-      background: var(--surface2);
-      border-color: var(--border);
-      color: var(--muted);
-    }
-
-    .timer-card-inner {
-      display: flex;
-      align-items: center;
-      width: 100%;
-    }
-</style>
+  </style>
 </head>
 <body>
 
@@ -293,19 +106,9 @@
     </div>
   </div>
   <div class="settings-block">
-    <div class="settings-label">Player Profiles</div>
-    <div id="sp-profile-list" style="margin-bottom:8px"></div>
-  </div>
-
-  <div class="settings-block">
     <div class="settings-label">Timer Tools</div>
     <button class="push-btn" id="clear-progress-btn">Clear all timer progress</button>
     <button class="push-btn" id="clear-pins-btn" style="margin-top:6px">Clear all pins</button>
-  </div>
-  <div class="settings-block">
-    <div class="settings-label">Notifications</div>
-    <div class="push-note" id="push-status">Push notifications not set up.</div>
-    <button class="push-btn" id="enable-push-btn" style="margin-top:8px">Enable Push Notifications</button>
   </div>
 </div>
 
@@ -331,9 +134,9 @@
       <button class="modal-close" id="more-menu-close">✕</button>
     </div>
     <div class="modal-actions">
-      <a class="modal-action" href="bossing.html">🏆 Bossing</a>
       <a class="modal-action" href="timers.html">⏱ Timers</a>
       <a class="modal-action" href="bestiary.html">🐉 Bestiary</a>
+      <a class="modal-action" href="fairyRings.html">🍄 Fairy Rings</a>
     </div>
   </div>
 </div>
@@ -348,98 +151,49 @@
     </div>
     <div class="ct-body">
 
-      <!-- Timer Name -->
       <div class="ct-field">
         <div class="ct-label">Timer Name</div>
-        <input id="ct-name" class="ct-input" type="text" placeholder="e.g. Ranarr, Birdhouse, Seaweed" autocomplete="off" maxlength="40">
+        <input id="ct-name" class="ct-input" type="text" placeholder="e.g. Seaweed, Birdhouse Run, Raiding…" autocomplete="off" maxlength="40">
       </div>
 
-      <!-- Duration Picker -->
       <div class="ct-field">
         <div class="ct-label">Duration</div>
-        <button id="duration-picker-btn" class="ct-input picker-button placeholder">
-          <span id="duration-display">Select duration...</span>
-          <span>▼</span>
-        </button>
+        <input id="ct-dur" class="ct-input" type="text" placeholder="e.g. 40m  ·  1h 20m  ·  6h…" autocomplete="off">
+        <div class="ct-dur-presets" id="ct-presets">
+          <button class="ct-preset" data-dur="20m">20m</button>
+          <button class="ct-preset" data-dur="40m">40m</button>
+          <button class="ct-preset" data-dur="50m">50m</button>
+          <button class="ct-preset" data-dur="1h">1h</button>
+          <button class="ct-preset" data-dur="1h 20m">1h 20m</button>
+          <button class="ct-preset" data-dur="2h">2h</button>
+          <button class="ct-preset" data-dur="4h">4h</button>
+          <button class="ct-preset" data-dur="6h">6h</button>
+          <button class="ct-preset" data-dur="8h">8h</button>
+          <button class="ct-preset" data-dur="12h">12h</button>
+          <button class="ct-preset" data-dur="16h">16h</button>
+          <button class="ct-preset" data-dur="24h">24h</button>
+        </div>
+        <div class="ct-hint">Mix hours and minutes: "1h 30m", "45m", "3h"</div>
       </div>
 
-      <!-- Category Picker -->
       <div class="ct-field">
         <div class="ct-label">Category <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--muted)">(optional)</span></div>
-        <button id="category-picker-btn" class="ct-input picker-button placeholder">
-          <span id="category-display">Select category...</span>
-          <span>▼</span>
-        </button>
-      </div>
-
-      <!-- Farming Location Picker -->
-      <div class="ct-field">
-        <div class="ct-label">Farming Location <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--muted)">(optional)</span></div>
-        <button id="location-picker-btn" class="ct-input picker-button placeholder">
-          <span id="location-display">Select farming location...</span>
-          <span>▼</span>
-        </button>
-        <div class="ct-hint">Adds location to timer name (e.g. "Ranarr - Falador")</div>
+        <div class="ct-cat-grid" id="ct-cat-grid"></div>
+        <input id="ct-cat-custom" class="ct-input" type="text" placeholder="Or type a new category name…" autocomplete="off" maxlength="30" style="margin-top:8px">
+        <div class="ct-hint">Leave blank to use "Custom"</div>
       </div>
 
       <div class="ct-err" id="ct-err"></div>
-      <button class="ct-submit" id="ct-submit">Add Timer</button>
-    </div>
-  </div>
-</div>
+      <button class="ct-submit" id="ct-submit">Add Timer &amp; Start</button>
 
-<!-- Duration Picker Modal -->
-<div id="duration-overlay">
-  <div id="duration-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-head">
-      <h3>Select Duration</h3>
-      <button class="modal-close-btn" id="dur-close">✕</button>
-    </div>
-    <div class="modal-grid" id="dur-grid"></div>
-    <div style="padding: 0 16px 16px;">
-      <div style="font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px;">Or enter custom duration</div>
-      <input id="custom-duration-input" class="ct-input" type="text" placeholder='e.g. "45m", "1h 30m", "3h"' autocomplete="off" style="margin-bottom: 8px;">
-      <button id="custom-duration-btn" class="ct-submit" style="margin: 0; padding: 10px;">Use Custom Duration</button>
     </div>
   </div>
-</div>
-
-<!-- Category Picker Modal -->
-<div id="category-overlay">
-  <div id="category-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-head">
-      <h3>Select Category</h3>
-      <button class="modal-close-btn" id="cat-close">✕</button>
-    </div>
-    <div class="modal-grid" id="cat-grid"></div>
-    <div style="padding: 0 16px 16px;">
-      <div style="font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px;">Or create new category</div>
-      <input id="custom-category-input" class="ct-input" type="text" placeholder="e.g. Daily Tasks, Weekly, Raids" autocomplete="off" maxlength="30" style="margin-bottom: 8px;">
-      <button id="custom-category-btn" class="ct-submit" style="margin: 0; padding: 10px;">Use Custom Category</button>
-    </div>
-  </div>
-</div>
-
-<!-- Farming Location Picker Modal -->
-<div id="location-overlay">
-  <div id="location-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-head">
-      <h3>Select Farming Location</h3>
-      <button class="modal-close-btn" id="loc-close">✕</button>
-    </div>
-    <div class="modal-grid" id="loc-grid"></div>
-  </div>
-</div>
-</div>
 </div>
 
 <div id="toast"></div>
 
 <script type="module">
-import { initPage, storage, showToast, sendLocalNotification } from '../JS/shared.js';
+import { initPage, storage, showToast, sendLocalNotification } from '/JS/shared.js';
 initPage('timers');
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -538,20 +292,6 @@ function rebuildTimerMap() {
 }
 rebuildTimerMap();
 
-// Remove duplicate custom timers (by ID)
-const seenIds = new Set();
-customTimers = customTimers.filter(t => {
-  if (seenIds.has(t.id)) return false;
-  seenIds.add(t.id);
-  return true;
-});
-saveCustom();
-
-// Remove duplicate pins
-pins = [...new Set(pins)];
-savePins();
-
-
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
@@ -569,16 +309,9 @@ function secsToText(s) {
 }
 function fmtRemain(s) {
   if (s <= 0) return 'Ready';
-  const d = Math.floor(s / 86400);
-  const h = Math.floor((s % 86400) / 3600);
-  const m = Math.floor((s % 3600) / 60);
-  const sec = s % 60;
-  let parts = [];
-  if (d > 0) parts.push(d + 'd');
-  if (h > 0 || d > 0) parts.push(h + 'h');
-  if (m > 0 || h > 0 || d > 0) parts.push(m + 'm');
-  parts.push(sec + 's');
-  return parts.join(' ');
+  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60);
+  if (h > 0) return h + 'h ' + String(m).padStart(2, '0') + 'm';
+  return m + 'm';
 }
 function slugify(v) {
   return String(v || 'custom').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'custom';
@@ -697,7 +430,7 @@ function timerStatus(id) {
 // ─────────────────────────────────────────────────────────────────────────────
 // Render
 // ─────────────────────────────────────────────────────────────────────────────
-function timerCardHtml(id, showReorderButtons = false) {
+function timerCardHtml(id) {
   const meta = TIMER_MAP[id]; if (!meta) return '';
   const st       = timerStatus(id);
   const isCustom = !!meta.custom;
@@ -721,31 +454,15 @@ function timerCardHtml(id, showReorderButtons = false) {
   const pinCls   = pins.includes(id) ? ' active' : '';
   const lvlText  = meta.lvl ? `Lv ${meta.lvl} · ` : '';
 
-  // Only show reorder buttons if explicitly requested (pinned section)
-  const pinIndex = pins.indexOf(id);
-  const isFirst = pinIndex === 0;
-  const isLast = pinIndex === pins.length - 1;
-
-  // Add reorder buttons only when showReorderButtons is true
-  const reorderControls = showReorderButtons ? `
-    <div class="reorder-controls">
-      <button class="reorder-btn" data-move-up="${id}" ${isFirst ? 'disabled' : ''} title="Move up">▲</button>
-      <button class="reorder-btn" data-move-down="${id}" ${isLast ? 'disabled' : ''} title="Move down">▼</button>
-    </div>
-  ` : '';
-
   return `<div class="timer-card${st.state === 'active' ? ' running' : st.state === 'ready' ? ' ready' : ''}">
-    <div class="timer-card-inner">
-      ${reorderControls}
-      ${iconHtml}
-      <div class="timer-main">
-        <div class="timer-name">${meta.name}</div>
-        <div class="timer-dur">${lvlText}${stateText}</div>
-      </div>
-      <div class="timer-actions">
-        <button class="timer-btn${pinCls}" data-pin="${id}" title="Pin">📌</button>
-        ${ctrl}${resetBtn}${clearBtn}${delBtn}
-      </div>
+    ${iconHtml}
+    <div class="timer-main">
+      <div class="timer-name">${meta.name}</div>
+      <div class="timer-dur">${lvlText}${stateText}</div>
+    </div>
+    <div class="timer-actions">
+      <button class="timer-btn${pinCls}" data-pin="${id}" title="Pin">📌</button>
+      ${ctrl}${resetBtn}${clearBtn}${delBtn}
     </div>
   </div>`;
 }
@@ -757,7 +474,7 @@ function renderTimers() {
   const pinnedRoot = document.getElementById('timer-pinned');
   const validPins  = pins.filter(id => TIMER_MAP[id]);
   pinnedRoot.innerHTML = validPins.length
-    ? `<div class="data-label">Pinned</div>${validPins.map(id => timerCardHtml(id, true)).join('')}`
+    ? `<div class="data-label">Pinned</div>${validPins.map(timerCardHtml).join('')}`
     : '';
 
   // ── Groups ────────────────────────────────────────────────────────────────
@@ -816,37 +533,6 @@ function bindTimerEvents() {
   document.querySelectorAll('[data-delete]').forEach(el => {
     el.onclick = () => deleteCustomTimer(el.dataset.delete);
   });
-
-  // Move up/down handlers for pinned timers
-  document.querySelectorAll('[data-move-up]').forEach(el => {
-    el.onclick = (e) => {
-      e.stopPropagation();
-      const id = el.dataset.moveUp;
-      const index = pins.indexOf(id);
-      if (index > 0) {
-        // Swap with previous
-        [pins[index - 1], pins[index]] = [pins[index], pins[index - 1]];
-        savePins();
-        renderTimers();
-        showToast('📌 Moved up');
-      }
-    };
-  });
-
-  document.querySelectorAll('[data-move-down]').forEach(el => {
-    el.onclick = (e) => {
-      e.stopPropagation();
-      const id = el.dataset.moveDown;
-      const index = pins.indexOf(id);
-      if (index < pins.length - 1 && index !== -1) {
-        // Swap with next
-        [pins[index], pins[index + 1]] = [pins[index + 1], pins[index]];
-        savePins();
-        renderTimers();
-        showToast('📌 Moved down');
-      }
-    };
-  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -877,109 +563,33 @@ function tick() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Create Timer Modal & Pickers
+// Create Timer Modal
 // ─────────────────────────────────────────────────────────────────────────────
-const ctOverlay = document.getElementById('create-timer-overlay');
-const ctNameInp = document.getElementById('ct-name');
-const ctErrEl = document.getElementById('ct-err');
+const ctOverlay  = document.getElementById('create-timer-overlay');
+const ctNameInp  = document.getElementById('ct-name');
+const ctDurInp   = document.getElementById('ct-dur');
+const ctCatCustom= document.getElementById('ct-cat-custom');
+const ctErrEl    = document.getElementById('ct-err');
+let ctSelectedCat = null; // { key, label }
 
-// State
-let selectedDuration = null;
-let selectedCategory = null;
-let selectedLocation = null;
-
-// Duration options
-const DURATION_OPTIONS = [
-  '20m', '40m', '50m', '1h', '1h 20m', '2h', '2h 40m', '3h', '4h',
-  '5h 20m', '6h', '6h 40m', '8h', '12h', '16h', '24h', '48h', '72h', '168h'
-];
-
-// Farming locations in OSRS
-const FARMING_LOCATIONS = [
-  'Falador', 'Ardougne', 'Catherby', 'Port Phasmatys', 'Canifis',
-  'Hosidius', 'Farming Guild', 'Weiss', 'Harmony Island', 'Troll Stronghold',
-  'Gnome Stronghold', 'Lletya', 'Prifddinas', 'Brimhaven', 'Calquat',
-  'Herbiboar', 'Seaweed (Fossil Island)', 'Cactus (Al Kharid)', 'Hespori'
-];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Duration Picker
-// ─────────────────────────────────────────────────────────────────────────────
-const durOverlay = document.getElementById('duration-overlay');
-const durGrid = document.getElementById('dur-grid');
-const durDisplay = document.getElementById('duration-display');
-const durPickerBtn = document.getElementById('duration-picker-btn');
-
-function openDurationPicker() {
-  durGrid.innerHTML = DURATION_OPTIONS.map(dur => `
-    <button class="modal-option${selectedDuration === dur ? ' selected' : ''}" data-value="${dur}">
-      ${dur}
-    </button>
-  `).join('');
-
-  durGrid.querySelectorAll('.modal-option').forEach(btn => {
-    btn.onclick = () => {
-      selectedDuration = btn.dataset.value;
-      durDisplay.textContent = btn.dataset.value;
-      durPickerBtn.classList.remove('placeholder');
-      closeDurationPicker();
-    };
-  });
-
-  durOverlay.classList.add('show');
+function openCreateModal() {
+  ctNameInp.value    = '';
+  ctDurInp.value     = '';
+  ctCatCustom.value  = '';
+  ctErrEl.textContent= '';
+  ctSelectedCat      = null;
+  // Reset preset highlights
+  document.querySelectorAll('.ct-preset').forEach(b => b.classList.remove('active'));
+  renderCtCatGrid();
+  ctOverlay.classList.add('show');
+  setTimeout(() => ctNameInp.focus(), 320);
 }
+function closeCreateModal() { ctOverlay.classList.remove('show'); }
 
-function closeDurationPicker() {
-  durOverlay.classList.remove('show');
-}
-
-durPickerBtn.addEventListener('click', openDurationPicker);
-document.getElementById('dur-close').addEventListener('click', closeDurationPicker);
-durOverlay.addEventListener('click', (e) => {
-  if (e.target === durOverlay) closeDurationPicker();
-});
-
-
-// Custom Duration Input
-document.getElementById('custom-duration-btn').addEventListener('click', () => {
-  const customDur = document.getElementById('custom-duration-input').value.trim();
-  const secs = parseDur(customDur);
-
-  if (!secs || secs < 60) {
-    document.getElementById('custom-duration-input').style.borderColor = 'var(--red)';
-    setTimeout(() => {
-      document.getElementById('custom-duration-input').style.borderColor = '';
-    }, 2000);
-    return;
-  }
-
-  selectedDuration = customDur;
-  durDisplay.textContent = customDur;
-  durPickerBtn.classList.remove('placeholder');
-  document.getElementById('custom-duration-input').value = '';
-  closeDurationPicker();
-});
-
-// Allow Enter key in custom duration input
-document.getElementById('custom-duration-input').addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    document.getElementById('custom-duration-btn').click();
-  }
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Category Picker
-// ─────────────────────────────────────────────────────────────────────────────
-const catOverlay = document.getElementById('category-overlay');
-const catGrid = document.getElementById('cat-grid');
-const catDisplay = document.getElementById('category-display');
-const catPickerBtn = document.getElementById('category-picker-btn');
-
-function openCategoryPicker() {
-  // Get built-in categories
+function renderCtCatGrid() {
+  const grid = document.getElementById('ct-cat-grid');
+  // Built-in categories + existing custom-only categories
   const builtInCats = BUILT_IN_GROUPS.map(g => ({ key: g.key, label: g.label }));
-
-  // Get custom categories
   const customCatKeys = [...new Set(customTimers.map(t => t.categoryKey).filter(Boolean))];
   const customOnlyCats = customCatKeys
     .filter(key => !builtInCats.find(b => b.key === key))
@@ -988,176 +598,71 @@ function openCategoryPicker() {
       return { key, label: t?.categoryLabel || key };
     });
 
-  // Combine all categories, but only add "Custom" if it doesn't already exist
-  const allCats = [...builtInCats, ...customOnlyCats];
-  if (!allCats.find(c => c.key === 'custom')) {
-    allCats.push({ key: 'custom', label: 'Custom' });
-  }
+  const allCats = [...customOnlyCats, ...builtInCats];
 
-  catGrid.innerHTML = allCats.map(c => `
-    <button class="modal-option${selectedCategory?.key === c.key ? ' selected' : ''}" 
-            data-key="${c.key}" data-label="${c.label}">
+  grid.innerHTML = allCats.map(c => `
+    <button class="ct-cat-btn${ctSelectedCat?.key === c.key ? ' active' : ''}"
+      data-cat-key="${c.key}" data-cat-label="${c.label}" title="${c.label}">
       ${c.label}
     </button>
   `).join('');
 
-  catGrid.querySelectorAll('.modal-option').forEach(btn => {
+  grid.querySelectorAll('.ct-cat-btn').forEach(btn => {
     btn.onclick = () => {
-      selectedCategory = { key: btn.dataset.key, label: btn.dataset.label };
-      catDisplay.textContent = btn.dataset.label;
-      catPickerBtn.classList.remove('placeholder');
-      closeCategoryPicker();
+      ctSelectedCat = { key: btn.dataset.catKey, label: btn.dataset.catLabel };
+      ctCatCustom.value = '';
+      renderCtCatGrid();
     };
   });
-
-  catOverlay.classList.add('show');
 }
 
-function closeCategoryPicker() {
-  catOverlay.classList.remove('show');
-}
-
-catPickerBtn.addEventListener('click', openCategoryPicker);
-document.getElementById('cat-close').addEventListener('click', closeCategoryPicker);
-catOverlay.addEventListener('click', (e) => {
-  if (e.target === catOverlay) closeCategoryPicker();
+// Duration preset clicks
+document.querySelectorAll('.ct-preset').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.ct-preset').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    ctDurInp.value = btn.dataset.dur;
+    ctErrEl.textContent = '';
+  };
 });
 
-
-// Custom Category Input
-document.getElementById('custom-category-btn').addEventListener('click', () => {
-  const customCat = document.getElementById('custom-category-input').value.trim();
-
-  if (!customCat) {
-    document.getElementById('custom-category-input').style.borderColor = 'var(--red)';
-    setTimeout(() => {
-      document.getElementById('custom-category-input').style.borderColor = '';
-    }, 2000);
-    return;
-  }
-
-  const catKey = slugify(customCat);
-  selectedCategory = { key: catKey, label: customCat };
-  catDisplay.textContent = customCat;
-  catPickerBtn.classList.remove('placeholder');
-  document.getElementById('custom-category-input').value = '';
-  closeCategoryPicker();
+// Typing in custom category clears chip selection
+ctCatCustom.addEventListener('input', () => {
+  if (ctCatCustom.value.trim()) { ctSelectedCat = null; renderCtCatGrid(); }
 });
-
-// Allow Enter key in custom category input
-document.getElementById('custom-category-input').addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    document.getElementById('custom-category-btn').click();
-  }
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Farming Location Picker
-// ─────────────────────────────────────────────────────────────────────────────
-const locOverlay = document.getElementById('location-overlay');
-const locGrid = document.getElementById('loc-grid');
-const locDisplay = document.getElementById('location-display');
-const locPickerBtn = document.getElementById('location-picker-btn');
-
-function openLocationPicker() {
-  locGrid.innerHTML = FARMING_LOCATIONS.map(loc => `
-    <button class="modal-option${selectedLocation === loc ? ' selected' : ''}" data-value="${loc}">
-      ${loc}
-    </button>
-  `).join('');
-
-  locGrid.querySelectorAll('.modal-option').forEach(btn => {
-    btn.onclick = () => {
-      selectedLocation = btn.dataset.value;
-      locDisplay.textContent = btn.dataset.value;
-      locPickerBtn.classList.remove('placeholder');
-      closeLocationPicker();
-    };
-  });
-
-  locOverlay.classList.add('show');
-}
-
-function closeLocationPicker() {
-  locOverlay.classList.remove('show');
-}
-
-locPickerBtn.addEventListener('click', openLocationPicker);
-document.getElementById('loc-close').addEventListener('click', closeLocationPicker);
-locOverlay.addEventListener('click', (e) => {
-  if (e.target === locOverlay) closeLocationPicker();
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Create Timer Modal
-// ─────────────────────────────────────────────────────────────────────────────
-function openCreateModal() {
-  ctNameInp.value = '';
-  ctErrEl.textContent = '';
-  selectedDuration = null;
-  selectedCategory = null;
-  selectedLocation = null;
-
-  durDisplay.textContent = 'Select duration...';
-  catDisplay.textContent = 'Select category...';
-  locDisplay.textContent = 'Select farming location...';
-
-  durPickerBtn.classList.add('placeholder');
-  catPickerBtn.classList.add('placeholder');
-  locPickerBtn.classList.add('placeholder');
-
-  ctOverlay.classList.add('show');
-  setTimeout(() => ctNameInp.focus(), 320);
-}
-
-function closeCreateModal() {
-  ctOverlay.classList.remove('show');
-}
 
 // Submit
 document.getElementById('ct-submit').addEventListener('click', () => {
-  let name = ctNameInp.value.trim();
-  const durRaw = selectedDuration;
-  const secs = parseDur(durRaw);
+  const name       = ctNameInp.value.trim();
+  const durRaw     = ctDurInp.value.trim();
+  const secs       = parseDur(durRaw);
+  const customCatText = ctCatCustom.value.trim();
 
   ctErrEl.textContent = '';
 
   if (!name) {
     ctErrEl.textContent = 'Enter a timer name.';
-    ctNameInp.focus();
-    return;
+    ctNameInp.focus(); return;
   }
-
   if (!secs || secs < 60) {
-    ctErrEl.textContent = 'Select a duration (minimum 1 minute).';
-    return;
-  }
-
-  // Append location to name if selected
-  if (selectedLocation) {
-    name = name + ' - ' + selectedLocation;
-  }
-
-  // Check for duplicate names (case-insensitive)
-  const nameLower = name.toLowerCase();
-  const existingTimer = Object.values(TIMER_MAP).find(t => t.name.toLowerCase() === nameLower);
-  if (existingTimer) {
-    ctErrEl.textContent = 'A timer with this name already exists. Please choose a different name.';
-    ctNameInp.focus();
-    return;
+    ctErrEl.textContent = 'Enter a valid duration — minimum 1 minute (e.g. "40m", "1h 20m").';
+    ctDurInp.focus(); return;
   }
 
   // Resolve category
   let catKey, catLabel;
-  if (selectedCategory) {
-    catKey = selectedCategory.key;
-    catLabel = selectedCategory.label;
+  if (customCatText) {
+    catLabel = customCatText;
+    catKey   = slugify(customCatText);
+  } else if (ctSelectedCat) {
+    catKey   = ctSelectedCat.key;
+    catLabel = ctSelectedCat.label;
   } else {
-    catKey = 'custom';
+    catKey   = 'custom';
     catLabel = 'Custom';
   }
 
-  const id = 'c-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+  const id  = 'c-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
   const dur = secsToText(secs);
   const icon = name.trim()[0].toUpperCase();
 
@@ -1166,11 +671,10 @@ document.getElementById('ct-submit').addEventListener('click', () => {
   saveCustom();
   rebuildTimerMap();
 
-  // Create timer entry (paused)
-  entries[id] = { duration: secs, remaining: secs, paused: true, lastTick: 0 };
+  // Auto-start and pin the new timer
+  entries[id] = { duration: secs, remaining: secs, paused: false, lastTick: Date.now() };
   pins = [id, ...pins.filter(p => p !== id)].slice(0, 24);
-  saveEntries();
-  savePins();
+  saveEntries(); savePins();
 
   // Open its category group
   collapsed[catKey] = false;
@@ -1178,17 +682,14 @@ document.getElementById('ct-submit').addEventListener('click', () => {
 
   closeCreateModal();
   renderTimers();
-  showToast('✅ ' + name + ' created');
+  showToast('✅ ' + name + ' created & started');
 });
 
 document.getElementById('ct-close').addEventListener('click', closeCreateModal);
-ctOverlay.addEventListener('click', (e) => {
-  if (e.target === ctOverlay) closeCreateModal();
-});
-
+ctOverlay.addEventListener('click', e => { if (e.target === ctOverlay) closeCreateModal(); });
 document.getElementById('open-create-btn').addEventListener('click', openCreateModal);
 
-
+// ─────────────────────────────────────────────────────────────────────────────
 // Settings tools
 // ─────────────────────────────────────────────────────────────────────────────
 document.getElementById('clear-progress-btn').addEventListener('click', () => {
@@ -1207,69 +708,6 @@ document.getElementById('clear-pins-btn').addEventListener('click', () => {
 document.getElementById('timer-search').addEventListener('input', renderTimers);
 setInterval(tick, 1000);
 renderTimers();
-
-// ── Push Notifications ───────────────────────────────────────────────────────
-updatePushStatus();
-document.getElementById('enable-push-btn')?.addEventListener('click', async () => {
-  try {
-    const { registerPush } = await import('../JS/bootstrap.js');
-    await registerPush();
-    showToast('✅ Push notifications enabled');
-    updatePushStatus();
-  } catch (err) { showToast('Push setup failed: ' + err.message, 6000); }
-});
-function updatePushStatus() {
-  const el = document.getElementById('push-status');
-  if (!el || !('Notification' in window)) return;
-  el.textContent = { granted: '✅ Enabled', denied: '🚫 Blocked in browser settings', default: 'Not set up yet.' }[Notification.permission] || '';
-}
-
-// ── Player Profiles ───────────────────────────────────────────────────────────
-const PROFILES_KEY_SP    = 'osts_profiles_v2';
-const ACTIVE_PROF_KEY_SP = 'osts_active_profile_v2';
-const SP_ICONS  = { ironman:'🛡', hardcore:'💀', ultimate:'🔱', regular:'⚔', gim:'👥', ghcim:'☠', ugim:'👥' };
-const SP_LABELS = { ironman:'Iron', hardcore:'HCIM', ultimate:'UIM', regular:'Regular', gim:'GIM', ghcim:'GHCIM', ugim:'UGIM' };
-
-function spGetProfiles() { return storage.get(PROFILES_KEY_SP, []); }
-function spGetActiveId()  { return storage.get(ACTIVE_PROF_KEY_SP, null); }
-function spSetActiveId(id){ storage.set(ACTIVE_PROF_KEY_SP, id); }
-function spNorm(t){ return normalizeAccountType(t); }
-
-function renderSpProfiles() {
-  const list = document.getElementById('sp-profile-list');
-  if (!list) return;
-  const profiles = spGetProfiles();
-  const activeId = spGetActiveId();
-  if (!profiles.length) {
-    list.innerHTML = '<div style="font-size:12px;color:var(--muted)">No saved profiles.<br>Search a player on <a href="overview.html" style="color:var(--gold)">Overview</a> to create one.</div>';
-    return;
-  }
-  const sorted = [...profiles].sort((a,b) => (b.id === activeId) - (a.id === activeId));
-  list.innerHTML = sorted.map(p => `
-    <div class="sp-profile-card${p.id === activeId ? ' active' : ''}">
-      <div class="sp-avatar">${SP_ICONS[spNorm(p.type)] || '⚔'}</div>
-      <div class="sp-info">
-        <div class="sp-nickname">${p.nickname}</div>
-        <div class="sp-rsn-type">${p.rsn} · ${SP_LABELS[spNorm(p.type)] || 'Iron'}</div>
-      </div>
-      ${p.id !== activeId ? `<button class="sp-btn" data-sp-load="${p.id}">Load</button>` : '<span style="font-size:10px;color:var(--gold)">Active</span>'}
-    </div>`).join('');
-
-  list.querySelectorAll('[data-sp-load]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const p = spGetProfiles().find(x => x.id === btn.dataset.spLoad);
-      if (!p) return;
-      spSetActiveId(p.id);
-      storage.set(STORAGE_KEYS.ACCOUNT_TYPE, spNorm(p.type));
-      storage.set(STORAGE_KEYS.RSN, p.rsn);
-      settings.close();
-      showToast('Switched to ' + p.nickname);
-    });
-  });
-}
-
-document.getElementById('settings-btn')?.addEventListener('click', renderSpProfiles, true);
-
 </script>
 </body>
 </html>
