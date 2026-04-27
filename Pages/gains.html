@@ -359,24 +359,14 @@ function renderGains(data) {
       </div>
     </div>`).join('');
 
-  // Flip on tap - only one card flipped at a time
+  // Flip on tap
   grid.querySelectorAll('.flip-card').forEach(card => {
     card.addEventListener('click', () => {
-      const isFlipped = card.classList.contains('flipped');
-
-      // Close all other cards first
-      grid.querySelectorAll('.flip-card').forEach(c => {
-        c.classList.remove('flipped');
-      });
-
-      // Toggle current card (if it wasn't flipped, flip it)
-      if (!isFlipped) {
-        card.classList.add('flipped');
-        // Load timeline for this skill
-        if (currentRsn) {
-          const skillId = card.dataset.skill;
-          loadTimeline(currentRsn, skillId, currentPeriod);
-        }
+      card.classList.toggle('flipped');
+      // Also load timeline for this skill
+      if (currentRsn) {
+        const skillId = card.dataset.skill;
+        loadTimeline(currentRsn, skillId, currentPeriod);
       }
     });
   });
@@ -408,13 +398,12 @@ function renderTimelineChart(timeline, metric) {
     return;
   }
 
-  // Extract XP values — WOM timeline has nested data
-  const points = timeline.map(p => {
-    const d   = p.data?.skills?.[metric] || p.data;
-    const xp  = d?.experience?.value ?? d?.experience ?? d?.value ?? null;
-    const date = new Date(p.date || p.createdAt);
-    return { x: date, y: xp };
-  }).filter(p => p.y !== null && !isNaN(p.y));
+  // Extract XP values — WOM timeline is flat
+const points = timeline.map(p => {
+  const xp = p.value;                 // flat { value, rank, date }
+  const date = new Date(p.date);      // timeline always has .date
+  return { x: date, y: xp };
+}).filter(p => p.y !== null && !isNaN(p.y));
 
   if (points.length < 2) {
     title.textContent += ' (not enough data)';
