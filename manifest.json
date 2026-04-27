@@ -2,7 +2,7 @@
   "id": "/",
   "name": "Old School Tool Set",
   "short_name": "OSTS",
-  "description": "OSRS skill tracking, gains, bossing stats, farming timers, and more.",
+  "description": "OSRS skill tracking, gains, bossing stats, timers, fairy rings and more.",
   "start_url": "/index.html",
   "scope": "/",
   "display": "standalone",
@@ -27,7 +27,7 @@
     {
       "name": "Overview",
       "short_name": "Overview",
-      "url": "../Pages/overview.html",
+      "url": "Pages/overview.html",
       "icons": [
         {
           "src": "Assets/Logo/icon-192.png",
@@ -38,7 +38,7 @@
     {
       "name": "Gains",
       "short_name": "Gains",
-      "url": "../Pages/gains.html",
+      "url": "Pages/gains.html",
       "icons": [
         {
           "src": "Assets/Logo/icon-192.png",
@@ -49,7 +49,7 @@
     {
       "name": "Timers",
       "short_name": "Timers",
-      "url": "../Pages/timers.html",
+      "url": "Pages/timers.html",
       "icons": [
         {
           "src": "Assets/Logo/icon-192.png",
