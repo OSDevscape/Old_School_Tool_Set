@@ -1,0 +1,51 @@
+{
+  "Aberrant spectre": {
+    "title": "Aberrant spectre",
+    "type": "🟢 Standard",
+    "weight": 6,
+    "wiki": "https://oldschool.runescape.wiki/w/Aberrant_spectre",
+    "thumbnail": "https://oldschool.runescape.wiki/images/thumb/b/bb/Aberrant_spectre.png/120px-Aberrant_spectre.png",
+    "color": "#a8b83e",
+    "assigned_by": [
+      "<:Vannaka:1426868501666205706>",
+      "<:Chaeldar:1426868310527578142>",
+      "<:Konar:1426868344207839335>",
+      "<:Nieve:1426868418161676359>",
+      "<:Duradel:1426868326877106311>"
+    ],
+    "locations": [
+      {
+        "name": "Slayer Tower",
+        "wiki": "https://oldschool.runescape.wiki/w/Slayer_Tower"
+      },
+      {
+        "name": "Catacombs of Kourend",
+        "wiki": "https://oldschool.runescape.wiki/w/Catacombs_of_Kourend"
+      }
+    ],
+    "requirements": [
+      "Nose peg (https://oldschool.runescape.wiki/w/Nose_peg)",
+      "Slayer helmet (https://oldschool.runescape.wiki/w/Slayer_helmet)"
+    ],
+    "recommended_gear": [
+      "Prayer gear (https://oldschool.runescape.wiki/w/Prayer_armour)",
+      "Magic defence (https://oldschool.runescape.wiki/w/Magic_armour)"
+    ],
+    "drops": [
+      "Herbs (https://oldschool.runescape.wiki/w/Herblore)",
+      "Rune items (https://oldschool.runescape.wiki/w/Rune_equipment)",
+      "Lava battlestaff (https://oldschool.runescape.wiki/w/Lava_battlestaff)",
+      "Clue scroll (hard) (https://oldschool.runescape.wiki/w/Clue_scroll_(Hard))"
+    ],
+    "variants": [
+      "Deviant spectre (https://oldschool.runescape.wiki/w/Deviant_spectre)",
+      "Abhorrent Spectre (https://oldschool.runescape.wiki/w/Abhorrent_spectre)",
+      "Repugnant Spectre (https://oldschool.runescape.wiki/w/Repugnant_spectre)"
+    ],
+    "ironman_notes": "Great for herb stacks, dark totem pieces, and passive clues",
+    "summary": "Aberrant Spectres require 60 Slayer and a nose peg or Slayer helmet. They attack with Magic, so Protect from Magic or high defence gear is recommended. Catacombs are ideal due to Prayer restoration and shard drops. Superiors give better loot and XP.",
+    "footer": {
+      "icon": "https://gyazo.com/eba1012515f77f8f231e1ecff813d27a.png"
+    }
+  }
+}

@@ -1,0 +1,1078 @@
+{
+  "ranks": {
+    "Dogsbody": {
+      "emoji": "<:Dogsbody:1445545733255069959>",
+      "text": "You have received the __**Dogsbody**__ rank!"
+    },
+    "Minion": {
+      "emoji": "<:Minion:1445545734484262912>",
+      "text": "You have received the __**Minion**__ rank!"
+    },
+    "Recruit": {
+      "emoji": "<:Recruit:1445545740062691508>",
+      "text": "You have received the __**Recruit**__ rank!"
+    },
+    "Pawn": {
+      "emoji": "<:Pawn:1445545738078519516>",
+      "text": "You have received the __**Pawn**__ rank!"
+    },
+    "Private": {
+      "emoji": "<:Private:1445546560506167407>",
+      "text": "You have received the __**Private**__ rank!"
+    },
+    "Corporal": {
+      "emoji": "<:Corporal:1445545732152229909>",
+      "text": "You have received the __**Corporal**__ rank!"
+    },
+    "Novice": {
+      "emoji": "<:Novice:1445545735977304074>",
+      "text": "You have received the __**Novice**__ rank!"
+    },
+    "Sergeant": {
+      "emoji": "<:Sergeant:1445545741539082240>",
+      "text": "You have received the __**Sergeant**__ rank!"
+    },
+    "Cadet": {
+      "emoji": "<:Cadet:1445545731074035713>",
+      "text": "You have received the __**Cadet**__ rank!"
+    },
+
+    "Page": {
+      "emoji": "<:Page:1445546879797694535>",
+      "text": "You have received the __**Page**__ rank!"
+    },
+    "Noble": {
+      "emoji": "<:Noble:1445546877918384162>",
+      "text": "You have received the __**Noble**__ rank!"
+    },
+    "Adept": {
+      "emoji": "<:Adept:1445546867868958803>",
+      "text": "You have received the __**Adept**__ rank!"
+    },
+    "Legionnaire": {
+      "emoji": "<:Legionnaire:1445546872730161273>",
+      "text": "You have received the __**Legionnaire**__ rank!"
+    },
+    "Lieutenant": {
+      "emoji": "<:Lieutenant:1445546873627742278>",
+      "text": "You have received the __**Lieutenant**__ rank!"
+    },
+    "Proselyte": {
+      "emoji": "<:Proselyte:1445546882481782955>",
+      "text": "You have received the __**Proselyte**__ rank!"
+    },
+    "Captain": {
+      "emoji": "<:Captain:1445546869899006035>",
+      "text": "You have received the __**Captain**__ rank!"
+    },
+    "Major": {
+      "emoji": "<:Major:1445546875284492399>",
+      "text": "You have received the __**Major**__ rank!"
+    },
+    "General": {
+      "emoji": "<:General:1445546871497031731>",
+      "text": "You have received the __**General**__ rank!"
+    },
+    "Master": {
+      "emoji": "<:Master:1445546876555497535>",
+      "text": "You have received the __**Master**__ rank!"
+    },
+
+    "Officer": {
+      "emoji": "<:Officer:1445547748311961881>",
+      "text": "You have received the __**Officer**__ rank!"
+    },
+    "Commander": {
+      "emoji": "<:Commander:1445547745904431135>",
+      "text": "You have received the __**Commander**__ rank!"
+    },
+    "Colonel": {
+      "emoji": "",
+      "text": "You have received the __**Colonel**__ rank!"
+    },
+    "Brigadier": {
+      "emoji": "<:Brigadier:1445547730632966224>",
+      "text": "You have received the __**Brigadier**__ rank!"
+    },
+    "Admiral": {
+      "emoji": "<:Admiral:1445547729651499008>",
+      "text": "You have received the __**Admiral**__ rank!"
+    },
+    "Marshal": {
+      "emoji": "<:Marshal:1445547747078967347>",
+      "text": "You have received the __**Marshal**__ rank!"
+    },
+
+    "Opal": {
+      "emoji": "<:Opal:1446241000489091142>",
+      "text": "You have received the __**Opal**__ rank!"
+    },
+    "Jade": {
+      "emoji": "<:Jade:1446240997809066005>",
+      "text": "You have received the __**Jade**__ rank!"
+    },
+    "Red Topaz": {
+      "emoji": "<:Red_Topaz:1446241001915027486>",
+      "text": "You have received the __**Red Topaz**__ rank!"
+    },
+    "Sapphire": {
+      "emoji": "<:Sapphire:1446241004570148954>",
+      "text": "You have received the __**Sapphire**__ rank!"
+    },
+    "Emerald": {
+      "emoji": "<:Emerald:1446240996642783407>",
+      "text": "You have received the __**Emerald**__ rank!"
+    },
+    "Ruby": {
+      "emoji": "<:Ruby:1446241003022319679>",
+      "text": "You have received the __**Ruby**__ rank!"
+    },
+    "Diamond": {
+      "emoji": "<:Diamond:1446240993082081418>",
+      "text": "You have received the __**Diamond**__ rank!"
+    },
+    "Dragonstone": {
+      "emoji": "<:Dragonstone:1426868194127384618>",
+      "text": "You have received the __**Dragonstone**__ rank!"
+    },
+    "Onyx": {
+      "emoji": "<:Onyx:1446240999184531566>",
+      "text": "You have received the __**Onyx**__ rank!"
+    },
+    "Zenyte": {
+      "emoji": "<:Zenyte:1426868211600723978>",
+      "text": "You have received the __**Zenyte**__ rank!"
+    },
+
+    "Kitten": {
+      "emoji": "<:Kitten:1446246299182698578>",
+      "text": "You have received the __**Kitten**__ rank!"
+    },
+    "Bob": {
+      "emoji": "<:Bob:1446246289963749460>",
+      "text": "You have received the __**Bob**__ rank!"
+    },
+    "Wily": {
+      "emoji": "<:Wily:1446246302387146813>",
+      "text": "You have received the __**Wily**__ rank!"
+    },
+    "Hellcat": {
+      "emoji": "<:Hellcat:1446246295181197393>",
+      "text": "You have received the __**Hellcat**__ rank!"
+    },
+    "Skulled": {
+      "emoji": "<:Skulled:1446246301410005004>",
+      "text": "You have received the __**Skulled**__ rank!"
+    },
+    "Goblin": {
+      "emoji": "<:Goblin:1446246293977567263>",
+      "text": "You have received the __**Goblin**__ rank!"
+    },
+    "Beast": {
+      "emoji": "<:Beast:1446246288621310134>",
+      "text": "You have received the __**Beast**__ rank!"
+    },
+    "Imp": {
+      "emoji": "<:Imp:1446246296779231463>",
+      "text": "You have received the __**Imp**__ rank!"
+    },
+    "Gnome Child": {
+      "emoji": "<:Bob:1446246289963749460>",
+      "text": "You have received the __**Gnome Child**__ rank!"
+    },
+    "Gnome Elder": {
+      "emoji": "<:Gnome_Elder:1446246292778123445>",
+      "text": "You have received the __**Gnome Elder**__ rank!"
+    },
+    "Short Green Guy": {
+      "emoji": "<:Short_Green_Guy:1446246300440989836>",
+      "text": "You have received the __**Short Green Guy**__ rank!"
+    },
+
+    "Misthalinian": {
+      "emoji": "<:Misthalinian:1446242717595209728>",
+      "text": "You have received the __**Misthalinian**__ rank!"
+    },
+    "Karamjan": {
+      "emoji": "<:Karamjan:1446242714130710569>",
+      "text": "You have received the __**Karamjan**__ rank!"
+    },
+    "Asgarnian": {
+      "emoji": "<:Asgarnian:1446242710943043786>",
+      "text": "You have received the __**Asgarnian**__ rank!"
+    },
+    "Kharidian": {
+      "emoji": "<:Kharidian:1446242715707642056>",
+      "text": "You have received the __**Kharidian**__ rank!"
+    },
+    "Morytanian": {
+      "emoji": "<:Morytanian:1446242718870278326>",
+      "text": "You have received the __**Morytanian**__ rank!"
+    },
+    "Wild": {
+      "emoji": "<:Wild:1446242721244385381>",
+      "text": "You have received the __**Wild**__ rank!"
+    },
+    "Kandarin": {
+      "emoji": "<:Kandarin:1446242713451106388>",
+      "text": "You have received the __**Kandarin**__ rank!"
+    },
+    "Fremennik": {
+      "emoji": "<:Fremennik:1446242712071176213>",
+      "text": "You have received the __**Fremennik**__ rank!"
+    },
+    "Tirannian": {
+      "emoji": "<:Tirannian:1446242720099205141>",
+      "text": "You have received the __**Tirannian**__ rank!"
+    },
+
+    "Brassican": {
+      "emoji": "<:Brassican:1446244198658609254>",
+      "text": "You have received the __**Brassican**__ rank!"
+    },
+    "Saradominist": {
+      "emoji": "<:Saradominist:1446244200805830828>",
+      "text": "You have received the __**Saradominist**__ rank!"
+    },
+    "Guthixian": {
+      "emoji": "<:Guthixian:1446244199585284346>",
+      "text": "You have received the __**Guthixian**__ rank!"
+    },
+    "Zamorakian": {
+      "emoji": "<:Zamorakian:1446244204719243367>",
+      "text": "You have received the __**Zamorakian**__ rank!"
+    },
+    "Serenist": {
+      "emoji": "<:Serenist:1446244202538205275>",
+      "text": "You have received the __**Serenist**__ rank!"
+    },
+    "Bandosian": {
+      "emoji": "<:Bandosian:1446244197567823892>",
+      "text": "You have received the __**Bandosian**__ rank!"
+    },
+    "Zarosian": {
+      "emoji": "<:Zarosian:1446244205818282045>",
+      "text": "You have received the __**Zarosian**__ rank!"
+    },
+    "Armadylean": {
+      "emoji": "<:Armadylean:1446244196561453066>",
+      "text": "You have received the __**Armadylean**__ rank!"
+    },
+    "Xerician": {
+      "emoji": "<:Xerician:1446244203871994030>",
+      "text": "You have received the __**Xerician**__ rank!"
+    },
+
+    "Air": {
+      "emoji": "<:Air:1446245126564348097>",
+      "text": "You have received the __**Air**__ rank!"
+    },
+    "Mind": {
+      "emoji": "<:Mind:1446245141361852582>",
+      "text": "You have received the __**Mind**__ rank!"
+    },
+    "Water": {
+      "emoji": "<:Water:1446245145497440287>",
+      "text": "You have received the __**Water**__ rank!"
+    },
+    "Earth": {
+      "emoji": "<:Earth:1446245136089747558>",
+      "text": "You have received the __**Earth**__ rank!"
+    },
+    "Fire": {
+      "emoji": "<:Fire:1446245138442752071>",
+      "text": "You have received the __**Fire**__ rank!"
+    },
+    "Body": {
+      "emoji": "<:Body:1446245130746200167>",
+      "text": "You have received the __**Body**__ rank!"
+    },
+    "Cosmic": {
+      "emoji": "<:Cosmic:1446245133552058408>",
+      "text": "You have received the __**Cosmic**__ rank!"
+    },
+    "Chaos": {
+      "emoji": "<:Chaos:1446245132402950275>",
+      "text": "You have received the __**Chaos**__ rank!"
+    },
+    "Nature": {
+      "emoji": "<:Nature:1446245142779531335>",
+      "text": "You have received the __**Nature**__ rank!"
+    },
+    "Law": {
+      "emoji": "<:Law:1446245139902234826>",
+      "text": "You have received the __**Law**__ rank!"
+    },
+    "Death": {
+      "emoji": "<:Death:1446245134667878522>",
+      "text": "You have received the __**Death**__ rank!"
+    },
+    "Astral": {
+      "emoji": "<:Astral:1446245128082817186>",
+      "text": "You have received the __**Astral**__ rank!"
+    },
+    "Blood": {
+      "emoji": "<:Blood:1446245129403764957>",
+      "text": "You have received the __**Blood**__ rank!"
+    },
+    "Soul": {
+      "emoji": "<:Soul:1446245144339939328>",
+      "text": "You have received the __**Soul**__ rank!"
+    },
+    "Wrath": {
+      "emoji": "<:Wrath:1446245147116306651>",
+      "text": "You have received the __**Wrath**__ rank!"
+    },
+
+    "Diseased": {
+      "emoji": "<:DiseasedTree:1426867560820772945>",
+      "text": "You have received the __**Diseased**__ rank!"
+    },
+    "Pine": {
+      "emoji": "<:Pine:1446238347017322748>",
+      "text": "You have received the __**Pine**__ rank!"
+    },
+    "Wintumber": {
+      "emoji": "<:Wintumber:1446223054140215379>",
+      "text": "You have received the __**Wintumber**__ rank!"
+    },
+    "Oak": {
+      "emoji": "<:OakTree:1426867591120556072>",
+      "text": "You have received the __**Oak**__ rank!"
+    },
+    "Willow": {
+      "emoji": "<:WillowTree:1426867609290149941>",
+      "text": "You have received the __**Willow**__ rank!"
+    },
+    "Maple": {
+      "emoji": "<:MapleTree:1426867657428434974>",
+      "text": "You have received the __**Maple**__ rank!"
+    },
+    "Yew": {
+      "emoji": "<:YewTree:1426867695151747142>",
+      "text": "You have received the __**Yew**__ rank!"
+    },
+    "Blisterwood": {
+      "emoji": "",
+      "text": "You have received the __**Blisterwood**__ rank!"
+    },
+    "Magic": {
+      "emoji": "<:MagicTree:1426867914996187146>",
+      "text": "You have received the __**Magic**__ rank!"
+    },
+
+    "Attacker": {
+      "emoji": "<:Attacker:1446256910633406465>",
+      "text": "You have received the __**Attacker**__ rank!"
+    },
+    "Enforcer": {
+      "emoji": "<:Enforcer:1446256927024877628>",
+      "text": "You have received the __**Enforcer**__ rank!"
+    },
+    "Defender": {
+      "emoji": "<:Defender:1446256925565128958>",
+      "text": "You have received the __**Defender**__ rank!"
+    },
+    "Ranger": {
+      "emoji": "<:Ranger:1446256945425023087>",
+      "text": "You have received the __**Ranger**__ rank!"
+    },
+    "Priest": {
+      "emoji": "<:Priest:1446256943856615498>",
+      "text": "You have received the __**Priest**__ rank!"
+    },
+    "Magician": {
+      "emoji": "<:Magician:1446256939628494928>",
+      "text": "You have received the __**Magician**__ rank!"
+    },
+    "Runecrafter": {
+      "emoji": "<:Runecrafter:1446256948709167207>",
+      "text": "You have received the __**Runecrafter**__ rank!"
+    },
+    "Medic": {
+      "emoji": "<:Medic:1446256940714950706>",
+      "text": "You have received the __**Medic**__ rank!"
+    },
+    "Athlete": {
+      "emoji": "<:Athlete:1446256909148491907>",
+      "text": "You have received the __**Athlete**__ rank!"
+    },
+    "Herbologist": {
+      "emoji": "<:Herbologist:1446256933085380679>",
+      "text": "You have received the __**Herbologist**__ rank!"
+    },
+    "Thief": {
+      "emoji": "<:Thief:1446256956951101540>",
+      "text": "You have received the __**Thief**__ rank!"
+    },
+    "Crafter": {
+      "emoji": "<:Crafter:1446256924487057608>",
+      "text": "You have received the __**Crafter**__ rank!"
+    },
+    "Fletcher": {
+      "emoji": "<:Fletcher:1446256932481663158>",
+      "text": "You have received the __**Fletcher**__ rank!"
+    },
+    "Miner": {
+      "emoji": "<:Miner:1446256942535278673>",
+      "text": "You have received the __**Miner**__ rank!"
+    },
+    "Smith": {
+      "emoji": "<:Smith:1446256955340619898>",
+      "text": "You have received the __**Smith**__ rank!"
+    },
+    "Fisher": {
+      "emoji": "<:Fisher:1446256931311194243>",
+      "text": "You have received the __**Fisher**__ rank!"
+    },
+    "Cook": {
+      "emoji": "<:Cook:1446256922369196193>",
+      "text": "You have received the __**Cook**__ rank!"
+    },
+    "Firemaker": {
+      "emoji": "<:Firemaker:1446256929834926100>",
+      "text": "You have received the __**Firemaker**__ rank!"
+    },
+    "Lumberjack": {
+      "emoji": "<:Lumberjack:1446256936545943602>",
+      "text": "You have received the __**Lumberjack**__ rank!"
+    },
+    "Slayer": {
+      "emoji": "<:Slaying:1446257946362384486>",
+      "text": "You have received the __**Slayer**__ rank!"
+    },
+    "Farmer": {
+      "emoji": "<:Farmer:1446256928232706160>",
+      "text": "You have received the __**Farmer**__ rank!"
+    },
+    "Constructor": {
+      "emoji": "<:Constructor:1446256920347410504>",
+      "text": "You have received the __**Constructor**__ rank!"
+    },
+    "Hunter": {
+      "emoji": "<:Hunting:1446257943061201089>",
+      "text": "You have received the __**Hunter**__ rank!"
+    },
+    "Skiller": {
+      "emoji": "<:Skiller:1446256952404480181>",
+      "text": "You have received the __**Skiller**__ rank!"
+    },
+    "Competitor": {
+      "emoji": "<:Competitor:1446256911669268663>",
+      "text": "You have received the __**Competitor**__ rank!"
+    },
+
+    "Holy": {
+      "emoji": "<:Holy:1445548618319790130>",
+      "text": "You have received the __**Holy**__ rank!"
+    },
+    "Unholy": {
+      "emoji": "<:Unholy:1445548629334032588>",
+      "text": "You have received the __**Unholy**__ rank!"
+    },
+    "Natural": {
+      "emoji": "<:Natural:1445548623864791194>",
+      "text": "You have received the __**Natural**__ rank!"
+    },
+    "Sage": {
+      "emoji": "<:Sage:1445548625089532077>",
+      "text": "You have received the __**Sage**__ rank!"
+    },
+    "Destroyer": {
+      "emoji": "<:Destroyer:1445548616730153070>",
+      "text": "You have received the __**Destroyer**__ rank!"
+    },
+    "Mediator": {
+      "emoji": "<:Mediator:1445548621842874388>",
+      "text": "You have received the __**Mediator**__ rank!"
+    },
+    "Legend": {
+      "emoji": "<:Legend:1426869949002944573>",
+      "text": "You have received the __**Legend**__ rank!"
+    },
+    "Myth": {
+      "emoji": "<:Myth:1426869962131247144>",
+      "text": "You have received the __**Myth**__ rank!"
+    },
+    "TzTok": {
+      "emoji": "<:TzTok:1445548628117815389>",
+      "text": "You have received the __**TzTok**__ rank!"
+    },
+    "TzKal": {
+      "emoji": "<:TzKal:1445548625970204714>",
+      "text": "You have received the __**TzKal**__ rank!"
+    },
+    "Maxed": {
+      "emoji": "<:Maxed:1445548620148510740>",
+      "text": "You have received the __**Maxed**__ rank!"
+    },
+
+    "Anchor": {
+      "emoji": "<:Anchor:1446255965220638770>",
+      "text": "You have received the __**Anchor**__ rank!"
+    },
+    "Apothecary": {
+      "emoji": "<:Apothecary:1446255966311022673>",
+      "text": "You have received the __**Apothecary**__ rank!"
+    },
+    "Merchant": {
+      "emoji": "<:Merchant:1446255972438900817>",
+      "text": "You have received the __**Merchant**__ rank!"
+    },
+    "Feeder": {
+      "emoji": "<:Feeder:1446255968576077824>",
+      "text": "You have received the __**Feeder**__ rank!"
+    },
+    "Harpoon": {
+      "emoji": "<:Harpoon:1446255970241220781>",
+      "text": "You have received the __**Harpoon**__ rank!"
+    },
+    "Carry": {
+      "emoji": "<:Carry:1446255967519117352>",
+      "text": "You have received the __**Carry**__ rank!"
+    },
+
+    "Archer": {
+      "emoji": "<:Archer:1445561318714118390>",
+      "text": "You have received the __**Archer**__ rank!"
+    },
+    "Battlemage": {
+      "emoji": "<:Battlemage:1445561320924774442>",
+      "text": "You have received the __**Battlemage**__ rank!"
+    },
+    "Artillery": {
+      "emoji": "<:Artillery:1445561319528075315>",
+      "text": "You have received the __**Artillery**__ rank!"
+    },
+    "Infantry": {
+      "emoji": "<:Infantry:1445561323755798649>",
+      "text": "You have received the __**Infantry**__ rank!"
+    },
+    "Smiter": {
+      "emoji": "<:Smiter:1445561327283081369>",
+      "text": "You have received the __**Smiter**__ rank!"
+    },
+    "Looter": {
+      "emoji": "<:Looter:1445561325177671883>",
+      "text": "You have received the __**Looter**__ rank!"
+    },
+    "Saviour": {
+      "emoji": "<:Saviour:1445561326289293332>",
+      "text": "You have received the __**Saviour**__ rank!"
+    },
+    "Sniper": {
+      "emoji": "<:Sniper:1445561328604549180>",
+      "text": "You have received the __**Sniper**__ rank!"
+    },
+    "Crusader": {
+      "emoji": "<:Crusader:1445561322552037396>",
+      "text": "You have received the __**Crusader**__ rank!"
+    },
+    "Spellcaster": {
+      "emoji": "<:Spellcaster:1445561329749332008>",
+      "text": "You have received the __**Spellcaster**__ rank!"
+    },
+
+    "Mentor": {
+      "emoji": "",
+      "text": "You have received the __**Mentor**__ rank!"
+    },
+    "Prefect": {
+      "emoji": "",
+      "text": "You have received the __**Prefect**__ rank!"
+    },
+    "Leader": {
+      "emoji": "",
+      "text": "You have received the __**Leader**__ rank!"
+    },
+    "Supervisor": {
+      "emoji": "",
+      "text": "You have received the __**Supervisor**__ rank!"
+    },
+    "Superior": {
+      "emoji": "",
+      "text": "You have received the __**Superior**__ rank!"
+    },
+    "Executive": {
+      "emoji": "",
+      "text": "You have received the __**Executive**__ rank!"
+    },
+    "Senator": {
+      "emoji": "",
+      "text": "You have received the __**Senator**__ rank!"
+    },
+    "Monarch": {
+      "emoji": "",
+      "text": "You have received the __**Monarch**__ rank!"
+    },
+    "Scavenger": {
+      "emoji": "",
+      "text": "You have received the __**Scavenger**__ rank!"
+    },
+    "Labourer": {
+      "emoji": "",
+      "text": "You have received the __**Labourer**__ rank!"
+    },
+    "Worker": {
+      "emoji": "",
+      "text": "You have received the __**Worker**__ rank!"
+    },
+    "Forager": {
+      "emoji": "",
+      "text": "You have received the __**Forager**__ rank!"
+    },
+    "Hoarder": {
+      "emoji": "",
+      "text": "You have received the __**Hoarder**__ rank!"
+    },
+    "Prospector": {
+      "emoji": "",
+      "text": "You have received the __**Prospector**__ rank!"
+    },
+    "Gatherer": {
+      "emoji": "",
+      "text": "You have received the __**Gatherer**__ rank!"
+    },
+    "Collector": {
+      "emoji": "",
+      "text": "You have received the __**Collector**__ rank!"
+    },
+    "Bronze": {
+      "emoji": "<:BronzeBar:1426868038761713674>",
+      "text": "You have received the __**Bronze**__ rank!"
+    },
+    "Iron": {
+      "emoji": "<:IronBar:1426868056143036547>",
+      "text": "You have received the __**Iron**__ rank!"
+    },
+    "Steel": {
+      "emoji": "<:SteelBar:1426868076493803621>",
+      "text": "You have received the __**Steel**__ rank!"
+    },
+    "Gold": {
+      "emoji": "",
+      "text": "You have received the __**Gold**__ rank!"
+    },
+    "Mithril": {
+      "emoji": "<:MithrilBar:1426868115110625402>",
+      "text": "You have received the __**Mithril**__ rank!"
+    },
+    "Adamant": {
+      "emoji": "<:AdamantBar:1426868138842259537>",
+      "text": "You have received the __**Adamant**__ rank!"
+    },
+    "Rune": {
+      "emoji": "<:RuneBar:1427805390367883334>",
+      "text": "You have received the __**Rune**__ rank!"
+    },
+    "Dragon": {
+      "emoji": "<:Dragon:1426868156349153301>",
+      "text": "You have received the __**Dragon**__ rank!"
+    },
+    "Protector": {
+      "emoji": "",
+      "text": "You have received the __**Protector**__ rank!"
+    },
+    "Bulwark": {
+      "emoji": "",
+      "text": "You have received the __**Bulwark**__ rank!"
+    },
+    "Justiciar": {
+      "emoji": "",
+      "text": "You have received the __**Justiciar**__ rank!"
+    },
+    "Sentry": {
+      "emoji": "",
+      "text": "You have received the __**Sentry**__ rank!"
+    },
+    "Guardian": {
+      "emoji": "",
+      "text": "You have received the __**Guardian**__ rank!"
+    },
+    "Warden": {
+      "emoji": "",
+      "text": "You have received the __**Warden**__ rank!"
+    },
+    "Vanguard": {
+      "emoji": "",
+      "text": "You have received the __**Vanguard**__ rank!"
+    },
+    "Templar": {
+      "emoji": "",
+      "text": "You have received the __**Templar**__ rank!"
+    },
+    "Squire": {
+      "emoji": "",
+      "text": "You have received the __**Squire**__ rank!"
+    },
+    "Duellist": {
+      "emoji": "",
+      "text": "You have received the __**Duellist**__ rank!"
+    },
+    "Striker": {
+      "emoji": "",
+      "text": "You have received the __**Striker**__ rank!"
+    },
+    "Ninja": {
+      "emoji": "",
+      "text": "You have received the __**Ninja**__ rank!"
+    },
+    "Inquisitor": {
+      "emoji": "",
+      "text": "You have received the __**Inquisitor**__ rank!"
+    },
+    "Expert": {
+      "emoji": "",
+      "text": "You have received the __**Expert**__ rank!"
+    },
+    "Knight": {
+      "emoji": "",
+      "text": "You have received the __**Knight**__ rank!"
+    },
+    "Paladin": {
+      "emoji": "",
+      "text": "You have received the __**Paladin**__ rank!"
+    },
+    "Goon": {
+      "emoji": "",
+      "text": "You have received the __**Goon**__ rank!"
+    },
+    "Brawler": {
+      "emoji": "",
+      "text": "You have received the __**Brawler**__ rank!"
+    },
+    "Bruiser": {
+      "emoji": "",
+      "text": "You have received the __**Bruiser**__ rank!"
+    },
+    "Scourge": {
+      "emoji": "",
+      "text": "You have received the __**Scourge**__ rank!"
+    },
+    "Fighter": {
+      "emoji": "",
+      "text": "You have received the __**Fighter**__ rank!"
+    },
+    "Warrior": {
+      "emoji": "",
+      "text": "You have received the __**Warrior**__ rank!"
+    },
+    "Barbarian": {
+      "emoji": "",
+      "text": "You have received the __**Barbarian**__ rank!"
+    },
+    "Berserker": {
+      "emoji": "",
+      "text": "You have received the __**Berserker**__ rank!"
+    },
+    "Staff": {
+      "emoji": "",
+      "text": "You have received the __**Staff**__ rank!"
+    },
+    "Crew": {
+      "emoji": "",
+      "text": "You have received the __**Crew**__ rank!"
+    },
+    "Helper": {
+      "emoji": "",
+      "text": "You have received the __**Helper**__ rank!"
+    },
+    "Moderator": {
+      "emoji": "",
+      "text": "You have received the __**Moderator**__ rank!"
+    },
+    "Sheriff": {
+      "emoji": "",
+      "text": "You have received the __**Sheriff**__ rank!"
+    },
+
+    "Red": {
+      "emoji": "",
+      "text": "You have received the __**Red**__ rank!"
+    },
+    "Orange": {
+      "emoji": "",
+      "text": "You have received the __**Orange**__ rank!"
+    },
+    "Yellow": {
+      "emoji": "",
+      "text": "You have received the __**Yellow**__ rank!"
+    },
+    "Green": {
+      "emoji": "",
+      "text": "You have received the __**Green**__ rank!"
+    },
+    "Blue": {
+      "emoji": "",
+      "text": "You have received the __**Blue**__ rank!"
+    },
+    "Purple": {
+      "emoji": "",
+      "text": "You have received the __**Purple**__ rank!"
+    },
+    "Pink": {
+      "emoji": "",
+      "text": "You have received the __**Pink**__ rank!"
+    },
+    "Grey": {
+      "emoji": "",
+      "text": "You have received the __**Grey**__ rank!"
+    },
+    "Wizard": {
+      "emoji": "",
+      "text": "You have received the __**Wizard**__ rank!"
+    },
+    "Trickster": {
+      "emoji": "",
+      "text": "You have received the __**Trickster**__ rank!"
+    },
+    "Illusionist": {
+      "emoji": "",
+      "text": "You have received the __**Illusionist**__ rank!"
+    },
+    "Summoner": {
+      "emoji": "",
+      "text": "You have received the __**Summoner**__ rank!"
+    },
+    "Necromancer": {
+      "emoji": "",
+      "text": "You have received the __**Necromancer**__ rank!"
+    },
+    "Warlock": {
+      "emoji": "",
+      "text": "You have received the __**Warlock**__ rank!"
+    },
+    "Witch": {
+      "emoji": "",
+      "text": "You have received the __**Witch**__ rank!"
+    },
+    "Seer": {
+      "emoji": "",
+      "text": "You have received the __**Seer**__ rank!"
+    },
+    "Assassin": {
+      "emoji": "",
+      "text": "You have received the __**Assassin**__ rank!"
+    },
+    "Cutpurse": {
+      "emoji": "",
+      "text": "You have received the __**Cutpurse**__ rank!"
+    },
+    "Bandit": {
+      "emoji": "",
+      "text": "You have received the __**Bandit**__ rank!"
+    },
+    "Scout": {
+      "emoji": "",
+      "text": "You have received the __**Scout**__ rank!"
+    },
+    "Burglar": {
+      "emoji": "",
+      "text": "You have received the __**Burglar**__ rank!"
+    },
+    "Rogue": {
+      "emoji": "",
+      "text": "You have received the __**Rogue**__ rank!"
+    },
+    "Smuggler": {
+      "emoji": "",
+      "text": "You have received the __**Smuggler**__ rank!"
+    },
+    "Brigand": {
+      "emoji": "",
+      "text": "You have received the __**Brigand**__ rank!"
+    },
+    "Oracle": {
+      "emoji": "",
+      "text": "You have received the __**Oracle**__ rank!"
+    },
+    "Pure": {
+      "emoji": "",
+      "text": "You have received the __**Pure**__ rank!"
+    },
+    "Champion": {
+      "emoji": "",
+      "text": "You have received the __**Champion**__ rank!"
+    },
+    "Epic": {
+      "emoji": "",
+      "text": "You have received the __**Epic**__ rank!"
+    },
+    "Mystic": {
+      "emoji": "",
+      "text": "You have received the __**Mystic**__ rank!"
+    },
+    "Hero": {
+      "emoji": "",
+      "text": "You have received the __**Hero**__ rank!"
+    },
+    "Trialist": {
+      "emoji": "",
+      "text": "You have received the __**Trialist**__ rank!"
+    },
+    "Defiler": {
+      "emoji": "",
+      "text": "You have received the __**Defiler**__ rank!"
+    },
+    "Scholar": {
+      "emoji": "",
+      "text": "You have received the __**Scholar**__ rank!"
+    },
+    "Councillor": {
+      "emoji": "",
+      "text": "You have received the __**Councillor**__ rank!"
+    },
+    "Recruiter": {
+      "emoji": "",
+      "text": "You have received the __**Recruiter**__ rank!"
+    },
+    "Learner": {
+      "emoji": "",
+      "text": "You have received the __**Learner**__ rank!"
+    },
+    "Scribe": {
+      "emoji": "",
+      "text": "You have received the __**Scribe**__ rank!"
+    },
+    "Assistant": {
+      "emoji": "",
+      "text": "You have received the __**Assistant**__ rank!"
+    },
+    "Teacher": {
+      "emoji": "",
+      "text": "You have received the __**Teacher**__ rank!"
+    },
+    "Coordinator": {
+      "emoji": "",
+      "text": "You have received the __**Coordinator**__ rank!"
+    },
+    "Walker": {
+      "emoji": "",
+      "text": "You have received the __**Walker**__ rank!"
+    },
+    "Speed-Runner": {
+      "emoji": "",
+      "text": "You have received the __**Speed-Runner**__ rank!"
+    },
+    "Wanderer": {
+      "emoji": "",
+      "text": "You have received the __**Wanderer**__ rank!"
+    },
+    "Pilgrim": {
+      "emoji": "",
+      "text": "You have received the __**Pilgrim**__ rank!"
+    },
+    "Vagrant": {
+      "emoji": "",
+      "text": "You have received the __**Vagrant**__ rank!"
+    },
+    "Record-chaser": {
+      "emoji": "",
+      "text": "You have received the __**Record-chaser**__ rank!"
+    },
+    "Racer": {
+      "emoji": "",
+      "text": "You have received the __**Racer**__ rank!"
+    },
+    "Strider": {
+      "emoji": "",
+      "text": "You have received the __**Strider**__ rank!"
+    },
+    "Doctor": {
+      "emoji": "",
+      "text": "You have received the __**Doctor**__ rank!"
+    },
+    "Nurse": {
+      "emoji": "",
+      "text": "You have received the __**Nurse**__ rank!"
+    },
+    "Druid": {
+      "emoji": "",
+      "text": "You have received the __**Druid**__ rank!"
+    },
+    "Healer": {
+      "emoji": "",
+      "text": "You have received the __**Healer**__ rank!"
+    },
+    "Zealot": {
+      "emoji": "",
+      "text": "You have received the __**Zealot**__ rank!"
+    },
+    "Cleric": {
+      "emoji": "",
+      "text": "You have received the __**Cleric**__ rank!"
+    },
+    "Shaman": {
+      "emoji": "",
+      "text": "You have received the __**Shaman**__ rank!"
+    },
+    "Therapist": {
+      "emoji": "",
+      "text": "You have received the __**Therapist**__ rank!"
+    },
+    "Gamer": {
+      "emoji": "",
+      "text": "You have received the __**Gamer**__ rank!"
+    },
+    "Adventurer": {
+      "emoji": "",
+      "text": "You have received the __**Adventurer**__ rank!"
+    },
+    "Explorer": {
+      "emoji": "",
+      "text": "You have received the __**Explorer**__ rank!"
+    },
+    "Achiever": {
+      "emoji": "",
+      "text": "You have received the __**Achiever**__ rank!"
+    },
+    "Quester": {
+      "emoji": "",
+      "text": "You have received the __**Quester**__ rank!"
+    },
+    "Raider": {
+      "emoji": "",
+      "text": "You have received the __**Raider**__ rank!"
+    },
+    "Completionist": {
+      "emoji": "",
+      "text": "You have received the __**Completionist**__ rank!"
+    },
+    "Elite": {
+      "emoji": "",
+      "text": "You have received the __**Elite**__ rank!"
+    },
+    "Firestarter": {
+      "emoji": "",
+      "text": "You have received the __**Firestarter**__ rank!"
+    },
+    "Specialist": {
+      "emoji": "",
+      "text": "You have received the __**Specialist**__ rank!"
+    },
+    "Burnt": {
+      "emoji": "",
+      "text": "You have received the __**Burnt**__ rank!"
+    },
+    "Pyromancer": {
+      "emoji": "",
+      "text": "You have received the __**Pyromancer**__ rank!"
+    },
+    "Prodigy": {
+      "emoji": "",
+      "text": "You have received the __**Prodigy**__ rank!"
+    },
+    "Ignitor": {
+      "emoji": "",
+      "text": "You have received the __**Ignitor**__ rank!"
+    },
+    "Artisan": {
+      "emoji": "",
+      "text": "You have received the __**Artisan**__ rank!"
+    },
+    "Legacy": {
+      "emoji": "",
+      "text": "You have received the __**Legacy**__ rank!"
+    }
+  }
+}
