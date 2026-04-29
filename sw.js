@@ -1,6 +1,6 @@
 // ─── OSTS Service Worker v2.1 ─────────────────────────────────────────────────
 const CACHE      = 'osts-shell-v2.8';
-const API_CACHE  = 'osts-api-v2.2';
+const API_CACHE  = 'osts-api-v2.3';
 
 // App shell — every file needed to render the app offline
 const SHELL = [
@@ -16,8 +16,8 @@ const SHELL = [
   '/Pages/More_Pages/bossing.html',
   '/Pages/More_Pages/timers.html',
   '/Pages/More_Pages/bestiary.html',
-  '/Pages/More_Pages/fairyRings.html', 
   '/Pages/More_Pages/petLog.html',
+  '/Pages/More_Pages/fairyRings.html',
 ];
 
 // ── Install: precache the entire app shell ────────────────────────────────────
