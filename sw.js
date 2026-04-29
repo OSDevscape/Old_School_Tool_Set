@@ -1,35 +1,16 @@
-// ─── OSTS Service Worker v2.1 ─────────────────────────────────────────────────
-const CACHE      = 'osts-shell-v2.8';
-const API_CACHE  = 'osts-api-v2.3';
+// ─── OSTS Service Worker v2.4 ─────────────────────────────────────────────────
+// Strategy: network-first for navigation, cache-on-demand for assets
+// No precaching — avoids install failures from wrong paths
 
-// App shell — every file needed to render the app offline
-const SHELL = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/manifest.json',
-  '/JS/shared.js',
-  '/JS/bootstrap.js',
-  '/Pages/overview.html',
-  '/Pages/skills.html',
-  '/Pages/gains.html',
-  '/Pages/More_Pages/bossing.html',
-  '/Pages/More_Pages/timers.html',
-  '/Pages/More_Pages/bestiary.html',
-  '/Pages/More_Pages/petLog.html',
-  '/Pages/More_Pages/fairyRings.html',
-];
+const CACHE     = 'osts-v2.9';
+const API_CACHE = 'osts-api-v2.4';
 
-// ── Install: precache the entire app shell ────────────────────────────────────
+// ── Install: skip waiting, no precache ───────────────────────────────────────
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE)
-      .then(cache => cache.addAll(SHELL))
-      .then(() => self.skipWaiting())
-  );
+  self.skipWaiting();
 });
 
-// ── Activate: wipe old caches ─────────────────────────────────────────────────
+// ── Activate: clear old caches ───────────────────────────────────────────────
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
@@ -41,18 +22,18 @@ self.addEventListener('activate', event => {
   );
 });
 
-// ── Fetch strategy ────────────────────────────────────────────────────────────
+// ── Fetch ─────────────────────────────────────────────────────────────────────
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
   const url = new URL(event.request.url);
 
-  // Skip: non-same-origin (CDNs, APIs, images), vscode devtools noise
+  // Skip: cross-origin, vscode noise
   if (url.origin !== self.location.origin) return;
   if (url.searchParams.has('vscode-livepreview')) return;
 
-  // Netlify functions → network-only (never cache API responses in shell)
-  if (url.pathname.startsWith('/netlify/')) {
+  // Netlify functions: network only, never cache
+  if (url.pathname.startsWith('/.netlify/')) {
     event.respondWith(
       fetch(event.request).catch(() =>
         new Response(JSON.stringify({ error: 'Offline' }), {
@@ -64,45 +45,32 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Navigation requests (HTML pages) → cache-first, fallback to /index.html
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      caches.match(event.request)
-        .then(cached => {
-          if (cached) return cached;
-          return fetch(event.request)
-            .then(res => {
-              if (res.ok) {
-                caches.open(CACHE).then(c => c.put(event.request, res.clone()));
-              }
-              return res;
-            })
-            .catch(() => caches.match('/index.html'));
-        })
-    );
-    return;
-  }
-
-  // Static assets (JS, CSS, fonts, icons) → cache-first, update in background
+  // Everything else: network first, fall back to cache
   event.respondWith(
-    caches.open(CACHE).then(async cache => {
-      const cached = await cache.match(event.request);
-
-      const networkFetch = fetch(event.request).then(res => {
-        if (res && res.ok) cache.put(event.request, res.clone());
-        return res;
-      }).catch(() => null);
-
-      // Return cached immediately; update in background
-      return cached || networkFetch || new Response('Offline', {
-        status: 503,
-        headers: { 'Content-Type': 'text/plain' },
-      });
-    })
+    fetch(event.request)
+      .then(response => {
+        // Cache successful responses
+        if (response && response.ok) {
+          const clone = response.clone();
+          caches.open(CACHE).then(cache => cache.put(event.request, clone));
+        }
+        return response;
+      })
+      .catch(() => {
+        // Network failed — try cache
+        return caches.match(event.request).then(cached => {
+          if (cached) return cached;
+          // For navigation, return index as fallback
+          if (event.request.mode === 'navigate') {
+            return caches.match('/index.html');
+          }
+          return new Response('Offline', { status: 503 });
+        });
+      })
   );
 });
 
-// ── Push notifications ────────────────────────────────────────────────────────
+// ── Push Notifications ────────────────────────────────────────────────────────
 self.addEventListener('push', event => {
   let data = {};
   try { data = event.data ? event.data.json() : {}; }
@@ -110,10 +78,10 @@ self.addEventListener('push', event => {
 
   event.waitUntil(
     self.registration.showNotification(data.title || 'OSTS Notification', {
-      body:     data.body  || 'You have a new notification.',
+      body:     data.body || 'You have a new notification.',
       icon:     '/Assets/Logo/icon-192.png',
       badge:    '/Assets/Logo/icon-192.png',
-      tag:      data.tag   || 'osts-push',
+      tag:      data.tag || 'osts-push',
       renotify: true,
       data:     { url: data.url || '/' },
     })
