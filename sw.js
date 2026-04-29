@@ -13,10 +13,11 @@ const SHELL = [
   '/Pages/overview.html',
   '/Pages/skills.html',
   '/Pages/gains.html',
-  '/Pages/bossing.html',
-  '/Pages/timers.html',
-  '/Pages/bestiary.html',
-  '/Pages/fairyRings.html', 
+  '/Pages/More_Pages/bossing.html',
+  '/Pages/More_Pages/timers.html',
+  '/Pages/More_Pages/bestiary.html',
+  '/Pages/More_Pages/fairyRings.html', 
+  '/Pages/More_Pages/petLog.html',
 ];
 
 // ── Install: precache the entire app shell ────────────────────────────────────
