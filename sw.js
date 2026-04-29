@@ -1,5 +1,5 @@
 // ─── OSTS Service Worker v2.1 ─────────────────────────────────────────────────
-const CACHE      = 'osts-shell-v2.7';
+const CACHE      = 'osts-shell-v2.8';
 const API_CACHE  = 'osts-api-v2.2';
 
 // App shell — every file needed to render the app offline
