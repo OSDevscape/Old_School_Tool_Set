@@ -1,9 +1,9 @@
-// ─── OSTS Service Worker v2.4 ─────────────────────────────────────────────────
+// ─── OSTS Service Worker v3.0  ─────────────────────────────────────────────────
 // Strategy: network-first for navigation, cache-on-demand for assets
 // No precaching — avoids install failures from wrong paths
 
-const CACHE     = 'osts-v2.9';
-const API_CACHE = 'osts-api-v2.4';
+const CACHE     = 'osts-v3.0';
+const API_CACHE = 'osts-api-v2.5';
 
 // ── Install: skip waiting, no precache ───────────────────────────────────────
 self.addEventListener('install', event => {
