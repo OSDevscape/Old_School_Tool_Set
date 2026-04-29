@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#2b241b">
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="../../manifest.json">
   <title>OSTS — Fairy Rings</title>
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="../../style.css">
   <style>
 
     /* ── Search + filter bar ── */
@@ -230,7 +230,7 @@
 <body>
 
 <header>
-  <h1>OSTS — <span style="color:var(--gold)">Fairy Rings</span></h1>
+  <h1>OSTS</h1>
   <div class="hdr-actions">
     <button id="install-btn" style="display:none">Install</button>
     <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
@@ -251,6 +251,14 @@
       <button class="theme-chip" data-theme="brown">Brown</button>
     </div>
   </div>
+  <div class="settings-block">
+    </div>
+
+  <div class="settings-block">
+    <div class="settings-label">Player Profiles</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.5">Manage profiles on the <a href="../overview.html" style="color:var(--gold);font-weight:600">Overview</a> page.</div>
+  </div>
+
   <div class="settings-block">
     <div class="settings-label">Fairy Ring Tools</div>
     <button class="push-btn" id="clear-pins-btn">Clear all pins</button>
@@ -290,11 +298,12 @@
       <button class="modal-close" id="more-menu-close">✕</button>
     </div>
     
-    <div class="modal-actions">
-      <a class="modal-action" href="./bossing.html">🏆 Bossing</a>
-      <a class="modal-action" href="./timers.html">⏰ Timers</a>
-      <a class="modal-action" href="./bestiary.html">🐉 Bestiary</a>
-      <a class="modal-action" href="./fairyRings.html">🍄 Fairy Rings</a>    
+            <div class="modal-actions">
+      <a class="modal-action" href="../bossing.html">🏆 Bossing</a>
+      <a class="modal-action" href="petLog.html">🐾 Pet Log</a>
+      <a class="modal-action" href="fairyRings.html">🍄 Fairy Rings</a>
+      <a class="modal-action" href="../timers.html">⏱ Timers</a>
+      <a class="modal-action" href="../bestiary.html">🐉 Bestiary</a>
     </div>
   </div>
 </div>
@@ -325,9 +334,9 @@
 </div>
 
 <script type="module">
-import { initPage, storage, showToast } from '/JS/shared.js';
+import { initPage, storage, showToast } from '../../JS/shared.js';
 
-initPage('fairyrings');
+initPage('more');
 
 // ── Fairy ring data ──────────────────────────────────────────────────────────
 // [code, destination, region, wikiSlug]

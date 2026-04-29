@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2b241b">
+  <link rel="manifest" href="../../manifest.json">
+  <title>Pet Collection Log - OSTS</title>
+  <link rel="stylesheet" href="../../style.css">
+  <style>
+    .pl-header{display:flex;align-items:center;gap:14px;padding:14px 14px 12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:10px}
+    .pl-avatar{width:52px;height:52px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--surface2);border:2px solid var(--gold);border-radius:12px;overflow:hidden}
+    .pl-avatar-emoji{font-size:26px}
+    .pl-player-info{flex:1;min-width:0}
+    .pl-player-name{font-size:22px;font-weight:700;line-height:1.1}
+    .pl-source-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+    .pl-top-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+    .pl-top-stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 12px;text-align:center}
+    .pl-top-stat .v{font-size:22px;font-weight:700;color:var(--gold2,var(--gold))}
+    .pl-top-stat .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-top:3px}
+    .pl-quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}
+    .pl-quick-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px}
+    .pl-quick-box .qk{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
+    .pl-quick-box .qv{font-size:20px;font-weight:700;color:var(--text)}
+    .pl-quick-box .qs{font-size:12px;color:var(--muted);margin-top:2px}
+    .pl-quick-box .qv.highlight{color:var(--gold)}
+    .pl-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+    .filter-chip{padding:6px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text);transition:all .15s}
+    .filter-chip.active{border-color:var(--gold);background:rgba(184,136,72,.1);color:var(--gold)}
+    .pl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+    .pet-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:all .15s;position:relative}
+    .pet-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+    .pet-img-wrap{height:90px;background:var(--surface3);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+    .pet-img{width:100%;height:100%;object-fit:contain;padding:10px}
+    .pet-clog-badge{display:none}
+    .pet-clog-badge img{width:100%;height:100%;object-fit:cover}
+    .pet-info{padding:5px 6px 7px}
+    .pet-name{font-size:10px;font-weight:700;color:var(--text);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .pet-meta{display:flex;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-bottom:6px}
+    .pet-kc{font-weight:600;color:var(--gold)}
+    .pet-notes{font-size:11px;color:var(--muted);line-height:1.3;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+    .pl-empty{text-align:center;padding:60px 20px;color:var(--muted)}
+    .pl-empty-icon{font-size:56px;margin-bottom:12px;opacity:.4}
+    .fab{position:fixed;right:16px;bottom:calc(var(--nav-h,60px) + 16px);width:56px;height:56px;border:none;border-radius:50%;background:var(--gold);color:#000;font-size:32px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:110;box-shadow:0 8px 20px rgba(0,0,0,.35);transition:transform .15s}
+    .fab:hover{transform:scale(1.08)}
+    .pet-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:250;display:none;align-items:center;justify-content:center;padding:20px}
+    .pet-modal-overlay.show{display:flex!important}
+    .pet-modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:540px;max-height:88vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,.4)}
+    .pet-modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 14px;border-bottom:1px solid var(--border)}
+    .pet-modal-title{font-size:18px;font-weight:700;margin:0}
+    .pet-modal-close{background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:20px;cursor:pointer;padding:4px 10px;line-height:1;transition:all .15s}
+    .pet-modal-close:hover{border-color:var(--gold)}
+    .pet-form{padding:16px 20px 20px}
+    .form-group{margin-bottom:16px}
+    .form-label{display:block;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
+    .form-input,.form-textarea,.form-select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:10px 12px;font-size:14px;outline:none}
+    .form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--gold)}
+    .form-textarea{resize:vertical;min-height:88px;font-family:inherit}
+    .img-preview{width:100%;height:120px;border-radius:10px;object-fit:cover;background:var(--surface3);display:none;margin-top:10px;border:1px solid var(--border)}
+    .img-placeholder{width:100%;height:120px;border-radius:10px;background:var(--surface3);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;margin-top:10px;border:1px solid var(--border)}
+    .form-row{display:flex;gap:10px}
+    .form-row>*{flex:1}
+    .form-btns{display:flex;gap:10px;margin-top:18px;padding-top:18px;border-top:1px solid var(--border)}
+    .btn-primary{flex:1;padding:11px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:var(--gold);border:1px solid var(--gold);color:#000}
+    .btn-secondary{flex:1;padding:11px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:var(--surface2);border:1px solid var(--border);color:var(--text)}
+    .btn-delete{background:var(--surface2);border:1px solid rgba(248,81,73,.3);color:#f85149;padding:11px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer}
+    .link-btn{background:none;border:none;color:var(--gold);font:inherit;padding:0;cursor:pointer;text-decoration:underline}
+    #pet-select-container{display:none}
+
+    /* ── Pet view panel ── */
+    .pet-view-img { width:100%; border-radius:10px; object-fit:cover; border:1px solid var(--border); max-height:240px; display:block; }
+    .pet-view-img-placeholder { width:100%; height:60px; border-radius:10px; background:var(--surface3); display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:12px; gap:6px; border:1px solid var(--border); }
+    .pet-view-icon { width:48px; height:48px; object-fit:contain; }
+    .pet-view-head { display:flex; align-items:center; gap:14px; padding:16px 20px 14px; border-bottom:1px solid var(--border); }
+    .pet-view-info { flex:1; }
+    .pet-view-name { font-size:20px; font-weight:700; }
+    .pet-view-source { font-size:12px; color:var(--muted); margin-top:2px; }
+    .pet-view-btns { display:flex; gap:8px; }
+    .pet-view-body { padding:16px 20px; }
+    .pet-detail-row { display:flex; justify-content:space-between; padding:9px 0; border-bottom:1px solid var(--border); font-size:13px; }
+    .pet-detail-row:last-child { border-bottom:none; }
+    .pet-detail-row .k { color:var(--muted); }
+    .pet-detail-row .v { font-weight:600; color:var(--text); }
+    .pet-view-notes { margin-top:10px; background:var(--surface2); border-radius:10px; padding:12px; font-size:12px; color:var(--muted); line-height:1.6; }
+    .btn-icon { background:var(--surface2); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:16px; cursor:pointer; padding:6px 12px; transition:border-color .15s; }
+    .btn-icon:hover { border-color:var(--gold); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>OSTS</h1>
+    <div class="hdr-actions">
+      <button id="install-btn">Install</button>
+      <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
+    </div>
+  </header>
+
+  <div id="settings-overlay"></div>
+  <div id="settings-panel" aria-hidden="true">
+    <div class="settings-head">
+      <h2>Settings</h2>
+      <button class="settings-close" id="settings-close">×</button>
+    </div>
+    <div class="settings-block">
+      <div class="settings-label">Appearance</div>
+      <div class="theme-options">
+        <button class="theme-chip" data-theme="dark">Dark</button>
+        <button class="theme-chip" data-theme="light">Light</button>
+        <button class="theme-chip" data-theme="brown">Brown</button>
+      </div>
+    </div>
+    <div class="settings-block">
+      <div class="settings-label">Player Profiles</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.5">
+        Manage profiles on the <a href="../overview.html" style="color:var(--gold);font-weight:600">Overview</a> page.
+      </div>
+    </div>
+  </div>
+
+  <div id="main">
+    <div class="page active" id="page-pet-log">
+      <div id="loader"></div>
+      <div id="pl-content">
+        <div class="pl-header">
+          <div class="pl-avatar"><span class="pl-avatar-emoji">🐾</span></div>
+          <div class="pl-player-info">
+            <div class="pl-player-name">Pet Collection Log</div>
+            <div class="pl-source-row"><span class="badge badge-ironman">Manual Tracking</span></div>
+          </div>
+        </div>
+        <div class="pl-top-stats">
+          <div class="pl-top-stat"><div class="v" id="pl-total-pets">0</div><div class="l">Total Pets</div></div>
+          <div class="pl-top-stat"><div class="v" id="pl-total-kc">0</div><div class="l">Avg Drop</div></div>
+          <div class="pl-top-stat"><div class="v" id="pl-completion">0%</div><div class="l">Collection</div></div>
+        </div>
+        <div class="pl-quick-grid">
+          <div class="pl-quick-box"><div class="qk">Unique Pets</div><div class="qv" id="pl-total-unique">0</div><div class="qs">Different pets logged</div></div>
+          <div class="pl-quick-box"><div class="qk">Luckiest Drop</div><div class="qv highlight" id="pl-avg-kc">-</div><div class="qs">Lowest KC/Lvl</div></div>
+        </div>
+        <div class="pl-filters" id="pl-filters"></div>
+        <div class="pl-grid" id="pl-grid"></div>
+        <div class="pl-empty" id="pl-empty" style="display:block">
+          <div class="pl-empty-icon">🐾</div>
+          <p>No pets logged yet.<br><button class="link-btn" id="pl-add-first">Click the + button to add your first pet</button></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="fab" id="fab-add-pet" title="Add Pet">+</button>
+
+  <div class="pet-modal-overlay" id="pet-modal-overlay">
+    <div class="pet-modal" onclick="event.stopPropagation()">
+      <div class="pet-modal-head">
+        <h3 class="pet-modal-title" id="pet-modal-title">Add Pet</h3>
+        <button type="button" class="pet-modal-close" id="pet-modal-close">×</button>
+      </div>
+      <form class="pet-form" id="pet-form" onsubmit="savePet(event); return false;">
+        <div class="form-group">
+          <label class="form-label">Pet Category</label>
+          <select class="form-select" id="pet-category-select" required onchange="populatePets(this.value)">
+            <option value="">Select category...</option>
+            <option value="Boss">Boss</option>
+            <option value="Skilling">Skilling</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group" id="pet-select-container">
+          <label class="form-label">Select Pet</label>
+          <select class="form-select" id="pet-select" required>
+            <option value="">Choose a pet...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Collection Log Screenshot</label>
+          <input type="file" id="pet-clog-upload" accept="image/*" hidden onchange="handleImageUpload(event)">
+          <button type="button" class="btn-secondary" style="width:100%;margin-bottom:8px" onclick="document.getElementById('pet-clog-upload').click()">📁 Upload Collection Log Image</button>
+          <img class="img-preview" id="pet-clog-preview" alt="Collection log preview">
+          <div class="img-placeholder" id="pet-clog-placeholder">Upload your collection log screenshot</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date Obtained</label>
+          <input type="date" class="form-input" id="pet-date">
+        </div>
+        <div class="form-group">
+          <div style="display:flex;gap:0;margin-bottom:7px;border:1px solid var(--border);border-radius:8px;overflow:hidden">
+            <button type="button" id="drop-type-kc"
+              onclick="setDropType('kc')"
+              style="flex:1;padding:7px;background:var(--gold);color:#000;border:none;font-size:12px;font-weight:700;cursor:pointer">
+              ⚔ KC (Boss/Activity)
+            </button>
+            <button type="button" id="drop-type-lvl"
+              onclick="setDropType('lvl')"
+              style="flex:1;padding:7px;background:var(--surface2);color:var(--muted);border:none;font-size:12px;font-weight:700;cursor:pointer;border-left:1px solid var(--border)">
+              🌿 Level (Skilling)
+            </button>
+          </div>
+          <input type="number" class="form-input" id="pet-kc" min="0" placeholder="e.g. 128 KC or Level 99">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Notes</label>
+          <textarea class="form-textarea" id="pet-notes" placeholder="Any extra details..."></textarea>
+        </div>
+        <div class="form-btns">
+          <button type="button" class="btn-delete" id="pet-delete-btn" style="display:none" onclick="deletePet()">Delete</button>
+          <button type="button" class="btn-secondary" id="pet-cancel">Cancel</button>
+          <button type="submit" class="btn-primary">Save Pet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Pet view modal -->
+  <div class="pet-modal-overlay" id="pet-view-overlay">
+    <div class="pet-modal" onclick="event.stopPropagation()" style="max-width:520px">
+      <div class="pet-view-head">
+        <img class="pet-view-icon" id="pv-icon" src="" alt="">
+        <div class="pet-view-info">
+          <div class="pet-view-name" id="pv-name"></div>
+          <div class="pet-view-source" id="pv-source"></div>
+        </div>
+        <div class="pet-view-btns">
+          <button class="btn-icon" id="pv-edit-btn" title="Edit">⚙️</button>
+          <button class="btn-icon" id="pv-close-btn" title="Close">✕</button>
+        </div>
+      </div>
+      <div class="pet-view-body">
+        <div id="pv-img-wrap"></div>
+        <div style="margin-top:14px">
+          <div class="pet-detail-row"><span class="k">Category</span><span class="v" id="pv-category"></span></div>
+          <div class="pet-detail-row"><span class="k" id="pv-kc-label">KC at drop</span><span class="v" id="pv-kc"></span></div>
+          <div class="pet-detail-row"><span class="k">Date obtained</span><span class="v" id="pv-date"></span></div>
+        </div>
+        <div class="pet-view-notes" id="pv-notes" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+
+  <nav id="bottom-nav"></nav>
+
+  <div class="modal-overlay" id="more-menu-overlay">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <div><div class="modal-title">More</div></div>
+        <button class="modal-close" id="more-menu-close">×</button>
+      </div>
+                  <div class="modal-actions">
+      <a class="modal-action" href="../bossing.html">🏆 Bossing</a>
+      <a class="modal-action" href="petLog.html">🐾 Pet Log</a>
+      <a class="modal-action" href="fairyRings.html">🍄 Fairy Rings</a>
+      <a class="modal-action" href="../timers.html">⏱ Timers</a>
+      <a class="modal-action" href="../bestiary.html">🐉 Bestiary</a>
+    </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script type="module">
+    import { initPage, showToast } from '../../JS/shared.js';
+
+    const KEY = 'osts-pet-log-v2';
+    const TOTAL_PETS = 68;
+    const $ = id => document.getElementById(id);
+    let editingId = null;
+    let clogImage = '';
+    let activeFilter = 'all';
+    let currentDropType = 'kc';
+
+    window.setDropType = function(type) {
+      currentDropType = type;
+      const kcBtn  = $('drop-type-kc');
+      const lvlBtn = $('drop-type-lvl');
+      if (!kcBtn || !lvlBtn) return;
+      if (type === 'kc') {
+        kcBtn.style.background  = 'var(--gold)'; kcBtn.style.color  = '#000';
+        lvlBtn.style.background = 'var(--surface2)'; lvlBtn.style.color = 'var(--muted)';
+        $('pet-kc').placeholder = 'e.g. 128 KC';
+      } else {
+        lvlBtn.style.background = 'var(--gold)'; lvlBtn.style.color = '#000';
+        kcBtn.style.background  = 'var(--surface2)'; kcBtn.style.color = 'var(--muted)';
+        $('pet-kc').placeholder = 'e.g. Level 75';
+      }
+    };
+
+    const PET_DB = {
+      Boss: [{n:"Abyssal orphan",s:"Abyssal Sire",i:"https://oldschool.runescape.wiki/images/Abyssal_orphan.png"},{n:"Baby mole",s:"Giant Mole",i:"https://oldschool.runescape.wiki/images/Baby_mole.png"},{n:"Baron",s:"Duke Sucellus",i:"https://oldschool.runescape.wiki/images/Baron.png"},{n:"Bran",s:"Royal Titans",i:"https://oldschool.runescape.wiki/images/Bran.png"},{n:"Beef",s:"Brutus",i:"https://oldschool.runescape.wiki/images/Beef.png"},{n:"Butch",s:"Vardorvis",i:"https://oldschool.runescape.wiki/images/Butch.png"},{n:"Callisto cub",s:"Callisto",i:"https://oldschool.runescape.wiki/images/Callisto_cub.png"},{n:"Dom",s:"Doom of Mokhaiotl",i:"https://oldschool.runescape.wiki/images/Dom.png"},{n:"Gull",s:"Shellbane Gryphon",i:"https://oldschool.runescape.wiki/images/Gull.png"},{n:"Hellpuppy",s:"Cerberus",i:"https://oldschool.runescape.wiki/images/Hellpuppy.png"},{n:"Huberte",s:"The Hueycoatl",i:"https://oldschool.runescape.wiki/images/Huberte.png"},{n:"Ikkle hydra",s:"Alchemical Hydra",i:"https://oldschool.runescape.wiki/images/Ikkle_hydra.png"},{n:"Jal-nib-rek",s:"TzKal-Zuk",i:"https://oldschool.runescape.wiki/images/Jal-nib-rek.png"},{n:"Kalphite princess",s:"Kalphite Queen",i:"https://oldschool.runescape.wiki/images/Kalphite_princess.png"},{n:"Lil' zik",s:"Theatre of Blood",i:"https://oldschool.runescape.wiki/images/Lil%27_zik.png"},{n:"Lil'viathan",s:"The Leviathan",i:"https://oldschool.runescape.wiki/images/Lil%27viathan.png"},{n:"Little nightmare",s:"Nightmare",i:"https://oldschool.runescape.wiki/images/Little_nightmare.png"},{n:"Moxi",s:"Amoxliatl",i:"https://oldschool.runescape.wiki/images/Moxi.png"},{n:"Muphin",s:"Phantom Muspah",i:"https://oldschool.runescape.wiki/images/Muphin.png"},{n:"Nexling",s:"Nex",i:"https://oldschool.runescape.wiki/images/Nexling.png"},{n:"Nid",s:"Araxxor",i:"https://oldschool.runescape.wiki/images/Nid.png"},{n:"Noon",s:"Grotesque Guardians",i:"https://oldschool.runescape.wiki/images/Noon.png"},{n:"Olmlet",s:"Chambers of Xeric",i:"https://oldschool.runescape.wiki/images/Olmlet.png"},{n:"Pet chaos elemental",s:"Chaos Elemental",i:"https://oldschool.runescape.wiki/images/Pet_chaos_elemental.png"},{n:"Pet dagannoth prime",s:"Dagannoth Prime",i:"https://oldschool.runescape.wiki/images/Pet_dagannoth_prime.png"},{n:"Pet dagannoth rex",s:"Dagannoth Rex",i:"https://oldschool.runescape.wiki/images/Pet_dagannoth_rex.png"},{n:"Pet dagannoth supreme",s:"Dagannoth Supreme",i:"https://oldschool.runescape.wiki/images/Pet_dagannoth_supreme.png"},{n:"Pet dark core",s:"Corporeal Beast",i:"https://oldschool.runescape.wiki/images/Pet_dark_core.png"},{n:"Pet general graardor",s:"General Graardor",i:"https://oldschool.runescape.wiki/images/Pet_general_graardor.png"},{n:"Pet k'ril tsutsaroth",s:"K'ril Tsutsaroth",i:"https://oldschool.runescape.wiki/images/Pet_k%27ril_tsutsaroth.png"},{n:"Pet kraken",s:"Kraken",i:"https://oldschool.runescape.wiki/images/Pet_kraken.png"},{n:"Pet kree'arra",s:"Kree'arra",i:"https://oldschool.runescape.wiki/images/Pet_kree%27arra.png"},{n:"Pet smoke devil",s:"Thermonuclear smoke devil",i:"https://oldschool.runescape.wiki/images/Pet_smoke_devil.png"},{n:"Pet snakeling",s:"Zulrah",i:"https://oldschool.runescape.wiki/images/Pet_snakeling.png"},{n:"Pet zilyana",s:"Commander Zilyana",i:"https://oldschool.runescape.wiki/images/Pet_zilyana.png"},{n:"Phoenix",s:"Wintertodt",i:"https://oldschool.runescape.wiki/images/Phoenix.png"},{n:"Prince black dragon",s:"King Black Dragon",i:"https://oldschool.runescape.wiki/images/Prince_black_dragon.png"},{n:"Scorpia's offspring",s:"Scorpia",i:"https://oldschool.runescape.wiki/images/Scorpia%27s_offspring.png"},{n:"Scurry",s:"Scurrius",i:"https://oldschool.runescape.wiki/images/Scurry.png"},{n:"Skotos",s:"Skotizo",i:"https://oldschool.runescape.wiki/images/Skotos.png"},{n:"Smolcano",s:"Zalcano",i:"https://oldschool.runescape.wiki/images/Smolcano.png"},{n:"Smol heredit",s:"Sol Heredit",i:"https://oldschool.runescape.wiki/images/Smol_heredit.png"},{n:"Sraracha",s:"Sarachnis",i:"https://oldschool.runescape.wiki/images/Sraracha.png"},{n:"Tiny tempor",s:"Tempoross",i:"https://oldschool.runescape.wiki/images/Tiny_tempor.png"},{n:"Tumeken's guardian",s:"Tombs of Amascut",i:"https://oldschool.runescape.wiki/images/Tumeken%27s_guardian.png"},{n:"Tzrek-jad",s:"TzTok-Jad",i:"https://oldschool.runescape.wiki/images/Tzrek-jad.png"},{n:"Venenatis spiderling",s:"Venenatis",i:"https://oldschool.runescape.wiki/images/Venenatis_spiderling.png"},{n:"Vet'ion jr.",s:"Vet'ion",i:"https://oldschool.runescape.wiki/images/Vet%27ion_jr..png"},{n:"Vorki",s:"Vorkath",i:"https://oldschool.runescape.wiki/images/Vorki.png"},{n:"Wisp",s:"The Whisperer",i:"https://oldschool.runescape.wiki/images/Wisp.png"},{n:"Yami",s:"Yama",i:"https://oldschool.runescape.wiki/images/Yami.png"},{n:"Youngllef",s:"Corrupted Gauntlet",i:"https://oldschool.runescape.wiki/images/Youngllef.png"}],
+      Skilling: [{n:"Baby chinchompa",s:"Hunter",i:"https://oldschool.runescape.wiki/images/Baby_chinchompa.png"},{n:"Beaver",s:"Woodcutting",i:"https://oldschool.runescape.wiki/images/Beaver.png"},{n:"Giant squirrel",s:"Agility",i:"https://oldschool.runescape.wiki/images/Giant_squirrel.png"},{n:"Heron",s:"Fishing",i:"https://oldschool.runescape.wiki/images/Heron.png"},{n:"Rift guardian",s:"Runecraft",i:"https://oldschool.runescape.wiki/images/Rift_guardian.png"},{n:"Rock golem",s:"Mining",i:"https://oldschool.runescape.wiki/images/Rock_golem.png"},{n:"Rocky",s:"Thieving",i:"https://oldschool.runescape.wiki/images/Rocky.png"},{n:"Soup",s:"Sailing",i:"https://oldschool.runescape.wiki/images/Soup.png"},{n:"Tangleroot",s:"Farming",i:"https://oldschool.runescape.wiki/images/Tangleroot.png"}],
+      Other: [{n:"Abyssal protector",s:"Guardians of the Rift",i:"https://oldschool.runescape.wiki/images/Abyssal_protector.png"},{n:"Bloodhound",s:"Clue Scrolls (Master)",i:"https://oldschool.runescape.wiki/images/Bloodhound.png"},{n:"Chompy chick",s:"Chompy bird hunting",i:"https://oldschool.runescape.wiki/images/Chompy_chick.png"},{n:"Herbi",s:"Herbiboar",i:"https://oldschool.runescape.wiki/images/Herbi.png"},{n:"Lil' creator",s:"Soul Wars",i:"https://oldschool.runescape.wiki/images/Lil%27_creator.png"},{n:"Pet penance queen",s:"Barbarian Assault",i:"https://oldschool.runescape.wiki/images/Pet_penance_queen.png"},{n:"Quetzin",s:"Hunter's Guild Rumours",i:"https://oldschool.runescape.wiki/images/Quetzin.png"}]
+    };
+
+    function getPets() { return JSON.parse(localStorage.getItem(KEY) || '[]'); }
+    function savePetsToStorage(pets) { localStorage.setItem(KEY, JSON.stringify(pets)); }
+    function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+
+    function getPetData(petName) {
+      for (const cat in PET_DB) {
+        const found = PET_DB[cat].find(p => p.n === petName);
+        if (found) return { category: cat, name: found.n, source: found.s, image: found.i };
+      }
+      return null;
+    }
+
+    window.populatePets = function populatePets(category) {
+      const sel = $('pet-select');
+      const container = $('pet-select-container');
+      if (!category) {
+        sel.innerHTML = '<option value="">Choose a pet...</option>';
+        container.style.display = 'none';
+        return;
+      }
+      const pets = PET_DB[category] || [];
+      sel.innerHTML = '<option value="">Choose a pet...</option>' + pets.map(p => `<option value="${p.n}">${p.n}</option>`).join('');
+      container.style.display = 'block';
+    }
+
+    window.handleImageUpload = function handleImageUpload(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const img = new Image();
+        img.onload = () => {
+          // Compress to max 600px wide JPEG to keep localStorage usage low
+          const MAX = 600;
+          const scale = Math.min(1, MAX / img.width);
+          const canvas = document.createElement('canvas');
+          canvas.width  = Math.round(img.width  * scale);
+          canvas.height = Math.round(img.height * scale);
+          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+          clogImage = canvas.toDataURL('image/jpeg', 0.75);
+          $('pet-clog-preview').src = clogImage;
+          $('pet-clog-preview').style.display = 'block';
+          $('pet-clog-placeholder').style.display = 'none';
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function renderStats() {
+      const pets = getPets();
+      const total = pets.length;
+      const unique = new Set(pets.map(p => p.petName)).size;
+      const totalKC = pets.reduce((s, p) => s + (Number(p.kc) || 0), 0);
+      const avgKC = total ? Math.round(totalKC / total) : 0;
+      const completion = Math.round(unique / TOTAL_PETS * 100);
+
+      const luckiest = pets.reduce((min, p) => {
+        const v = Number(p.kc) || 0;
+        return (v > 0 && v < min) ? v : min;
+      }, Infinity);
+      $('pl-total-pets').textContent = total;
+      $('pl-total-unique').textContent = unique;
+      $('pl-total-kc').textContent = total ? (totalKC / total).toFixed(0) : '—';
+      $('pl-avg-kc').textContent = luckiest < Infinity ? luckiest.toLocaleString() : '-';
+      $('pl-completion').textContent = completion + '%';
+    }
+
+    function renderFilters() {
+      const filters = [{ label: 'All', value: 'all' }, ...Object.keys(PET_DB).map(c => ({ label: c, value: c }))];
+      $('pl-filters').innerHTML = filters.map(f => 
+        `<button class="filter-chip ${f.value === 'all' ? 'active' : ''}" onclick="setFilter('${f.value}')">${f.label}</button>`
+      ).join('');
+    }
+
+    window.setFilter = function(filter) {
+      activeFilter = filter;
+      document.querySelectorAll('.filter-chip').forEach(x => x.classList.remove('active'));
+      event.target.classList.add('active');
+      applyFilter();
+    };
+
+    function applyFilter() {
+      document.querySelectorAll('.pet-card').forEach(card => {
+        const cardCategory = card.dataset.category;
+        card.style.display = (activeFilter === 'all' || activeFilter === cardCategory) ? 'block' : 'none';
+      });
+    }
+
+    function renderPets() {
+      const pets = getPets();
+      const grid = $('pl-grid');
+      const empty = $('pl-empty');
+
+      if (!pets.length) {
+        grid.innerHTML = '';
+        grid.style.display = 'none';
+        empty.style.display = 'block';
+        return;
+      }
+
+      grid.style.display = 'grid';
+      empty.style.display = 'none';
+
+      grid.innerHTML = pets.map(p => {
+        const petData = getPetData(p.petName);
+        const petImg = petData ? petData.image : '';
+        const petBadge = petImg ? `<div class="pet-clog-badge"><img src="${petImg}" alt="${p.petName}"></div>` : '';
+
+        return `<div class="pet-card" data-id="${p.id}" data-category="${p.category}" onclick="openPetModal('${p.id}')">
+          <div class="pet-img-wrap">
+            ${petImg
+              ? `<img class="pet-img" src="${petImg}" alt="${p.petName}" loading="lazy">`
+              : `<span style="color:var(--muted);font-size:28px;">🐾</span>`}
+          </div>
+          <div class="pet-info">
+            <div class="pet-name">${p.petName}</div>
+          </div>
+        </div>`;
+      }).join('');
+
+      applyFilter();
+    }
+
+    // VIEW mode — show pet details with CLOG image
+    window.openPetModal = function(id) {
+      if (id) {
+        // Show view panel for existing pets
+        const p = getPets().find(x => x.id === id);
+        if (!p) return;
+        editingId = id;
+        const petData = getPetData(p.petName);
+
+        $('pv-name').textContent    = p.petName;
+        $('pv-source').textContent  = p.source || '';
+        $('pv-category').textContent= p.category || '';
+        const dropLabel = (p.dropType === 'lvl') ? 'Level at drop' : 'KC at drop';
+        document.querySelector('#pv-kc')?.closest('.pet-detail-row')?.querySelector('.k')?.textContent !== undefined && (document.querySelector('.pet-detail-row .k') ? null : null);
+        $('pv-kc').textContent      = p.kc ? Number(p.kc).toLocaleString() : '—';
+        $('pv-kc-label').textContent = dropLabel;
+        $('pv-date').textContent    = p.dateObtained || '—';
+
+        // Pet icon
+        if (petData?.image) {
+          $('pv-icon').src = petData.image;
+          $('pv-icon').style.display = 'block';
+        } else {
+          $('pv-icon').style.display = 'none';
+        }
+
+        // CLOG image
+        const imgWrap = $('pv-img-wrap');
+        const storedImg = p.clogImage || '';
+        if (storedImg && storedImg.length > 10) {
+          imgWrap.innerHTML = `
+            <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Collection Log Screenshot</div>
+            <img class="pet-view-img" src="${storedImg}" alt="Collection Log">`;
+        } else {
+          imgWrap.innerHTML = `
+            <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Collection Log Screenshot</div>
+            <div class="pet-view-img-placeholder"><span>📷</span><span>No screenshot uploaded</span></div>`;
+        }
+
+        // Notes
+        if (p.notes) {
+          $('pv-notes').textContent    = p.notes;
+          $('pv-notes').style.display  = 'block';
+        } else {
+          $('pv-notes').style.display  = 'none';
+        }
+
+        $('pet-view-overlay').classList.add('show');
+      } else {
+        // ADD mode — show creation form
+        openEditForm(null);
+      }
+    };
+
+    function openEditForm(id) {
+      editingId = id || null;
+      $('pet-form').reset();
+      clogImage = '';
+      $('pet-clog-preview').style.display   = 'none';
+      $('pet-clog-placeholder').style.display = 'flex';
+      $('pet-modal-title').textContent       = id ? 'Edit Pet' : 'Add Pet';
+      $('pet-delete-btn').style.display      = id ? 'block' : 'none';
+      $('pet-select-container').style.display= 'none';
+      $('pet-category-select').disabled      = false;
+      $('pet-select').disabled               = false;
+
+      if (id) {
+        const p = getPets().find(x => x.id === id);
+        if (!p) return;
+        $('pet-category-select').value = p.category || '';
+        populatePets(p.category);
+        $('pet-select').value  = p.petName || '';
+        $('pet-kc').value      = p.kc || '';
+        setDropType(p.dropType || (p.category === 'Skilling' ? 'lvl' : 'kc'));
+        $('pet-date').value    = p.dateObtained || '';
+        $('pet-notes').value   = p.notes || '';
+        if (p.clogImage) {
+          clogImage = p.clogImage;
+          $('pet-clog-preview').src           = clogImage;
+          $('pet-clog-preview').style.display = 'block';
+          $('pet-clog-placeholder').style.display = 'none';
+        }
+      }
+
+      $('pet-modal-overlay').classList.add('show');
+    }
+
+    function closeModal() {
+      $('pet-modal-overlay').classList.remove('show');
+      editingId = null;
+      clogImage = '';
+    }
+
+    window.savePet = function(e) {
+      if (e) e.preventDefault();
+
+      const petName = $('pet-select').value;
+      if (!petName) {
+        showToast('Please select a pet');
+        return false;
+      }
+
+      const petData = getPetData(petName);
+      if (!petData) {
+        showToast('Pet data not found');
+        return false;
+      }
+
+      const pet = {
+        id: editingId || genId(),
+        petName: petName,
+        category: petData.category,
+        source: petData.source,
+        clogImage: clogImage,
+        dateObtained: $('pet-date').value,
+        kc: Number($('pet-kc').value) || 0,
+        notes: $('pet-notes').value.trim(),
+        updatedAt: new Date().toISOString()
+      };
+
+      const pets = getPets();
+      const i = pets.findIndex(x => x.id === pet.id);
+      if (i > -1) pets[i] = pet;
+      else pets.unshift(pet);
+
+      savePetsToStorage(pets);
+      renderPets();
+      renderStats();
+      closeModal();
+      $('pet-view-overlay').classList.remove('show');
+      showToast(editingId ? 'Pet updated!' : 'Pet added!');
+
+      return false;
+    };
+
+    let _deleteConfirming = false;
+    let _deleteTimer = null;
+    window.deletePet = function() {
+      if (!editingId) return false;
+      const btn = $('pet-delete-btn');
+      if (!_deleteConfirming) {
+        _deleteConfirming = true;
+        btn.textContent = 'Confirm?';
+        btn.style.background = 'var(--red)';
+        btn.style.borderColor = 'var(--red)';
+        btn.style.color = '#fff';
+        _deleteTimer = setTimeout(() => {
+          _deleteConfirming = false;
+          btn.textContent = 'Delete';
+          btn.style.background = '';
+          btn.style.borderColor = '';
+          btn.style.color = '';
+        }, 3000);
+        return false;
+      }
+      clearTimeout(_deleteTimer);
+      _deleteConfirming = false;
+      const pets = getPets().filter(x => x.id !== editingId);
+      savePetsToStorage(pets);
+      renderPets();
+      renderStats();
+      closeModal();
+      showToast('Pet deleted');
+      return false;
+    };
+
+    // Initialize
+    initPage('more');
+
+    renderFilters();
+    renderPets();
+    renderStats();
+
+    // Event listeners
+    $('pv-close-btn').addEventListener('click', () => {
+      $('pet-view-overlay').classList.remove('show');
+      editingId = null;
+    });
+    $('pv-edit-btn').addEventListener('click', () => {
+      $('pet-view-overlay').classList.remove('show');
+      openEditForm(editingId);
+    });
+    $('pet-view-overlay').addEventListener('click', e => {
+      if (e.target === $('pet-view-overlay')) {
+        $('pet-view-overlay').classList.remove('show');
+        editingId = null;
+      }
+    });
+    $('fab-add-pet').addEventListener('click', () => openPetModal());
+    $('pl-add-first')?.addEventListener('click', () => openPetModal());
+    $('pet-modal-close').addEventListener('click', closeModal);
+    $('pet-cancel').addEventListener('click', closeModal);
+    $('pet-modal-overlay').addEventListener('click', (e) => {
+      if (e.target === $('pet-modal-overlay')) closeModal();
+    });
+  </script>
+</body>
+</html>

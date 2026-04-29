@@ -468,11 +468,19 @@ export const settings = {
 
 // ─── Navigation ──────────────────────────────────────────────────────────────
 
+// Detect how many levels deep we are and build the correct prefix
+// Pages/        → prefix = ''   (links are siblings)
+// Pages/More_Pages/ → prefix = '../' (links are one up)
+const _depth = (typeof window !== 'undefined')
+  ? (window.location.pathname.split('/').filter(Boolean).length - 1)
+  : 1;
+const _navPrefix = _depth >= 3 ? '../' : '';
+
 const NAV_PAGES = [
-  { id: 'home',     label: 'Home',     icon: '🏠',  href: '/index.html' },
-  { id: 'overview', label: 'Overview', icon: '👤',   href: '/Pages/overview.html', },
-  { id: 'skills',   label: 'Skills',   icon: null,   href: '/Pages/skills.html',   imgIcon: 'https://oldschool.runescape.wiki/images/thumb/Skills_icon.png/80px-Skills_icon.png' },
-  { id: 'gains',    label: 'Gains',    icon: '📈',  href:'/Pages/gains.html' },
+  { id: 'home',     label: 'Home',     icon: '🏠',  href: _depth >= 3 ? '../../index.html' : '../index.html' },
+  { id: 'overview', label: 'Overview', icon: '👤 ',   href: _navPrefix + 'overview.html' },
+  { id: 'skills',   label: 'Skills',   icon: null,   href: _navPrefix + 'skills.html',   imgIcon: 'https://oldschool.runescape.wiki/images/thumb/Skills_icon.png/80px-Skills_icon.png' },
+  { id: 'gains',    label: 'Gains',    icon: '📈',  href: _navPrefix + 'gains.html' },
   { id: 'more',     label: 'More',     icon: '…',   href: null },
 ];
 
