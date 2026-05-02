@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#2b241b">
-  <link rel="manifest" href="../manifest.json">
+  <link rel="manifest" href="/manifest.json">
   <title>OSTS — Skills</title>
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="/style.css">
   <style>
     /* ── Mobile-first skills grid — 3 cols always ── */
     .skills-grid {
@@ -129,9 +129,14 @@
       border-top-width: 3px; border-radius: 12px;
       padding: 10px 8px; display: flex; flex-direction: column;
       align-items: center; gap: 3px; cursor: pointer;
-      position: relative; overflow: hidden; transition: border-color .15s;
+      position: relative; overflow: hidden;
+      transition: border-color .15s, transform .15s;
     }
-    .skill-card:hover { filter: brightness(1.05); }
+    .skill-card:hover {
+      border-color: var(--sk-color, var(--gold));
+      border-top-color: var(--sk-color, var(--gold));
+      transform: translateY(-2px);
+    }
     .sk-icon { width: 28px; height: 28px; object-fit: contain; }
     .sk-name { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; }
     .sk-lvl  { font-size: 20px; font-weight: 700; line-height: 1.1; }
@@ -262,8 +267,10 @@
   </div>
 </div>
 
+<!-- Bottom Nav -->
 <nav id="bottom-nav"></nav>
 
+<!-- More Menu -->
 <div class="modal-overlay" id="more-menu-overlay">
   <div class="modal-sheet">
     <div class="modal-head">
@@ -271,11 +278,12 @@
       <button class="modal-close" id="more-menu-close">✕</button>
     </div>
   <div class="modal-actions">
-      <a class="modal-action" href="More_Pages/bossing.html">🏆 Bossing</a>
-      <a class="modal-action" href="More_Pages/petLog.html">🐾 Pet Log</a>
-      <a class="modal-action" href="More_Pages/fairyRings.html">🍄 Fairy Rings</a>
-      <a class="modal-action" href="More_Pages/timers.html">⏱ Timers</a>
       <a class="modal-action" href="More_Pages/bestiary.html">🐉 Bestiary</a>
+      <a class="modal-action" href="More_Pages/bossing.html">🏆 Bossing</a>
+      <a class="modal-action" href="More_Pages/fairyRings.html">🍄 Fairy Rings</a>
+      <a class="modal-action" href="/Pages/More_Pages/goals (1).html">📊 Goals</a>
+      <a class="modal-action" href="More_Pages/petLog.html">🐾 Pet Log</a>
+      <a class="modal-action" href="More_Pages/timers.html">⏰ Timers</a>
     </div>
   </div>
 </div>
@@ -447,7 +455,7 @@ function renderSkills(data) {
     const rnk  = s.rank;
     const prog = lvl >= 99 ? 1 : xpProgress(xp, lvl);
 
-    return `<div class="skill-card" data-skill="${id}" style="border-top-color:${color}">
+    return `<div class="skill-card" data-skill="${id}" style="--sk-color:${color};border-top-color:${color}">
       <img class="sk-icon" src="${icon}" alt="${name}" loading="lazy"
            onerror="this.style.display='none'">
       <div class="sk-name">${name}</div>

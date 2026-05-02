@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2b241b">
+  <link rel="manifest" href="/manifest.json">
+  <title>OSTS — Goals</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+
+    /* ── Topbar ──────────────────────────────────────────── */
+    .goals-topbar {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+    }
+    .goals-search {
+      flex: 1; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--text); padding: 10px 14px;
+      font-size: 14px; outline: none; min-width: 0;
+    }
+    .goals-search:focus { border-color: var(--gold); }
+    .topbar-btn {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--text); padding: 9px 12px;
+      font-size: 14px; cursor: pointer; flex-shrink: 0; line-height: 1;
+      font-weight: 600; transition: border-color .15s;
+    }
+    .topbar-btn:hover  { border-color: var(--gold); }
+    .topbar-btn.gold   { background: var(--gold); color: #000; border-color: var(--gold); }
+
+    /* ── Profile chip ────────────────────────────────────── */
+    .profile-chip {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 8px 12px; margin-bottom: 10px;
+      font-size: 13px;
+    }
+    .profile-chip .pc-rsn  { font-weight: 700; color: var(--gold); flex: 1; }
+    .profile-chip .pc-time { font-size: 11px; color: var(--muted); }
+
+    /* ── Goal grid (3-col compact) ───────────────────────── */
+    .goal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+      margin-bottom: 10px;
+    }
+
+    /* ── Goal card ───────────────────────────────────────── */
+    .goal-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden; cursor: pointer;
+      transition: all .15s; position: relative;
+    }
+    .goal-card:hover { border-color: var(--gc, var(--gold)); transform: translateY(-2px); }
+    .goal-card.done  { border-color: rgba(63,185,80,.4); }
+
+    .goal-card-stripe { height: 3px; background: var(--gc, var(--gold)); }
+    .goal-card.done .goal-card-stripe { background: var(--green); }
+
+    .goal-card-img {
+      height: 62px; background: var(--surface3);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .goal-card-img img { width: 38px; height: 38px; object-fit: contain; }
+    .goal-card-img .gm-em { font-size: 26px; }
+
+    .goal-done-badge {
+      position: absolute; top: 4px; right: 4px;
+      background: var(--green); color: #fff; border-radius: 99px;
+      font-size: 8px; font-weight: 700; padding: 2px 5px; line-height: 1.4;
+    }
+
+    .goal-card-info { padding: 5px 6px 7px; }
+    .goal-card-name {
+      font-size: 10px; font-weight: 700; text-align: center;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+    .goal-bar-bg {
+      background: var(--surface3); border-radius: 99px;
+      height: 4px; overflow: hidden; margin-bottom: 2px;
+    }
+    .goal-bar-fill {
+      height: 100%; border-radius: 99px;
+      background: var(--gc, var(--gold)); transition: width .4s ease;
+    }
+    .goal-card.done .goal-bar-fill { background: var(--green); }
+    .goal-bar-pct { text-align: center; font-size: 9px; color: var(--muted); font-weight: 600; }
+
+    /* ── Goal detail modal ───────────────────────────────── */
+    .goal-modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.6);
+      z-index: 350; display: none; align-items: flex-end;
+    }
+    .goal-modal-overlay.show { display: flex; }
+    .goal-modal {
+      width: 100%; background: var(--surface);
+      border-radius: 20px 20px 0 0; border-top: 1px solid var(--border);
+      padding: 0 0 env(safe-area-inset-bottom, 16px);
+      transform: translateY(100%);
+      transition: transform .25s cubic-bezier(.25,.8,.25,1);
+      max-height: 85vh; overflow-y: auto;
+    }
+    .goal-modal-overlay.show .goal-modal { transform: translateY(0); }
+
+    .gm-head {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 14px 12px; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; background: var(--surface); z-index: 1;
+    }
+    .gm-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: var(--surface2); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .gm-icon img { width: 32px; height: 32px; object-fit: contain; }
+    .gm-icon .gm-em { font-size: 20px; }
+    .gm-title-wrap { flex: 1; min-width: 0; }
+    .gm-title { font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .gm-sub   { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .gm-head-btns { display: flex; gap: 5px; flex-shrink: 0; }
+    .gm-btn {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--muted); font-size: 14px;
+      padding: 6px 9px; cursor: pointer; transition: all .15s; line-height: 1;
+    }
+    .gm-btn:hover        { border-color: var(--gold); color: var(--text); }
+    .gm-btn.danger:hover { border-color: rgba(248,81,73,.4); color: var(--red); }
+
+    .gm-body { padding: 14px; }
+    .gm-prog-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      font-size: 12px; color: var(--muted); margin-bottom: 6px;
+    }
+    .gm-prog-pct { font-weight: 700; font-size: 22px; color: var(--gc, var(--gold)); }
+    .gm-bar-bg { background: var(--surface2); border-radius: 99px; height: 10px; overflow: hidden; margin-bottom: 14px; }
+    .gm-bar-fill { height: 100%; border-radius: 99px; background: var(--gc, var(--gold)); transition: width .4s ease; }
+    .gm-bar-fill.done { background: var(--green); }
+
+    .gm-stats {
+      display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; margin-bottom: 14px;
+    }
+    .gm-stat {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 10px 12px;
+    }
+    .gm-stat .gs-label { font-size: 10px; color: var(--muted); font-weight: 700;
+      text-transform: uppercase; letter-spacing: .5px; margin-bottom: 3px; }
+    .gm-stat .gs-val   { font-size: 15px; font-weight: 700; color: var(--text); }
+
+    .gm-ms-label { font-size: 10px; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+    .gm-milestones { display: flex; gap: 5px; flex-wrap: wrap; }
+
+    /* ── Milestones chips ────────────────────────────────── */
+    .ms-chip {
+      padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600;
+      border: 1px solid var(--border); color: var(--muted); background: var(--surface2);
+    }
+    .ms-chip.done { border-color: rgba(63,185,80,.4); color: var(--green); background: rgba(63,185,80,.08); }
+    .ms-chip.next { border-color: var(--gc,var(--gold)); color: var(--gc,var(--gold)); background: rgba(184,136,72,.12); font-weight: 700; }
+
+    /* ── Empty / no-profile ──────────────────────────────── */
+    .goal-stat-chip {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 7px; padding: 4px 9px; font-size: 11px; color: var(--muted);
+    }
+    .goal-stat-chip b { color: var(--text); }
+
+    /* ── Empty / no-profile state ────────────────────────── */
+    .goals-notice {
+      grid-column: 1 / -1;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 20px 16px; text-align: center;
+      font-size: 13px; color: var(--muted); margin-bottom: 10px;
+    }
+    .goals-notice .ni { font-size: 36px; margin-bottom: 8px; }
+    .goals-notice p { line-height: 1.6; }
+    .goals-notice a { color: var(--gold); }
+
+    /* ── Add / Edit sheet (reuses shared sheet classes) ──── */
+    .add-sheet-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.6);
+      z-index: 299; display: none; align-items: flex-end;
+    }
+    .add-sheet-overlay.show { display: flex; }
+    .add-sheet {
+      width: 100%; background: var(--surface);
+      border-radius: 20px 20px 0 0; border-top: 1px solid var(--border);
+      padding: 0 0 env(safe-area-inset-bottom, 16px);
+      transform: translateY(100%); transition: transform .25s cubic-bezier(.25,.8,.25,1);
+      max-height: 92vh; overflow-y: auto;
+    }
+    .add-sheet-overlay.show .add-sheet { transform: translateY(0); }
+
+    /* shared form field styles */
+    .sf-body   { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+    .sf-field  { display: flex; flex-direction: column; gap: 6px; }
+    .sf-label  {
+      font-size: 10px; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .5px;
+    }
+    .sf-input {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--text); padding: 11px 14px;
+      font-size: 14px; outline: none; width: 100%; box-sizing: border-box;
+      transition: border-color .15s;
+    }
+    .sf-input:focus { border-color: var(--gold); }
+    .sf-hint  { font-size: 11px; color: var(--muted); }
+    .sf-err   { font-size: 12px; color: var(--red); min-height: 15px; }
+
+    /* type selector — reuse period-tab style */
+    .sf-type-row { display: grid; grid-template-columns: repeat(2,1fr); gap: 6px; }
+    .sf-type-btn {
+      padding: 10px 6px; border-radius: 10px; font-size: 13px; font-weight: 600;
+      text-align: center; background: var(--surface2); border: 1px solid var(--border);
+      color: var(--muted); cursor: pointer; transition: all .15s;
+    }
+    .sf-type-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
+
+    /* skill grid */
+    .sf-skill-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 5px; }
+    .sf-skill-btn {
+      padding: 6px 3px; border-radius: 8px; font-size: 10px; font-weight: 600;
+      text-align: center; background: var(--surface2); border: 1px solid var(--border);
+      color: var(--muted); cursor: pointer; transition: all .15s;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+    }
+    .sf-skill-btn img { width: 22px; height: 22px; }
+    .sf-skill-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(184,136,72,.12); }
+
+    /* live info box */
+    .sf-live {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 11px 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sf-live .li-dot  { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+    .sf-live .li-dot.live { background: var(--green); animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .sf-live .li-lbl  { font-size: 11px; color: var(--muted); }
+    .sf-live .li-val  { font-size: 14px; font-weight: 700; color: var(--text); margin-top: 1px; }
+
+    .sf-submit {
+      width: 100%; padding: 13px; background: var(--gold); color: #000;
+      border: none; border-radius: 12px; font-size: 15px; font-weight: 700;
+      cursor: pointer; margin-top: 2px;
+    }
+    .sf-submit:disabled { opacity: .5; cursor: not-allowed; }
+
+    /* hidden sections */
+    .sf-hidden { display: none; }
+
+    /* Profile cards in settings */
+    .profile-card  { display: flex; align-items: center; gap: 10px; padding: 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 8px; }
+    .profile-card.active { border-color: var(--gold); }
+    .profile-avatar { width:38px;height:38px;border-radius:8px;background:var(--surface3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0; }
+    .profile-info  { flex:1;min-width:0; }
+    .profile-name  { font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .profile-rsn   { font-size:11px;color:var(--muted); }
+    .profile-act   { background:var(--surface3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;transition:border-color .15s; }
+    .profile-act:hover { border-color:var(--gold); }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Goals</h1>
+  <div class="hdr-actions">
+    <button id="install-btn">Install</button>
+    <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
+  </div>
+</header>
+
+<!-- Settings panel -->
+<div id="settings-overlay"></div>
+<div id="settings-panel" aria-hidden="true">
+  <div class="settings-head">
+    <h2>Settings</h2>
+    <button class="settings-close" id="settings-close">✕</button>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Appearance</div>
+    <div class="theme-options">
+      <button class="theme-chip" data-theme="dark">Dark</button>
+      <button class="theme-chip" data-theme="light">Light</button>
+      <button class="theme-chip" data-theme="brown">Brown</button>
+    </div>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Player Profiles</div>
+    <div id="sp-profile-list"></div>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Notifications</div>
+    <div class="settings-note" id="push-status">Checking…</div>
+    <button class="push-btn" id="enable-push-btn">Enable Push Notifications</button>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Data</div>
+    <button class="push-btn" id="clear-goals-btn" style="color:var(--red);border-color:rgba(248,81,73,.3)">Clear all goals for this profile</button>
+  </div>
+</div>
+
+<!-- Main -->
+<div id="main">
+  <div class="page active" id="page-goals">
+
+    <!-- Profile chip -->
+    <div id="profile-chip" style="display:none" class="profile-chip">
+      <span id="pc-icon">👤</span>
+      <span id="pc-rsn" class="pc-rsn">—</span>
+      <span id="pc-time" class="pc-time"></span>
+    </div>
+
+    <!-- No profile notice -->
+    <div id="no-profile-notice" class="goals-notice" style="display:none">
+      <div class="ni">🎯</div>
+      <p>No active profile.<br><a href="/Pages/overview.html">Search a player on Overview</a> to get started.</p>
+    </div>
+
+    <!-- Topbar -->
+    <div class="goals-topbar">
+      <input id="goals-search" class="goals-search" type="text" placeholder="Search goals…" autocomplete="off">
+      <button class="topbar-btn gold" id="add-goal-btn">+ Goal</button>
+    </div>
+
+    <!-- Goals list -->
+    <div class="goal-grid" id="goals-list"></div>
+
+  </div>
+</div>
+
+<!-- ══ Goal detail modal ══════════════════════════════ -->
+<div class="goal-modal-overlay" id="goal-detail-overlay">
+  <div class="goal-modal">
+    <div class="gs-handle"></div>
+    <div class="gm-head">
+      <div class="gm-icon" id="gm-icon"></div>
+      <div class="gm-title-wrap">
+        <div class="gm-title" id="gm-title">—</div>
+        <div class="gm-sub"  id="gm-sub">—</div>
+      </div>
+      <div class="gm-head-btns">
+        <button class="gm-btn" id="gm-edit-btn" title="Edit">⚙️</button>
+        <button class="gm-btn danger" id="gm-del-btn" title="Delete">🗑</button>
+        <button class="gm-btn" id="gm-close-btn">✕</button>
+      </div>
+    </div>
+    <div class="gm-body">
+      <div class="gm-prog-row">
+        <span id="gm-pct" class="gm-prog-pct">0%</span>
+        <span id="gm-cur-tgt" style="font-size:12px;color:var(--muted)">—</span>
+      </div>
+      <div class="gm-bar-bg">
+        <div class="gm-bar-fill" id="gm-bar-fill" style="width:0%"></div>
+      </div>
+      <div class="gm-stats" id="gm-stats"></div>
+      <div id="gm-ms-wrap" style="display:none">
+        <div class="gm-ms-label">Milestones</div>
+        <div class="gm-milestones" id="gm-milestones"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<nav id="bottom-nav"></nav>
+
+<!-- More Menu -->
+<div class="modal-overlay" id="more-menu-overlay">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <div><div class="modal-title">More</div></div>
+      <button class="modal-close" id="more-menu-close">✕</button>
+    </div>
+    <div class="modal-actions">
+      <a class="modal-action" href="More_Pages/bestiary.html">🐉 Bestiary</a>
+      <a class="modal-action" href="More_Pages/bossing.html">🏆 Bossing</a>
+      <a class="modal-action" href="More_Pages/fairyRings.html">🍄 Fairy Rings</a>
+      <a class="modal-action" href="/Pages/More_Pages/goals (1).html">📊 Goals</a>
+      <a class="modal-action" href="More_Pages/petLog.html">🐾 Pet Log</a>
+      <a class="modal-action" href="More_Pages/timers.html">⏰ Timers</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Add / Edit Goal Sheet ══════════════════════════════ -->
+<div class="add-sheet-overlay" id="goal-sheet-overlay">
+  <div class="add-sheet" id="goal-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title">
+        <h2 id="gs-title">Add Goal</h2>
+      </div>
+      <button class="sheet-close" id="gs-close">✕</button>
+    </div>
+
+    <div class="sf-body">
+
+      <!-- Goal type -->
+      <div class="sf-field">
+        <div class="sf-label">Type</div>
+        <div class="sf-type-row">
+          <button class="sf-type-btn active" data-gtype="skill">⚔️ Skill Level</button>
+          <button class="sf-type-btn" data-gtype="total">📊 Total Level</button>
+          <button class="sf-type-btn" data-gtype="qp">📜 Quest Points</button>
+          <button class="sf-type-btn" data-gtype="custom">⭐ Custom</button>
+        </div>
+      </div>
+
+      <!-- Skill picker -->
+      <div class="sf-field" id="gs-skill-wrap">
+        <div class="sf-label">Skill</div>
+        <div class="sf-skill-grid" id="gs-skill-grid"></div>
+      </div>
+
+      <!-- Custom goal name -->
+      <div class="sf-field sf-hidden" id="gs-name-wrap">
+        <div class="sf-label">Goal Name</div>
+        <input id="gs-name" class="sf-input" type="text" placeholder="e.g. Quest Cape, Fire Cape…" maxlength="40" autocomplete="off">
+      </div>
+
+      <!-- Live current (skill / total — read from API) -->
+      <div class="sf-field sf-hidden" id="gs-live-wrap">
+        <div class="sf-label">Current</div>
+        <div class="sf-live">
+          <div class="li-dot" id="gs-live-dot"></div>
+          <div>
+            <div class="li-lbl" id="gs-live-lbl">Load a profile on Overview first</div>
+            <div class="li-val" id="gs-live-val">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Manual current (qp / custom) -->
+      <div class="sf-field sf-hidden" id="gs-manual-wrap">
+        <div class="sf-label" id="gs-current-lbl">Current Value</div>
+        <input id="gs-current" class="sf-input" type="number" min="0" placeholder="0">
+      </div>
+
+      <!-- Target -->
+      <div class="sf-field">
+        <div class="sf-label" id="gs-target-lbl">Target Level</div>
+        <input id="gs-target" class="sf-input" type="number" min="1" placeholder="99">
+      </div>
+
+      <!-- XP/hr (skill only, optional) -->
+      <div class="sf-field sf-hidden" id="gs-xphr-wrap">
+        <div class="sf-label">XP / Hour <span style="font-weight:400;font-size:10px;color:var(--muted)">(optional — for ETA)</span></div>
+        <input id="gs-xphr" class="sf-input" type="number" min="1" placeholder="e.g. 50 000">
+        <div class="sf-hint">Leave blank to skip ETA estimate.</div>
+      </div>
+
+      <div class="sf-err" id="gs-err"></div>
+      <button class="sf-submit" id="gs-submit">Add Goal</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Update Progress Sheet ══════════════════════════════ -->
+<div class="add-sheet-overlay" id="upd-sheet-overlay" style="z-index:309">
+  <div class="add-sheet" style="max-height:70vh">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title">
+        <h2 id="upd-title">Update Progress</h2>
+        <div class="sdesc" id="upd-sub"></div>
+      </div>
+      <button class="sheet-close" id="upd-close">✕</button>
+    </div>
+    <div class="sf-body">
+      <div id="upd-api-note" style="display:none;font-size:12px;color:var(--gold);background:rgba(184,136,72,.08);border:1px solid rgba(184,136,72,.25);border-radius:10px;padding:10px 12px">
+        You can override the current value here or adjust your XP/hr rate for ETA calculations.
+      </div>
+      <div class="sf-field">
+        <div class="sf-label" id="upd-val-lbl">Current Value</div>
+        <input id="upd-val" class="sf-input" type="number" min="0" placeholder="0">
+      </div>
+      <div class="sf-field" id="upd-xphr-wrap">
+        <div class="sf-label">XP / Hour <span style="font-weight:400;font-size:10px;color:var(--muted)">(optional)</span></div>
+        <input id="upd-xphr" class="sf-input" type="number" min="1" placeholder="e.g. 50 000">
+      </div>
+      <div class="sf-err" id="upd-err"></div>
+      <button class="sf-submit" id="upd-submit">Save</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+import {
+  initPage, storage, showToast, sendLocalNotification,
+  xpToLevel, xpForLevel, fmtXP, SKILL_MAP,
+  STORAGE_KEYS, requestPushPermission,
+} from '../../JS/shared.js';
+
+initPage('goals');
+
+/* ── Skills list ────────────────────────────────────────── */
+// Build SKILLS directly from SKILL_MAP (imported from shared.js) so icons & colors always match
+const SKILL_ORDER = [
+  'attack','defence','strength','hitpoints','ranged','prayer','magic',
+  'cooking','woodcutting','fletching','fishing','firemaking','crafting',
+  'smithing','mining','herblore','agility','thieving','slayer','farming',
+  'runecrafting','hunter','construction','sailing',
+];
+const SKILLS = SKILL_ORDER
+  .filter(k => SKILL_MAP[k])
+  .map(k => ({ key: k, label: SKILL_MAP[k].name, icon: SKILL_MAP[k].icon }));
+
+const MAX_TOTAL = 2376, MAX_QP = 310;
+const PROF_ICONS = { ironman:'⚔️', hardcore:'💀', ultimate:'🔱', regular:'👤', gim:'👥', ghcim:'☠️', ugim:'🔱' };
+
+/* ── Profile helpers ────────────────────────────────────── */
+const PROFILES_KEY    = 'osts_profiles_v2';
+const ACTIVE_PROF_KEY = 'osts_active_profile_v2';
+const getProfiles    = () => storage.get(PROFILES_KEY, []);
+const getActiveId    = () => storage.get(ACTIVE_PROF_KEY, null);
+const setActiveId    = id => storage.set(ACTIVE_PROF_KEY, id);
+const getActiveProf  = () => { const id=getActiveId(); return id ? getProfiles().find(p=>p.id===id)||null : null; };
+
+/* ── Per-profile goal storage ───────────────────────────── */
+const goalsKey = () => { const p=getActiveProf(); return p ? `osts-goals-v2-${p.id}` : 'osts-goals-v2-guest'; };
+// QP is calculated and saved by quests.html whenever user ticks a quest
+const qpKey   = () => { const p=getActiveProf(); return p ? `osts-qp-v1-${p.id}` : 'osts-qp-v1-guest'; };
+let goals = [];
+const loadGoals = () => { goals = storage.get(goalsKey(), []); };
+const saveGoals = () => storage.set(goalsKey(), goals);
+
+/* ── Live data ──────────────────────────────────────────── */
+let liveData = null, lastRefreshed = null;
+const liveXP    = sk  => liveData?.skills?.[sk]?.experience ?? null;
+const liveLevel = sk  => liveData?.skills?.[sk]?.level      ?? null;
+const liveTotal = ()  => liveData?.skills?.overall?.level   ?? null;
+
+// Pull skills straight from the profile's cached WOM snapshot — no network needed
+function loadLiveFromCache() {
+  const p = getActiveProf();
+
+  // Try 1: profile's cached WOM snapshot
+  let snap = p?.cachedData?.latestSnapshot?.data;
+
+  // Try 2: the global player cache (most recent WOM fetch from Overview)
+  if (!snap?.skills) {
+    const globalCache = storage.get(STORAGE_KEYS.PLAYER_CACHE, null);
+    snap = globalCache?.latestSnapshot?.data;
+  }
+
+  if (!snap?.skills) return false;
+
+  liveData = { skills: snap.skills };
+  lastRefreshed = p?.cachedData?.updatedAt ? new Date(p.cachedData.updatedAt) : null;
+  return true;
+}
+
+/* ── Math helpers ───────────────────────────────────────── */
+const fmtETA = hrs => {
+  if (!hrs || hrs <= 0) return null;
+  const d=Math.floor(hrs/24), h=Math.floor(hrs%24), m=Math.floor((hrs*60)%60);
+  return [[d,'d'],[h,'h'],[!d&&m?m:0,'m']].filter(([v])=>v>0).map(([v,u])=>v+u).join(' ') || '<1m';
+};
+const goalXPTarget = g => g.type==='skill' ? xpForLevel(g.targetLevel) : g.targetValue;
+const goalCur      = g => g.currentValue ?? 0;
+const goalPct = g => {
+  const t = goalXPTarget(g), c = goalCur(g);
+  if (!t || t <= 0) return 0;
+  return Math.min(100, Math.max(0, (c / t) * 100));
+};
+
+/* ── Goal card ──────────────────────────────────────────── */
+/* ── Helpers shared by card + detail ─────────────────────── */
+function skillColor(g) {
+  return g.type==='skill' ? (SKILL_MAP[g.skill]?.color||'var(--gold)') : 'var(--gold)';
+}
+function goalIcon(g, size=34) {
+  if (g.type==='skill') {
+    const sk=SKILLS.find(s=>s.key===g.skill);
+    return `<img src="${sk?.icon}" alt="${sk?.label||''}" width="${size}" height="${size}" style="object-fit:contain" onerror="this.style.display='none'">`;
+  }
+  const em={total:'📊',qp:'📜',custom:'⭐'}[g.type]||'⭐';
+  return `<span class="gm-em" style="font-size:${Math.round(size*.65)}px">${em}</span>`;
+}
+function goalSub(g) {
+  const cur=goalCur(g);
+  if (g.type==='skill') { const sk=SKILLS.find(s=>s.key===g.skill); return `${sk?.label||g.skill} · Lv ${xpToLevel(cur)} → ${g.targetLevel}`; }
+  if (g.type==='total') return `Total Level · ${cur} → ${g.targetValue}`;
+  if (g.type==='qp')    return `Quest Points · ${cur} → ${g.targetValue}`;
+  return `${cur.toLocaleString()} → ${goalXPTarget(g).toLocaleString()}`;
+}
+function msChips(g) {
+  if (g.type!=='skill') return '';
+  const cur=goalCur(g);
+  const steps=[10,20,30,40,50,60,70,80,90,92,95,99].filter(l=>l<=g.targetLevel);
+  let nextSet=false;
+  return steps.map(l=>{
+    const done=cur>=xpForLevel(l);
+    const next=!done&&!nextSet?(nextSet=true,true):false;
+    return `<span class="ms-chip ${done?'done':next?'next':''}">${l}</span>`;
+  }).join('');
+}
+
+/* ── Compact grid card ───────────────────────────────────── */
+function goalCardHTML(g) {
+  const pct=goalPct(g), isDone=pct>=100;
+  const col=skillColor(g);
+  const barW=Math.min(100,pct).toFixed(1);
+  return `<div class="goal-card${isDone?' done':''}" data-id="${g.id}" style="--gc:${col}" role="button" tabindex="0">
+    <div class="goal-card-stripe"></div>
+    <div class="goal-card-img">
+      ${goalIcon(g,44)}
+      ${isDone?'<div class="goal-done-badge">✓ Done</div>':''}
+    </div>
+    <div class="goal-card-info">
+      <div class="goal-card-name">${g.name}</div>
+      <div class="goal-bar-bg"><div class="goal-bar-fill" style="width:${barW}%"></div></div>
+      <div class="goal-bar-pct">${pct.toFixed(1)}%</div>
+    </div>
+  </div>`;
+}
+
+/* ── Render grid ─────────────────────────────────────────── */
+function renderGoals() {
+  const q=(document.getElementById('goals-search')?.value||'').toLowerCase().trim();
+  const list=document.getElementById('goals-list');
+  const shown=q ? goals.filter(g=>g.name.toLowerCase().includes(q)) : goals;
+  if (!shown.length) {
+    list.style.display='block';
+    list.innerHTML=`<div class="goals-notice" style="grid-column:1/-1">
+      <div class="ni">🎯</div>
+      <p>${q?'No goals match your search.':'No goals yet. Tap <b>+ Goal</b> to set your first milestone.'}</p>
+    </div>`;
+    return;
+  }
+  list.style.display='';
+  list.innerHTML=shown.map(goalCardHTML).join('');
+  list.querySelectorAll('.goal-card').forEach(card=>{
+    card.onclick=()=>openGoalDetail(card.dataset.id);
+    card.onkeydown=e=>{ if(e.key==='Enter'||e.key===' ') openGoalDetail(card.dataset.id); };
+  });
+}
+
+function deleteGoal(id) {
+  const g=goals.find(x=>x.id===id);
+  if (!g||!confirm(`Delete "${g.name}"?`)) return;
+  goals=goals.filter(x=>x.id!==id);
+  saveGoals(); renderGoals(); closeGoalDetail();
+  showToast(`${g.name} deleted`);
+}
+
+/* ── Goal detail modal ───────────────────────────────────── */
+let detailGoalId=null;
+
+function openGoalDetail(id) {
+  const g=goals.find(x=>x.id===id); if(!g) return;
+  detailGoalId=id;
+  const pct=goalPct(g), isDone=pct>=100;
+  const col=skillColor(g);
+  const cur=goalCur(g), target=goalXPTarget(g), remaining=Math.max(0,target-cur);
+  const barW=Math.min(100,pct).toFixed(1);
+
+  // header
+  document.getElementById('gm-icon').innerHTML=goalIcon(g,34);
+  document.getElementById('gm-icon').style.cssText=`--gc:${col};border-color:${col}22`;
+  document.getElementById('gm-title').textContent=g.name;
+  document.getElementById('gm-sub').textContent=goalSub(g);
+
+  // progress
+  document.getElementById('gm-pct').textContent=pct.toFixed(1)+'%';
+  document.getElementById('gm-pct').style.color=isDone?'var(--green)':col;
+  const dispCur=g.type==='skill'?`${fmtXP(cur)} XP`:String(cur);
+  const dispTgt=g.type==='skill'?`${fmtXP(target)} XP`:String(target);
+  document.getElementById('gm-cur-tgt').textContent=`${dispCur} / ${dispTgt}`;
+  const fill=document.getElementById('gm-bar-fill');
+  fill.style.width=barW+'%';
+  fill.style.background=isDone?'var(--green)':col;
+  fill.className='gm-bar-fill'+(isDone?' done':'');
+
+  // stats grid
+  let remLabel='';
+  if(g.type==='skill')      remLabel=`${fmtXP(remaining)} XP`;
+  else if(g.type==='total') remLabel=`${remaining} levels`;
+  else if(g.type==='qp')    remLabel=`${remaining} QP`;
+  else                      remLabel=remaining.toLocaleString();
+
+  const statsHTML=[
+    `<div class="gm-stat"><div class="gs-label">Remaining</div><div class="gs-val">${remLabel}</div></div>`,
+    `<div class="gm-stat"><div class="gs-label">Progress</div><div class="gs-val">${pct.toFixed(1)}%</div></div>`,
+    g.xpPerHr>0?`<div class="gm-stat"><div class="gs-label">Rate</div><div class="gs-val">${fmtXP(g.xpPerHr)}/hr</div></div>`:'',
+    g.xpPerHr>0&&remaining>0?(()=>{const eta=fmtETA(remaining/g.xpPerHr);return eta?`<div class="gm-stat"><div class="gs-label">ETA</div><div class="gs-val">${eta}</div></div>`:'';})():'',
+  ].filter(Boolean).join('');
+  document.getElementById('gm-stats').innerHTML=statsHTML;
+
+  // milestones
+  const msWrap=document.getElementById('gm-ms-wrap');
+  const msHTML=msChips(g);
+  if(msHTML){msWrap.style.display='block';document.getElementById('gm-milestones').innerHTML=msHTML;}
+  else msWrap.style.display='none';
+
+  document.getElementById('goal-detail-overlay').classList.add('show');
+}
+
+function closeGoalDetail(){ document.getElementById('goal-detail-overlay').classList.remove('show'); }
+
+document.getElementById('gm-close-btn').onclick=closeGoalDetail;
+document.getElementById('goal-detail-overlay').onclick=e=>{ if(e.target.id==='goal-detail-overlay') closeGoalDetail(); };
+document.getElementById('gm-edit-btn').onclick=()=>{ closeGoalDetail(); openUpdateSheet(detailGoalId); };
+document.getElementById('gm-del-btn').onclick=()=>deleteGoal(detailGoalId);
+
+/* ── Profile chip ───────────────────────────────────────── */
+function renderProfileChip() {
+  const p=getActiveProf();
+  document.getElementById('profile-chip').style.display    = p ? 'flex' : 'none';
+  document.getElementById('no-profile-notice').style.display = p ? 'none' : 'block';
+  if (!p) return;
+  document.getElementById('pc-icon').textContent = PROF_ICONS[p.type]||'👤';
+  document.getElementById('pc-rsn').textContent  = p.nickname||p.rsn;
+  const timeStr = lastRefreshed
+    ? lastRefreshed.toLocaleDateString([],{month:'short',day:'numeric'})
+      +' '+lastRefreshed.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})
+    : '';
+  document.getElementById('pc-time').textContent = timeStr ? `WOM · ${timeStr}` : 'Sync from Overview';
+}
+
+/* ── Sync goals from current liveData (no network) ─────────── */
+function syncGoalsFromLive() {
+  if (!liveData) return;
+  const completed=[];
+  goals.forEach(g=>{
+    if (g.type==='skill') {
+      const xp=liveXP(g.skill);
+      if (xp===null) return;
+      const was=goalPct(g)>=100;
+      if (g.startValue==null) g.startValue=xp;
+      g.currentValue=xp;
+      if (!was&&goalPct(g)>=100) completed.push(g);
+    } else if (g.type==='total') {
+      const lv=liveTotal();
+      if (lv===null) return;
+      const was=goalPct(g)>=100;
+      if (g.startValue==null) g.startValue=lv;
+      g.currentValue=lv;
+      if (!was&&goalPct(g)>=100) completed.push(g);
+    } else if (g.type==='qp') {
+      const qp = storage.get(qpKey(), null);
+      if (qp===null) return;
+      const was=goalPct(g)>=100;
+      if (g.startValue==null) g.startValue=qp;
+      g.currentValue=qp;
+      if (!was&&goalPct(g)>=100) completed.push(g);
+    }
+  });
+  /* 🎉 completion notifications */
+  for (const g of completed) {
+    sendLocalNotification('Goal Complete! 🎉',`You reached: ${g.name}`,'goal-done-'+g.id);
+    showToast(`🎉 ${g.name} completed!`,5000);
+  }
+  /* 🔥 near-complete nudge */
+  goals.forEach(g=>{
+    const pct=goalPct(g);
+    if (!g._near90&&pct>=90&&pct<100) {
+      g._near90=true;
+      sendLocalNotification('Almost there! 🔥',`${g.name} — ${pct.toFixed(0)}% done`,'goal-near-'+g.id);
+    }
+  });
+}
+
+/* ── Add Goal sheet ─────────────────────────────────────── */
+let selType='skill', selSkill=null;
+
+// Build skill grid
+document.getElementById('gs-skill-grid').innerHTML=SKILLS.map(s=>
+  `<button class="sf-skill-btn" data-skill="${s.key}">
+    <img src="${s.icon}" alt="${s.label}" loading="lazy" onerror="this.style.display='none'">
+    ${s.label}
+  </button>`
+).join('');
+
+function getStoredQP() {
+  return storage.get(qpKey(), null);
+}
+
+function syncLiveBox() {
+  if (selType!=='skill'&&selType!=='total'&&selType!=='qp') return;
+  const dot=document.getElementById('gs-live-dot');
+  const lbl=document.getElementById('gs-live-lbl');
+  const val=document.getElementById('gs-live-val');
+  if (selType==='skill') {
+    if (selSkill) {
+      const xp=liveXP(selSkill), lv=liveLevel(selSkill);
+      if (xp!==null) {
+        dot.classList.add('live');
+        lbl.textContent=`Lv ${lv} · ${fmtXP(xp)} XP`;
+        val.textContent=xp.toLocaleString()+' XP';
+      } else {
+        dot.classList.remove('live');
+        lbl.textContent=liveData?'Skill not found':'Load a profile on Overview first';
+        val.textContent='—';
+      }
+    } else {
+      dot.classList.remove('live');
+      lbl.textContent='Select a skill above';
+      val.textContent='—';
+    }
+  } else if (selType==='total') {
+    const tot=liveTotal();
+    dot.classList.toggle('live',tot!==null);
+    lbl.textContent=tot?`Total Level ${tot}`:(liveData?'No data':'Load a profile on Overview first');
+    val.textContent=tot?String(tot):'—';
+  } else if (selType==='qp') {
+    const qp=getStoredQP();
+    dot.classList.toggle('live',qp!==null);
+    lbl.textContent=qp!==null?'QP from Quest log':'Complete quests in the Quests page to auto-fill';
+    val.textContent=qp!==null?String(qp):'—';
+  }
+}
+
+function setType(type) {
+  selType=type;
+  document.querySelectorAll('.sf-type-btn').forEach(b=>b.classList.toggle('active',b.dataset.gtype===type));
+  const live=type==='skill'||type==='total'||(type==='qp'&&getStoredQP()!==null);
+  document.getElementById('gs-skill-wrap').classList.toggle('sf-hidden', type!=='skill');
+  document.getElementById('gs-name-wrap').classList.toggle('sf-hidden',  type!=='custom');
+  document.getElementById('gs-xphr-wrap').classList.toggle('sf-hidden',  type!=='skill');
+  document.getElementById('gs-live-wrap').classList.toggle('sf-hidden',  !live);
+  document.getElementById('gs-manual-wrap').classList.toggle('sf-hidden', live);
+  const tl=document.getElementById('gs-target-lbl'), ti=document.getElementById('gs-target');
+  const cl=document.getElementById('gs-current-lbl');
+  if(type==='skill')       { tl.textContent='Target Level';  ti.placeholder='99';   ti.max=99; }
+  else if(type==='total')  { tl.textContent='Target Level';  ti.placeholder='2376'; ti.max=MAX_TOTAL; }
+  else if(type==='qp')     { tl.textContent='Target QP';     ti.placeholder='333';  ti.max=MAX_QP; cl.textContent='Current Quest Points'; }
+  else                     { tl.textContent='Target Value';  ti.placeholder='e.g. 100'; ti.removeAttribute('max'); cl.textContent='Where you are now'; }
+  if(live) syncLiveBox();
+}
+
+document.querySelectorAll('.sf-type-btn').forEach(b=>b.onclick=()=>setType(b.dataset.gtype));
+document.querySelectorAll('.sf-skill-btn').forEach(b=>{
+  b.onclick=()=>{
+    selSkill=b.dataset.skill;
+    document.querySelectorAll('.sf-skill-btn').forEach(x=>x.classList.toggle('active',x.dataset.skill===selSkill));
+    syncLiveBox();
+  };
+});
+
+function openAddSheet() {
+  selSkill=null;
+  document.querySelectorAll('.sf-skill-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('gs-title').textContent='Add Goal';
+  document.getElementById('gs-err').textContent='';
+  document.getElementById('gs-target').value='';
+  document.getElementById('gs-xphr').value='';
+  document.getElementById('gs-name').value='';
+  document.getElementById('gs-current').value='';
+  setType('skill');
+  document.getElementById('goal-sheet-overlay').classList.add('show');
+}
+function closeAddSheet() { document.getElementById('goal-sheet-overlay').classList.remove('show'); }
+
+document.getElementById('gs-close').onclick=closeAddSheet;
+document.getElementById('goal-sheet-overlay').onclick=e=>{ if(e.target.id==='goal-sheet-overlay') closeAddSheet(); };
+document.getElementById('add-goal-btn').onclick=openAddSheet;
+
+document.getElementById('gs-submit').onclick=()=>{
+  const err=document.getElementById('gs-err');
+  err.textContent='';
+  const tgt=parseInt(document.getElementById('gs-target').value);
+  const xphr=parseInt(document.getElementById('gs-xphr').value)||0;
+  const cname=document.getElementById('gs-name').value.trim();
+
+  if(selType==='skill'&&!selSkill)    { err.textContent='Select a skill.'; return; }
+  if(selType==='custom'&&!cname)      { err.textContent='Enter a goal name.'; return; }
+  if(!tgt||tgt<1)                     { err.textContent='Enter a valid target.'; return; }
+  if(selType==='skill'&&(tgt<2||tgt>99)) { err.textContent='Target level must be 2–99.'; return; }
+
+  let cur;
+  if(selType==='skill') {
+    cur=liveXP(selSkill)??0;
+    if(cur>=xpForLevel(tgt)){ err.textContent='You already have this level!'; return; }
+  } else if(selType==='total') {
+    cur=liveTotal()??0;
+    if(cur>=tgt){ err.textContent='You already have this total level!'; return; }
+  } else if(selType==='qp') {
+    const stored = getStoredQP();
+    cur = stored !== null ? stored : (parseInt(document.getElementById('gs-current').value)||0);
+    if(cur>=tgt){ err.textContent='You already have this many Quest Points!'; return; }
+  } else {
+    cur=parseInt(document.getElementById('gs-current').value)||0;
+  }
+
+  const sk=selType==='skill'?SKILLS.find(s=>s.key===selSkill):null;
+  const name=selType==='skill'  ? `${sk.label} ${tgt}` :
+             selType==='total'  ? `Total Level ${tgt}`  :
+             selType==='qp'     ? `${tgt} Quest Points` : cname;
+
+  goals.unshift({
+    id:'g-'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),
+    type:selType, name,
+    skill:       selType==='skill'?selSkill:undefined,
+    targetLevel: selType==='skill'?tgt:undefined,
+    targetValue: selType!=='skill'?tgt:undefined,
+    currentValue:cur, startValue:cur,
+    xpPerHr:xphr||undefined,
+    createdAt:Date.now(), _near90:false,
+  });
+  saveGoals(); renderGoals(); closeAddSheet();
+  showToast(`${name} added!`);
+};
+
+/* ── Update Progress sheet ──────────────────────────────── */
+let editingId=null;
+function openUpdateSheet(id) {
+  const g=goals.find(x=>x.id===id); if(!g) return;
+  editingId=id;
+  document.getElementById('upd-title').textContent=g.name;
+  document.getElementById('upd-sub').textContent=
+    g.type==='skill'?'Override XP or adjust XP/hr':
+    g.type==='total'?'Override total level':
+    g.type==='qp'?'Update quest points':'Update value';
+  document.getElementById('upd-val-lbl').textContent=
+    g.type==='skill'?'Current XP':g.type==='total'?'Current Total Level':
+    g.type==='qp'?'Current Quest Points':'Current Value';
+  document.getElementById('upd-val').value=g.currentValue||'';
+  document.getElementById('upd-xphr').value=g.xpPerHr||'';
+  document.getElementById('upd-err').textContent='';
+  document.getElementById('upd-api-note').style.display=(g.type==='skill'||g.type==='total')?'block':'none';
+  document.getElementById('upd-xphr-wrap').style.display=g.type==='skill'?'flex':'none';
+  document.getElementById('upd-sheet-overlay').classList.add('show');
+}
+function closeUpdateSheet() { document.getElementById('upd-sheet-overlay').classList.remove('show'); }
+document.getElementById('upd-close').onclick=closeUpdateSheet;
+document.getElementById('upd-sheet-overlay').onclick=e=>{ if(e.target.id==='upd-sheet-overlay') closeUpdateSheet(); };
+
+document.getElementById('upd-submit').onclick=()=>{
+  const g=goals.find(x=>x.id===editingId); if(!g) return;
+  const v=parseInt(document.getElementById('upd-val').value);
+  const hr=parseInt(document.getElementById('upd-xphr').value)||undefined;
+  if(isNaN(v)||v<0){ document.getElementById('upd-err').textContent='Enter a valid value.'; return; }
+  const was=goalPct(g)>=100;
+  g.currentValue=v; if(hr!==undefined) g.xpPerHr=hr;
+  saveGoals(); renderGoals(); closeUpdateSheet();
+  showToast(`${g.name} updated!`);
+  if(!was&&goalPct(g)>=100){
+    sendLocalNotification('Goal Complete! 🎉',`You reached: ${g.name}`,'goal-done-'+g.id);
+    showToast(`🎉 ${g.name} completed!`,5000);
+  }
+};
+
+/* ── Settings – profile list ────────────────────────────── */
+function renderProfileList() {
+  const list=document.getElementById('sp-profile-list'); if(!list) return;
+  const profiles=getProfiles(), activeId=getActiveId();
+  if(!profiles.length){
+    list.innerHTML=`<p style="font-size:12px;color:var(--muted)">No saved profiles. <a href="/Pages/overview.html">Search a player</a> to create one.</p>`;
+    return;
+  }
+  list.innerHTML=[...profiles].sort((a,b)=>(b.id===activeId)-(a.id===activeId)).map(p=>`
+    <div class="profile-card${p.id===activeId?' active':''}">
+      <div class="profile-avatar">${PROF_ICONS[p.type]||'👤'}</div>
+      <div class="profile-info">
+        <div class="profile-name">${p.nickname||p.rsn}</div>
+        <div class="profile-rsn">${p.rsn}</div>
+      </div>
+      ${p.id!==activeId
+        ?`<button class="profile-act" data-load="${p.id}">Load</button>`
+        :`<span style="font-size:10px;color:var(--gold)">Active</span>`}
+    </div>`).join('');
+  list.querySelectorAll('[data-load]').forEach(b=>b.addEventListener('click',()=>{
+    const p=getProfiles().find(x=>x.id===b.dataset.load); if(!p) return;
+    setActiveId(p.id);
+    loadGoals(); liveData=null; lastRefreshed=null;
+    loadLiveFromCache();
+    syncGoalsFromLive();
+    saveGoals();
+    renderGoals(); renderProfileChip(); renderProfileList();
+    showToast(`Switched to ${p.nickname||p.rsn}`);
+  }));
+}
+document.getElementById('settings-btn')?.addEventListener('click',renderProfileList,true);
+
+/* ── Push ───────────────────────────────────────────────── */
+function updatePushStatus(){
+  const el=document.getElementById('push-status'); if(!el) return;
+  if(!('Notification' in window)){ el.textContent='Not supported.'; return; }
+  el.textContent={granted:'✅ Notifications enabled',denied:'🚫 Blocked — check browser settings',default:'Not enabled yet.'}[Notification.permission];
+}
+document.getElementById('enable-push-btn')?.addEventListener('click',async()=>{
+  try { await requestPushPermission(); showToast('Notifications enabled ✅'); updatePushStatus(); }
+  catch(e){ showToast(e.message,4000); }
+});
+
+/* ── Clear goals ────────────────────────────────────────── */
+document.getElementById('clear-goals-btn')?.addEventListener('click',()=>{
+  if(!confirm('Clear all goals for this profile?')) return;
+  goals=[]; saveGoals(); renderGoals(); showToast('Goals cleared');
+});
+
+/* ── Search ─────────────────────────────────────────────── */
+document.getElementById('goals-search').addEventListener('input',renderGoals);
+
+/* ── Boot ───────────────────────────────────────────────── */
+loadGoals();
+renderGoals();
+renderProfileChip();
+updatePushStatus();
+// Sync from WOM cache if available
+if (loadLiveFromCache()) {
+  syncGoalsFromLive();
+  saveGoals();
+} else {
+  // Even without WOM data, sync QP goals from quest checklist
+  const qp = storage.get(qpKey(), null);
+  if (qp !== null) {
+    let changed = false;
+    goals.forEach(g => {
+      if (g.type==='qp') { if(g.startValue==null)g.startValue=qp; g.currentValue=qp; changed=true; }
+    });
+    if(changed) saveGoals();
+  }
+}
+renderGoals();
+renderProfileChip();
+syncLiveBox();
+</script>
+</body>
+</html>

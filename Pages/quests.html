@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2b241b">
+  <link rel="manifest" href="/manifest.json">
+  <title>OSTS — Quests</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .qp-hero { background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px; }
+    .qp-hero-icon { font-size:36px;flex-shrink:0; }
+    .qp-hero-info { flex:1;min-width:0; }
+    .qp-hero-num  { font-size:28px;font-weight:700;color:var(--gold);line-height:1; }
+    .qp-hero-label{ font-size:11px;color:var(--muted);margin-top:2px; }
+    .qp-hero-stats{ display:flex;gap:8px;flex-wrap:wrap;margin-top:8px; }
+    .qp-stat { background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:4px 10px;font-size:11px;color:var(--muted); }
+    .qp-stat b { color:var(--text); }
+    .filter-bar { display:flex;gap:6px;margin-bottom:8px;align-items:center; }
+    .quest-filters { flex:1;display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none; }
+    .quest-filters::-webkit-scrollbar { display:none; }
+    .q-filter { flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;background:var(--surface2);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap; }
+    .q-filter.active { background:var(--gold);color:#000;border-color:var(--gold); }
+    .filter-btn { flex-shrink:0;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600;background:var(--surface2);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap; }
+    .filter-btn.has-filters { border-color:var(--gold);color:var(--gold); }
+    .quest-search { background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);padding:10px 14px;font-size:14px;outline:none;width:100%;box-sizing:border-box;margin-bottom:10px;transition:border-color .15s; }
+    .quest-search:focus { border-color:var(--gold); }
+    .active-filter-chips { display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px; }
+    .afc { background:rgba(184,136,72,.12);border:1px solid var(--gold);border-radius:20px;padding:3px 10px 3px 8px;font-size:11px;color:var(--gold);font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px; }
+    .quest-section-hdr { font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;padding:10px 0 5px; }
+    .quest-row { background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:10px;margin-bottom:6px;transition:all .15s;cursor:pointer; }
+    .quest-row:hover { border-color:var(--gold);transform:translateY(-1px); }
+    .quest-row.done { border-color:rgba(63,185,80,.35);background:rgba(63,185,80,.04); }
+    .quest-check { width:26px;height:26px;flex-shrink:0;border-radius:8px;border:2px solid var(--border);background:var(--surface2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .15s;color:transparent; }
+    .quest-row.done .quest-check { border-color:var(--green);background:var(--green);color:#fff; }
+    .quest-info { flex:1;min-width:0; }
+    .quest-name { font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .quest-row.done .quest-name { color:var(--muted);text-decoration:line-through; }
+    .quest-meta { font-size:10px;color:var(--muted);margin-top:2px;display:flex;gap:5px;flex-wrap:wrap;align-items:center; }
+    .quest-qp { background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;color:var(--gold);flex-shrink:0;white-space:nowrap; }
+    .quest-row.done .quest-qp { color:var(--green);border-color:rgba(63,185,80,.35); }
+    .diff-badge { padding:1px 6px;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px; }
+    .diff-novice      { background:rgba(46,204,113,.15);color:#2ecc71; }
+    .diff-intermediate{ background:rgba(52,152,219,.15);color:#3498db; }
+    .diff-experienced { background:rgba(243,156,18,.15);color:#f39c12; }
+    .diff-master      { background:rgba(231,76,60,.15);color:#e74c3c; }
+    .diff-grandmaster { background:rgba(155,89,182,.15);color:#9b59b6; }
+    .diff-special     { background:rgba(184,136,72,.15);color:var(--gold); }
+    .len-badge { padding:1px 5px;border-radius:4px;font-size:9px;font-weight:600;background:var(--surface3);color:var(--muted); }
+    .f2p-badge { font-size:9px;color:#2ecc71;font-weight:700; }
+    .mem-badge { font-size:9px;color:#3498db;font-weight:700; }
+    .series-badge { font-size:9px;color:var(--muted);font-style:italic; }
+    .quest-empty { text-align:center;padding:40px;color:var(--muted);font-size:13px; }
+    .q-sheet-overlay { position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:290;display:none;align-items:flex-end; }
+    .q-sheet-overlay.show { display:flex; }
+    .q-sheet { width:100%;background:var(--surface);border-radius:20px 20px 0 0;border-top:1px solid var(--border);padding:0 0 env(safe-area-inset-bottom,16px);transform:translateY(100%);transition:transform .25s cubic-bezier(.25,.8,.25,1);max-height:92vh;overflow-y:auto; }
+    .q-sheet-overlay.show .q-sheet { transform:translateY(0); }
+    .qs-handle { width:40px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 0; }
+    .qs-head { display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:1; }
+    .qs-head h3 { font-size:15px;font-weight:700; }
+    .qs-close { background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:2px 8px; }
+    .qs-body  { padding:14px 16px; }
+    .fs-section { margin-bottom:16px; }
+    .fs-label { font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px; }
+    .fs-chips { display:flex;flex-wrap:wrap;gap:6px; }
+    .fs-chip { padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;background:var(--surface2);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s; }
+    .fs-chip.active { border-color:var(--gold);color:var(--gold);background:rgba(184,136,72,.1); }
+    .fs-apply { width:100%;padding:13px;background:var(--gold);color:#000;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px; }
+    .qd-hero { display:flex;align-items:flex-start;gap:12px;padding:14px 16px 12px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:1; }
+    .qd-icon { font-size:24px;flex-shrink:0;margin-top:2px; }
+    .qd-title-wrap { flex:1;min-width:0; }
+    .qd-title { font-size:16px;font-weight:700;line-height:1.2; }
+    .qd-badges { display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;align-items:center; }
+    .qd-close { background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:2px 8px;flex-shrink:0; }
+    .qd-complete-btn { width:100%;padding:11px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;border:2px solid var(--border);background:var(--surface2);color:var(--text);margin-bottom:14px;transition:all .15s; }
+    .qd-complete-btn.done { background:var(--green);border-color:var(--green);color:#fff; }
+    .qd-section { margin-bottom:14px; }
+    .qd-sec-label { font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px; }
+    .qd-desc { font-size:13px;color:var(--text);line-height:1.65; }
+    .qd-info-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:7px; }
+    .qd-info-cell { background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:9px 11px; }
+    .qd-info-cell .ic-lbl { font-size:10px;color:var(--muted);margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:.4px; }
+    .qd-info-cell .ic-val { font-size:13px;font-weight:600; }
+    .req-row { display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;margin-bottom:5px;font-size:12px;font-weight:600; }
+    .req-row .req-icon { width:20px;height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center; }
+    .req-row .req-icon img { width:18px;height:18px;object-fit:contain; }
+    .req-row .req-text { flex:1; }
+    .req-row .req-status { font-size:11px;font-weight:700;flex-shrink:0; }
+    .req-row.met   { border-color:rgba(63,185,80,.35); }
+    .req-row.met   .req-status { color:var(--green); }
+    .req-row.unmet { border-color:rgba(248,81,73,.3); }
+    .req-row.unmet .req-status { color:var(--red); }
+    .req-row.unknown .req-status { color:var(--muted); }
+    .qd-list-item { background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:8px 11px;margin-bottom:5px;font-size:12px;color:var(--text); }
+    .qd-list-item.enemy { display:flex;justify-content:space-between;align-items:center; }
+    .enemy-lvl { font-size:11px;color:var(--red);font-weight:700; }
+    .push-btn { background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;font-weight:600;padding:9px 14px;cursor:pointer;width:100%;text-align:left;transition:border-color .15s; }
+    .push-btn:hover { border-color:var(--gold); }
+    .profile-card  { display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;margin-bottom:8px; }
+    .profile-card.active { border-color:var(--gold); }
+    .profile-avatar{ width:38px;height:38px;border-radius:8px;background:var(--surface3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0; }
+    .profile-info  { flex:1;min-width:0; }
+    .profile-name  { font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .profile-rsn   { font-size:11px;color:var(--muted); }
+    .profile-act   { background:var(--surface3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;transition:border-color .15s; }
+    .profile-act:hover { border-color:var(--gold); }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Quests</h1>
+  <div class="hdr-actions">
+    <button id="install-btn">Install</button>
+    <button class="hdr-btn icon-btn" id="settings-btn">&#x2699;&#xFE0F;</button>
+  </div>
+</header>
+<div id="settings-overlay"></div>
+<div id="settings-panel" aria-hidden="true">
+  <div class="settings-head"><h2>Settings</h2><button class="settings-close" id="settings-close">&#x2715;</button></div>
+  <div class="settings-block">
+    <div class="settings-label">Appearance</div>
+    <div class="theme-options">
+      <button class="theme-chip" data-theme="dark">Dark</button>
+      <button class="theme-chip" data-theme="light">Light</button>
+      <button class="theme-chip" data-theme="brown">Brown</button>
+    </div>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Player Profiles</div>
+    <div id="sp-profile-list"></div>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Data</div>
+    <button class="push-btn" id="reset-quests-btn" style="color:var(--red);border-color:rgba(248,81,73,.3)">Reset all quest completions</button>
+  </div>
+</div>
+<div id="main">
+  <div class="page active" id="page-quests">
+    <div class="qp-hero">
+      <div class="qp-hero-icon">&#x1F4DC;</div>
+      <div class="qp-hero-info">
+        <div class="qp-hero-num"><span id="qp-cur">0</span> <span style="font-size:16px;color:var(--muted)">/ 333 QP</span></div>
+        <div class="qp-hero-label">Quest Points</div>
+        <div style="margin-top:8px"><div class="progress-wrap" style="height:6px;margin:0"><div class="progress-fill" id="qp-bar" style="width:0%"></div></div></div>
+        <div class="qp-hero-stats">
+          <div class="qp-stat"><b id="stat-done">0</b> / 189 done</div>
+          <div class="qp-stat">F2P: <b id="stat-f2p">0</b> / 46 QP</div>
+          <div class="qp-stat">Members: <b id="stat-mem">0</b> / 287 QP</div>
+        </div>
+      </div>
+    </div>
+    <div id="active-filter-chips" class="active-filter-chips" style="display:none"></div>
+    <div class="filter-bar">
+      <div class="quest-filters">
+        <button class="q-filter active" data-f="all">All</button>
+        <button class="q-filter" data-f="incomplete">Incomplete</button>
+        <button class="q-filter" data-f="done">Completed</button>
+        <button class="q-filter" data-f="f2p">Free</button>
+        <button class="q-filter" data-f="members">Members</button>
+      </div>
+      <button class="filter-btn" id="open-filter-btn">&#x2699; Filters</button>
+    </div>
+    <input class="quest-search" id="quest-search" type="text" placeholder="Search quests&#x2026;" autocomplete="off">
+    <div id="quest-list"></div>
+  </div>
+</div>
+<nav id="bottom-nav"></nav>
+<div class="modal-overlay" id="more-menu-overlay">
+  <div class="modal-sheet">
+    <div class="modal-head"><div><div class="modal-title">More</div></div><button class="modal-close" id="more-menu-close">&#x2715;</button></div>
+    <div class="modal-actions">
+      <a class="modal-action" href="/Pages/More_Pages/quests.html">&#x1F4DC; Quests</a>
+      <a class="modal-action" href="/Pages/More_Pages/goals__1_.html">&#x1F3AF; Goals</a>
+      <a class="modal-action" href="/Pages/More_Pages/timers.html">&#x23F0; Timers</a>
+      <a class="modal-action" href="/Pages/More_Pages/bestiary.html">&#x1F409; Bestiary</a>
+      <a class="modal-action" href="/Pages/More_Pages/bossing.html">&#x1F3C6; Bossing</a>
+      <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">&#x1F344; Fairy Rings</a>
+      <a class="modal-action" href="/Pages/More_Pages/petLog.html">&#x1F43E; Pet Log</a>
+    </div>
+  </div>
+</div>
+<!-- Filter Sheet -->
+<div class="q-sheet-overlay" id="filter-overlay">
+  <div class="q-sheet">
+    <div class="qs-handle"></div>
+    <div class="qs-head"><h3>Filters</h3><button class="qs-close" id="filter-close">&#x2715;</button></div>
+    <div class="qs-body">
+      <div class="fs-section">
+        <div class="fs-label">Difficulty</div>
+        <div class="fs-chips" id="fs-diff">
+          <button class="fs-chip active" data-diff="">All</button>
+          <button class="fs-chip" data-diff="N">Novice</button>
+          <button class="fs-chip" data-diff="I">Intermediate</button>
+          <button class="fs-chip" data-diff="E">Experienced</button>
+          <button class="fs-chip" data-diff="M">Master</button>
+          <button class="fs-chip" data-diff="G">Grandmaster</button>
+          <button class="fs-chip" data-diff="S">Special</button>
+        </div>
+      </div>
+      <div class="fs-section">
+        <div class="fs-label">Length</div>
+        <div class="fs-chips" id="fs-len">
+          <button class="fs-chip active" data-len="">All</button>
+          <button class="fs-chip" data-len="VS">Very Short</button>
+          <button class="fs-chip" data-len="S">Short</button>
+          <button class="fs-chip" data-len="M">Medium</button>
+          <button class="fs-chip" data-len="L">Long</button>
+          <button class="fs-chip" data-len="VL">Very Long</button>
+        </div>
+      </div>
+      <div class="fs-section">
+        <div class="fs-label">Series</div>
+        <div class="fs-chips" id="fs-series"></div>
+      </div>
+      <button class="fs-apply" id="filter-apply">Apply Filters</button>
+    </div>
+  </div>
+</div>
+<!-- Quest Detail Sheet -->
+<div class="q-sheet-overlay" id="detail-overlay" style="z-index:300">
+  <div class="q-sheet" style="max-height:92vh">
+    <div class="qs-handle"></div>
+    <div class="qd-hero">
+      <div class="qd-icon" id="qd-icon">&#x1F4DC;</div>
+      <div class="qd-title-wrap">
+        <div class="qd-title" id="qd-title">&#x2014;</div>
+        <div class="qd-badges" id="qd-badges"></div>
+      </div>
+      <button class="qd-close" id="detail-close">&#x2715;</button>
+    </div>
+    <div class="qs-body">
+      <button class="qd-complete-btn" id="qd-complete-btn">Mark Complete</button>
+      <div class="qd-section"><div class="qd-info-grid" id="qd-info-grid"></div></div>
+      <div class="qd-section" id="qd-desc-section"><div class="qd-sec-label">Overview</div><div class="qd-desc" id="qd-desc"></div></div>
+      <div class="qd-section" id="qd-skills-section" style="display:none"><div class="qd-sec-label">Skill Requirements</div><div id="qd-skills"></div></div>
+      <div class="qd-section" id="qd-quests-section" style="display:none"><div class="qd-sec-label">Quest Requirements</div><div id="qd-quests"></div></div>
+      <div class="qd-section" id="qd-items-section" style="display:none"><div class="qd-sec-label">Items Required</div><div id="qd-items"></div></div>
+      <div class="qd-section" id="qd-rec-section" style="display:none"><div class="qd-sec-label">Recommended</div><div id="qd-rec"></div></div>
+      <div class="qd-section" id="qd-enemies-section" style="display:none"><div class="qd-sec-label">Enemies to Defeat</div><div id="qd-enemies"></div></div>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+<script type="module">
+import { initPage, storage, showToast, SKILL_MAP } from '../../JS/shared.js';
+initPage('quests');
+
+const QUESTS = [
+  {id:'learning_the_ropes',    name:"Learning the Ropes",                              qp:1, f2p:true,  diff:'N',len:'VS',series:null},
+  {id:'cooks_assistant',       name:"Cook's Assistant",                                qp:1, f2p:true,  diff:'N',len:'VS',series:null},
+  {id:'demon_slayer',          name:"Demon Slayer",                                    qp:3, f2p:true,  diff:'N',len:'S', series:'Demon Slayer'},
+  {id:'restless_ghost',        name:"The Restless Ghost",                              qp:1, f2p:true,  diff:'N',len:'S', series:null},
+  {id:'romeo_juliet',          name:"Romeo & Juliet",                                  qp:5, f2p:true,  diff:'N',len:'S', series:null},
+  {id:'sheep_shearer',         name:"Sheep Shearer",                                   qp:1, f2p:true,  diff:'N',len:'VS',series:null},
+  {id:'shield_of_arrav',       name:"Shield of Arrav",                                 qp:1, f2p:true,  diff:'N',len:'S', series:null},
+  {id:'ernest_chicken',        name:"Ernest the Chicken",                              qp:4, f2p:true,  diff:'N',len:'VS',series:null},
+  {id:'vampyre_slayer',        name:"Vampyre Slayer",                                  qp:3, f2p:true,  diff:'I',len:'VS',series:null},
+  {id:'imp_catcher',           name:"Imp Catcher",                                     qp:1, f2p:true,  diff:'N',len:'S', series:null},
+  {id:'prince_ali_rescue',     name:"Prince Ali Rescue",                               qp:3, f2p:true,  diff:'N',len:'S', series:'Kharidian'},
+  {id:'dorics_quest',          name:"Doric's Quest",                                   qp:1, f2p:true,  diff:'N',len:'VS',series:null},
+  {id:'black_knights_fortress',name:"Black Knights' Fortress",                         qp:3, f2p:true,  diff:'I',len:'VS',series:null},
+  {id:'witchs_potion',         name:"Witch's Potion",                                  qp:1, f2p:true,  diff:'N',len:'VS',series:null},
+  {id:'knights_sword',         name:"The Knight's Sword",                              qp:1, f2p:true,  diff:'I',len:'S', series:null},
+  {id:'goblin_diplomacy',      name:"Goblin Diplomacy",                                qp:5, f2p:true,  diff:'N',len:'VS',series:null},
+  {id:'pirates_treasure',      name:"Pirate's Treasure",                               qp:2, f2p:true,  diff:'N',len:'VS',series:null},
+  {id:'dragon_slayer_i',       name:"Dragon Slayer I",                                 qp:2, f2p:true,  diff:'E',len:'M', series:'Dragonkin'},
+  {id:'rune_mysteries',        name:"Rune Mysteries",                                  qp:1, f2p:true,  diff:'N',len:'S', series:'Order of Wizards'},
+  {id:'misthalin_mystery',     name:"Misthalin Mystery",                               qp:1, f2p:true,  diff:'N',len:'S', series:null},
+  {id:'corsair_curse',         name:"The Corsair Curse",                               qp:2, f2p:true,  diff:'I',len:'S', series:null},
+  {id:'x_marks_spot',          name:"X Marks the Spot",                                qp:1, f2p:true,  diff:'N',len:'VS',series:'Great Kourend'},
+  {id:'below_ice_mountain',    name:"Below Ice Mountain",                              qp:1, f2p:true,  diff:'N',len:'S', series:null},
+  {id:'ides_of_milk',          name:"The Ides of Milk",                                qp:1, f2p:true,  diff:'N',len:'S', series:null},
+  {id:'druidic_ritual',        name:"Druidic Ritual",                                  qp:4, f2p:false, diff:'N',len:'VS',series:null},
+  {id:'lost_city',             name:"Lost City",                                       qp:3, f2p:false, diff:'I',len:'S', series:null},
+  {id:'witchs_house',          name:"Witch's House",                                   qp:4, f2p:false, diff:'I',len:'VS',series:null},
+  {id:'merlins_crystal',       name:"Merlin's Crystal",                                qp:6, f2p:false, diff:'I',len:'S', series:'Camelot'},
+  {id:'heroes_quest',          name:"Heroes' Quest",                                   qp:1, f2p:false, diff:'E',len:'M', series:null},
+  {id:'scorpion_catcher',      name:"Scorpion Catcher",                                qp:1, f2p:false, diff:'I',len:'S', series:null},
+  {id:'family_crest',          name:"Family Crest",                                    qp:1, f2p:false, diff:'E',len:'M', series:null},
+  {id:'tribal_totem',          name:"Tribal Totem",                                    qp:1, f2p:false, diff:'I',len:'VS',series:null},
+  {id:'fishing_contest',       name:"Fishing Contest",                                 qp:1, f2p:false, diff:'N',len:'VS',series:null},
+  {id:'monks_friend',          name:"Monk's Friend",                                   qp:1, f2p:false, diff:'N',len:'VS',series:null},
+  {id:'temple_of_ikov',        name:"Temple of Ikov",                                  qp:1, f2p:false, diff:'I',len:'M', series:'Mahjarrat'},
+  {id:'clock_tower',           name:"Clock Tower",                                     qp:1, f2p:false, diff:'N',len:'VS',series:null},
+  {id:'holy_grail',            name:"Holy Grail",                                      qp:2, f2p:false, diff:'I',len:'S', series:'Camelot'},
+  {id:'tree_gnome_village',    name:"Tree Gnome Village",                              qp:2, f2p:false, diff:'I',len:'S', series:'Gnome'},
+  {id:'fight_arena',           name:"Fight Arena",                                     qp:2, f2p:false, diff:'I',len:'S', series:'Mahjarrat'},
+  {id:'hazeel_cult',           name:"Hazeel Cult",                                     qp:1, f2p:false, diff:'N',len:'VS',series:'Mahjarrat'},
+  {id:'sheep_herder',          name:"Sheep Herder",                                    qp:4, f2p:false, diff:'N',len:'S', series:null},
+  {id:'plague_city',           name:"Plague City",                                     qp:1, f2p:false, diff:'N',len:'VS',series:'Elf'},
+  {id:'sea_slug',              name:"Sea Slug",                                        qp:1, f2p:false, diff:'I',len:'S', series:'Temple Knight'},
+  {id:'waterfall_quest',       name:"Waterfall Quest",                                 qp:1, f2p:false, diff:'I',len:'S', series:null},
+  {id:'biohazard',             name:"Biohazard",                                       qp:3, f2p:false, diff:'N',len:'S', series:'Elf'},
+  {id:'jungle_potion',         name:"Jungle Potion",                                   qp:1, f2p:false, diff:'N',len:'S', series:null},
+  {id:'grand_tree',            name:"The Grand Tree",                                  qp:5, f2p:false, diff:'I',len:'M', series:'Gnome'},
+  {id:'shilo_village',         name:"Shilo Village",                                   qp:2, f2p:false, diff:'I',len:'M', series:null},
+  {id:'underground_pass',      name:"Underground Pass",                                qp:5, f2p:false, diff:'E',len:'L', series:'Elf'},
+  {id:'observatory_quest',     name:"Observatory Quest",                               qp:2, f2p:false, diff:'I',len:'S', series:null},
+  {id:'tourist_trap',          name:"The Tourist Trap",                                qp:2, f2p:false, diff:'I',len:'M', series:null},
+  {id:'watchtower',            name:"Watchtower",                                      qp:4, f2p:false, diff:'I',len:'M', series:null},
+  {id:'dwarf_cannon',          name:"Dwarf Cannon",                                    qp:1, f2p:false, diff:'N',len:'S', series:null},
+  {id:'murder_mystery',        name:"Murder Mystery",                                  qp:3, f2p:false, diff:'N',len:'S', series:null},
+  {id:'dig_site',              name:"The Dig Site",                                    qp:2, f2p:false, diff:'I',len:'M', series:'Mahjarrat'},
+  {id:'gertrudes_cat',         name:"Gertrude's Cat",                                  qp:1, f2p:false, diff:'N',len:'VS',series:null},
+  {id:'legends_quest',         name:"Legends' Quest",                                  qp:4, f2p:false, diff:'M',len:'L', series:null},
+  {id:'big_chompy',            name:"Big Chompy Bird Hunting",                         qp:2, f2p:false, diff:'I',len:'S', series:null},
+  {id:'elemental_workshop_i',  name:"Elemental Workshop I",                            qp:1, f2p:false, diff:'N',len:'VS',series:'Elemental Workshop'},
+  {id:'priest_in_peril',       name:"Priest in Peril",                                 qp:1, f2p:false, diff:'N',len:'S', series:null},
+  {id:'nature_spirit',         name:"Nature Spirit",                                   qp:2, f2p:false, diff:'I',len:'S', series:null},
+  {id:'death_plateau',         name:"Death Plateau",                                   qp:1, f2p:false, diff:'N',len:'S', series:'Troll'},
+  {id:'troll_stronghold',      name:"Troll Stronghold",                                qp:1, f2p:false, diff:'I',len:'S', series:'Troll'},
+  {id:'tai_bwo_wannai',        name:"Tai Bwo Wannai Trio",                             qp:2, f2p:false, diff:'I',len:'M', series:null},
+  {id:'regicide',              name:"Regicide",                                        qp:3, f2p:false, diff:'E',len:'L', series:'Elf'},
+  {id:'eadgars_ruse',          name:"Eadgar's Ruse",                                   qp:1, f2p:false, diff:'I',len:'M', series:'Troll'},
+  {id:'shades_mortons',        name:"Shades of Mort'ton",                              qp:3, f2p:false, diff:'I',len:'S', series:null},
+  {id:'fremennik_trials',      name:"The Fremennik Trials",                            qp:3, f2p:false, diff:'I',len:'M', series:'Fremennik'},
+  {id:'horror_deep',           name:"Horror from the Deep",                            qp:2, f2p:false, diff:'I',len:'S', series:null},
+  {id:'throne_miscellania',    name:"Throne of Miscellania",                           qp:1, f2p:false, diff:'E',len:'M', series:'Miscellania'},
+  {id:'monkey_madness_i',      name:"Monkey Madness I",                                qp:3, f2p:false, diff:'M',len:'L', series:'Gnome'},
+  {id:'haunted_mine',          name:"Haunted Mine",                                    qp:2, f2p:false, diff:'E',len:'S', series:null},
+  {id:'troll_romance',         name:"Troll Romance",                                   qp:2, f2p:false, diff:'I',len:'S', series:'Troll'},
+  {id:'in_search_myreque',     name:"In Search of the Myreque",                        qp:2, f2p:false, diff:'I',len:'S', series:'Myreque'},
+  {id:'creature_fenkenstrain', name:"Creature of Fenkenstrain",                        qp:2, f2p:false, diff:'I',len:'M', series:null},
+  {id:'roving_elves',          name:"Roving Elves",                                    qp:1, f2p:false, diff:'E',len:'S', series:'Elf'},
+  {id:'ghosts_ahoy',           name:"Ghosts Ahoy",                                     qp:2, f2p:false, diff:'I',len:'M', series:null},
+  {id:'one_small_favour',      name:"One Small Favour",                                qp:2, f2p:false, diff:'E',len:'L', series:null},
+  {id:'mountain_daughter',     name:"Mountain Daughter",                               qp:2, f2p:false, diff:'I',len:'M', series:null},
+  {id:'between_a_rock',        name:"Between a Rock...",                               qp:2, f2p:false, diff:'E',len:'M', series:null},
+  {id:'the_feud',              name:"The Feud",                                        qp:1, f2p:false, diff:'I',len:'M', series:null},
+  {id:'the_golem',             name:"The Golem",                                       qp:1, f2p:false, diff:'I',len:'S', series:null},
+  {id:'desert_treasure_i',     name:"Desert Treasure I",                               qp:3, f2p:false, diff:'M',len:'L', series:'Mahjarrat'},
+  {id:'icthlarin',             name:"Icthlarin's Little Helper",                       qp:2, f2p:false, diff:'I',len:'M', series:'Kharidian'},
+  {id:'tears_of_guthix',       name:"Tears of Guthix",                                qp:1, f2p:false, diff:'I',len:'VS',series:null},
+  {id:'zogre_flesh_eaters',    name:"Zogre Flesh Eaters",                              qp:1, f2p:false, diff:'I',len:'S', series:null},
+  {id:'lost_tribe',            name:"The Lost Tribe",                                  qp:1, f2p:false, diff:'I',len:'S', series:'Dorgeshuun'},
+  {id:'giant_dwarf',           name:"The Giant Dwarf",                                 qp:2, f2p:false, diff:'I',len:'M', series:'Red Axe'},
+  {id:'recruitment_drive',     name:"Recruitment Drive",                               qp:1, f2p:false, diff:'N',len:'S', series:'Temple Knight'},
+  {id:'mournings_end_i',       name:"Mourning's End Part I",                           qp:2, f2p:false, diff:'M',len:'M', series:'Elf'},
+  {id:'forgettable_tale',      name:"Forgettable Tale...",                             qp:2, f2p:false, diff:'I',len:'L', series:'Red Axe'},
+  {id:'garden_tranquillity',   name:"Garden of Tranquillity",                          qp:2, f2p:false, diff:'I',len:'L', series:null},
+  {id:'tail_two_cats',         name:"A Tail of Two Cats",                              qp:2, f2p:false, diff:'I',len:'M', series:'Dragonkin'},
+  {id:'wanted',                name:"Wanted!",                                         qp:1, f2p:false, diff:'I',len:'M', series:'Temple Knight'},
+  {id:'mournings_end_ii',      name:"Mourning's End Part II",                          qp:2, f2p:false, diff:'M',len:'L', series:'Elf'},
+  {id:'rum_deal',              name:"Rum Deal",                                        qp:2, f2p:false, diff:'E',len:'M', series:'Pirate'},
+  {id:'shadow_storm',          name:"Shadow of the Storm",                             qp:1, f2p:false, diff:'I',len:'M', series:'Demon Slayer'},
+  {id:'making_history',        name:"Making History",                                  qp:3, f2p:false, diff:'I',len:'S', series:null},
+  {id:'ratcatchers',           name:"Ratcatchers",                                     qp:2, f2p:false, diff:'I',len:'M', series:null},
+  {id:'spirits_elid',          name:"Spirits of the Elid",                             qp:2, f2p:false, diff:'I',len:'S', series:null},
+  {id:'devious_minds',         name:"Devious Minds",                                   qp:1, f2p:false, diff:'E',len:'S', series:'Mahjarrat'},
+  {id:'hand_in_sand',          name:"The Hand in the Sand",                            qp:1, f2p:false, diff:'I',len:'S', series:null},
+  {id:'enakhra',               name:"Enakhra's Lament",                                qp:2, f2p:false, diff:'E',len:'M', series:'Mahjarrat'},
+  {id:'cabin_fever',           name:"Cabin Fever",                                     qp:2, f2p:false, diff:'E',len:'S', series:'Pirate'},
+  {id:'fairytale_i',           name:"Fairytale I - Growing Pains",                     qp:2, f2p:false, diff:'I',len:'M', series:'Fairytale'},
+  {id:'recipe_disaster',       name:"Recipe for Disaster",                             qp:0, f2p:false, diff:'S',len:'VL',series:'Recipe for Disaster'},
+  {id:'rfd_cooks_quest',       name:"RfD — Another Cook's Quest",                      qp:1, f2p:false, diff:'S',len:'S', series:'Recipe for Disaster'},
+  {id:'rfd_mountain_dwarf',    name:"RfD — Freeing the Mountain Dwarf",                qp:1, f2p:false, diff:'S',len:'S', series:'Recipe for Disaster'},
+  {id:'rfd_goblin_generals',   name:"RfD — Freeing the Goblin Generals",               qp:1, f2p:false, diff:'S',len:'S', series:'Recipe for Disaster'},
+  {id:'rfd_pirate_pete',       name:"RfD — Freeing Pirate Pete",                       qp:1, f2p:false, diff:'S',len:'M', series:'Recipe for Disaster'},
+  {id:'rfd_lumbridge_guide',   name:"RfD — Freeing the Lumbridge Guide",               qp:1, f2p:false, diff:'S',len:'S', series:'Recipe for Disaster'},
+  {id:'rfd_evil_dave',         name:"RfD — Freeing Evil Dave",                         qp:1, f2p:false, diff:'S',len:'M', series:'Recipe for Disaster'},
+  {id:'rfd_king_awowogei',     name:"RfD — Freeing King Awowogei",                     qp:1, f2p:false, diff:'S',len:'L', series:'Recipe for Disaster'},
+  {id:'rfd_sir_amik_varze',    name:"RfD — Freeing Sir Amik Varze",                    qp:1, f2p:false, diff:'S',len:'M', series:'Recipe for Disaster'},
+  {id:'rfd_skrach_uglogwee',   name:"RfD — Freeing Skrach Uglogwee",                   qp:1, f2p:false, diff:'S',len:'M', series:'Recipe for Disaster'},
+  {id:'rfd_culinaromancer',    name:"RfD — Defeating the Culinaromancer",              qp:1, f2p:false, diff:'S',len:'S', series:'Recipe for Disaster'},
+  {id:'in_aid_myreque',        name:"In Aid of the Myreque",                           qp:2, f2p:false, diff:'I',len:'M', series:'Myreque'},
+  {id:'souls_bane',            name:"A Soul's Bane",                                   qp:1, f2p:false, diff:'I',len:'S', series:null},
+  {id:'rag_bone_i',            name:"Rag and Bone Man I",                              qp:1, f2p:false, diff:'N',len:'S', series:'Rag and Bone Man'},
+  {id:'swan_song',             name:"Swan Song",                                       qp:2, f2p:false, diff:'M',len:'M', series:null},
+  {id:'royal_trouble',         name:"Royal Trouble",                                   qp:1, f2p:false, diff:'E',len:'M', series:'Miscellania'},
+  {id:'death_dorgeshuun',      name:"Death to the Dorgeshuun",                         qp:1, f2p:false, diff:'I',len:'M', series:'Dorgeshuun'},
+  {id:'fairytale_ii',          name:"Fairytale II - Cure a Queen",                     qp:2, f2p:false, diff:'E',len:'M', series:'Fairytale'},
+  {id:'lunar_diplomacy',       name:"Lunar Diplomacy",                                 qp:2, f2p:false, diff:'E',len:'L', series:'Fremennik'},
+  {id:'eyes_glouphrie',        name:"The Eyes of Glouphrie",                           qp:2, f2p:false, diff:'I',len:'M', series:'Gnome'},
+  {id:'darkness_hallowvale',   name:"Darkness of Hallowvale",                          qp:2, f2p:false, diff:'E',len:'L', series:'Myreque'},
+  {id:'slug_menace',           name:"The Slug Menace",                                 qp:1, f2p:false, diff:'I',len:'M', series:'Temple Knight'},
+  {id:'elemental_workshop_ii', name:"Elemental Workshop II",                           qp:1, f2p:false, diff:'I',len:'S', series:'Elemental Workshop'},
+  {id:'my_arm',                name:"My Arm's Big Adventure",                          qp:1, f2p:false, diff:'E',len:'M', series:'Troll'},
+  {id:'enlightened_journey',   name:"Enlightened Journey",                             qp:1, f2p:false, diff:'I',len:'S', series:null},
+  {id:'eagles_peak',           name:"Eagles' Peak",                                    qp:2, f2p:false, diff:'N',len:'S', series:null},
+  {id:'animal_magnetism',      name:"Animal Magnetism",                                qp:1, f2p:false, diff:'I',len:'M', series:null},
+  {id:'contact',               name:"Contact!",                                        qp:1, f2p:false, diff:'E',len:'S', series:'Kharidian'},
+  {id:'cold_war',              name:"Cold War",                                        qp:1, f2p:false, diff:'I',len:'M', series:'Penguin'},
+  {id:'fremennik_isles',       name:"The Fremennik Isles",                             qp:1, f2p:false, diff:'E',len:'M', series:'Fremennik'},
+  {id:'tower_of_life',         name:"Tower of Life",                                   qp:2, f2p:false, diff:'N',len:'M', series:null},
+  {id:'great_brain_robbery',   name:"The Great Brain Robbery",                         qp:2, f2p:false, diff:'E',len:'M', series:'Pirate'},
+  {id:'what_lies_below',       name:"What Lies Below",                                 qp:1, f2p:false, diff:'I',len:'S', series:null},
+  {id:'olafs_quest',           name:"Olaf's Quest",                                    qp:1, f2p:false, diff:'I',len:'S', series:null},
+  {id:'another_slice_ham',     name:"Another Slice of H.A.M.",                         qp:1, f2p:false, diff:'I',len:'S', series:'Dorgeshuun'},
+  {id:'dream_mentor',          name:"Dream Mentor",                                    qp:2, f2p:false, diff:'M',len:'M', series:null},
+  {id:'grim_tales',            name:"Grim Tales",                                      qp:1, f2p:false, diff:'M',len:'M', series:null},
+  {id:'kings_ransom',          name:"King's Ransom",                                   qp:1, f2p:false, diff:'E',len:'M', series:'Camelot'},
+  {id:'monkey_madness_ii',     name:"Monkey Madness II",                               qp:4, f2p:false, diff:'G',len:'VL',series:'Gnome'},
+  {id:'client_kourend',        name:"Client of Kourend",                               qp:1, f2p:false, diff:'N',len:'S', series:'Great Kourend'},
+  {id:'rag_bone_ii',           name:"Rag and Bone Man II",                             qp:1, f2p:false, diff:'E',len:'M', series:'Rag and Bone Man'},
+  {id:'bone_voyage',           name:"Bone Voyage",                                     qp:1, f2p:false, diff:'I',len:'S', series:null},
+  {id:'queen_of_thieves',      name:"The Queen of Thieves",                            qp:1, f2p:false, diff:'I',len:'VS',series:'Great Kourend'},
+  {id:'depths_despair',        name:"The Depths of Despair",                           qp:1, f2p:false, diff:'I',len:'S', series:'Great Kourend'},
+  {id:'dragon_slayer_ii',      name:"Dragon Slayer II",                                qp:5, f2p:false, diff:'G',len:'VL',series:'Dragonkin'},
+  {id:'tale_righteous',        name:"Tale of the Righteous",                           qp:1, f2p:false, diff:'I',len:'S', series:'Great Kourend'},
+  {id:'a_taste_hope',          name:"A Taste of Hope",                                 qp:1, f2p:false, diff:'E',len:'M', series:'Myreque'},
+  {id:'making_friends_arm',    name:"Making Friends with My Arm",                      qp:2, f2p:false, diff:'M',len:'M', series:'Troll'},
+  {id:'forsaken_tower',        name:"The Forsaken Tower",                              qp:1, f2p:false, diff:'I',len:'S', series:'Great Kourend'},
+  {id:'the_ascent_arceuus',    name:"The Ascent of Arceuus",                           qp:1, f2p:false, diff:'I',len:'S', series:'Great Kourend'},
+  {id:'song_elves',            name:"Song of the Elves",                               qp:4, f2p:false, diff:'G',len:'VL',series:'Elf'},
+  {id:'fremennik_exiles',      name:"The Fremennik Exiles",                            qp:2, f2p:false, diff:'M',len:'M', series:'Fremennik'},
+  {id:'sins_father',           name:"Sins of the Father",                              qp:2, f2p:false, diff:'M',len:'L', series:'Myreque'},
+  {id:'a_porcine_interest',    name:"A Porcine of Interest",                           qp:1, f2p:false, diff:'N',len:'VS',series:null},
+  {id:'getting_ahead',         name:"Getting Ahead",                                   qp:1, f2p:false, diff:'I',len:'S', series:'Twisted Tales'},
+  {id:'night_theatre',         name:"A Night at the Theatre",                          qp:2, f2p:false, diff:'M',len:'M', series:null},
+  {id:'kingdom_divided',       name:"A Kingdom Divided",                               qp:2, f2p:false, diff:'E',len:'L', series:'Great Kourend'},
+  {id:'land_goblins',          name:"Land of the Goblins",                             qp:2, f2p:false, diff:'E',len:'M', series:'Dorgeshuun'},
+  {id:'temple_of_eye',         name:"Temple of the Eye",                               qp:1, f2p:false, diff:'I',len:'S', series:'Order of Wizards'},
+  {id:'beneath_cursed_sands',  name:"Beneath Cursed Sands",                            qp:2, f2p:false, diff:'M',len:'M', series:'Kharidian'},
+  {id:'sleeping_giants',       name:"Sleeping Giants",                                 qp:1, f2p:false, diff:'I',len:'VS',series:null},
+  {id:'garden_of_death',       name:"The Garden of Death",                             qp:1, f2p:false, diff:'I',len:'S', series:'Twisted Tales'},
+  {id:'secrets_north',         name:"Secrets of the North",                            qp:2, f2p:false, diff:'M',len:'M', series:'Mahjarrat'},
+  {id:'desert_treasure_ii',    name:"Desert Treasure II - The Fallen Empire",          qp:5, f2p:false, diff:'G',len:'VL',series:'Mahjarrat'},
+  {id:'path_glouphrie',        name:"The Path of Glouphrie",                           qp:2, f2p:false, diff:'E',len:'M', series:'Gnome'},
+  {id:'children_sun',          name:"Children of the Sun",                             qp:1, f2p:false, diff:'N',len:'VS',series:'Twilight Emissaries'},
+  {id:'defender_varrock',      name:"Defender of Varrock",                             qp:2, f2p:false, diff:'E',len:'M', series:'Mahjarrat'},
+  {id:'twilights_promise',     name:"Twilight's Promise",                              qp:1, f2p:false, diff:'I',len:'S', series:'Twilight Emissaries'},
+  {id:'at_first_light',        name:"At First Light",                                  qp:1, f2p:false, diff:'I',len:'S', series:null},
+  {id:'perilous_moons',        name:"Perilous Moons",                                  qp:2, f2p:false, diff:'M',len:'M', series:null},
+  {id:'ribbiting_tale',        name:"The Ribbiting Tale of a Lily Pad Labour Dispute", qp:1, f2p:false, diff:'N',len:'VS',series:null},
+  {id:'while_guthix_sleeps',   name:"While Guthix Sleeps",                             qp:5, f2p:false, diff:'G',len:'VL',series:'Mahjarrat'},
+  {id:'heart_of_darkness',     name:"The Heart of Darkness",                           qp:2, f2p:false, diff:'E',len:'M', series:'Twilight Emissaries'},
+  {id:'death_on_the_isle',     name:"Death on the Isle",                               qp:2, f2p:false, diff:'I',len:'M', series:null},
+  {id:'meat_and_greet',        name:"Meat and Greet",                                  qp:1, f2p:false, diff:'E',len:'S', series:null},
+  {id:'ethically_acquired',    name:"Ethically Acquired Antiquities",                  qp:1, f2p:false, diff:'N',len:'S', series:null},
+  {id:'curse_of_arrav',        name:"The Curse of Arrav",                              qp:2, f2p:false, diff:'M',len:'M', series:'Mahjarrat'},
+  {id:'the_final_dawn',        name:"The Final Dawn",                                  qp:3, f2p:false, diff:'M',len:'L', series:'Twilight Emissaries'},
+  {id:'shadows_custodia',      name:"Shadows of Custodia",                             qp:2, f2p:false, diff:'E',len:'S', series:null},
+  {id:'scrambled',             name:"Scrambled!",                                      qp:1, f2p:false, diff:'I',len:'S', series:null},
+  {id:'pandemonium',           name:"Pandemonium",                                     qp:1, f2p:false, diff:'N',len:'S', series:null},
+  {id:'prying_times',          name:"Prying Times",                                    qp:1, f2p:false, diff:'I',len:'S', series:null},
+  {id:'current_affairs',       name:"Current Affairs",                                 qp:1, f2p:false, diff:'N',len:'S', series:null},
+  {id:'troubled_tortugans',    name:"Troubled Tortugans",                              qp:1, f2p:false, diff:'E',len:'M', series:'Tortugan'},
+];
+
+const M = {};
+M.underground_pass     ={start:'King Lathas, Ardougne Castle',desc:"Travel through the deadly Underground Pass and slay the elf lord Iban.",skillReqs:[{skill:'ranged',level:25}],questReqs:['biohazard'],items:['Bow','Arrows','Rope','Spade','Food'],recommended:['Combat 60+'],enemies:[{name:'Iban',level:251}]};
+M.observatory_quest    ={start:'Observatory, north of Ardougne',desc:"Repair the Observatory telescope after goblins wreck it.",skillReqs:[],questReqs:[],items:['Planks','Bronze bar','Molten glass'],recommended:[],enemies:[{name:'Observatory guard',level:42}]};
+M.tourist_trap         ={start:'Ana, desert south of Shantay Pass',desc:"Infiltrate a desert slave camp and rescue Ana.",skillReqs:[{skill:'fletching',level:10},{skill:'smithing',level:20}],questReqs:[],items:['Shantay pass','Desert clothing'],recommended:[],enemies:[{name:'Mercenary captain',level:47}]};
+M.watchtower           ={start:'Watchtower, north of Yanille',desc:"Recover four crystals stolen by ogres to restore the Watchtower.",skillReqs:[{skill:'magic',level:15},{skill:'thieving',level:15},{skill:'agility',level:25},{skill:'herblore',level:14},{skill:'mining',level:40}],questReqs:[],items:['Ropes','Pickaxe'],recommended:[],enemies:[{name:'Gorad',level:86}]};
+M.dwarf_cannon         ={start:'Captain Lawgof, south-west of Coal Trucks',desc:"Recover pieces of the stolen dwarven multicannon.",skillReqs:[],questReqs:[],items:[],recommended:[],enemies:[]};
+M.murder_mystery       ={start:'Guard, Sinclair Mansion',desc:"Use detective skills to identify which family member is a killer.",skillReqs:[],questReqs:[],items:['Pot of flour','Pot'],recommended:[],enemies:[]};
+M.dig_site             ={start:'Examination Centre, Dig Site',desc:"Work your way up the ranks at the Varrock archaeological dig.",skillReqs:[{skill:'herblore',level:10},{skill:'agility',level:10},{skill:'thieving',level:25}],questReqs:[],items:[],recommended:[],enemies:[]};
+M.gertrudes_cat        ={start:"Gertrude's house, west of Varrock",desc:"Find Gertrude's missing cat Fluffs and her kittens in the Lumber Yard.",skillReqs:[],questReqs:[],items:['Doogle leaves','Raw sardine'],recommended:[],enemies:[]};
+M.legends_quest        ={start:"Radimus Erkle, Legends' Guild gates",desc:"Explore the Kharazi Jungle and forge an alliance with the local tribe.",skillReqs:[{skill:'agility',level:50},{skill:'crafting',level:50},{skill:'herblore',level:45},{skill:'magic',level:56},{skill:'mining',level:52},{skill:'prayer',level:42},{skill:'smithing',level:50},{skill:'strength',level:50},{skill:'thieving',level:50},{skill:'woodcutting',level:50}],questReqs:['family_crest','heroes_quest','underground_pass','waterfall_quest'],items:['Combat gear','Pickaxe','Machete'],recommended:['Combat 90+'],enemies:[{name:'Nezikchened',level:187}]};
+M.big_chompy           ={start:'Rantz, east of Castle Wars',desc:"Help the ogre Rantz invent ogre arrows to hunt chompies.",skillReqs:[{skill:'ranged',level:30},{skill:'cooking',level:30},{skill:'fletching',level:5}],questReqs:[],items:['Hatchet','Small fishing net'],recommended:[],enemies:[]};
+M.elemental_workshop_i ={start:"Odd book, Seers' Village",desc:"Discover the elemental workshop and smelt your first elemental metal.",skillReqs:[{skill:'mining',level:20},{skill:'smithing',level:20}],questReqs:[],items:['Pickaxe','Hammer'],recommended:[],enemies:[]};
+M.priest_in_peril      ={start:'King Roald, Varrock Palace',desc:"Investigate the temple of Paterdomus and protect it from werewolves.",skillReqs:[],questReqs:[],items:['Bucket','Rune essence','Combat gear'],recommended:['Combat 40+'],enemies:[{name:'Temple guardian',level:30}]};
+M.nature_spirit        ={start:'Drezel, under Paterdomus',desc:"Restore a dying nature spirit in the Mort Myre swamp.",skillReqs:[{skill:'crafting',level:18}],questReqs:['priest_in_peril'],items:['Silver sickle'],recommended:[],enemies:[{name:'Ghast',level:30}]};
+M.death_plateau        ={start:'Denulth, Burthorpe',desc:"Find an alternate route past trolls to help the Imperial Guard.",skillReqs:[],questReqs:[],items:['Climbing boots'],recommended:[],enemies:[]};
+M.troll_stronghold     ={start:'Denulth, Burthorpe',desc:"Rescue two captured Imperial Guard soldiers from Troll Stronghold.",skillReqs:[],questReqs:['death_plateau'],items:['Food','Combat gear'],recommended:['Combat 60+'],enemies:[{name:'Dad',level:101}]};
+M.tai_bwo_wannai       ={start:'Timfraku, Tai Bwo Wannai village',desc:"Help three tribal brothers with their personal problems on Karamja.",skillReqs:[{skill:'agility',level:40},{skill:'cooking',level:30},{skill:'fishing',level:5}],questReqs:['jungle_potion'],items:['Antipoison','Food'],recommended:[],enemies:[{name:'Jogre',level:58}]};
+M.regicide             ={start:'King Lathas, Ardougne Castle',desc:"Journey through the Underground Pass again to assassinate the elf king Tyras.",skillReqs:[{skill:'agility',level:56},{skill:'crafting',level:10}],questReqs:['underground_pass'],items:['Combat gear','Coal','Balls of wool','Rope','Food'],recommended:['Combat 70+'],enemies:[{name:'Tyras guard',level:110}]};
+M.eadgars_ruse         ={start:'Sanfew, top floor of Taverley',desc:"Help Eadgar acquire a parrot to fool the trolls.",skillReqs:[{skill:'herblore',level:31}],questReqs:['troll_stronghold'],items:['Vodka','Stew'],recommended:[],enemies:[]};
+M.shades_mortons       ={start:"Mort'ton village",desc:"Restore the ruined town of Mort'ton and pacify the monstrous Shades.",skillReqs:[{skill:'crafting',level:20},{skill:'firemaking',level:5}],questReqs:[],items:['Limestone brick','Olive oil (4)'],recommended:[],enemies:[{name:'Loar shade',level:40}]};
+M.fremennik_trials     ={start:'Brundt the Chieftain, Rellekka',desc:"Complete a series of trials to be accepted by the Fremennik people.",skillReqs:[{skill:'crafting',level:40},{skill:'fletching',level:25},{skill:'woodcutting',level:40}],questReqs:[],items:['Lyre','Coins'],recommended:['Combat 50+'],enemies:[{name:'Koschei the Deathless',level:194}]};
+M.horror_deep          ={start:'Jossik, lighthouse north-east of Rellekka',desc:"Investigate the horror beneath the lighthouse and seal it away.",skillReqs:[{skill:'agility',level:35},{skill:'firemaking',level:35}],questReqs:[],items:['Tinderbox','Mithril axe'],recommended:['Combat 60+'],enemies:[{name:'Dagannoth mother',level:100}]};
+M.throne_miscellania   ={start:'Advisor Ghrim, Miscellania',desc:"Become the ruler of Miscellania by winning the islanders' hearts.",skillReqs:[{skill:'woodcutting',level:45},{skill:'fishing',level:35},{skill:'mining',level:30},{skill:'farming',level:10},{skill:'firemaking',level:35},{skill:'thieving',level:35}],questReqs:['fremennik_trials'],items:[],recommended:[],enemies:[]};
+M.monkey_madness_i     ={start:'King Narnode, Tree Gnome Stronghold',desc:"Find the missing 10th Squad on the deadly Ape Atoll.",skillReqs:[],questReqs:['grand_tree','tree_gnome_village'],items:['Lots of food','Combat gear'],recommended:['Combat 70+'],enemies:[{name:'Jungle demon',level:195}]};
+M.haunted_mine         ={start:"Outside Mort'ton mine",desc:"Uncover the dark history of the haunted mines and claim the magic gem within.",skillReqs:[{skill:'agility',level:15},{skill:'crafting',level:35}],questReqs:['priest_in_peril'],items:['Tinderbox','Pickaxe'],recommended:['Combat 60+'],enemies:[{name:'Treus Dayth',level:95}]};
+M.troll_romance        ={start:'Ug, Trollheim',desc:"Help the troll Ug win the heart of his beloved Aga.",skillReqs:[{skill:'agility',level:28}],questReqs:['troll_stronghold'],items:['Trollweiss flower'],recommended:[],enemies:[{name:'Arrg',level:113}]};
+M.in_search_myreque    ={start:'Vanstrom Klause, Hair of the Dog Inn, Canifis',desc:"Guide supplies to the secret Myreque resistance hidden in the Hollows.",skillReqs:[{skill:'agility',level:25}],questReqs:[],items:['Steel swords x6','Steel bars','Tinderbox','Food'],recommended:[],enemies:[]};
+M.creature_fenkenstrain={start:'Canifis',desc:"Help a doctor gather dead parts to create a creature.",skillReqs:[{skill:'crafting',level:20},{skill:'thieving',level:25}],questReqs:['priest_in_peril','restless_ghost'],items:['Needle','Thread','Coins','Silver bar'],recommended:[],enemies:[{name:'Experiment',level:51}]};
+M.roving_elves         ={start:'Islwyn, outside Tirannwn',desc:"Help the elf Islwyn complete his pilgrimage to his ancestor's tomb.",skillReqs:[{skill:'agility',level:56}],questReqs:['regicide','waterfall_quest'],items:['Rope','Crystal seed'],recommended:[],enemies:[{name:'Moss giant',level:42}]};
+M.ghosts_ahoy          ={start:'Velorina, Port Phasmatys',desc:"Help the ghosts of Port Phasmatys cross to the afterlife.",skillReqs:[{skill:'agility',level:25},{skill:'cooking',level:20}],questReqs:['nature_spirit','priest_in_peril'],items:['Ghostspeak amulet','Needle','Thread'],recommended:[],enemies:[]};
+M.one_small_favour     ={start:'Yanni Salika, Shilo Village',desc:"A chain of errands spirals out of control across Gielinor.",skillReqs:[{skill:'agility',level:36},{skill:'smithing',level:30},{skill:'herblore',level:18},{skill:'crafting',level:25}],questReqs:['rune_mysteries','shilo_village'],items:[],recommended:[],enemies:[]};
+M.mountain_daughter    ={start:'Camp southwest of Rellekka',desc:"Reconcile the Fremennik mountain tribe chief with his estranged daughter.",skillReqs:[{skill:'agility',level:20}],questReqs:['fremennik_trials'],items:['Rope','Pole','Wolf bones','Pickaxe'],recommended:[],enemies:[{name:'The Kendal',level:70}]};
+M.between_a_rock       ={start:"Dondakan's mine, Keldagrim",desc:"Help the dwarf Dondakan crack open a giant golden rock.",skillReqs:[{skill:'mining',level:40},{skill:'smithing',level:50},{skill:'defence',level:30}],questReqs:['dwarf_cannon','fishing_contest'],items:['Gold bar','Steel bar','Ammo mould'],recommended:['Combat 60+'],enemies:[{name:'Arzinian Avatar',level:125}]};
+M.the_feud             ={start:'Ali the Kebab seller, Pollnivneach',desc:"Act as a double agent in a desert town's tribal feud.",skillReqs:[{skill:'thieving',level:30}],questReqs:[],items:['Willow blackjack','Desert clothing','Coins'],recommended:[],enemies:[{name:'Bandit champion',level:70}]};
+M.the_golem            ={start:'Ruins of Uzer, east of Shantay Pass',desc:"Reprogram a clay golem and uncover the history of ancient Uzer.",skillReqs:[{skill:'crafting',level:20},{skill:'thieving',level:25}],questReqs:[],items:['Paper','Charcoal','4 soft clay'],recommended:[],enemies:[]};
+M.desert_treasure_i    ={start:'Archaeologist, Bedabin Camp',desc:"Collect the four diamonds of Azzanadra and free the Mahjarrat beneath the Pyramid.",skillReqs:[{skill:'magic',level:50},{skill:'firemaking',level:50},{skill:'thieving',level:53},{skill:'slayer',level:10}],questReqs:['dig_site','temple_of_ikov','priest_in_peril','waterfall_quest'],items:['Lots of food','Prayer potions','Antipoison'],recommended:['Combat 90+'],enemies:[{name:'Fareed',level:167},{name:'Kamil',level:154},{name:'Dessous',level:139},{name:'Damis',level:103}]};
+M.icthlarin            ={start:'Sophanem, south of Shantay Pass',desc:"Help a young woman recover her memories in the city of the dead.",skillReqs:[],questReqs:['gertrudes_cat'],items:['Cat','Tinderbox','Rope','Waterskins','Shantay pass'],recommended:[],enemies:[{name:'Possessed priest',level:91}]};
+M.tears_of_guthix      ={start:'Juna, Lumbridge Swamp Caves',desc:"Bring a stone bowl and light source to Juna's sacred cave.",skillReqs:[{skill:'firemaking',level:49},{skill:'crafting',level:20},{skill:'mining',level:20}],questReqs:['rune_mysteries'],items:['Bullseye lantern with oil','Stone bowl'],recommended:[],enemies:[]};
+M.zogre_flesh_eaters   ={start:'Grish, Jiggig, east of Castle Wars',desc:"Discover the source of undead ogres attacking a burial ground.",skillReqs:[{skill:'smithing',level:4},{skill:'ranged',level:30}],questReqs:['big_chompy'],items:['Ogre bow','Ogre arrows'],recommended:['Combat 50+'],enemies:[{name:'Zogre',level:44}]};
+M.lost_tribe           ={start:'Duke Horacio, Lumbridge Castle',desc:"Discover the creature living in a tunnel beneath Lumbridge Castle.",skillReqs:[{skill:'agility',level:13},{skill:'thieving',level:13},{skill:'mining',level:17}],questReqs:['goblin_diplomacy','rune_mysteries'],items:['Pickaxe','Goblin mail'],recommended:[],enemies:[]};
+M.giant_dwarf          ={start:'Keldagrim entrance, north-east of Rellekka',desc:"Revive a giant stone dwarf and gain access to Keldagrim.",skillReqs:[{skill:'crafting',level:12},{skill:'firemaking',level:16},{skill:'magic',level:33},{skill:'thieving',level:14}],questReqs:[],items:['Hammer','Bronze bar','Iron bar','Coal'],recommended:[],enemies:[]};
+M.recruitment_drive    ={start:"Sir Amik Varze, White Knights' Castle",desc:"Pass Lady Table's challenges to join the Temple Knights.",skillReqs:[],questReqs:['black_knights_fortress','merlins_crystal'],items:[],recommended:[],enemies:[]};
+M.mournings_end_i      ={start:'Eluned, Tirannwn',desc:"Infiltrate the mourners' headquarters in West Ardougne.",skillReqs:[{skill:'thieving',level:50},{skill:'ranged',level:60}],questReqs:['roving_elves','big_chompy'],items:['Lots of arrows','Food'],recommended:[],enemies:[{name:'Mourner',level:109}]};
+M.forgettable_tale     ={start:'Commander Veldaban, Keldagrim',desc:"Investigate the return of the Red Axe company and their suspicious brews.",skillReqs:[{skill:'cooking',level:32},{skill:'farming',level:22}],questReqs:['giant_dwarf','fishing_contest'],items:['Barley malt','Bucket of water','Kelda hops'],recommended:[],enemies:[]};
+M.garden_tranquillity  ={start:'Jarvis, south of Draynor Village',desc:"Design a garden for the queen by growing several white flowers.",skillReqs:[{skill:'farming',level:25}],questReqs:['priest_in_peril','merlins_crystal'],items:['Watering can'],recommended:[],enemies:[]};
+M.tail_two_cats        ={start:'Unferth, Burthorpe',desc:"Help a grumpy old man find his missing cat Bob.",skillReqs:[],questReqs:['icthlarin'],items:['Catspeak amulet','Cat'],recommended:[],enemies:[]};
+M.wanted               ={start:'Sir Tiffy Cashien, Falador Park',desc:"Track down the most wanted murderer in Gielinor: Solus Dellagar.",skillReqs:[{skill:'slayer',level:32}],questReqs:['recruitment_drive','sea_slug','priest_in_peril'],items:['Combat gear'],recommended:['Combat 50+'],enemies:[]};
+M.mournings_end_ii     ={start:'Tegid, Lletya',desc:"Solve deadly light puzzles in the Temple of Light.",skillReqs:[],questReqs:['mournings_end_i'],items:['Death runes','Food'],recommended:[],enemies:[{name:'Death wing',level:83}]};
+M.rum_deal             ={start:'Braindeath Island',desc:"Clear a parasite infestation from a rum brewing operation.",skillReqs:[{skill:'cooking',level:40},{skill:'farming',level:40},{skill:'fishing',level:50},{skill:'slayer',level:42}],questReqs:['zogre_flesh_eaters','cabin_fever'],items:['Food'],recommended:['Combat 60+'],enemies:[{name:'Barrelchest',level:190}]};
+M.shadow_storm         ={start:'The Golem, ruins of Uzer',desc:"Decide whether to help or prevent the resurrection of the demon Agrith-Naar.",skillReqs:[{skill:'crafting',level:30}],questReqs:['the_golem','demon_slayer'],items:['Darklight'],recommended:['Combat 50+'],enemies:[{name:'Agrith-Naar',level:100}]};
+M.making_history       ={start:'Jorral, north of West Ardougne',desc:"Research the history of a ruined outpost and convince Jorral to stay.",skillReqs:[],questReqs:['priest_in_peril','restless_ghost'],items:[],recommended:[],enemies:[]};
+M.ratcatchers          ={start:"Gertrude's house, Varrock",desc:"Your cat must catch rats in four different locations.",skillReqs:[],questReqs:['icthlarin'],items:['Cat','Ghostspeak amulet'],recommended:[],enemies:[]};
+M.spirits_elid         ={start:'Nardah',desc:"Restore the sacred water spring of Nardah by freeing three spirits.",skillReqs:[{skill:'ranged',level:37},{skill:'thieving',level:37},{skill:'magic',level:33}],questReqs:[],items:['Bow and arrows'],recommended:[],enemies:[]};
+M.devious_minds        ={start:"Dondakan's mine",desc:"Uncover someone smuggling a dangerous weapon into the Wizards' Tower.",skillReqs:[{skill:'smithing',level:65},{skill:'runecrafting',level:50},{skill:'fletching',level:50}],questReqs:['wanted','troll_stronghold','lost_tribe'],items:['Mithril 2h sword','Bow string','Mind talisman'],recommended:[],enemies:[]};
+M.hand_in_sand         ={start:'Bert, Yanille',desc:"Investigate a human hand found in a sand pit.",skillReqs:[{skill:'thieving',level:17}],questReqs:[],items:['10 earth runes','5 water runes','Redberries','White berries'],recommended:[],enemies:[]};
+M.enakhra              ={start:'Lazim, desert south of Nardah',desc:"Help a sculptor and uncover a fallen Mahjarrat in a desert monument.",skillReqs:[{skill:'crafting',level:50},{skill:'magic',level:39},{skill:'firemaking',level:45},{skill:'prayer',level:43}],questReqs:[],items:['Lots of food','Coal','Camel mask','Tinderbox'],recommended:[],enemies:[{name:'Boneguard',level:149}]};
+M.cabin_fever          ={start:'Bill Teach, Port Phasmatys',desc:"Become a pirate and fight in a sea battle against the sinister Rocking Out.",skillReqs:[{skill:'agility',level:42},{skill:'crafting',level:45},{skill:'ranged',level:40},{skill:'smithing',level:50}],questReqs:['priest_in_peril','ghosts_ahoy'],items:['Hammer','Plank','Swamp tar','Rope'],recommended:['Combat 60+'],enemies:[{name:'Pirate captain',level:57}]};
+M.fairytale_i          ={start:'Martin the Master Gardener, Draynor Village',desc:"Investigate dying crops and the fairy godfather's takeover of Zanaris.",skillReqs:[{skill:'farming',level:17},{skill:'herblore',level:57}],questReqs:['lost_city','nature_spirit'],items:['Dramen staff','Secateurs'],recommended:['Combat 50+'],enemies:[{name:'Tanglefoot',level:111}]};
+M.recipe_disaster      ={start:'Cook, Lumbridge Castle kitchen',desc:"Complete ten sub-quests to rescue honoured guests from their predicaments.",skillReqs:[],questReqs:['cooks_assistant'],items:[],recommended:[],enemies:[]};
+M.rfd_cooks_quest      ={start:'Cook, Lumbridge Castle kitchen',desc:"Help gather ingredients for Another Cook's Quest.",skillReqs:[{skill:'cooking',level:10}],questReqs:[],items:['Raw sardine','Equa leaves','Tomato','Onion'],recommended:[],enemies:[]};
+M.rfd_mountain_dwarf   ={start:'Cook, Lumbridge Castle kitchen',desc:"Free the Mountain Dwarf from his uncomfortable predicament.",skillReqs:[{skill:'cooking',level:15}],questReqs:['fishing_contest'],items:['Asgarnian ale','Kelda stout'],recommended:[],enemies:[]};
+M.rfd_goblin_generals  ={start:'Cook, Lumbridge Castle kitchen',desc:"Feed the bickering Goblin Generals before they cause a diplomatic incident.",skillReqs:[{skill:'cooking',level:40}],questReqs:['goblin_diplomacy'],items:['Charcoal'],recommended:[],enemies:[]};
+M.rfd_pirate_pete      ={start:'Cook, Lumbridge Castle kitchen',desc:"Rescue Pirate Pete from being pickled.",skillReqs:[{skill:'cooking',level:31}],questReqs:['pirates_treasure'],items:['Mudskipper hat','Raw cod'],recommended:[],enemies:[]};
+M.rfd_lumbridge_guide  ={start:'Cook, Lumbridge Castle kitchen',desc:"Rescue the Lumbridge Guide who has been trapped in a pie.",skillReqs:[{skill:'cooking',level:40},{skill:'thieving',level:42}],questReqs:['goblin_diplomacy'],items:['Pigeon cage','Cheese','Pastry dough'],recommended:[],enemies:[]};
+M.rfd_evil_dave        ={start:'Cook, Lumbridge Castle kitchen',desc:"Free Evil Dave from a spicy stew by creating the right stew.",skillReqs:[{skill:'cooking',level:25}],questReqs:['shadow_storm'],items:['Stew','Many spice doses'],recommended:[],enemies:[]};
+M.rfd_king_awowogei    ={start:'Cook, Lumbridge Castle kitchen',desc:"Free King Awowogei from an extremely unpleasant predicament.",skillReqs:[{skill:'cooking',level:70}],questReqs:['monkey_madness_i'],items:['Banana','Tchiki monkey nuts'],recommended:[],enemies:[{name:'Culinaromancer',level:75}]};
+M.rfd_sir_amik_varze   ={start:'Cook, Lumbridge Castle kitchen',desc:"Help Sir Amik Varze escape from his sticky situation.",skillReqs:[{skill:'cooking',level:40}],questReqs:['holy_grail','wanted'],items:['Frog legs'],recommended:['Combat 60+'],enemies:[{name:"Sir Amik Varze's guard",level:100}]};
+M.rfd_skrach_uglogwee  ={start:'Cook, Lumbridge Castle kitchen',desc:"Free Skrach Uglogwee the ogre from his prison.",skillReqs:[{skill:'cooking',level:41},{skill:'firemaking',level:20}],questReqs:['big_chompy','zogre_flesh_eaters'],items:['Chompy bird','Jubbly bird'],recommended:[],enemies:[]};
+M.rfd_culinaromancer   ={start:'Cook, Lumbridge Castle kitchen',desc:"Defeat the ancient Culinaromancer to save all the guests.",skillReqs:[],questReqs:[],items:['Full combat gear','Prayer potions','Food'],recommended:['Combat 75+'],enemies:[{name:'Culinaromancer',level:122}]};
+M.in_aid_myreque       ={start:'Burgh de Rott',desc:"Strengthen the Myreque's new base of operations in Burgh de Rott.",skillReqs:[{skill:'crafting',level:25},{skill:'mining',level:15},{skill:'magic',level:33},{skill:'smithing',level:15}],questReqs:['in_search_myreque'],items:['Steel items','Coal'],recommended:['Combat 60+'],enemies:[{name:'Gadderanks',level:80}]};
+M.souls_bane           ={start:"Tolna's rift, south of Varrock",desc:"Rescue a man trapped in a rift filled with his own fears.",skillReqs:[],questReqs:[],items:['Food','Combat gear'],recommended:['Combat 40+'],enemies:[{name:'Angry giant rat',level:123}]};
+M.rag_bone_i           ={start:"Odd Old Man's camp",desc:"Collect seventeen different monster bones for an eccentric old man.",skillReqs:[],questReqs:[],items:[],recommended:[],enemies:[]};
+M.swan_song            ={start:'Herman Carrockie, Piscatoris Fishing Colony',desc:"Repel a sea troll invasion threatening the Piscatoris Fishing Colony.",skillReqs:[{skill:'magic',level:66},{skill:'cooking',level:62},{skill:'fishing',level:62},{skill:'smithing',level:45},{skill:'firemaking',level:42}],questReqs:['one_small_favour','garden_tranquillity'],items:['Food','Combat gear'],recommended:['Combat 80+'],enemies:[{name:'Sea Troll Queen',level:170}]};
+M.royal_trouble        ={start:'Advisor Ghrim, Miscellania',desc:"Discover the plot against the king of Miscellania.",skillReqs:[{skill:'agility',level:40},{skill:'slayer',level:40}],questReqs:['throne_miscellania'],items:['Combat gear','Rope'],recommended:['Combat 60+'],enemies:[{name:'Giant Rock Crab',level:137}]};
+M.death_dorgeshuun     ={start:'Mistag, Dorgesh-Kaan',desc:"Help the goblins stop H.A.M. radicals from destroying Dorgesh-Kaan.",skillReqs:[{skill:'thieving',level:23},{skill:'agility',level:23}],questReqs:['lost_tribe'],items:['H.A.M. robes'],recommended:[],enemies:[{name:'Sigmund',level:50}]};
+M.fairytale_ii         ={start:'Martin the Master Gardener, Draynor Village',desc:"Discover the Fairy Queen's location and cure her disease.",skillReqs:[{skill:'herblore',level:49},{skill:'farming',level:40}],questReqs:['fairytale_i'],items:['Dramen staff'],recommended:[],enemies:[{name:'Gorak',level:145}]};
+M.lunar_diplomacy      ={start:'Lokar Searunner, Rellekka docks',desc:"Undergo a spiritual journey to broker peace between two Fremennik tribes.",skillReqs:[{skill:'magic',level:65},{skill:'crafting',level:61},{skill:'defence',level:40},{skill:'firemaking',level:49},{skill:'mining',level:60},{skill:'woodcutting',level:55}],questReqs:['fremennik_trials','lost_city','rune_mysteries','shilo_village'],items:['Combat gear','Tinderbox','Food'],recommended:['Combat 70+'],enemies:[{name:'Me',level:79}]};
+M.eyes_glouphrie       ={start:'Tree Gnome Stronghold',desc:"Use an ancient device to spy on the sinister Glouphrie the Untrusted.",skillReqs:[{skill:'magic',level:46},{skill:'woodcutting',level:45}],questReqs:['tree_gnome_village'],items:['Saw','Maple logs','Oak logs'],recommended:[],enemies:[]};
+M.darkness_hallowvale  ={start:'Burgh de Rott',desc:"Infiltrate Meiyerditch and gather intelligence for the Myreque.",skillReqs:[{skill:'construction',level:5},{skill:'magic',level:20},{skill:'mining',level:20},{skill:'agility',level:26},{skill:'thieving',level:22},{skill:'strength',level:40}],questReqs:['in_aid_myreque'],items:['Hammer','Nails','Planks'],recommended:[],enemies:[{name:'Vanstrom Klause',level:169}]};
+M.slug_menace          ={start:'Kennith, Witchaven',desc:"Investigate a strange mental affliction spreading through Witchaven.",skillReqs:[{skill:'crafting',level:30},{skill:'runecrafting',level:30},{skill:'thieving',level:30}],questReqs:['sea_slug','wanted'],items:[],recommended:[],enemies:[{name:'Mother Mallum',level:62}]};
+M.elemental_workshop_ii={start:"Odd book, Seers' Village",desc:"Discover more secrets of the workshop and create a more powerful shield.",skillReqs:[{skill:'magic',level:20},{skill:'smithing',level:30}],questReqs:['elemental_workshop_i'],items:['Pickaxe','Hammer'],recommended:[],enemies:[]};
+M.my_arm               ={start:'My Arm, top of Trollheim',desc:"Help the troll My Arm grow goutweed on top of Trollheim.",skillReqs:[{skill:'farming',level:29}],questReqs:['eadgars_ruse','jungle_potion'],items:['Spade','Goutweed'],recommended:[],enemies:[{name:'Giant Roc',level:172}]};
+M.enlightened_journey  ={start:'Auguste, Entrana',desc:"Help the monk Auguste design and launch the first hot-air balloon.",skillReqs:[{skill:'farming',level:30},{skill:'firemaking',level:20},{skill:'crafting',level:36}],questReqs:[],items:['Papyrus','Yellow dye','Balls of wool','Logs'],recommended:[],enemies:[]};
+M.eagles_peak          ={start:"Eagle's Peak mountain",desc:"Discover the fate of a missing expert and investigate the eagles' lair.",skillReqs:[{skill:'hunter',level:27}],questReqs:[],items:['Tar','Tinderbox'],recommended:[],enemies:[]};
+M.animal_magnetism     ={start:'Ava, Draynor Manor',desc:"Help Ava build her strange device in exchange for a useful reward.",skillReqs:[{skill:'woodcutting',level:35},{skill:'crafting',level:19},{skill:'slayer',level:18},{skill:'ranged',level:30}],questReqs:['restless_ghost','ernest_chicken','priest_in_peril'],items:['Un-blessed symbol','20 iron arrows','Mithril axe'],recommended:[],enemies:[{name:'Undead chickens',level:7}]};
+M.contact              ={start:'Jex, Sophanem',desc:"Help the High Priest by communing with a dangerous Kalphite.",skillReqs:[],questReqs:['icthlarin'],items:['Combat gear','Prayer potions','Food'],recommended:['Combat 80+'],enemies:[{name:'Giant Kalphite',level:333}]};
+M.cold_war             ={start:'Larry, south of Rellekka',desc:"Investigate suspicious penguin activity around the Iceberg.",skillReqs:[{skill:'agility',level:30},{skill:'construction',level:34},{skill:'crafting',level:30},{skill:'hunter',level:15},{skill:'thieving',level:15}],questReqs:[],items:['Oak plank','Steel bar','Feathers'],recommended:[],enemies:[]};
+M.fremennik_isles      ={start:'Mord Gunnars, north of Rellekka',desc:"Help the islanders of Neitiznot defeat the Dagannoth Kings.",skillReqs:[{skill:'agility',level:40},{skill:'construction',level:20},{skill:'woodcutting',level:56}],questReqs:['fremennik_trials'],items:['Rope','Axe','Hammer','Plank'],recommended:['Combat 70+'],enemies:[{name:'Dagannoth Rex',level:303}]};
+M.tower_of_life        ={start:'Effigy, south of Ardougne',desc:"Help construct the Tower of Life for some suspicious alchemists.",skillReqs:[{skill:'construction',level:10}],questReqs:[],items:['Saw','Hammer','Selected planks'],recommended:[],enemies:[{name:'Homunculus',level:88}]};
+M.great_brain_robbery  ={start:"Brother Tranquility, Mos Le'Harmless",desc:"The Barrelchest has escaped — help the monks of Harmony Island.",skillReqs:[{skill:'crafting',level:16},{skill:'prayer',level:50}],questReqs:['cabin_fever','creature_fenkenstrain'],items:['Diving apparatus','Fishbowl helmet'],recommended:['Combat 70+'],enemies:[{name:'Barrelchest',level:190}]};
+M.what_lies_below      ={start:'Rat Burgiss, south of Varrock',desc:"Help a spy investigate Zamorakian activity south of Varrock.",skillReqs:[{skill:'runecrafting',level:35},{skill:'mining',level:42}],questReqs:[],items:['Coins','5 chaos runes'],recommended:[],enemies:[{name:'Surok Magis',level:122}]};
+M.olafs_quest          ={start:'Olaf the Bard, outside Rellekka',desc:"Help Olaf decode his family's treasure map.",skillReqs:[{skill:'firemaking',level:40},{skill:'woodcutting',level:50}],questReqs:['fremennik_trials'],items:['Tinderbox','Axe','Swamp paste'],recommended:[],enemies:[{name:'Ulfric',level:100}]};
+M.another_slice_ham    ={start:'Ur-tag, Dorgesh-Kaan',desc:"Stop a H.A.M. plot to destroy the peace between the Dorgeshuun and surface world.",skillReqs:[{skill:'agility',level:15},{skill:'attack',level:15}],questReqs:['death_dorgeshuun','dig_site'],items:['Combat gear'],recommended:[],enemies:[{name:'Sigmund',level:64}]};
+M.dream_mentor         ={start:'Cyrisus, Lunar Isle bank',desc:"Help the injured warrior Cyrisus overcome his fears and nightmares.",skillReqs:[],questReqs:['lunar_diplomacy','eadgars_ruse'],items:['Combat gear'],recommended:['Combat 85+'],enemies:[{name:'Inadequacy',level:343}]};
+M.grim_tales           ={start:'Sylas, south of Taverley',desc:"Help the gnome botanist find magical plant specimens.",skillReqs:[{skill:'agility',level:59},{skill:'farming',level:45},{skill:'herblore',level:52},{skill:'thieving',level:58},{skill:'woodcutting',level:71}],questReqs:['witchs_house'],items:['Axe','Spade'],recommended:['Combat 70+'],enemies:[{name:'Glod',level:138}]};
+M.kings_ransom         ={start:'Anna, outside Sinclair Mansion',desc:"Free the Knights of the Round Table and face a deadly dark mage.",skillReqs:[{skill:'defence',level:65},{skill:'magic',level:45}],questReqs:['holy_grail','murder_mystery','black_knights_fortress'],items:['Magic items','Food'],recommended:['Combat 80+'],enemies:[{name:'Morgan Le Faye',level:60}]};
+M.monkey_madness_ii    ={start:'Narnode Shareen, Tree Gnome Stronghold',desc:"Investigate suspicious activity on Ape Atoll in this Grandmaster quest.",skillReqs:[{skill:'crafting',level:70},{skill:'firemaking',level:60},{skill:'fletching',level:70},{skill:'hunter',level:60},{skill:'agility',level:55},{skill:'slayer',level:69},{skill:'thieving',level:60}],questReqs:['monkey_madness_i','troll_stronghold'],items:['Lots of food','Combat gear'],recommended:['Combat 100+'],enemies:[{name:'Kerelestel the Assassin',level:209}]};
+M.client_kourend       ={start:'Veos, Port Sarim',desc:"Explore the kingdom of Great Kourend and complete a task for each house.",skillReqs:[],questReqs:[],items:[],recommended:[],enemies:[]};
+M.rag_bone_ii          ={start:"Odd Old Man's camp",desc:"Collect exotic monster bones from dangerous creatures across Gielinor.",skillReqs:[],questReqs:['rag_bone_i'],items:[],recommended:['Combat 80+'],enemies:[]};
+M.bone_voyage          ={start:'Curator Haig Halen, Varrock Museum',desc:"Help the Varrock Museum archaeologists reach Fossil Island.",skillReqs:[{skill:'woodcutting',level:10}],questReqs:['dig_site'],items:['Logs','Bucket of sap'],recommended:[],enemies:[]};
+M.queen_of_thieves     ={start:'Tomas Lawry, Shayzien',desc:"Work with thieves to expose a corrupt official in Hosidius.",skillReqs:[{skill:'thieving',level:20}],questReqs:['client_kourend'],items:[],recommended:[],enemies:[]};
+M.depths_despair       ={start:'Lord Kandur Hosidius, Hosidius',desc:"Help the lord of Hosidius recover a stolen idol.",skillReqs:[{skill:'agility',level:18}],questReqs:['client_kourend'],items:[],recommended:[],enemies:[{name:'Crabclaw and Hook',level:112}]};
+M.dragon_slayer_ii     ={start:"Alec Kincade, Myths' Guild",desc:"Find and defeat Galvek, the world's most powerful dragon.",skillReqs:[{skill:'agility',level:60},{skill:'magic',level:75},{skill:'smithing',level:70},{skill:'mining',level:68},{skill:'crafting',level:62},{skill:'woodcutting',level:60},{skill:'runecrafting',level:50},{skill:'construction',level:55}],questReqs:['legends_quest','dream_mentor','animal_magnetism','heroes_quest','family_crest','mournings_end_ii'],items:['Antifire potion','Full combat gear'],recommended:['Combat 110+'],enemies:[{name:'Galvek',level:608}]};
+M.tale_righteous       ={start:'Phileas Rimor, Shayzien',desc:"Help an agent of Shayzien uncover corruption in their military.",skillReqs:[{skill:'mining',level:10}],questReqs:['client_kourend'],items:[],recommended:[],enemies:[]};
+M.a_taste_hope         ={start:'Vertida Sefalatis, Burgh de Rott',desc:"Strike back at Lord Drakan and infiltrate Castle Drakan.",skillReqs:[{skill:'agility',level:45},{skill:'crafting',level:48},{skill:'slayer',level:38}],questReqs:['darkness_hallowvale'],items:['Knife','Lots of food'],recommended:['Combat 80+'],enemies:[{name:'Meiyerditch Experiments',level:100}]};
+M.making_friends_arm   ={start:'My Arm, Trollheim',desc:"Help My Arm visit the trolls of Weiss through the power of farming.",skillReqs:[{skill:'firemaking',level:66},{skill:'farming',level:64}],questReqs:['my_arm','swan_song'],items:['Spade','Axe','Tinderbox'],recommended:[],enemies:[{name:'Snowflake',level:95}]};
+M.forsaken_tower       ={start:'Undisclosed location, Lovakengj',desc:"Investigate an old power station and restore its generator.",skillReqs:[{skill:'mining',level:10}],questReqs:['client_kourend'],items:['Hammer'],recommended:[],enemies:[]};
+M.the_ascent_arceuus   ={start:'Tyss, near the Dark Altar',desc:"Help a scholar track down the magical creature known as the rassling.",skillReqs:[{skill:'hunter',level:12}],questReqs:['client_kourend'],items:[],recommended:[],enemies:[{name:'Lesser demon',level:82}]};
+M.song_elves           ={start:'Eluned, Tirannwn',desc:"Discover the truth behind the corruption of the elves and help Seren return.",skillReqs:[{skill:'agility',level:70},{skill:'construction',level:70},{skill:'farming',level:70},{skill:'herblore',level:70},{skill:'hunter',level:70},{skill:'magic',level:70},{skill:'mining',level:70},{skill:'ranged',level:70},{skill:'smithing',level:70},{skill:'woodcutting',level:70}],questReqs:['mournings_end_ii','making_history','hand_in_sand','eyes_glouphrie','roving_elves','big_chompy','regicide'],items:['Full combat gear','Lots of runes'],recommended:['Combat 120+'],enemies:[{name:'Ilfeen',level:276}]};
+M.fremennik_exiles     ={start:'Brundt the Chieftain, Rellekka',desc:"Investigate magical attacks originating from Jatizso and Neitiznot.",skillReqs:[{skill:'crafting',level:65},{skill:'fletching',level:60},{skill:'slayer',level:60},{skill:'smithing',level:60},{skill:'runecrafting',level:55}],questReqs:['fremennik_isles'],items:['Combat gear','Lots of food'],recommended:['Combat 100+'],enemies:[{name:'Basilisk Knight',level:358}]};
+M.sins_father          ={start:'Drezel, under Paterdomus',desc:"Confront Lord Drakan himself to end his hold over Morytania.",skillReqs:[{skill:'agility',level:62},{skill:'attack',level:50},{skill:'crafting',level:56},{skill:'fletching',level:60},{skill:'woodcutting',level:52},{skill:'slayer',level:50}],questReqs:['a_taste_hope'],items:['Full combat gear','Prayer potions','Food'],recommended:['Combat 100+'],enemies:[{name:'Lord Drakan',level:406}]};
+M.a_porcine_interest   ={start:'Martin, north of Falador',desc:"Investigate a series of pig disappearances in the farmlands north of Falador.",skillReqs:[],questReqs:[],items:[],recommended:[],enemies:[]};
+M.getting_ahead        ={start:'Gordon, south of the Farming Guild',desc:"Help Gordon and Mary deal with a monster attacking their animals.",skillReqs:[{skill:'crafting',level:30}],questReqs:[],items:['Hammer','Nails','Plank'],recommended:[],enemies:[{name:'Gore',level:82}]};
+M.night_theatre        ={start:'Ver Sinhaza',desc:"Enter the Theatre of Blood to free the captive citizens of Meiyerditch.",skillReqs:[{skill:'agility',level:62},{skill:'prayer',level:50}],questReqs:['sins_father'],items:['Full combat gear','Blood runes'],recommended:['Combat 115+'],enemies:[{name:'The Pestilent Bloat',level:503}]};
+M.kingdom_divided      ={start:'Sophia, Arceuus',desc:"Investigate a conspiracy targeting all five houses of Great Kourend.",skillReqs:[{skill:'magic',level:42},{skill:'mining',level:42},{skill:'herblore',level:35},{skill:'woodcutting',level:38},{skill:'agility',level:34},{skill:'thieving',level:34}],questReqs:['forsaken_tower','the_ascent_arceuus','tale_righteous','depths_despair','queen_of_thieves'],items:['Combat gear'],recommended:['Combat 70+'],enemies:[{name:'Xamphur',level:98}]};
+M.land_goblins         ={start:'Oldak, Dorgesh-Kaan',desc:"Join goblin adventurers on an expedition beneath the goblin temple.",skillReqs:[{skill:'agility',level:40},{skill:'fishing',level:40},{skill:'thieving',level:45}],questReqs:['death_dorgeshuun','another_slice_ham','fishing_contest'],items:['Food','Goblin mail'],recommended:[],enemies:[{name:'Snothead boss goblin',level:79}]};
+M.temple_of_eye        ={start:'Wizard Cordelia, south of Varrock',desc:"Join the Wizards' Tower expedition into the Guardians of the Rift temple.",skillReqs:[{skill:'runecrafting',level:10}],questReqs:['rune_mysteries'],items:['Talisman'],recommended:[],enemies:[]};
+M.beneath_cursed_sands ={start:'Sayln, Ruins of Unkah',desc:"Venture into the ancient tomb of the Kharidian kalphite god.",skillReqs:[{skill:'agility',level:62},{skill:'firemaking',level:55}],questReqs:['contact','icthlarin'],items:['Full combat gear','Antipoison','Food'],recommended:['Combat 100+'],enemies:[{name:'Osmumten',level:313}]};
+M.sleeping_giants      ={start:"Kovac, Giants' Foundry",desc:"Help Kovac restore the Giants' Foundry to working order.",skillReqs:[{skill:'smithing',level:15}],questReqs:[],items:[],recommended:[],enemies:[]};
+M.garden_of_death      ={start:'Andros Mai, west of Shayzien',desc:"Help a spirit investigate the mysterious garden of death.",skillReqs:[{skill:'herblore',level:3}],questReqs:['client_kourend'],items:[],recommended:[],enemies:[]};
+M.secrets_north        ={start:'Enid, Mountain Camp',desc:"Investigate a murder in the frozen north and a dangerous Mahjarrat plot.",skillReqs:[{skill:'agility',level:69}],questReqs:['desert_treasure_i','mountain_daughter'],items:['Full combat gear','Food'],recommended:['Combat 100+'],enemies:[{name:'Vardorvis',level:572}]};
+M.desert_treasure_ii   ={start:'Asgarnia Smith, Varrock Museum',desc:"Defeat four powerful bosses guarding new diamonds of Azzanadra.",skillReqs:[{skill:'magic',level:75},{skill:'firemaking',level:75},{skill:'thieving',level:70},{skill:'herblore',level:62},{skill:'runecrafting',level:60},{skill:'construction',level:60},{skill:'farming',level:60}],questReqs:['secrets_north','below_ice_mountain','temple_of_eye','beneath_cursed_sands','garden_of_death','sleeping_giants'],items:['Full combat gear','Prayer potions'],recommended:['Combat 120+'],enemies:[{name:'The Whisperer',level:568}]};
+M.path_glouphrie       ={start:'King Bolren, Tree Gnome Village',desc:"Stop the villainous Glouphrie from spreading his evil further.",skillReqs:[{skill:'agility',level:60},{skill:'slayer',level:56},{skill:'strength',level:60}],questReqs:['eyes_glouphrie','grand_tree'],items:['Combat gear','Food'],recommended:['Combat 80+'],enemies:[{name:'Growthlumper',level:146}]};
+M.children_sun         ={start:'Varlamore',desc:"Begin the Twilight Emissaries series — investigate a new threat in Varlamore.",skillReqs:[],questReqs:[],items:[],recommended:[],enemies:[]};
+M.defender_varrock     ={start:'Lontun, east of Varrock',desc:"Stop Zamorakian warriors from unleashing ancient magic on Varrock.",skillReqs:[{skill:'mining',level:55},{skill:'smithing',level:55},{skill:'prayer',level:55}],questReqs:['rune_mysteries','priest_in_peril','making_history'],items:['Full combat gear'],recommended:['Combat 80+'],enemies:[{name:'Zemouregal',level:235}]};
+M.twilights_promise    ={start:'Varlamore',desc:"Continue the Twilight Emissaries quest series in Varlamore.",skillReqs:[{skill:'agility',level:40}],questReqs:['children_sun'],items:['Combat gear'],recommended:[],enemies:[]};
+M.at_first_light       ={start:'Hunter Guild, Varlamore',desc:"Help the Hunter Guild investigate unusual creature behaviour.",skillReqs:[{skill:'hunter',level:46}],questReqs:[],items:[],recommended:[],enemies:[]};
+M.perilous_moons       ={start:'Varlamore',desc:"Investigate the awakening of creatures tied to Lunar magic.",skillReqs:[{skill:'slayer',level:48},{skill:'herblore',level:31},{skill:'crafting',level:65}],questReqs:['mournings_end_i'],items:['Full combat gear'],recommended:['Combat 90+'],enemies:[{name:'Blood Moon',level:393}]};
+M.ribbiting_tale       ={start:'Varlamore wetlands',desc:"A short and amusing quest involving the frogs of the Varlamore wetlands.",skillReqs:[],questReqs:[],items:[],recommended:[],enemies:[]};
+M.while_guthix_sleeps  ={start:"Movario's base",desc:"Prevent Lucien from gaining ultimate power in this epic Grandmaster quest.",skillReqs:[{skill:'agility',level:65},{skill:'defence',level:50},{skill:'farming',level:55},{skill:'herblore',level:55},{skill:'magic',level:60},{skill:'ranged',level:55},{skill:'slayer',level:60},{skill:'strength',level:55}],questReqs:['swan_song','royal_trouble','mournings_end_ii','temple_of_ikov','legends_quest','tears_of_guthix','wanted'],items:['Full combat gear','Lots of food'],recommended:['Combat 120+'],enemies:[{name:'Tormented demons',level:450}]};
+M.heart_of_darkness    ={start:'Varlamore',desc:"The darkness spreading through Varlamore reaches a crisis point.",skillReqs:[{skill:'herblore',level:57},{skill:'agility',level:56}],questReqs:['twilights_promise'],items:['Combat gear'],recommended:['Combat 90+'],enemies:[]};
+M.death_on_the_isle    ={start:'Varlamore',desc:"Investigate a series of mysterious deaths on a remote Varlamore island.",skillReqs:[{skill:'agility',level:30}],questReqs:[],items:[],recommended:[],enemies:[]};
+M.meat_and_greet       ={start:'Fortis Colosseum area, Varlamore',desc:"Help a chef source unusual ingredients for a special feast.",skillReqs:[{skill:'cooking',level:25}],questReqs:[],items:[],recommended:[],enemies:[]};
+M.ethically_acquired   ={start:'Varrock Museum',desc:"Help the museum acquire antiquities through entirely legitimate means.",skillReqs:[{skill:'thieving',level:25}],questReqs:[],items:[],recommended:[],enemies:[]};
+M.curse_of_arrav       ={start:'Fur Trader, Al Kharid',desc:"Follow the trail of the legendary hero Arrav to discover his ultimate fate.",skillReqs:[{skill:'magic',level:64},{skill:'strength',level:64}],questReqs:['desert_treasure_ii'],items:['Full combat gear'],recommended:['Combat 100+'],enemies:[{name:'Arrav',level:299}]};
+M.the_final_dawn       ={start:'Varlamore',desc:"Face the full darkness in the fourth and final Twilight Emissaries quest.",skillReqs:[{skill:'agility',level:60},{skill:'prayer',level:50}],questReqs:['heart_of_darkness'],items:['Full combat gear'],recommended:['Combat 100+'],enemies:[{name:'Twilight Beast',level:480}]};
+M.shadows_custodia     ={start:'Varlamore',desc:"Investigate the shadows haunting a Varlamore archaeological site.",skillReqs:[{skill:'agility',level:52}],questReqs:[],items:['Combat gear'],recommended:[],enemies:[]};
+M.scrambled            ={start:'Varlamore',desc:"A chaotic quest involving a scramble across Varlamore.",skillReqs:[],questReqs:[],items:[],recommended:[],enemies:[]};
+M.pandemonium          ={start:'Port Sarim docks',desc:"Set sail on your first Sailing adventure.",skillReqs:[{skill:'sailing',level:20}],questReqs:[],items:[],recommended:[],enemies:[]};
+M.prying_times         ={start:'Port Sarim',desc:"Investigate smuggling activity at sea.",skillReqs:[{skill:'sailing',level:25},{skill:'thieving',level:15}],questReqs:['pandemonium'],items:[],recommended:[],enemies:[]};
+M.current_affairs      ={start:'Kandarin coast',desc:"A nautical quest involving currents and coastal exploration.",skillReqs:[{skill:'sailing',level:30}],questReqs:['pandemonium'],items:[],recommended:[],enemies:[]};
+M.troubled_tortugans   ={start:'Sea south of Yanille',desc:"Help the tortugans resolve a dangerous dispute at sea.",skillReqs:[{skill:'sailing',level:35}],questReqs:['prying_times','current_affairs'],items:['Combat gear','Food'],recommended:['Combat 70+'],enemies:[{name:'Tortugan captain',level:130}]};
+const QUEST_META = M;
+
+/* ═════════════════════════════════════════════════════════════
+   CONSTANTS / HELPERS
+═════════════════════════════════════════════════════════════ */
+const TOTAL_QP    = 333;
+const DIFF_LABELS = {N:'Novice',I:'Intermediate',E:'Experienced',M:'Master',G:'Grandmaster',S:'Special'};
+const LEN_LABELS  = {VS:'Very Short',S:'Short',M:'Medium',L:'Long',VL:'Very Long'};
+const PROF_ICONS  = {ironman:'⚔️',hardcore:'💀',ultimate:'🔱',regular:'👤',gim:'👥',ghcim:'☠️',ugim:'🔱'};
+const SKILL_ICONS = Object.fromEntries(Object.entries(SKILL_MAP).map(([k,v])=>[k,v.icon]));
+function diffClass(d){return {N:'novice',I:'intermediate',E:'experienced',M:'master',G:'grandmaster',S:'special'}[d]||'novice';}
+
+/* ─── Profile / storage ─────────────────────────────────── */
+const PROFILES_KEY    = 'osts_profiles_v2';
+const ACTIVE_PROF_KEY = 'osts_active_profile_v2';
+const getProfiles    = () => storage.get(PROFILES_KEY,[]);
+const getActiveId    = () => storage.get(ACTIVE_PROF_KEY,null);
+const setActiveId    = id => storage.set(ACTIVE_PROF_KEY,id);
+const getActiveProf  = () => { const id=getActiveId(); return id?(getProfiles().find(p=>p.id===id)||null):null; };
+const questKey = () => { const p=getActiveProf(); return p?`osts-quests-v1-${p.id}`:'osts-quests-v1-guest'; };
+const qpKey    = () => { const p=getActiveProf(); return p?`osts-qp-v1-${p.id}`:'osts-qp-v1-guest'; };
+
+let completed = new Set();
+function loadCompleted(){ completed=new Set(storage.get(questKey(),[])); }
+function saveCompleted(){
+  storage.set(questKey(),[...completed]);
+  const qp=QUESTS.filter(q=>completed.has(q.id)).reduce((s,q)=>s+q.qp,0);
+  storage.set(qpKey(),qp);
+}
+
+/* ─── WOM snapshot skill levels ─────────────────────────── */
+function getSkillLevel(skill){
+  const p=getActiveProf();
+  const snap=p?.cachedData?.latestSnapshot?.data?.skills;
+  if(!snap) return 1;
+  return snap[skill]?.level??1;
+}
+const hasProfile = () => !!getActiveProf()?.cachedData?.latestSnapshot?.data?.skills;
+
+/* ═════════════════════════════════════════════════════════════
+   FILTER STATE
+═════════════════════════════════════════════════════════════ */
+let activeFilter='all', filterDiff='', filterLen='', filterSeries='';
+let pendingDiff='', pendingLen='', pendingSeries='';
+
+/* Build series chips */
+const ALL_SERIES=[...new Set(QUESTS.map(q=>q.series).filter(Boolean))].sort();
+const seriesContainer=document.getElementById('fs-series');
+[{val:'',label:'All'},...ALL_SERIES.map(s=>({val:s,label:s}))].forEach(({val,label})=>{
+  const btn=document.createElement('button');
+  btn.className='fs-chip'; btn.dataset.series=val; btn.textContent=label;
+  if(!val) btn.classList.add('active');
+  seriesContainer.appendChild(btn);
+});
+
+document.querySelectorAll('#fs-diff .fs-chip').forEach(b=>b.addEventListener('click',()=>{
+  pendingDiff=b.dataset.diff;
+  document.querySelectorAll('#fs-diff .fs-chip').forEach(x=>x.classList.toggle('active',x===b));
+}));
+document.querySelectorAll('#fs-len .fs-chip').forEach(b=>b.addEventListener('click',()=>{
+  pendingLen=b.dataset.len;
+  document.querySelectorAll('#fs-len .fs-chip').forEach(x=>x.classList.toggle('active',x===b));
+}));
+seriesContainer.querySelectorAll('.fs-chip').forEach(b=>b.addEventListener('click',()=>{
+  pendingSeries=b.dataset.series;
+  seriesContainer.querySelectorAll('.fs-chip').forEach(x=>x.classList.toggle('active',x===b));
+}));
+
+function openFilterSheet(){
+  pendingDiff=filterDiff; pendingLen=filterLen; pendingSeries=filterSeries;
+  document.querySelectorAll('#fs-diff .fs-chip').forEach(b=>b.classList.toggle('active',b.dataset.diff===pendingDiff));
+  document.querySelectorAll('#fs-len .fs-chip').forEach(b=>b.classList.toggle('active',b.dataset.len===pendingLen));
+  seriesContainer.querySelectorAll('.fs-chip').forEach(b=>b.classList.toggle('active',b.dataset.series===pendingSeries));
+  document.getElementById('filter-overlay').classList.add('show');
+}
+function closeFilterSheet(){document.getElementById('filter-overlay').classList.remove('show');}
+document.getElementById('open-filter-btn').onclick=openFilterSheet;
+document.getElementById('filter-close').onclick=closeFilterSheet;
+document.getElementById('filter-overlay').onclick=e=>{if(e.target.id==='filter-overlay') closeFilterSheet();};
+
+document.getElementById('filter-apply').onclick=()=>{
+  filterDiff=pendingDiff; filterLen=pendingLen; filterSeries=pendingSeries;
+  closeFilterSheet(); renderActiveChips(); renderList();
+  document.getElementById('open-filter-btn').classList.toggle('has-filters',!!(filterDiff||filterLen||filterSeries));
+};
+
+function renderActiveChips(){
+  const wrap=document.getElementById('active-filter-chips');
+  const chips=[];
+  if(filterDiff)   chips.push({label:`Difficulty: ${DIFF_LABELS[filterDiff]||filterDiff}`,clear:()=>{filterDiff='';applyFilters();}});
+  if(filterLen)    chips.push({label:`Length: ${LEN_LABELS[filterLen]||filterLen}`,         clear:()=>{filterLen='';applyFilters();}});
+  if(filterSeries) chips.push({label:`Series: ${filterSeries}`,                             clear:()=>{filterSeries='';applyFilters();}});
+  wrap.style.display=chips.length?'flex':'none';
+  wrap.innerHTML=chips.map((_,i)=>`<span class="afc" data-ci="${i}">✕ ${chips[i].label}</span>`).join('');
+  wrap.querySelectorAll('.afc').forEach(el=>el.onclick=()=>chips[+el.dataset.ci].clear());
+}
+function applyFilters(){
+  renderActiveChips(); renderList();
+  document.getElementById('open-filter-btn').classList.toggle('has-filters',!!(filterDiff||filterLen||filterSeries));
+}
+
+/* ═════════════════════════════════════════════════════════════
+   STATS
+═════════════════════════════════════════════════════════════ */
+function updateStats(){
+  const done=QUESTS.filter(q=>completed.has(q.id));
+  const qp=done.reduce((s,q)=>s+q.qp,0);
+  document.getElementById('qp-cur').textContent=qp;
+  document.getElementById('qp-bar').style.width=(qp/TOTAL_QP*100).toFixed(1)+'%';
+  document.getElementById('stat-done').textContent=done.length;
+  document.getElementById('stat-f2p').textContent=done.filter(q=>q.f2p).reduce((s,q)=>s+q.qp,0);
+  document.getElementById('stat-mem').textContent=done.filter(q=>!q.f2p).reduce((s,q)=>s+q.qp,0);
+}
+
+/* ═════════════════════════════════════════════════════════════
+   RENDER LIST
+═════════════════════════════════════════════════════════════ */
+function renderList(){
+  const q=(document.getElementById('quest-search')?.value||'').toLowerCase().trim();
+  const list=document.getElementById('quest-list');
+  let shown=QUESTS.filter(quest=>{
+    if(q&&!quest.name.toLowerCase().includes(q)) return false;
+    if(activeFilter==='incomplete'&&completed.has(quest.id)) return false;
+    if(activeFilter==='done'&&!completed.has(quest.id)) return false;
+    if(activeFilter==='f2p'&&!quest.f2p) return false;
+    if(activeFilter==='members'&&quest.f2p) return false;
+    if(filterDiff&&quest.diff!==filterDiff) return false;
+    if(filterLen&&quest.len!==filterLen) return false;
+    if(filterSeries&&quest.series!==filterSeries) return false;
+    return true;
+  });
+  if(!shown.length){list.innerHTML='<div class="quest-empty">No quests match your filters.</div>';return;}
+  const f2p=shown.filter(q=>q.f2p), mem=shown.filter(q=>!q.f2p);
+  let html='';
+  if(f2p.length&&activeFilter!=='members'){
+    html+=`<div class="quest-section-hdr">Free-to-play (${f2p.length})</div>`;
+    html+=f2p.map(rowHTML).join('');
+  }
+  if(mem.length&&activeFilter!=='f2p'){
+    if(f2p.length&&activeFilter!=='members') html+=`<div class="quest-section-hdr" style="margin-top:6px">Members (${mem.length})</div>`;
+    else if(!f2p.length) html+=`<div class="quest-section-hdr">Members (${mem.length})</div>`;
+    html+=mem.map(rowHTML).join('');
+  }
+  list.innerHTML=html;
+  list.querySelectorAll('.quest-check').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      const id=btn.dataset.id;
+      if(completed.has(id)) completed.delete(id); else completed.add(id);
+      saveCompleted(); updateStats();
+      const row=btn.closest('.quest-row');
+      row.classList.toggle('done',completed.has(id));
+      btn.textContent=completed.has(id)?'✓':'';
+      row.querySelector('.quest-qp').style.color=completed.has(id)?'var(--green)':'var(--gold)';
+    });
+  });
+  list.querySelectorAll('.quest-row').forEach(row=>{
+    row.addEventListener('click',()=>openDetail(row.dataset.id));
+  });
+}
+
+function rowHTML(quest){
+  const done=completed.has(quest.id);
+  return `<div class="quest-row${done?' done':''}" data-id="${quest.id}">
+    <div class="quest-check" data-id="${quest.id}">${done?'✓':''}</div>
+    <div class="quest-info">
+      <div class="quest-name">${quest.name}</div>
+      <div class="quest-meta">
+        <span class="diff-badge diff-${diffClass(quest.diff)}">${DIFF_LABELS[quest.diff]||quest.diff}</span>
+        <span class="len-badge">${LEN_LABELS[quest.len]||quest.len}</span>
+        <span class="${quest.f2p?'f2p-badge':'mem-badge'}">${quest.f2p?'FREE':'P2P'}</span>
+        ${quest.series?`<span class="series-badge">${quest.series}</span>`:''}
+      </div>
+    </div>
+    <div class="quest-qp" style="color:${done?'var(--green)':'var(--gold)'}">${quest.qp} QP</div>
+  </div>`;
+}
+
+/* Main filter bar */
+document.querySelectorAll('.q-filter').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    activeFilter=btn.dataset.f;
+    document.querySelectorAll('.q-filter').forEach(b=>b.classList.toggle('active',b===btn));
+    renderList();
+  });
+});
+document.getElementById('quest-search').addEventListener('input',renderList);
+
+/* ═════════════════════════════════════════════════════════════
+   QUEST DETAIL SHEET
+═════════════════════════════════════════════════════════════ */
+let currentDetailId=null;
+
+function openDetail(id){
+  const quest=QUESTS.find(q=>q.id===id); if(!quest) return;
+  currentDetailId=id;
+  const meta=QUEST_META[id]||{};
+  const done=completed.has(id);
+  const profLoaded=hasProfile();
+
+  document.getElementById('qd-icon').textContent=quest.f2p?'🟢':'🔵';
+  document.getElementById('qd-title').textContent=quest.name;
+  document.getElementById('qd-badges').innerHTML=[
+    `<span class="diff-badge diff-${diffClass(quest.diff)}">${DIFF_LABELS[quest.diff]}</span>`,
+    `<span class="len-badge">${LEN_LABELS[quest.len]}</span>`,
+    quest.qp>0?`<span style="font-size:11px;font-weight:700;color:var(--gold)">${quest.qp} QP</span>`:'',
+    quest.series?`<span class="series-badge">${quest.series}</span>`:'',
+  ].filter(Boolean).join('');
+
+  const cb=document.getElementById('qd-complete-btn');
+  cb.textContent=done?'✓ Completed — Mark Incomplete':'Mark Complete';
+  cb.className='qd-complete-btn'+(done?' done':'');
+
+  document.getElementById('qd-info-grid').innerHTML=[
+    `<div class="qd-info-cell"><div class="ic-lbl">Start Point</div><div class="ic-val">${meta.start||'—'}</div></div>`,
+    `<div class="qd-info-cell"><div class="ic-lbl">Difficulty</div><div class="ic-val">${DIFF_LABELS[quest.diff]}</div></div>`,
+    `<div class="qd-info-cell"><div class="ic-lbl">Length</div><div class="ic-val">${LEN_LABELS[quest.len]}</div></div>`,
+    `<div class="qd-info-cell"><div class="ic-lbl">Quest Points</div><div class="ic-val" style="color:var(--gold)">${quest.qp||'0 (sub-quest)'}</div></div>`,
+  ].join('');
+
+  document.getElementById('qd-desc').textContent=meta.desc||'No description available.';
+
+  /* Skill requirements — checked against WOM snapshot */
+  const skillReqs=meta.skillReqs||[];
+  const skillsSec=document.getElementById('qd-skills-section');
+  if(skillReqs.length){
+    skillsSec.style.display='block';
+    document.getElementById('qd-skills').innerHTML=skillReqs.map(r=>{
+      const have=getSkillLevel(r.skill);
+      const met=have>=r.level;
+      const cls=profLoaded?(met?'met':'unmet'):'unknown';
+      const statusText=profLoaded?(met?`✓ Lv ${have}`:`✗ Lv ${have}`):'?';
+      const icon=SKILL_ICONS[r.skill]?`<img src="${SKILL_ICONS[r.skill]}" width="18" height="18" style="object-fit:contain;border-radius:3px">`:'⚔️';
+      return `<div class="req-row ${cls}">
+        <span class="req-icon">${icon}</span>
+        <span class="req-text">${r.skill.charAt(0).toUpperCase()+r.skill.slice(1)} ${r.level}</span>
+        <span class="req-status">${statusText}</span>
+      </div>`;
+    }).join('');
+  } else skillsSec.style.display='none';
+
+  /* Quest requirements — checked against completed set */
+  const questReqs=meta.questReqs||[];
+  const questsSec=document.getElementById('qd-quests-section');
+  if(questReqs.length){
+    questsSec.style.display='block';
+    document.getElementById('qd-quests').innerHTML=questReqs.map(rid=>{
+      const rq=QUESTS.find(q=>q.id===rid);
+      const done2=completed.has(rid);
+      return `<div class="req-row ${done2?'met':'unmet'}">
+        <span class="req-icon">${done2?'✓':'✗'}</span>
+        <span class="req-text">${rq?rq.name:rid}</span>
+        <span class="req-status" style="color:${done2?'var(--green)':'var(--red)'}">${done2?'Done':'Needed'}</span>
+      </div>`;
+    }).join('');
+  } else questsSec.style.display='none';
+
+  /* Items */
+  const items=meta.items||[];
+  const itemsSec=document.getElementById('qd-items-section');
+  if(items.length){
+    itemsSec.style.display='block';
+    document.getElementById('qd-items').innerHTML=items.map(i=>`<div class="qd-list-item">🎒 ${i}</div>`).join('');
+  } else itemsSec.style.display='none';
+
+  /* Recommended */
+  const rec=meta.recommended||[];
+  const recSec=document.getElementById('qd-rec-section');
+  if(rec.length){
+    recSec.style.display='block';
+    document.getElementById('qd-rec').innerHTML=rec.map(r=>`<div class="qd-list-item">💡 ${r}</div>`).join('');
+  } else recSec.style.display='none';
+
+  /* Enemies */
+  const enemies=meta.enemies||[];
+  const enemSec=document.getElementById('qd-enemies-section');
+  if(enemies.length){
+    enemSec.style.display='block';
+    document.getElementById('qd-enemies').innerHTML=enemies.map(e=>`<div class="qd-list-item enemy"><span>⚔️ ${e.name}</span><span class="enemy-lvl">Lv ${e.level}</span></div>`).join('');
+  } else enemSec.style.display='none';
+
+  document.getElementById('detail-overlay').classList.add('show');
+}
+
+function closeDetail(){document.getElementById('detail-overlay').classList.remove('show');}
+document.getElementById('detail-close').onclick=closeDetail;
+document.getElementById('detail-overlay').onclick=e=>{if(e.target.id==='detail-overlay') closeDetail();};
+
+document.getElementById('qd-complete-btn').onclick=()=>{
+  if(!currentDetailId) return;
+  if(completed.has(currentDetailId)) completed.delete(currentDetailId);
+  else completed.add(currentDetailId);
+  saveCompleted(); updateStats(); renderList();
+  const done=completed.has(currentDetailId);
+  const cb=document.getElementById('qd-complete-btn');
+  cb.textContent=done?'✓ Completed — Mark Incomplete':'Mark Complete';
+  cb.className='qd-complete-btn'+(done?' done':'');
+  showToast(done?'Quest marked complete ✅':'Quest marked incomplete');
+};
+
+/* ─── Settings ───────────────────────────────────────────── */
+function renderProfileList(){
+  const list=document.getElementById('sp-profile-list'); if(!list) return;
+  const profiles=getProfiles(), activeId=getActiveId();
+  if(!profiles.length){list.innerHTML=`<p style="font-size:12px;color:var(--muted)">No saved profiles. <a href="/Pages/overview.html">Search a player</a> to create one.</p>`;return;}
+  list.innerHTML=[...profiles].sort((a,b)=>(b.id===activeId)-(a.id===activeId)).map(p=>`
+    <div class="profile-card${p.id===activeId?' active':''}">
+      <div class="profile-avatar">${PROF_ICONS[p.type]||'👤'}</div>
+      <div class="profile-info"><div class="profile-name">${p.nickname||p.rsn}</div><div class="profile-rsn">${p.rsn}</div></div>
+      ${p.id!==activeId?`<button class="profile-act" data-load="${p.id}">Load</button>`:`<span style="font-size:10px;color:var(--gold)">Active</span>`}
+    </div>`).join('');
+  list.querySelectorAll('[data-load]').forEach(b=>b.addEventListener('click',()=>{
+    const p=getProfiles().find(x=>x.id===b.dataset.load); if(!p) return;
+    setActiveId(p.id); loadCompleted(); renderList(); updateStats(); renderProfileList();
+    showToast(`Switched to ${p.nickname||p.rsn}`);
+  }));
+}
+document.getElementById('settings-btn')?.addEventListener('click',renderProfileList,true);
+
+document.getElementById('reset-quests-btn')?.addEventListener('click',()=>{
+  if(!confirm('Reset all quest completions for this profile?')) return;
+  completed.clear(); saveCompleted(); updateStats(); renderList();
+  showToast('Quest progress reset');
+});
+
+/* ─── Boot ───────────────────────────────────────────────── */
+loadCompleted();
+updateStats();
+renderList();
+</script>
+</body>
+</html>

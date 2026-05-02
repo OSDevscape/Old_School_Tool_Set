@@ -38,7 +38,7 @@
     .pet-name{font-size:10px;font-weight:700;color:var(--text);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .pet-meta{display:flex;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-bottom:6px}
     .pet-kc{font-weight:600;color:var(--gold)}
-    .pet-notes{font-size:11px;color:var(--muted);line-height:1.3;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+    .pet-notes{font-size:11px;color:var(--muted);line-height:1.3;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical}
     .pl-empty{text-align:center;padding:60px 20px;color:var(--muted)}
     .pl-empty-icon{font-size:56px;margin-bottom:12px;opacity:.4}
     .fab{position:fixed;right:16px;bottom:calc(var(--nav-h,60px) + 16px);width:56px;height:56px;border:none;border-radius:50%;background:var(--gold);color:#000;font-size:32px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:110;box-shadow:0 8px 20px rgba(0,0,0,.35);transition:transform .15s}
@@ -236,23 +236,26 @@
     </div>
   </div>
 
-  <nav id="bottom-nav"></nav>
+<!-- Bottom Nav -->
+<nav id="bottom-nav"></nav>
 
-  <div class="modal-overlay" id="more-menu-overlay">
-    <div class="modal-sheet">
-      <div class="modal-head">
-        <div><div class="modal-title">More</div></div>
-        <button class="modal-close" id="more-menu-close">×</button>
-      </div>
-                <div class="modal-actions">
-      <a class="modal-action" href="/Pages/More_Pages/bossing.html">🏆 Bossing</a>
-      <a class="modal-action" href="/Pages/More_Pages/petLog.html">🐾 Pet Log</a>
-      <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">🍄 Fairy Rings</a>
-      <a class="modal-action" href="/Pages/More_Pages/timers.html">⏲️  Timers</a>
-      <a class="modal-action" href="/Pages/More_Pages/bestiary.html">🐉 Bestiary</a>
+<!-- More Menu -->
+<div class="modal-overlay" id="more-menu-overlay">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <div><div class="modal-title">More</div></div>
+      <button class="modal-close" id="more-menu-close">✕</button>
     </div>
+  <div class="modal-actions">
+      <a class="modal-action" href="More_Pages/bestiary.html">🐉 Bestiary</a>
+      <a class="modal-action" href="More_Pages/bossing.html">🏆 Bossing</a>
+      <a class="modal-action" href="More_Pages/fairyRings.html">🍄 Fairy Rings</a>
+      <a class="modal-action" href="/Pages/More_Pages/goals (1).html">📊 Goals</a>
+      <a class="modal-action" href="More_Pages/petLog.html">🐾 Pet Log</a>
+      <a class="modal-action" href="More_Pages/timers.html">⏰ Timers</a>
     </div>
   </div>
+</div>
 
   <div id="toast"></div>
 

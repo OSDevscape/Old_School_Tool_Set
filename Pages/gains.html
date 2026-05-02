@@ -73,7 +73,7 @@
       align-items: center;
       gap: 4px;
       cursor: pointer;
-      transition: border-color .15s, background .15s;
+      transition: border-color .15s, transform .15s;
       min-height: 96px;
       position: relative;
       overflow: hidden;
@@ -86,9 +86,9 @@
       background: var(--gc-color, var(--gold));
       border-radius: 12px 12px 0 0;
     }
-    .gain-card:active {
-      border-color: var(--gold);
-      background: var(--surface2);
+    .gain-card:hover {
+      border-color: var(--gc-color, var(--gold));
+      transform: translateY(-2px);
     }
     .gc-icon {
       width: 26px;
@@ -316,8 +316,10 @@
   </div>
 </div>
 
+<!-- Bottom Nav -->
 <nav id="bottom-nav"></nav>
 
+<!-- More Menu -->
 <div class="modal-overlay" id="more-menu-overlay">
   <div class="modal-sheet">
     <div class="modal-head">
@@ -325,11 +327,12 @@
       <button class="modal-close" id="more-menu-close">✕</button>
     </div>
   <div class="modal-actions">
-      <a class="modal-action" href="More_Pages/bossing.html">🏆 Bossing</a>
-      <a class="modal-action" href="More_Pages/petLog.html">🐾 Pet Log</a>
-      <a class="modal-action" href="More_Pages/fairyRings.html">🍄 Fairy Rings</a>
-      <a class="modal-action" href="More_Pages/timers.html">⏱ Timers</a>
       <a class="modal-action" href="More_Pages/bestiary.html">🐉 Bestiary</a>
+      <a class="modal-action" href="More_Pages/bossing.html">🏆 Bossing</a>
+      <a class="modal-action" href="More_Pages/fairyRings.html">🍄 Fairy Rings</a>
+      <a class="modal-action" href="/Pages/More_Pages/goals (1).html">📊 Goals</a>
+      <a class="modal-action" href="More_Pages/petLog.html">🐾 Pet Log</a>
+      <a class="modal-action" href="More_Pages/timers.html">⏰ Timers</a>
     </div>
   </div>
 </div>
