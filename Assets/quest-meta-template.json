@@ -1,0 +1,1949 @@
+{
+  "_README": {
+    "note": "Fill in each quest entry. The _name field is read-only for reference \u2014 it is NOT used by the app.",
+    "skillReqs_format": [
+      {
+        "skill": "skill_key_lowercase",
+        "level": 0,
+        "boostable": false
+      }
+    ],
+    "questReqs_format": [
+      "use_quest_id_keys_from_this_file"
+    ],
+    "enemies_format": [
+      {
+        "name": "Enemy Name",
+        "level": 0
+      }
+    ],
+    "skill_keys": [
+      "attack",
+      "defence",
+      "strength",
+      "hitpoints",
+      "ranged",
+      "prayer",
+      "magic",
+      "cooking",
+      "woodcutting",
+      "fletching",
+      "fishing",
+      "firemaking",
+      "crafting",
+      "smithing",
+      "mining",
+      "herblore",
+      "agility",
+      "thieving",
+      "slayer",
+      "farming",
+      "runecrafting",
+      "hunter",
+      "construction",
+      "sailing"
+    ]
+  },
+  "learning_the_ropes": {
+    "_name": "Learning the Ropes",
+    "start": "Start this quest by talking to the Quest Guide on Tutorial Island.",
+    "desc": "N/A",
+    "skillReqs": [
+      "N/A"
+    ],
+    "questReqs": [
+      "N/A"
+    ],
+    "items": [
+      "N/A"
+    ],
+    "recommended": [
+      "N/A"
+    ],
+    "enemies": [
+      "N/A"
+    ]
+  },
+  "cooks_assistant": {
+    "_name": "Cook's Assistant",
+    "start": "Speak to the Cook in the kitchen of Lumbridge Castle. ",
+    "desc": "The Lumbridge Castle cook is in a mess. It is the Duke of Lumbridge's birthday and the cook is making the cake. He needs a lot of ingredients and doesn't have much time.",
+    "skillReqs": ["N/A"],
+    "questReqs": ["N/A"],
+    "items": ["name: Egg, quantity: 1", "name: Bucket of Milk, quantity: 1", "name: Pot of Flour, quantity: 1"],
+    "recommended": ["N/A"],
+    "enemies": ["N/A"],
+    "reward": ["1 Quest Point", "300 Cooking XP"],
+    "requiredFor": ["name: Recipe for Disaster", "name: Easy Lumbridge & Draynor Diary: Bake some bread on the Lumbridge castle kitchen range."]
+  },
+  "demon_slayer": {
+    "_name": "Demon Slayer",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "restless_ghost": {
+    "_name": "The Restless Ghost",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "romeo_juliet": {
+    "_name": "Romeo & Juliet",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "sheep_shearer": {
+    "_name": "Sheep Shearer",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "shield_of_arrav": {
+    "_name": "Shield of Arrav",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "ernest_chicken": {
+    "_name": "Ernest the Chicken",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "vampyre_slayer": {
+    "_name": "Vampyre Slayer",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "imp_catcher": {
+    "_name": "Imp Catcher",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "prince_ali_rescue": {
+    "_name": "Prince Ali Rescue",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "dorics_quest": {
+    "_name": "Doric's Quest",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "black_knights_fortress": {
+    "_name": "Black Knights' Fortress",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "witchs_potion": {
+    "_name": "Witch's Potion",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "knights_sword": {
+    "_name": "The Knight's Sword",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "goblin_diplomacy": {
+    "_name": "Goblin Diplomacy",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "pirates_treasure": {
+    "_name": "Pirate's Treasure",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "dragon_slayer_i": {
+    "_name": "Dragon Slayer I",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "rune_mysteries": {
+    "_name": "Rune Mysteries",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "misthalin_mystery": {
+    "_name": "Misthalin Mystery",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "corsair_curse": {
+    "_name": "The Corsair Curse",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "x_marks_spot": {
+    "_name": "X Marks the Spot",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "below_ice_mountain": {
+    "_name": "Below Ice Mountain",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "ides_of_milk": {
+    "_name": "The Ides of Milk",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "druidic_ritual": {
+    "_name": "Druidic Ritual",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "lost_city": {
+    "_name": "Lost City",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "witchs_house": {
+    "_name": "Witch's House",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "merlins_crystal": {
+    "_name": "Merlin's Crystal",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "heroes_quest": {
+    "_name": "Heroes' Quest",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "scorpion_catcher": {
+    "_name": "Scorpion Catcher",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "family_crest": {
+    "_name": "Family Crest",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "tribal_totem": {
+    "_name": "Tribal Totem",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "fishing_contest": {
+    "_name": "Fishing Contest",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "monks_friend": {
+    "_name": "Monk's Friend",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "temple_of_ikov": {
+    "_name": "Temple of Ikov",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "clock_tower": {
+    "_name": "Clock Tower",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "holy_grail": {
+    "_name": "Holy Grail",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "tree_gnome_village": {
+    "_name": "Tree Gnome Village",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "fight_arena": {
+    "_name": "Fight Arena",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "hazeel_cult": {
+    "_name": "Hazeel Cult",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "sheep_herder": {
+    "_name": "Sheep Herder",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "plague_city": {
+    "_name": "Plague City",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "sea_slug": {
+    "_name": "Sea Slug",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "waterfall_quest": {
+    "_name": "Waterfall Quest",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "biohazard": {
+    "_name": "Biohazard",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "jungle_potion": {
+    "_name": "Jungle Potion",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "grand_tree": {
+    "_name": "The Grand Tree",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "shilo_village": {
+    "_name": "Shilo Village",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "underground_pass": {
+    "_name": "Underground Pass",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "observatory_quest": {
+    "_name": "Observatory Quest",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "tourist_trap": {
+    "_name": "The Tourist Trap",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "watchtower": {
+    "_name": "Watchtower",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "dwarf_cannon": {
+    "_name": "Dwarf Cannon",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "murder_mystery": {
+    "_name": "Murder Mystery",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "dig_site": {
+    "_name": "The Dig Site",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "gertrudes_cat": {
+    "_name": "Gertrude's Cat",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "legends_quest": {
+    "_name": "Legends' Quest",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "big_chompy": {
+    "_name": "Big Chompy Bird Hunting",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "elemental_workshop_i": {
+    "_name": "Elemental Workshop I",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "priest_in_peril": {
+    "_name": "Priest in Peril",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "nature_spirit": {
+    "_name": "Nature Spirit",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "death_plateau": {
+    "_name": "Death Plateau",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "troll_stronghold": {
+    "_name": "Troll Stronghold",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "tai_bwo_wannai": {
+    "_name": "Tai Bwo Wannai Trio",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "regicide": {
+    "_name": "Regicide",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "eadgars_ruse": {
+    "_name": "Eadgar's Ruse",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "shades_mortons": {
+    "_name": "Shades of Mort'ton",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "fremennik_trials": {
+    "_name": "The Fremennik Trials",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "horror_deep": {
+    "_name": "Horror from the Deep",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "throne_miscellania": {
+    "_name": "Throne of Miscellania",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "monkey_madness_i": {
+    "_name": "Monkey Madness I",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "haunted_mine": {
+    "_name": "Haunted Mine",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "troll_romance": {
+    "_name": "Troll Romance",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "in_search_myreque": {
+    "_name": "In Search of the Myreque",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "creature_fenkenstrain": {
+    "_name": "Creature of Fenkenstrain",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "roving_elves": {
+    "_name": "Roving Elves",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "ghosts_ahoy": {
+    "_name": "Ghosts Ahoy",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "one_small_favour": {
+    "_name": "One Small Favour",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "mountain_daughter": {
+    "_name": "Mountain Daughter",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "between_a_rock": {
+    "_name": "Between a Rock...",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "the_feud": {
+    "_name": "The Feud",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "the_golem": {
+    "_name": "The Golem",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "desert_treasure_i": {
+    "_name": "Desert Treasure I",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "icthlarin": {
+    "_name": "Icthlarin's Little Helper",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "tears_of_guthix": {
+    "_name": "Tears of Guthix",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "zogre_flesh_eaters": {
+    "_name": "Zogre Flesh Eaters",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "lost_tribe": {
+    "_name": "The Lost Tribe",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "giant_dwarf": {
+    "_name": "The Giant Dwarf",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "recruitment_drive": {
+    "_name": "Recruitment Drive",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "mournings_end_i": {
+    "_name": "Mourning's End Part I",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "forgettable_tale": {
+    "_name": "Forgettable Tale...",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "garden_tranquillity": {
+    "_name": "Garden of Tranquillity",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "tail_two_cats": {
+    "_name": "A Tail of Two Cats",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "wanted": {
+    "_name": "Wanted!",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "mournings_end_ii": {
+    "_name": "Mourning's End Part II",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "rum_deal": {
+    "_name": "Rum Deal",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "shadow_storm": {
+    "_name": "Shadow of the Storm",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "making_history": {
+    "_name": "Making History",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "ratcatchers": {
+    "_name": "Ratcatchers",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "spirits_elid": {
+    "_name": "Spirits of the Elid",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "devious_minds": {
+    "_name": "Devious Minds",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "hand_in_sand": {
+    "_name": "The Hand in the Sand",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "enakhra": {
+    "_name": "Enakhra's Lament",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "cabin_fever": {
+    "_name": "Cabin Fever",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "fairytale_i": {
+    "_name": "Fairytale I - Growing Pains",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "recipe_disaster": {
+    "_name": "Recipe for Disaster",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "rfd_cooks_quest": {
+    "_name": "RfD \u2014 Another Cook's Quest",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "rfd_mountain_dwarf": {
+    "_name": "RfD \u2014 Freeing the Mountain Dwarf",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "rfd_goblin_generals": {
+    "_name": "RfD \u2014 Freeing the Goblin Generals",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "rfd_pirate_pete": {
+    "_name": "RfD \u2014 Freeing Pirate Pete",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "rfd_lumbridge_guide": {
+    "_name": "RfD \u2014 Freeing the Lumbridge Guide",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "rfd_evil_dave": {
+    "_name": "RfD \u2014 Freeing Evil Dave",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "rfd_king_awowogei": {
+    "_name": "RfD \u2014 Freeing King Awowogei",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "rfd_sir_amik_varze": {
+    "_name": "RfD \u2014 Freeing Sir Amik Varze",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "rfd_skrach_uglogwee": {
+    "_name": "RfD \u2014 Freeing Skrach Uglogwee",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "rfd_culinaromancer": {
+    "_name": "RfD \u2014 Defeating the Culinaromancer",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "in_aid_myreque": {
+    "_name": "In Aid of the Myreque",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "souls_bane": {
+    "_name": "A Soul's Bane",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "rag_bone_i": {
+    "_name": "Rag and Bone Man I",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "swan_song": {
+    "_name": "Swan Song",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "royal_trouble": {
+    "_name": "Royal Trouble",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "death_dorgeshuun": {
+    "_name": "Death to the Dorgeshuun",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "fairytale_ii": {
+    "_name": "Fairytale II - Cure a Queen",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "lunar_diplomacy": {
+    "_name": "Lunar Diplomacy",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "eyes_glouphrie": {
+    "_name": "The Eyes of Glouphrie",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "darkness_hallowvale": {
+    "_name": "Darkness of Hallowvale",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "slug_menace": {
+    "_name": "The Slug Menace",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "elemental_workshop_ii": {
+    "_name": "Elemental Workshop II",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "my_arm": {
+    "_name": "My Arm's Big Adventure",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "enlightened_journey": {
+    "_name": "Enlightened Journey",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "eagles_peak": {
+    "_name": "Eagles' Peak",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "animal_magnetism": {
+    "_name": "Animal Magnetism",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "contact": {
+    "_name": "Contact!",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "cold_war": {
+    "_name": "Cold War",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "fremennik_isles": {
+    "_name": "The Fremennik Isles",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "tower_of_life": {
+    "_name": "Tower of Life",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "great_brain_robbery": {
+    "_name": "The Great Brain Robbery",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "what_lies_below": {
+    "_name": "What Lies Below",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "olafs_quest": {
+    "_name": "Olaf's Quest",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "another_slice_ham": {
+    "_name": "Another Slice of H.A.M.",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "dream_mentor": {
+    "_name": "Dream Mentor",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "grim_tales": {
+    "_name": "Grim Tales",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "kings_ransom": {
+    "_name": "King's Ransom",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "monkey_madness_ii": {
+    "_name": "Monkey Madness II",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "client_kourend": {
+    "_name": "Client of Kourend",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "rag_bone_ii": {
+    "_name": "Rag and Bone Man II",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "bone_voyage": {
+    "_name": "Bone Voyage",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "queen_of_thieves": {
+    "_name": "The Queen of Thieves",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "depths_despair": {
+    "_name": "The Depths of Despair",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "dragon_slayer_ii": {
+    "_name": "Dragon Slayer II",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "tale_righteous": {
+    "_name": "Tale of the Righteous",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "a_taste_hope": {
+    "_name": "A Taste of Hope",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "making_friends_arm": {
+    "_name": "Making Friends with My Arm",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "forsaken_tower": {
+    "_name": "The Forsaken Tower",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "the_ascent_arceuus": {
+    "_name": "The Ascent of Arceuus",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "song_elves": {
+    "_name": "Song of the Elves",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "fremennik_exiles": {
+    "_name": "The Fremennik Exiles",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "sins_father": {
+    "_name": "Sins of the Father",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "a_porcine_interest": {
+    "_name": "A Porcine of Interest",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "getting_ahead": {
+    "_name": "Getting Ahead",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "night_theatre": {
+    "_name": "A Night at the Theatre",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "kingdom_divided": {
+    "_name": "A Kingdom Divided",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "land_goblins": {
+    "_name": "Land of the Goblins",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "temple_of_eye": {
+    "_name": "Temple of the Eye",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "beneath_cursed_sands": {
+    "_name": "Beneath Cursed Sands",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "sleeping_giants": {
+    "_name": "Sleeping Giants",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "garden_of_death": {
+    "_name": "The Garden of Death",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "secrets_north": {
+    "_name": "Secrets of the North",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "desert_treasure_ii": {
+    "_name": "Desert Treasure II - The Fallen Empire",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "path_glouphrie": {
+    "_name": "The Path of Glouphrie",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "children_sun": {
+    "_name": "Children of the Sun",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "defender_varrock": {
+    "_name": "Defender of Varrock",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "twilights_promise": {
+    "_name": "Twilight's Promise",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "at_first_light": {
+    "_name": "At First Light",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "perilous_moons": {
+    "_name": "Perilous Moons",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "ribbiting_tale": {
+    "_name": "The Ribbiting Tale of a Lily Pad Labour Dispute",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "while_guthix_sleeps": {
+    "_name": "While Guthix Sleeps",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "heart_of_darkness": {
+    "_name": "The Heart of Darkness",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "death_on_the_isle": {
+    "_name": "Death on the Isle",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "meat_and_greet": {
+    "_name": "Meat and Greet",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "ethically_acquired": {
+    "_name": "Ethically Acquired Antiquities",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "curse_of_arrav": {
+    "_name": "The Curse of Arrav",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "the_final_dawn": {
+    "_name": "The Final Dawn",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "shadows_custodia": {
+    "_name": "Shadows of Custodia",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "scrambled": {
+    "_name": "Scrambled!",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "pandemonium": {
+    "_name": "Pandemonium",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "prying_times": {
+    "_name": "Prying Times",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "current_affairs": {
+    "_name": "Current Affairs",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  },
+  "troubled_tortugans": {
+    "_name": "Troubled Tortugans",
+    "start": "",
+    "desc": "",
+    "skillReqs": [],
+    "questReqs": [],
+    "items": [],
+    "recommended": [],
+    "enemies": []
+  }
+}
