@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2b241b">
+  <link rel="manifest" href="/manifest.json">
+  <title>OSTS — Clue Scroll Solver</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+
+    :root {
+      --beginner: #f0f0f0;
+      --easy:   #3fb950;
+      --medium: #58a6ff;
+      --hard:   #f0883e;
+      --elite:  #b388ff;
+      --master: #ffd700;
+    }
+
+    .cs-search-wrap { display:flex; gap:8px; margin-bottom:10px; }
+    .cs-search {
+      flex:1; background:var(--surface2); border:1px solid var(--border);
+      border-radius:10px; color:var(--text); font-size:14px;
+      padding:9px 12px; outline:none; transition:border-color .15s;
+    }
+    .cs-search:focus { border-color:var(--gold); }
+    .cs-search::placeholder { color:var(--muted); }
+
+    .cs-filters { display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; margin-bottom:6px; scrollbar-width:none; }
+    .cs-filters::-webkit-scrollbar { display:none; }
+    .cs-filter {
+      flex-shrink:0; padding:5px 12px; border-radius:999px;
+      font-size:11px; font-weight:700; border:1px solid var(--border);
+      background:var(--surface2); color:var(--muted); cursor:pointer;
+      transition:all .15s; white-space:nowrap;
+    }
+    .cs-filter.active                 { background:var(--gold);   color:#000; border-color:var(--gold); }
+    .cs-filter[data-tier="beginner"].active { background:var(--beginner); border-color:var(--beginner); color:#111; }
+    .cs-filter[data-tier="easy"].active   { background:var(--easy);   border-color:var(--easy);   color:#000; }
+    .cs-filter[data-tier="medium"].active { background:var(--medium); border-color:var(--medium); color:#000; }
+    .cs-filter[data-tier="hard"].active   { background:var(--hard);   border-color:var(--hard);   color:#000; }
+    .cs-filter[data-tier="elite"].active  { background:var(--elite);  border-color:var(--elite);  color:#000; }
+    .cs-filter[data-tier="master"].active { background:var(--master); border-color:var(--master); color:#000; }
+
+    .cs-type-filters { display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; margin-bottom:10px; scrollbar-width:none; }
+    .cs-type-filters::-webkit-scrollbar { display:none; }
+
+    .cs-count { font-size:11px; color:var(--muted); margin-bottom:8px; text-align:right; }
+    .cs-list  { display:flex; flex-direction:column; gap:8px; }
+
+    /* ── Base card ── */
+    .cs-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:13px; overflow:hidden; cursor:pointer;
+      transition:border-color .15s;
+    }
+    .cs-card:active { border-color:var(--gold); }
+    .cs-card.open   { border-color:var(--gold); }
+
+    .cs-card-top {
+      display:flex; align-items:flex-start; gap:10px;
+      padding:11px 12px 10px 16px; position:relative;
+    }
+    .cs-card-top::before {
+      content:''; position:absolute; top:0; left:0; bottom:0; width:4px;
+      background:var(--tier-col, var(--gold)); border-radius:13px 0 0 13px;
+    }
+
+    .cs-badges { display:flex; gap:4px; flex-shrink:0; margin-top:2px; flex-direction:column; }
+    .cs-tier-badge {
+      font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px;
+      background:rgba(0,0,0,.3); color:var(--tier-col,var(--gold));
+      border:1px solid var(--tier-col,var(--gold));
+      text-transform:uppercase; letter-spacing:.5px; white-space:nowrap;
+    }
+    .cs-type-badge {
+      font-size:9px; font-weight:700; padding:2px 7px; border-radius:999px;
+      background:var(--surface2); color:var(--muted);
+      border:1px solid var(--border); text-transform:uppercase;
+      letter-spacing:.4px; white-space:nowrap;
+    }
+
+    .cs-card-main { flex:1; min-width:0; }
+    .cs-clue-text { font-size:13px; font-weight:600; color:var(--text); line-height:1.4; margin-bottom:4px; font-style:italic; }
+    .cs-solution  { font-size:12px; color:var(--gold); font-weight:700; }
+    .cs-location  { font-size:11px; color:var(--muted); margin-top:2px; }
+
+    .cs-chevron { font-size:14px; color:var(--muted); flex-shrink:0; transition:transform .2s; margin-top:2px; user-select:none; }
+    .cs-card.open .cs-chevron { transform:rotate(180deg); }
+
+    .cs-detail { display:none; border-top:1px solid var(--border); padding:12px 14px 13px 16px; }
+    .cs-card.open .cs-detail { display:block; }
+
+    .cs-detail-row { display:flex; gap:8px; align-items:flex-start; margin-bottom:8px; font-size:12px; }
+    .cs-detail-row:last-child { margin-bottom:0; }
+    .cs-detail-label { color:var(--muted); font-weight:600; white-space:nowrap; min-width:60px; font-size:11px; }
+    .cs-detail-val   { color:var(--text); line-height:1.5; flex:1; }
+
+    .cs-items-list { display:flex; gap:5px; flex-wrap:wrap; margin-top:4px; }
+    .cs-item-chip {
+      font-size:10px; font-weight:600; padding:3px 9px; border-radius:999px;
+      background:rgba(184,136,72,.12); border:1px solid var(--gold);
+      color:var(--gold); white-space:nowrap;
+    }
+
+    .cs-card-actions { display:flex; gap:6px; margin-top:10px; }
+    .cs-act-btn {
+      flex:1; padding:8px 0; border-radius:8px; font-size:11px; font-weight:700;
+      border:1px solid var(--border); background:var(--surface2);
+      color:var(--muted); cursor:pointer; transition:all .15s;
+    }
+    .cs-act-btn:hover      { border-color:var(--gold); color:var(--gold); }
+    .cs-act-btn.primary    { background:var(--gold); color:#000; border-color:var(--gold); }
+    .cs-act-btn.bookmarked { background:rgba(184,136,72,.15); color:var(--gold); border-color:var(--gold); }
+
+    /* ─────────────────────────────────────────
+       PUZZLE BOX STYLES
+    ───────────────────────────────────────── */
+    .puzzle-card .cs-card-top { align-items:stretch; }
+
+    /* Thumbnail */
+    .puzzle-thumb {
+      flex-shrink:0; width:76px; height:76px;
+      border-radius:9px; overflow:hidden;
+      background:var(--surface2); border:1px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .puzzle-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+    .puzzle-thumb-fb { font-size:30px; }
+
+    .puzzle-tiers { display:flex; gap:4px; flex-wrap:wrap; margin-top:5px; }
+
+    /* Solved image (expanded) */
+    .puzzle-solved-img {
+      width:100%; border-radius:10px; border:1px solid var(--border);
+      display:block; margin-bottom:5px;
+    }
+    .puzzle-img-caption { font-size:10px; color:var(--muted); text-align:center; margin-bottom:12px; }
+
+    /* 6-section guide */
+    .puzzle-guide {
+      background:var(--surface2); border:1px solid var(--border);
+      border-radius:10px; overflow:hidden; margin-top:10px;
+    }
+    .puzzle-guide-hdr {
+      font-size:11px; font-weight:800; color:var(--muted);
+      text-transform:uppercase; letter-spacing:.6px;
+      padding:8px 12px; border-bottom:1px solid var(--border);
+    }
+
+    /* Section colour grid — 5 cols, 5 rows */
+    .psg-wrap { padding:10px 12px 4px; }
+    .psg-label { font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+    .psg-grid  { display:grid; grid-template-columns:repeat(5,1fr); gap:3px; }
+    .psg-cell  {
+      aspect-ratio:1; border-radius:5px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:9px; font-weight:800; color:rgba(0,0,0,.75);
+    }
+
+    /* Steps */
+    .puzzle-steps { padding:6px 12px 8px; }
+    .puzzle-step  {
+      display:flex; align-items:flex-start; gap:8px;
+      padding:6px 0; border-bottom:1px solid rgba(255,255,255,.05);
+      font-size:12px;
+    }
+    .puzzle-step:last-child { border-bottom:none; }
+    .puzzle-step-num {
+      flex-shrink:0; width:20px; height:20px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:10px; font-weight:800; color:#000; margin-top:1px;
+    }
+    .s-red    { background:#e74c3c; }
+    .s-orange { background:#f0883e; }
+    .s-yellow { background:#f1c40f; }
+    .s-green  { background:#3fb950; }
+    .s-blue   { background:#58a6ff; }
+    .s-purple { background:#c084fc; }
+
+    .puzzle-step-text { flex:1; color:var(--text); line-height:1.5; }
+
+    .puzzle-warn {
+      margin:4px 12px 12px;
+      background:rgba(241,196,15,.07); border:1px solid rgba(241,196,15,.2);
+      border-radius:8px; padding:9px 11px;
+      font-size:11px; color:var(--text); line-height:1.6;
+    }
+    .puzzle-warn strong { color:#f1c40f; }
+
+    /* ── Tracker banner ── */
+    .cs-tracker {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:13px; padding:12px 14px; margin-bottom:12px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .cs-tracker-icon { font-size:22px; flex-shrink:0; }
+    .cs-tracker-info { flex:1; min-width:0; }
+    .cs-tracker-label { font-size:10px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-bottom:2px; }
+    .cs-tracker-step  { font-size:13px; font-weight:700; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .cs-tracker-clear { background:none; border:none; color:var(--muted); font-size:18px; cursor:pointer; padding:4px; }
+    .cs-tracker-clear:hover { color:var(--red); }
+
+    /* ── Empty ── */
+    .cs-empty { text-align:center; padding:48px 20px; color:var(--muted); font-size:13px; }
+    .cs-empty-icon { font-size:36px; margin-bottom:10px; }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>OSTS</h1>
+  <div class="hdr-actions">
+    <button id="install-btn" style="display:none">Install</button>
+    <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
+  </div>
+</header>
+
+<div id="settings-overlay"></div>
+<div id="settings-panel" aria-hidden="true">
+  <div class="settings-head">
+    <h2>Settings</h2>
+    <button class="settings-close" id="settings-close">✕</button>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Appearance</div>
+    <div class="theme-options">
+      <button class="theme-chip" data-theme="dark">Dark</button>
+      <button class="theme-chip" data-theme="light">Light</button>
+      <button class="theme-chip" data-theme="brown">Brown</button>
+    </div>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Player Profiles</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.5">Manage profiles on the <a href="/overview.html" style="color:var(--gold);font-weight:600">Overview</a> page.</div>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Clue Solver</div>
+    <button class="push-btn" id="clear-bookmarks-btn">Clear all bookmarks</button>
+  </div>
+</div>
+
+<div id="main">
+  <div class="page active">
+
+    <div class="cs-tracker" id="cs-tracker" style="display:none">
+      <div class="cs-tracker-icon">📌</div>
+      <div class="cs-tracker-info">
+        <div class="cs-tracker-label">Current Step</div>
+        <div class="cs-tracker-step" id="cs-tracker-text">—</div>
+      </div>
+      <button class="cs-tracker-clear" id="cs-tracker-clear">✕</button>
+    </div>
+
+    <div class="cs-search-wrap">
+      <input class="cs-search" id="cs-search" type="search"
+             placeholder="Search clue, solution, puzzle name…" autocomplete="off" spellcheck="false">
+    </div>
+
+    <div class="cs-filters" id="cs-tier-filters">
+      <button class="cs-filter active" data-tier="all">All Tiers</button>
+      <button class="cs-filter" data-tier="beginner">⬜ Beginner</button>
+      <button class="cs-filter" data-tier="easy">🟢 Easy</button>
+      <button class="cs-filter" data-tier="medium">🔵 Medium</button>
+      <button class="cs-filter" data-tier="hard">🟠 Hard</button>
+      <button class="cs-filter" data-tier="elite">🟣 Elite</button>
+      <button class="cs-filter" data-tier="master">⭐ Master</button>
+    </div>
+
+    <div class="cs-type-filters" id="cs-type-filters">
+      <button class="cs-filter active" data-type="all">All Types</button>
+      <button class="cs-filter" data-type="puzzle">🧩 Puzzle</button>
+      <button class="cs-filter" data-type="anagram">🔤 Anagram</button>
+      <button class="cs-filter" data-type="cipher">🔒 Cipher</button>
+      <button class="cs-filter" data-type="cryptic">🗺️ Cryptic</button>
+      <button class="cs-filter" data-type="coordinate">📍 Coordinate</button>
+      <button class="cs-filter" data-type="emote">💃 Emote</button>
+      <button class="cs-filter" data-type="map">🗺 Map</button>
+      <button class="cs-filter" data-type="challenge">❓ Challenge</button>
+      <button class="cs-filter" data-type="light-box">💡 Light Box</button>
+      <button class="cs-filter" data-type="hot-cold">🌡️ Hot/Cold</button>
+    </div>
+
+    <div class="cs-count" id="cs-count"></div>
+    <div class="cs-list"  id="cs-list"></div>
+
+  </div>
+</div>
+
+<nav id="bottom-nav"></nav>
+
+<div class="modal-overlay" id="more-menu-overlay">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <div><div class="modal-title">More</div></div>
+      <button class="modal-close" id="more-menu-close">✕</button>
+    </div>
+<div class="modal-actions">
+
+  <a class="modal-action" href="/Pages/More_Pages/bestiary.html">
+    <span class="ma-title">🐉 Bestiary</span>
+    <span class="ma-desc">Look up monsters, combat stats &amp; slayer info</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/bookmarks.html">
+    <span class="ma-title">🔖 Bookmarks</span>
+    <span class="ma-desc">Your saved clues, fairy rings, timers &amp; more</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/bossing.html">
+    <span class="ma-title">🏆 Bossing</span>
+    <span class="ma-desc">Track boss kill counts and personal bests</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/clueScrolls.html">
+    <span class="ma-title">📜 Clue Solver</span>
+    <span class="ma-desc">Solve anagrams, ciphers, emotes &amp; puzzle boxes</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">
+    <span class="ma-title">🍄 Fairy Rings</span>
+    <span class="ma-desc">All 46 ring codes with pins &amp; personal notes</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/goals.html">
+    <span class="ma-title">📊 Goals</span>
+    <span class="ma-desc">Set and track XP &amp; level goals per skill</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/petLog.html">
+    <span class="ma-title">🐾 Pet Log</span>
+    <span class="ma-desc">Log your pet drops and track your collection</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/quests.html">
+    <span class="ma-title">🗺️ Quests</span>
+    <span class="ma-desc">Quest list with requirements and completion tracking</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/timers.html">
+    <span class="ma-title">⏰ Timers</span>
+    <span class="ma-desc">Farm runs, birdhouses &amp; custom growth timers</span>
+  </a>
+
+</div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+import { initPage, showToast, settings } from '/JS/shared.js';
+
+// ─── Meta ─────────────────────────────────────────────────────────────────────
+const TIER_COL  = { beginner:'#e0e0e0', easy:'#3fb950', medium:'#58a6ff', hard:'#f0883e', elite:'#b388ff', master:'#ffd700' };
+const TIER_ICON = { beginner:'⬜', easy:'🟢', medium:'🔵', hard:'🟠', elite:'🟣', master:'⭐' };
+const TYPE_ICON = { anagram:'🔤', cipher:'🔒', cryptic:'🗺️', coordinate:'📍', emote:'💃', map:'🗺', puzzle:'🧩', 'hot-cold':'🌡️', challenge:'❓', 'light-box':'💡' };
+
+// ─── 6-section puzzle method ──────────────────────────────────────────────────
+// 5×5 grid — colour per cell [row][col]
+const GRID_COLORS = [
+  ['#e74c3c','#e74c3c','#e74c3c','#e74c3c','#e74c3c'], // row 0 — red
+  ['#f0883e','#f0883e','#f0883e','#f0883e','#f0883e'], // row 1 — orange
+  ['#f1c40f','#f1c40f','#f1c40f','#f1c40f','#f1c40f'], // row 2 — yellow
+  ['#3fb950','#3fb950','#58a6ff','#58a6ff','#c084fc'], // row 3 — green | blue | purple
+  ['#3fb950','#3fb950','#58a6ff','#58a6ff','#c084fc'], // row 4 — green | blue | purple
+];
+
+const SOLVE_STEPS = [
+  { cls:'s-red',    n:'1', text:'Arrange the <strong>top row</strong> (red section) left-to-right to match the solved image.' },
+  { cls:'s-orange', n:'2', text:'Arrange the <strong>2nd row</strong> (orange section) left-to-right. Do not touch row 1.' },
+  { cls:'s-yellow', n:'3', text:'Arrange the <strong>3rd row</strong> (yellow section) left-to-right. Do not touch rows 1–2.' },
+  { cls:'s-green',  n:'4', text:'Place the two <strong>left column</strong> tiles in rows 4–5 (green section) correctly.' },
+  { cls:'s-blue',   n:'5', text:'Place the two <strong>middle column</strong> tiles in rows 4–5 (blue section) correctly.' },
+  { cls:'s-purple', n:'6', text:'Arrange the remaining <strong>bottom-right 2×2</strong> + final two tiles (purple section) to finish.' },
+];
+
+function puzzleGuideHtml() {
+  const gridHtml = GRID_COLORS.flatMap(row =>
+    row.map(c => `<div class="psg-cell" style="background:${c}"></div>`)
+  ).join('');
+
+  const stepsHtml = SOLVE_STEPS.map(s => `
+    <div class="puzzle-step">
+      <div class="puzzle-step-num ${s.cls}">${s.n}</div>
+      <div class="puzzle-step-text">${s.text}</div>
+    </div>`).join('');
+
+  return `
+  <div class="puzzle-guide">
+    <div class="puzzle-guide-hdr">🧩 How to Solve — 6-Section Method</div>
+    <div class="psg-wrap">
+      <div class="psg-label">Section colour map (5 × 5 grid)</div>
+      <div class="psg-grid">${gridHtml}</div>
+    </div>
+    <div class="puzzle-steps">${stepsHtml}</div>
+    <div class="puzzle-warn">
+      <strong>⚠️ Golden rule:</strong> Once a section is complete, <strong>never move those tiles again</strong>.
+      Work strictly from top to bottom. If a tile slips out of a finished row, restart that section.<br><br>
+      <strong>💡 Tip:</strong> If you got a puzzle you've already seen, destroy it and ask the NPC again — or log out to reset the scramble.
+    </div>
+  </div>`;
+}
+
+// ─── Puzzle Box data ──────────────────────────────────────────────────────────
+// 7 puzzles — 3 available hard/elite/master, 4 master-only
+const PUZZLES = [
+  { id:'pz-castle',   name:'Castle',           tiers:['hard','elite','master'], img:'https://oldschool.runescape.wiki/images/Castle_puzzle_solved.png?98edb',                       notes:'The most common puzzle. Depicts Falador castle. Scrambled 101 times before being given to you.' },
+  { id:'pz-troll',    name:'Troll',             tiers:['hard','elite','master'], img:'https://oldschool.runescape.wiki/images/Troll_puzzle_solved.png?4996c',                        notes:'Features a troll from the Troll Stronghold region.' },
+  { id:'pz-tree',     name:'Tree',              tiers:['hard','elite','master'], img:'https://oldschool.runescape.wiki/images/Tree_puzzle_solved.png?c4267',                         notes:'A tree landscape. Available from hard clues onwards.' },
+  { id:'pz-gnome',    name:'Gnome Child',       tiers:['master'],               img:'https://oldschool.runescape.wiki/images/Gnome_child_puzzle_solved.png?4b269',                  notes:'Master clue only. Beloved by the community — the iconic Gnome Child stares into your soul.' },
+  { id:'pz-cerberus', name:'Cerberus',          tiers:['master'],               img:'https://oldschool.runescape.wiki/images/Cerberus_puzzle_solved.png?527ba',                     notes:'Master clue only. Cerberus, guardian of the Slayer dungeon.' },
+  { id:'pz-zulrah',   name:'Zulrah',            tiers:['master'],               img:'https://oldschool.runescape.wiki/images/Zulrah_puzzle_solved.png?58d9d',                       notes:'Master clue only. The snake boss Zulrah.' },
+  { id:'pz-tob',      name:'Theatre of Blood',  tiers:['master'],               img:'https://oldschool.runescape.wiki/images/Theatre_of_Blood_puzzle_solved.png?27f0d',             notes:'Master clue only. The Theatre of Blood raid scene.' },
+];
+
+// ─── Clue Data ───────────────────────────────────────────────────────────────
+// Types per tier (OSRS wiki):
+//   Beginner : anagram, cryptic, emote, hot-cold, map
+//   Easy     : cryptic, emote, map   (no anagrams, no coordinates)
+//   Medium   : anagram, challenge, cipher, coordinate, cryptic, emote
+//   Hard     : anagram, challenge, cipher, coordinate, cryptic, emote, map, puzzle
+//   Elite    : anagram, challenge, coordinate, cryptic, emote, map, puzzle
+//   Master   : anagram, coordinate, cryptic, emote, hot-cold, light-box, puzzle
+const CLUES = [
+
+  // ══════════════ BEGINNER ══════════════
+  { id:'b1',  tier:'beginner', type:'anagram',  clue:'TAMED ROCKS',          solution:'Dockmaster',      location:'Port Sarim — docks',                           items:[], answer:null, notes:'Dockmaster is at the main docks in Port Sarim.' },
+  { id:'b2',  tier:'beginner', type:'anagram',  clue:'AN INN',               solution:'Nian',            location:'Nardah — south-east area',                     items:[], answer:null, notes:'Talk to Nian inside Nardah.' },
+  { id:'b3',  tier:'beginner', type:'anagram',  clue:'RATION',               solution:'Artion',          location:'Rellekka — warrior area',                      items:[], answer:null, notes:'Verify exact location on wiki.' },
+  { id:'b4',  tier:'beginner', type:'cryptic',  clue:'Search the crate in the Barbarian Village helmet shop.',                         solution:'Search crate',      location:'Barbarian Village — helmet shop',     items:[], answer:null, notes:'South-west area of Barbarian Village.' },
+  { id:'b5',  tier:'beginner', type:'cryptic',  clue:'Talk to the bartender of the Rusty Anchor in Port Sarim.',                       solution:'Talk to Bartender', location:'Port Sarim — Rusty Anchor inn',       items:[], answer:null, notes:'North part of Port Sarim.' },
+  { id:'b6',  tier:'beginner', type:'cryptic',  clue:'Speak to Gertrude, east of the Burthorpe inn.',                                  solution:'Talk to Gertrude',  location:'East of Burthorpe inn',               items:[], answer:null, notes:'Gertrude stands just east of the inn in Burthorpe.' },
+  { id:'b7',  tier:'beginner', type:'emote',    clue:'Beckon in the Digsite, near the eastern winch. Bow before you talk to me.',       solution:'Beckon emote',      location:'Digsite — east winch',                items:[], answer:null, notes:'Beckon at the eastern winch, then talk to the NPC who appears.' },
+  { id:'b8',  tier:'beginner', type:'emote',    clue:"Clap in the Flax field north of Seers' Village.",                                 solution:'Clap emote',        location:"North of Seers' Village — flax field",items:[], answer:null, notes:"Directly north of Seers' Village bank." },
+  { id:'b9',  tier:'beginner', type:'map',      clue:'X marks the spot near the south entrance of Varrock.',                            solution:'Dig at X',          location:'South of Varrock south gate',         items:['Spade'], answer:null, notes:"Just south of Varrock's south gate off the road." },
+  { id:'b10', tier:'beginner', type:'map',      clue:"X marks the spot in Lumbridge's cow field.",                                      solution:'Dig at X',          location:'Lumbridge — cow field east of castle', items:['Spade'], answer:null, notes:'Main cow field east of Lumbridge Castle.' },
+  { id:'b11', tier:'beginner', type:'hot-cold', clue:'Beginner hot/cold — follow the strange device.',                                  solution:'Follow temperature', location:'Near Lumbridge (short range)',         items:['Strange device'], answer:null, notes:'Beginner hot/cold rewards are always within a short distance of Lumbridge. "Boiling" = dig here.' },
+
+  // ══════════════ EASY ══════════════
+  // Easy — Cryptic (includes talk-to-NPC with anagram-style clues)
+  { id:'e1',  tier:'easy', type:'cryptic', clue:'Talk to Ranael in the southern part of Al Kharid.',                                  solution:'Talk to Ranael',         location:'Al Kharid — skirt shop south of bank',     items:[], answer:null, notes:'Ranael is in the platelegs/plateskirt shop.' },
+  { id:'e2',  tier:'easy', type:'cryptic', clue:'Talk to the Apothecary in south-west Varrock.',                                      solution:'Talk to Apothecary',     location:'SW Varrock — near the church',             items:[], answer:null, notes:'South-west corner of Varrock.' },
+  { id:'e3',  tier:'easy', type:'cryptic', clue:'Speak to the Zookeeper in Ardougne Zoo.',                                            solution:'Talk to Zookeeper',      location:'East Ardougne — zoo',                      items:[], answer:null, notes:'Talk to the Zookeeper at Ardougne Zoo.' },
+  { id:'e4',  tier:'easy', type:'cryptic', clue:'Speak to King Roald in Varrock Palace.',                                             solution:'Talk to King Roald',     location:'Varrock Palace — throne room',             items:[], answer:null, notes:'King Roald is in the east wing of Varrock Palace.' },
+  { id:'e5',  tier:'easy', type:'cryptic', clue:'Talk to Dunstan in Burthorpe.',                                                      solution:'Talk to Dunstan',        location:'Burthorpe — smithy',                       items:[], answer:null, notes:'Dunstan is the blacksmith in Burthorpe.' },
+  { id:'e6',  tier:'easy', type:'cryptic', clue:'Speak to Queen Sigrid in Etceteria.',                                                solution:'Talk to Queen Sigrid',   location:'Etceteria — castle',                       items:[], answer:null, notes:'Requires The Fremennik Trials to access.' },
+  { id:'e7',  tier:'easy', type:'cryptic', clue:'Talk to Brimstail in his cave in the south-west of the Gnome Stronghold.',           solution:'Talk to Brimstail',      location:'Gnome Stronghold — SW cave',               items:[], answer:null, notes:'SW corner of the Gnome Stronghold.' },
+  { id:'e8',  tier:'easy', type:'cryptic', clue:'Speak to Ned in Draynor Village.',                                                   solution:'Talk to Ned',            location:'Draynor Village',                          items:[], answer:null, notes:'South of the Draynor market.' },
+  { id:'e9',  tier:'easy', type:'cryptic', clue:'Talk to the bartender of the Rusty Anchor in Port Sarim.',                           solution:'Talk to Bartender',      location:'Port Sarim — Rusty Anchor',                items:[], answer:null, notes:'North part of Port Sarim.' },
+  { id:'e10', tier:'easy', type:'cryptic', clue:'Talk to the Doomsayer.',                                                             solution:'Talk to Doomsayer',      location:'East of Lumbridge Castle gate',            items:[], answer:null, notes:'East of Lumbridge castle drawbridge.' },
+  { id:'e11', tier:'easy', type:'cryptic', clue:"Speak to the Seers' Village hairdresser.",                                           solution:'Talk to Hairdresser',    location:"Seers' Village — hair salon",              items:[], answer:null, notes:"Centre of Seers' Village." },
+  { id:'e12', tier:'easy', type:'cryptic', clue:"Talk to Wayne's Chains in Falador.",                                                 solution:"Talk to Wayne",          location:'Falador — chainbody shop',                 items:[], answer:null, notes:'South-west area of Falador.' },
+  { id:'e13', tier:'easy', type:'cryptic', clue:'In a town where guards carry crossbows, talk to the curator of the museum.',         solution:'Talk to Curator Haig Halen', location:'Varrock Museum',                       items:[], answer:null, notes:'North-east of Varrock Square.' },
+  // Easy — Emote
+  { id:'e14', tier:'easy', type:'emote',   clue:'Spin in the Varrock General Store.',                                                  solution:'Spin emote',             location:'Varrock — General Store',                  items:[], answer:null, notes:'West of Varrock Square.' },
+  { id:'e15', tier:'easy', type:'emote',   clue:'Dance in the Party Room.',                                                            solution:'Dance emote',            location:'Falador — Party Room',                     items:[], answer:null, notes:'North-east of Falador.' },
+  // Easy — Map
+  { id:'e16', tier:'easy', type:'map',     clue:'X marks the spot (Draynor Village)',                                                  solution:'Dig at X',               location:'Draynor Village — south of wheat field',   items:['Spade'], answer:null, notes:'Walk south from the wheat field.' },
+  { id:'e17', tier:'easy', type:'map',     clue:'X marks the spot (Lumbridge Swamp)',                                                  solution:'Dig at X',               location:'Lumbridge Swamp — centre',                 items:['Spade'], answer:null, notes:'Near the canoe station.' },
+
+  // ══════════════ MEDIUM ══════════════
+  // Medium — Anagram
+  { id:'m1',  tier:'medium', type:'anagram',    clue:'A ZEN SHE',            solution:'Zenesha',       location:'East Ardougne — platebody shop',              items:[], answer:null, notes:'East of the Ardougne market.' },
+  { id:'m2',  tier:'medium', type:'anagram',    clue:'ERR CURE IT',          solution:'Recruiter',     location:'West Ardougne — recruitment square',          items:[], answer:null, notes:'Plague city area.' },
+  { id:'m3',  tier:'medium', type:'anagram',    clue:'ARM CITY',             solution:'Marcy',         location:'Draynor Village — jail',                      items:[], answer:null, notes:'Talk to Marcy inside the Draynor jail.' },
+  { id:'m4',  tier:'medium', type:'anagram',    clue:'MOTHERBOARD',          solution:'Brother Omad',  location:'Monastery — SE of Ice Mountain',              items:[], answer:null, notes:'Talk to Brother Omad inside the monastery.' },
+  { id:'m5',  tier:'medium', type:'anagram',    clue:'HEALER COME',          solution:'Eohric',        location:"Camelot Castle — top floor",                  items:[], answer:null, notes:'Eohric is on the top floor of Camelot Castle.' },
+  // Medium — Challenge
+  { id:'m6',  tier:'medium', type:'challenge',  clue:'Medium challenge scroll — NPC asks a question.', solution:'Answer the question', location:'Comes with an anagram or cipher step', items:[], answer:null, notes:'Challenge scroll NPCs ask specific trivia (e.g. how many hops in a recipe). Each NPC has a unique answer — look it up on the OSRS wiki challenge scroll page.' },
+  // Medium — Cipher
+  { id:'m7',  tier:'medium', type:'cipher',     clue:'GUHCHO',               solution:'ROT-3 decode',  location:'Check wiki for NPC',  items:[], answer:null, notes:'Medium ciphers use ROT-3 substitution. Use the OSRS wiki cipher decoder to find the NPC.' },
+  { id:'m8',  tier:'medium', type:'cipher',     clue:'VTYR ZNF URER',        solution:'ROT-13 decode', location:'Check wiki',           items:[], answer:null, notes:'Some medium ciphers use ROT-13. Use an online decoder.' },
+  // Medium — Cryptic
+  { id:'m9',  tier:'medium', type:'cryptic',    clue:'Speak to Ellis in Al Kharid.',                   solution:'Talk to Ellis',   location:'Al Kharid — tannery',                    items:[], answer:null, notes:'East of the Al Kharid gate.' },
+  { id:'m10', tier:'medium', type:'cryptic',    clue:"Talk to the Squire at the White Knights' Castle.", solution:'Talk to Squire', location:"Falador — White Knights' Castle courtyard", items:[], answer:null, notes:'Squire patrols the outer courtyard.' },
+  // Medium — Emote
+  { id:'m11', tier:'medium', type:'emote', clue:"Panic at the Agility Pyramid wearing a Pharaoh's sceptre.",                       solution:'Panic emote',  location:'Agility Pyramid — top',     items:["Pharaoh's sceptre"], answer:null, notes:'Climb to the very top of the Agility Pyramid.' },
+  { id:'m12', tier:'medium', type:'emote', clue:'Cry in the Catherby bank wearing a Snakeskin bandana, dragonhide chaps and amulet of magic.', solution:'Cry emote', location:'Catherby bank', items:['Snakeskin bandana','Dragonhide chaps','Amulet of magic'], answer:null, notes:'Wear all three and Cry inside the bank.' },
+  { id:'m13', tier:'medium', type:'emote', clue:'Laugh at the crossbow stall in Keldagrim wearing an iron crossbow.',             solution:'Laugh emote',  location:'Keldagrim — crossbow stall',items:['Iron crossbow'], answer:null, notes:'East side of Keldagrim, across the river.' },
+  // Medium — Coordinate
+  { id:'m14', tier:'medium', type:'coordinate', clue:"01° 18' N, 14° 15' E", solution:'Dig', location:'Canifis — near the swamp',             items:['Spade'], answer:null, notes:'North of Mort Myre Swamp. Watch for monsters.' },
+  { id:'m15', tier:'medium', type:'coordinate', clue:"03° 39' S, 13° 58' E", solution:'Dig', location:'Karamja — Tai Bwo Wannai jungle',      items:['Spade'], answer:null, notes:'South of Brimhaven. Poisonous spiders.' },
+  { id:'m16', tier:'medium', type:'coordinate', clue:"01° 30' N, 07° 53' W", solution:'Dig', location:"South of Gu'Tanoth — Feldip Hills",     items:['Spade'], answer:null, notes:"South of Gu'Tanoth. Ogres nearby." },
+
+  // ══════════════ HARD ══════════════
+  // Hard — Anagram
+  { id:'h1',  tier:'hard', type:'anagram',    clue:'RATAI',               solution:'Tarai',      location:'Shilo Village — gem stall',                  items:[], answer:null, notes:'Requires Shilo Village quest.' },
+  { id:'h2',  tier:'hard', type:'anagram',    clue:'A BAKER',             solution:'Kebara',     location:'Nardah — general store',                     items:[], answer:null, notes:'Talk to Kebara in the general store.' },
+  // Hard — Challenge
+  { id:'h3',  tier:'hard', type:'challenge',  clue:'Hard challenge scroll — Sherlock asks a skill question.', solution:'Answer correctly', location:"Seers' Village area — Sherlock", items:[], answer:null, notes:"Sherlock roams near Seers' Village and asks skill-level trivia. Verify the exact question and answer on the OSRS wiki." },
+  // Hard — Cipher
+  { id:'h4',  tier:'hard', type:'cipher',     clue:'ZSBKDO ZODO',         solution:'ROT-3 decode', location:'Verify NPC on wiki',               items:[], answer:null, notes:'Hard ciphers use ROT-3. Decode on the OSRS wiki cipher page.' },
+  // Hard — Cryptic
+  { id:'h5',  tier:'hard', type:'cryptic',    clue:'Scattered coins and gems fill the floor. The chest you seek is in the far corner.', solution:'Search chest', location:"Rogues' Den — Burthorpe", items:[], answer:null, notes:"Under the pub in Burthorpe." },
+  { id:'h6',  tier:'hard', type:'cryptic',    clue:"The beasts retreat, for their Queen commands them. Dig near her bed.",             solution:'Dig',          location:"Kalphite Lair — Queen's chamber", items:['Spade'], answer:null, notes:"High combat recommended. Dig near the egg sac." },
+  { id:'h7',  tier:'hard', type:'cryptic',    clue:"Talk to the gnome pilot north of Oo'glog.",                                        solution:'Talk to Waydar', location:"Feldip Hills — glider N of Oo'glog", items:[], answer:null, notes:'Needs One Small Favour quest.' },
+  { id:'h8',  tier:'hard', type:'cryptic',    clue:'Strength potions, a dwarf and a broken pillar.',                                   solution:'Search/Dig',   location:'Dwarven Mine — SE corner',        items:['Spade'], answer:null, notes:'South-east of the Dwarven Mines under Ice Mountain.' },
+  // Hard — Emote
+  { id:'h9',  tier:'hard', type:'emote', clue:"Flap in the Warrior's Guild bank wearing a Dragon Halberd.", solution:'Flap emote', location:"Warrior's Guild — bank", items:['Dragon halberd'], answer:null, notes:'Need 65 Attack + Strength or 130 combined.' },
+  { id:'h10', tier:'hard', type:'emote', clue:'Spin in the Varrock Castle courtyard in black platebody, platelegs and plateskirt.',    solution:'Spin emote', location:'Varrock Castle — inner courtyard', items:['Black platebody','Black platelegs or plateskirt'], answer:null, notes:'Inner courtyard only.' },
+  { id:'h11', tier:'hard', type:'emote', clue:"Salute in the Fist of Guthix lobby wearing full Splitbark armour.",                     solution:'Salute emote', location:'Mage Training Arena lobby', items:['Splitbark helm','Splitbark body','Splitbark legs','Splitbark gauntlets','Splitbark boots'], answer:null, notes:'All 5 pieces required.' },
+  // Hard — Map
+  { id:'h12', tier:'hard', type:'map',        clue:'X marks the spot in the Wilderness (lava area).',   solution:'Dig at X', location:'Wilderness — lava maze area', items:['Spade'], answer:null, notes:'Wilderness level 40+. Protect items and watch for PKers.' },
+  // Hard — Coordinate
+  { id:'h13', tier:'hard', type:'coordinate', clue:"09° 33' N, 02° 15' E", solution:'Dig', location:'Mort Myre Swamp — central',          items:['Spade'], answer:null, notes:'Requires Nature Spirit quest.' },
+  { id:'h14', tier:'hard', type:'coordinate', clue:"12° 45' N, 20° 09' E", solution:'Dig', location:'Wilderness — level 50+',              items:['Spade'], answer:null, notes:'Deep Wilderness. Protect items, bring teleport.' },
+  { id:'h15', tier:'hard', type:'coordinate', clue:"00° 31' S, 17° 43' E", solution:'Dig', location:"Mos Le'Harmless — near the beach",    items:['Spade'], answer:null, notes:"Need Cabin Fever quest to access Mos Le'Harmless." },
+
+  // ══════════════ ELITE ══════════════
+  // Elite — Anagram
+  { id:'el1', tier:'elite', type:'anagram',    clue:'PENAL FOG',            solution:'Napoleon',       location:"Eagles' Peak — north",                    items:[], answer:null, notes:'Verify exact NPC and location on wiki.' },
+  // Elite — Challenge
+  { id:'el2', tier:'elite', type:'challenge',  clue:'Elite challenge scroll — NPC trivia question.', solution:'Answer correctly', location:'Follows anagram clue', items:[], answer:null, notes:'Elite challenge answers are specific skill/quest trivia. Always verify on the OSRS wiki.' },
+  // Elite — Cryptic
+  { id:'el3', tier:'elite', type:'cryptic',    clue:"Fiendish cooks probably won't dig holes near their ovens.", solution:'Dig',          location:"Cooks' Guild — north of Varrock",   items:['Spade',"Chef's hat or Cooking cape"], answer:null, notes:"Dig outside the north wall of Cooks' Guild." },
+  { id:'el4', tier:'elite', type:'cryptic',    clue:'The treasure is buried in the centre of Ape Atoll.',        solution:'Dig',          location:'Ape Atoll — centre',                items:['Spade','Greegree'], answer:null, notes:'Need Monkey Madness to navigate safely.' },
+  { id:'el5', tier:'elite', type:'cryptic',    clue:"Search the boxes just outside the Legends' Guild.",         solution:'Search boxes', location:"Legends' Guild — south gates",       items:[], answer:null, notes:"Crates stacked just outside the south gate." },
+  { id:'el6', tier:'elite', type:'cryptic',    clue:'The magic of 4 colours, an early experience of the light fantastic.', solution:'Talk to Traiborn', location:"Wizards' Tower — 1st floor", items:[], answer:null, notes:"Traiborn is on the 1st floor of the Wizards' Tower." },
+  // Elite — Emote
+  { id:'el7', tier:'elite', type:'emote', clue:'Cry in the TzHaar gem store wearing a fire cape and Obsidian shield.',              solution:'Cry emote',      location:'TzHaar City — gem store',           items:['Fire cape','Obsidian shield'], answer:null, notes:'East side of TzHaar City.' },
+  { id:'el8', tier:'elite', type:'emote', clue:'Headbang in the Fight Arena pub wearing a Berserker necklace and Berserker ring.',  solution:'Headbang emote', location:'Fight Arena — pub south of Ardougne',items:['Berserker necklace','Berserker ring'], answer:null, notes:'South-west of Ardougne past the gnome woods.' },
+  // Elite — Map
+  { id:'el9', tier:'elite', type:'map',        clue:'X marks the spot on Miscellania.',  solution:'Dig at X', location:'Miscellania — north-east island', items:['Spade'], answer:null, notes:'Need The Fremennik Trials to access.' },
+  // Elite — Coordinate
+  { id:'el10',tier:'elite', type:'coordinate', clue:"13° 46' N, 21° 37' E", solution:'Dig', location:'Waterbirth Island — NE shore',          items:['Spade'], answer:null, notes:'Sail from Rellekka.' },
+  { id:'el11',tier:'elite', type:'coordinate', clue:"04° 41' S, 22° 30' E", solution:'Dig', location:'Shilo Village — east area',              items:['Spade'], answer:null, notes:'Need Shilo Village quest.' },
+  { id:'el12',tier:'elite', type:'coordinate', clue:"20° 05' N, 21° 52' E", solution:'Dig', location:'Neitiznot — centre of island',           items:['Spade'], answer:null, notes:'Need The Fremennik Isles quest.' },
+
+  // ══════════════ MASTER ══════════════
+  // Master — Anagram
+  { id:'mas1', tier:'master', type:'anagram',    clue:'IN BAR',             solution:'Brain',         location:'Stronghold of Security — Vault of War', items:[], answer:null, notes:'Deepest level of the Stronghold of Security.' },
+  { id:'mas2', tier:'master', type:'anagram',    clue:'ACE JAPAN',          solution:'Jean Capas?',   location:'',                                      items:[], answer:null, notes:'Verify exact NPC on wiki — master anagrams are very specific.' },
+  // Master — Cryptic
+  { id:'mas3', tier:'master', type:'cryptic',    clue:'Dig in front of the icy altar where only the most devoted pray.',  solution:'Dig', location:'God Wars Dungeon — altar',  items:['Spade','60 Strength or Agility'], answer:null, notes:'High combat recommended for GWD.' },
+  { id:'mas4', tier:'master', type:'cryptic',    clue:'The keeper of groats, in the village of cows.',                    solution:'Talk to NPC', location:'Ardougne cow village area', items:[], answer:null, notes:'Verify on wiki.' },
+  { id:'mas5', tier:'master', type:'cryptic',    clue:'Searching for a crate in the underground Dwarven mines.',          solution:'Search crate', location:'Dwarven Mine — near anvil', items:[], answer:null, notes:'Mine entrance is south of Ice Mountain.' },
+  // Master — Emote
+  { id:'mas6', tier:'master', type:'emote', clue:"Dance by the Fishing Trawler entrance in full Angler's outfit with a pet fish.", solution:'Dance emote', location:'Port Khazard — Fishing Trawler dock', items:["Angler hat","Angler top","Angler waders","Angler boots","Pet fish (any)"], answer:null, notes:'Full Angler outfit from the Fishing Trawler minigame.' },
+  { id:'mas7', tier:'master', type:'emote', clue:'Flap at the top of White Wolf Mountain wearing a Piece of Armadyl.',               solution:'Flap emote',  location:'White Wolf Mountain — summit',       items:['Any Armadyl armour piece'], answer:null, notes:'Climb to the very top, west of Camelot.' },
+  // Master — Coordinate
+  { id:'mas8', tier:'master', type:'coordinate', clue:"24° 58' N, 22° 45' E", solution:'Dig', location:'Weiss — hot spring area',               items:['Spade'], answer:null, notes:'Need Making Friends with My Arm quest.' },
+  { id:'mas9', tier:'master', type:'coordinate', clue:"11° 41' N, 14° 58' E", solution:'Dig', location:'Wilderness — near Lava Maze (level 45+)', items:['Spade'], answer:null, notes:'Protect items. Use Protect from Melee.' },
+  { id:'mas10',tier:'master', type:'coordinate', clue:"25° 03' N, 17° 05' E", solution:'Dig', location:'Lighthouse — east side',                 items:['Spade'], answer:null, notes:'North-east of Ardougne past the Barbarians.' },
+  // Master — Hot/Cold
+  { id:'mas11',tier:'master', type:'hot-cold',   clue:'Hot/Cold — use the Strange device given by Watson.',               solution:'Follow temperature readings', location:'Random worldwide location', items:['Strange device'], answer:null, notes:'"Hot" = closer, "Cold" = farther, "Boiling" = dig here. Watson combines 4 lower-tier clues into one master clue.' },
+  // Master — Light Box
+  { id:'mas12',tier:'master', type:'light-box',  clue:'Light box puzzle — solve the correct switch combination.',         solution:'One of 20 valid switch combos', location:'N/A — solved in inventory', items:[], answer:null, notes:'8 switches labeled A–H. Each of 20 solutions lights all bulbs. Check the OSRS wiki Light box page for the full solution table. Pull the lever once correct.' },
+];
+
+// ─── State ─────────────────────────────────────────────────────────────────────
+const BOOK_KEY  = 'osts_clue_bookmarks_v2';
+const STEP_KEY  = 'osts_clue_current_step_v2';
+let activeTier  = 'all';
+let activeType  = 'all';
+let searchQ     = '';
+let bookmarks   = new Set(JSON.parse(localStorage.getItem(BOOK_KEY) || '[]'));
+let currentStep = localStorage.getItem(STEP_KEY) || null;
+
+// ─── Puzzle card HTML ──────────────────────────────────────────────────────────
+function puzzleCardHtml(pz) {
+  const isBookmarked = bookmarks.has(pz.id);
+  const tierBadges   = pz.tiers.map(t =>
+    `<span class="cs-tier-badge" style="color:${TIER_COL[t]};border-color:${TIER_COL[t]}">${TIER_ICON[t]} ${t}</span>`
+  ).join('');
+
+  return `
+  <div class="cs-card puzzle-card" data-id="${pz.id}" style="--tier-col:#c084fc">
+    <div class="cs-card-top">
+      <div class="puzzle-thumb">
+        <img src="${pz.img}" alt="${pz.name} solved" loading="lazy"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="puzzle-thumb-fb" style="display:none">🧩</span>
+      </div>
+      <div class="cs-card-main">
+        <div class="cs-clue-text" style="font-style:normal;font-weight:800;font-size:14px">${pz.name}</div>
+        <div class="cs-solution">🧩 Slide Puzzle Box</div>
+        <div class="puzzle-tiers">${tierBadges}</div>
+      </div>
+      <div class="cs-chevron">▾</div>
+    </div>
+    <div class="cs-detail">
+
+      <!-- Solved image -->
+      <div style="text-align:center;margin-bottom:4px">
+        <img src="${pz.img}" alt="${pz.name} solved" loading="lazy" class="puzzle-solved-img"
+             onerror="this.style.display='none'">
+      </div>
+      <div class="puzzle-img-caption">↑ Solved state — this is your target</div>
+
+      <!-- Notes -->
+      <div class="cs-detail-row">
+        <div class="cs-detail-label">Notes</div>
+        <div class="cs-detail-val">${pz.notes}</div>
+      </div>
+
+      <!-- Solving guide -->
+      ${puzzleGuideHtml()}
+
+      <div class="cs-card-actions" style="margin-top:10px">
+        <button class="cs-act-btn${isBookmarked ? ' bookmarked' : ''}" data-action="bookmark" data-id="${pz.id}">
+          ${isBookmarked ? '🔖 Saved' : '🔖 Save'}
+        </button>
+        <button class="cs-act-btn" data-action="wiki" data-id="${pz.id}">
+          📖 Full Guide
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── Regular clue card HTML ────────────────────────────────────────────────────
+function clueCardHtml(c) {
+  const col         = TIER_COL[c.tier] || '#b88848';
+  const isBookmarked= bookmarks.has(c.id);
+  const isCurrent   = currentStep === c.id;
+  const itemsHtml   = c.items.length
+    ? `<div class="cs-items-list">${c.items.map(i=>`<span class="cs-item-chip">${h(i)}</span>`).join('')}</div>`
+    : `<span style="color:var(--muted)">None required</span>`;
+  return `
+  <div class="cs-card${isCurrent?' open':''}" data-id="${c.id}" style="--tier-col:${col}">
+    <div class="cs-card-top">
+      <div class="cs-badges">
+        <span class="cs-tier-badge">${TIER_ICON[c.tier]} ${c.tier}</span>
+        <span class="cs-type-badge">${TYPE_ICON[c.type]||''} ${c.type}</span>
+      </div>
+      <div class="cs-card-main">
+        <div class="cs-clue-text">${h(c.clue)}</div>
+        <div class="cs-solution">→ ${h(c.solution||'(decode required)')}</div>
+        ${c.location?`<div class="cs-location">📍 ${h(c.location)}</div>`:''}
+      </div>
+      <div class="cs-chevron">▾</div>
+    </div>
+    <div class="cs-detail">
+      ${c.location?`<div class="cs-detail-row"><div class="cs-detail-label">Location</div><div class="cs-detail-val">${h(c.location)}</div></div>`:''}
+      <div class="cs-detail-row"><div class="cs-detail-label">Items</div><div class="cs-detail-val">${itemsHtml}</div></div>
+      ${c.notes?`<div class="cs-detail-row"><div class="cs-detail-label">Tips</div><div class="cs-detail-val">${h(c.notes)}</div></div>`:''}
+      ${c.answer?`<div class="cs-answer-box"><div class="cs-answer-label">Challenge Answer</div>${h(c.answer)}</div>`:''}
+      <div class="cs-card-actions">
+        <button class="cs-act-btn${isBookmarked?' bookmarked':''}" data-action="bookmark" data-id="${c.id}">${isBookmarked?'🔖 Saved':'🔖 Save'}</button>
+        <button class="cs-act-btn${isCurrent?' primary':''}" data-action="track" data-id="${c.id}">${isCurrent?'📌 Tracking':'📌 Track'}</button>
+        <button class="cs-act-btn" data-action="wiki" data-id="${c.id}">📖 Wiki</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── Filter ────────────────────────────────────────────────────────────────────
+function filterAll() {
+  const res = [];
+  const showPuzzle = activeType === 'all' || activeType === 'puzzle';
+  const showOther  = activeType === 'all' || activeType !== 'puzzle';
+  const q = searchQ.toLowerCase();
+
+  if (showPuzzle) {
+    PUZZLES.forEach(pz => {
+      if (activeTier !== 'all' && !pz.tiers.includes(activeTier)) return;
+      if (q && !pz.name.toLowerCase().includes(q) && !'puzzle box slide'.includes(q) && !pz.notes.toLowerCase().includes(q)) return;
+      res.push({ _pz: true, pz });
+    });
+  }
+  if (showOther) {
+    CLUES.forEach(c => {
+      if (activeType !== 'all' && c.type !== activeType) return;
+      if (activeTier !== 'all' && c.tier !== activeTier) return;
+      if (q && !c.clue.toLowerCase().includes(q) && !c.solution.toLowerCase().includes(q)
+             && !c.location.toLowerCase().includes(q) && !(c.notes||'').toLowerCase().includes(q)) return;
+      res.push({ _pz: false, c });
+    });
+  }
+  return res;
+}
+
+// ─── Render ────────────────────────────────────────────────────────────────────
+function renderList() {
+  const list  = document.getElementById('cs-list');
+  const count = document.getElementById('cs-count');
+  const items = filterAll();
+  count.textContent = `${items.length} result${items.length!==1?'s':''}`;
+
+  if (!items.length) {
+    list.innerHTML = `<div class="cs-empty"><div class="cs-empty-icon">🔍</div>No results.<br>Try different keywords or filters.</div>`;
+    return;
+  }
+
+  list.innerHTML = items.map(it => it._pz ? puzzleCardHtml(it.pz) : clueCardHtml(it.c)).join('');
+
+  list.querySelectorAll('.cs-card').forEach(card => {
+    card.querySelector('.cs-card-top').addEventListener('click', () => card.classList.toggle('open'));
+    card.querySelectorAll('[data-action]').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const { action, id } = btn.dataset;
+        if (action === 'bookmark') {
+          bookmarks.has(id) ? (bookmarks.delete(id), showToast('Bookmark removed')) : (bookmarks.add(id), showToast('Bookmarked! 🔖'));
+          localStorage.setItem(BOOK_KEY, JSON.stringify([...bookmarks]));
+          renderList();
+        }
+        if (action === 'track') {
+          currentStep = currentStep === id ? null : id;
+          currentStep ? localStorage.setItem(STEP_KEY, id) : localStorage.removeItem(STEP_KEY);
+          showToast(currentStep ? 'Step pinned 📌' : 'Step cleared');
+          renderTracker(); renderList();
+        }
+        if (action === 'wiki') {
+          const pz = PUZZLES.find(p => p.id === id);
+          const q  = pz ? 'Puzzle_box' : ('clue scroll ' + (CLUES.find(c=>c.id===id)?.solution||''));
+          window.open(`https://oldschool.runescape.wiki/w/${encodeURIComponent(pz ? q : 'Special:Search?search='+q)}`, '_blank');
+        }
+      });
+    });
+  });
+}
+
+function renderTracker() {
+  const el = document.getElementById('cs-tracker');
+  const tx = document.getElementById('cs-tracker-text');
+  if (!currentStep) { el.style.display='none'; return; }
+  const c = CLUES.find(c=>c.id===currentStep);
+  if (!c)            { el.style.display='none'; return; }
+  el.style.display='flex'; tx.textContent=c.clue;
+}
+
+// ─── Bind filters ──────────────────────────────────────────────────────────────
+function bindFilters() {
+  document.getElementById('cs-tier-filters').addEventListener('click', e => {
+    const b = e.target.closest('.cs-filter'); if (!b) return;
+    activeTier = b.dataset.tier;
+    document.querySelectorAll('#cs-tier-filters .cs-filter').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); renderList();
+  });
+  document.getElementById('cs-type-filters').addEventListener('click', e => {
+    const b = e.target.closest('.cs-filter'); if (!b) return;
+    activeType = b.dataset.type;
+    document.querySelectorAll('#cs-type-filters .cs-filter').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); renderList();
+  });
+  let t;
+  document.getElementById('cs-search').addEventListener('input', e => {
+    clearTimeout(t); t = setTimeout(()=>{ searchQ=e.target.value.trim(); renderList(); }, 180);
+  });
+}
+
+// ─── Misc ─────────────────────────────────────────────────────────────────────
+document.getElementById('cs-tracker-clear').addEventListener('click',()=>{
+  currentStep=null; localStorage.removeItem(STEP_KEY); renderTracker(); renderList(); showToast('Step cleared');
+});
+document.getElementById('clear-bookmarks-btn').addEventListener('click',()=>{
+  bookmarks.clear(); localStorage.removeItem(BOOK_KEY); renderList(); showToast('Bookmarks cleared');
+});
+
+const h = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+initPage({ activePage: 'more' });
+bindFilters();
+renderTracker();
+renderList();
+
+document.getElementById('settings-btn').addEventListener('click', ()=>settings.open());
+document.getElementById('settings-close').addEventListener('click', ()=>settings.close());
+document.getElementById('settings-overlay').addEventListener('click', ()=>settings.close());
+document.querySelectorAll('.theme-chip').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const theme=btn.dataset.theme;
+    document.body.className=theme==='dark'?'':`theme-${theme}`;
+    localStorage.setItem('osts_theme_v2',theme);
+  });
+});
+</script>
+</body>
+</html>

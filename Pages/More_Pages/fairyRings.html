@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -8,42 +9,72 @@
   <title>OSTS — Fairy Rings</title>
   <link rel="stylesheet" href="/style.css">
   <style>
-
     /* ── Search + filter bar ── */
     .fr-search-wrap {
-      display: flex; gap: 8px; margin-bottom: 10px;
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
     }
+    
     .fr-search {
-      flex: 1; background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 10px; color: var(--text); font-size: 14px;
-      padding: 9px 12px; outline: none;
+      flex: 1;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 14px;
+      padding: 9px 12px;
+      outline: none;
     }
-    .fr-search:focus { border-color: var(--gold); }
-    .fr-search::placeholder { color: var(--muted); }
-
+    
+    .fr-search:focus {
+      border-color: var(--gold);
+    }
+    
+    .fr-search::placeholder {
+      color: var(--muted);
+    }
+    
     /* ── Region filter chips ── */
     .fr-filters {
-      display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px;
-      margin-bottom: 12px; scrollbar-width: none;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 12px;
+      scrollbar-width: none;
     }
-    .fr-filters::-webkit-scrollbar { display: none; }
+    
+    .fr-filters::-webkit-scrollbar {
+      display: none;
+    }
+    
     .fr-filter {
-      flex-shrink: 0; padding: 5px 12px; border-radius: 999px;
-      font-size: 11px; font-weight: 700; border: 1px solid var(--border);
-      background: var(--surface2); color: var(--muted); cursor: pointer;
+      flex-shrink: 0;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--muted);
+      cursor: pointer;
       transition: all .15s;
     }
+    
     .fr-filter.active {
-      background: var(--gold); color: #000; border-color: var(--gold);
+      background: var(--gold);
+      color: #000;
+      border-color: var(--gold);
     }
-
+    
     /* ── Ring grid ── */
     .fr-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;
     }
-
+    
     /* ── Ring card ── */
     .fr-card {
       background: var(--surface);
@@ -56,50 +87,76 @@
       overflow: hidden;
       min-height: 90px;
     }
+    
     .fr-card::before {
       content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
       background: var(--fr-color, var(--gold));
       border-radius: 13px 13px 0 0;
     }
-    .fr-card:active { border-color: var(--gold); }
-
+    
+    .fr-card:active {
+      border-color: var(--gold);
+    }
+    
     /* Code badge */
     .fr-code {
       font-family: 'Courier New', monospace;
-      font-size: 18px; font-weight: 800;
+      font-size: 18px;
+      font-weight: 800;
       color: var(--fr-color, var(--gold));
       letter-spacing: 3px;
       line-height: 1;
       margin-bottom: 5px;
     }
-
+    
     /* Destination name */
     .fr-dest {
-      font-size: 12px; font-weight: 600; color: var(--text);
-      line-height: 1.25; margin-bottom: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.25;
+      margin-bottom: 5px;
     }
-
+    
     /* Region tag */
     .fr-region {
       display: inline-block;
-      font-size: 9px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: .4px; color: var(--muted);
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 999px; padding: 2px 7px;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: var(--muted);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 2px 7px;
     }
-
+    
     /* Note icon button */
     .fr-note-btn {
-      position: absolute; top: 9px; right: 9px;
-      background: none; border: none;
-      font-size: 16px; cursor: pointer; padding: 2px;
-      line-height: 1; color: var(--muted);
+      position: absolute;
+      top: 9px;
+      right: 9px;
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 2px;
+      line-height: 1;
+      color: var(--muted);
       transition: transform .15s;
       z-index: 2;
     }
-    .fr-note-btn:active { transform: scale(.9); }
-
+    
+    .fr-note-btn:active {
+      transform: scale(.9);
+    }
+    
     /* Note preview text on card */
     .fr-note-preview {
       margin-top: 7px;
@@ -112,362 +169,519 @@
       border-radius: 0 5px 5px 0;
       word-break: break-word;
     }
-    .fr-card.has-note .fr-note-btn { color: var(--gold); }
-
+    
+    .fr-card.has-note .fr-note-btn {
+      color: var(--gold);
+    }
+    
     /* Pin button */
     .fr-pin-btn {
-      position: absolute; top: 9px; right: 34px;
-      background: none; border: none;
-      font-size: 15px; cursor: pointer; padding: 2px;
-      line-height: 1; color: var(--muted);
+      position: absolute;
+      top: 9px;
+      right: 34px;
+      background: none;
+      border: none;
+      font-size: 15px;
+      cursor: pointer;
+      padding: 2px;
+      line-height: 1;
+      color: var(--muted);
       transition: transform .15s;
       z-index: 2;
       opacity: .45;
     }
-    .fr-pin-btn:active { transform: scale(.9); }
-    .fr-pin-btn.active { opacity: 1; filter: none; }
-    .fr-card.is-pinned { border-color: var(--gold); }
-    .fr-card.is-pinned::before { background: var(--gold); }
-
+    
+    .fr-pin-btn:active {
+      transform: scale(.9);
+    }
+    
+    .fr-pin-btn.active {
+      opacity: 1;
+      filter: none;
+    }
+    
+    .fr-card.is-pinned {
+      border-color: var(--gold);
+    }
+    
+    .fr-card.is-pinned::before {
+      background: var(--gold);
+    }
+    
     /* Pinned section */
-    #fr-pinned { margin-bottom: 4px; }
-
+    #fr-pinned {
+      margin-bottom: 4px;
+    }
+    
     /* ── Note sheet ── */
     .note-sheet-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,.6);
-      z-index: 499; display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .6);
+      z-index: 499;
+      display: none;
     }
-    .note-sheet-overlay.show { display: block; }
-
+    
+    .note-sheet-overlay.show {
+      display: block;
+    }
+    
     .note-sheet {
-      position: fixed; bottom: 0; left: 0; right: 0;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
       background: var(--surface);
       border-radius: 20px 20px 0 0;
       border-top: 1px solid var(--border);
       z-index: 500;
       transform: translateY(100%);
-      transition: transform .3s cubic-bezier(.25,.8,.25,1);
+      transition: transform .3s cubic-bezier(.25, .8, .25, 1);
       padding-bottom: env(safe-area-inset-bottom, 16px);
     }
-    .note-sheet.show { transform: translateY(0); }
-
+    
+    .note-sheet.show {
+      transform: translateY(0);
+    }
+    
     .note-handle {
-      width: 40px; height: 4px;
-      background: var(--border); border-radius: 2px;
+      width: 40px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
       margin: 10px auto 0;
     }
-
+    
     .note-header {
-      display: flex; align-items: center; gap: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
       padding: 14px 16px 12px;
       border-bottom: 1px solid var(--border);
     }
+    
     .note-code-badge {
       font-family: 'Courier New', monospace;
-      font-size: 16px; font-weight: 800; letter-spacing: 2px;
-      padding: 4px 10px; border-radius: 8px;
-      background: var(--surface2); border: 1px solid var(--border);
-      color: var(--gold); flex-shrink: 0;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--gold);
+      flex-shrink: 0;
     }
-    .note-header-info { flex: 1; min-width: 0; }
+    
+    .note-header-info {
+      flex: 1;
+      min-width: 0;
+    }
+    
     .note-header-dest {
-      font-size: 13px; font-weight: 700;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .note-header-region { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    
+    .note-header-region {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+    
     .note-close {
-      background: none; border: none;
-      color: var(--muted); font-size: 20px;
-      cursor: pointer; flex-shrink: 0;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 20px;
+      cursor: pointer;
+      flex-shrink: 0;
     }
-
-    .note-body { padding: 14px 16px 20px; }
-
+    
+    .note-body {
+      padding: 14px 16px 20px;
+    }
+    
     .note-textarea {
-      width: 100%; min-height: 110px;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 10px; color: var(--text); font-size: 14px;
-      padding: 10px 12px; resize: vertical; outline: none;
-      font-family: inherit; line-height: 1.5;
+      width: 100%;
+      min-height: 110px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 14px;
+      padding: 10px 12px;
+      resize: vertical;
+      outline: none;
+      font-family: inherit;
+      line-height: 1.5;
       box-sizing: border-box;
     }
-    .note-textarea:focus { border-color: var(--gold); }
-    .note-textarea::placeholder { color: var(--muted); }
-
+    
+    .note-textarea:focus {
+      border-color: var(--gold);
+    }
+    
+    .note-textarea::placeholder {
+      color: var(--muted);
+    }
+    
     .note-actions {
-      display: flex; gap: 8px; margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
     }
+    
     .note-save {
-      flex: 1; padding: 11px;
-      background: var(--gold); color: #000;
-      border: none; border-radius: 10px;
-      font-size: 14px; font-weight: 700; cursor: pointer;
+      flex: 1;
+      padding: 11px;
+      background: var(--gold);
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
     }
+    
     .note-delete {
       padding: 11px 16px;
-      background: var(--surface2); color: var(--muted);
-      border: 1px solid var(--border); border-radius: 10px;
-      font-size: 14px; cursor: pointer;
+      background: var(--surface2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
     }
-    .note-delete:disabled { opacity: .35; cursor: default; }
-
+    
+    .note-delete:disabled {
+      opacity: .35;
+      cursor: default;
+    }
+    
     /* ── Count label ── */
     .fr-count {
-      font-size: 11px; color: var(--muted); text-align: right;
+      font-size: 11px;
+      color: var(--muted);
+      text-align: right;
       margin-bottom: 8px;
     }
-
+    
     /* ── Empty state ── */
     .fr-empty {
       grid-column: span 2;
-      text-align: center; padding: 40px 20px;
-      color: var(--muted); font-size: 13px;
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+      font-size: 13px;
     }
-
   </style>
 </head>
+
 <body>
-
-<header>
-  <h1>OSTS</h1>
-  <div class="hdr-actions">
-    <button id="install-btn" style="display:none">Install</button>
-    <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
-  </div>
-</header>
-
-<div id="settings-overlay"></div>
-<div id="settings-panel" aria-hidden="true">
-  <div class="settings-head">
-    <h2>Settings</h2>
-    <button class="settings-close" id="settings-close">✕</button>
-  </div>
-  <div class="settings-block">
-    <div class="settings-label">Appearance</div>
-    <div class="theme-options">
-      <button class="theme-chip" data-theme="dark">Dark</button>
-      <button class="theme-chip" data-theme="light">Light</button>
-      <button class="theme-chip" data-theme="brown">Brown</button>
+  
+  <header>
+    <h1>OSTS</h1>
+    <div class="hdr-actions">
+      <button id="install-btn" style="display:none">Install</button>
+      <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
+    </div>
+  </header>
+  
+  <div id="settings-overlay"></div>
+  <div id="settings-panel" aria-hidden="true">
+    <div class="settings-head">
+      <h2>Settings</h2>
+      <button class="settings-close" id="settings-close">✕</button>
+    </div>
+    <div class="settings-block">
+      <div class="settings-label">Appearance</div>
+      <div class="theme-options">
+        <button class="theme-chip" data-theme="dark">Dark</button>
+        <button class="theme-chip" data-theme="light">Light</button>
+        <button class="theme-chip" data-theme="brown">Brown</button>
+      </div>
+    </div>
+    <div class="settings-block">
+    </div>
+    
+    <div class="settings-block">
+      <div class="settings-label">Player Profiles</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.5">Manage profiles on the <a href="../overview.html" style="color:var(--gold);font-weight:600">Overview</a> page.</div>
+    </div>
+    
+    <div class="settings-block">
+      <div class="settings-label">Fairy Ring Tools</div>
+      <button class="push-btn" id="clear-pins-btn">Clear all pins</button>
     </div>
   </div>
-  <div class="settings-block">
-    </div>
-
-  <div class="settings-block">
-    <div class="settings-label">Player Profiles</div>
-    <div style="font-size:12px;color:var(--muted);line-height:1.5">Manage profiles on the <a href="../overview.html" style="color:var(--gold);font-weight:600">Overview</a> page.</div>
-  </div>
-
-  <div class="settings-block">
-    <div class="settings-label">Fairy Ring Tools</div>
-    <button class="push-btn" id="clear-pins-btn">Clear all pins</button>
-  </div>
-</div>
-
-<div id="main">
-  <div class="page active">
-
-    <!-- Search -->
-    <div class="fr-search-wrap">
-      <input class="fr-search" id="fr-search" type="search"
-             placeholder="Search code or destination…" autocomplete="off">
-    </div>
-
-    <!-- Region filters -->
-    <div class="fr-filters" id="fr-filters"></div>
-
-    <!-- Pinned rings -->
-    <div id="fr-pinned"></div>
-
-    <!-- Result count -->
-    <div class="fr-count" id="fr-count"></div>
-
-    <!-- Cards -->
-    <div class="fr-grid" id="fr-grid"></div>
-
-  </div>
-</div>
-
-<!-- Bottom Nav -->
-<nav id="bottom-nav"></nav>
-
-<!-- More Menu -->
-<div class="modal-overlay" id="more-menu-overlay">
-  <div class="modal-sheet">
-    <div class="modal-head">
-      <div><div class="modal-title">More</div></div>
-      <button class="modal-close" id="more-menu-close">✕</button>
-    </div>
-  <div class="modal-actions">
-      <a class="modal-action" href="/Pages/More_Pages/bestiary.html">🐉 Bestiary</a>
-      <a class="modal-action" href="/Pages/More_Pages/bossing.html">🏆 Bossing</a>
-      <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">🍄 Fairy Rings</a>
-      <a class="modal-action" href="/Pages/More_Pages/goals.html">📊 Goals</a>
-      <a class="modal-action" href="/Pages/More_Pages/petLog.html">🐾 Pet Log</a>
-      <a class="modal-action" href="/Pages/More_Pages/quests.html">🗺️ Quests</a>
-      <a class="modal-action" href="/Pages/More_Pages/timers.html">⏰ Timers</a>
+  
+  <div id="main">
+    <div class="page active">
+      
+      <!-- Search -->
+      <div class="fr-search-wrap">
+        <input class="fr-search" id="fr-search" type="search" placeholder="Search code or destination…" autocomplete="off">
+      </div>
+      
+      <!-- Region filters -->
+      <div class="fr-filters" id="fr-filters"></div>
+      
+      <!-- Pinned rings -->
+      <div id="fr-pinned"></div>
+      
+      <!-- Result count -->
+      <div class="fr-count" id="fr-count"></div>
+      
+      <!-- Cards -->
+      <div class="fr-grid" id="fr-grid"></div>
+      
     </div>
   </div>
-</div>
-
-<div id="toast"></div>
-
-<!-- ── Note Sheet ── -->
-<div class="note-sheet-overlay" id="note-overlay"></div>
-<div class="note-sheet" id="note-sheet">
-  <div class="note-handle" id="note-handle"></div>
-  <div class="note-header">
-    <div class="note-code-badge" id="note-code-badge">AIQ</div>
-    <div class="note-header-info">
-      <div class="note-header-dest" id="note-dest"></div>
-      <div class="note-header-region" id="note-region"></div>
+  
+  <!-- Bottom Nav -->
+  <nav id="bottom-nav"></nav>
+  
+  <!-- More Menu -->
+  <div class="modal-overlay" id="more-menu-overlay">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title">More</div>
+        </div>
+        <button class="modal-close" id="more-menu-close">✕</button>
+      </div>
+      <div class="modal-actions">
+        <a class="modal-action" href="/Pages/More_Pages/bestiary.html">
+          <span class="ma-title">🐉 Bestiary</span>
+          <span class="ma-desc">Look up monsters, combat stats &amp; slayer info</span>
+        </a>
+        
+        <a class="modal-action" href="/Pages/More_Pages/bookmarks.html">
+          <span class="ma-title">🔖 Bookmarks</span>
+          <span class="ma-desc">Your saved clues, fairy rings, timers &amp; more</span>
+        </a>
+        
+        <a class="modal-action" href="/Pages/More_Pages/bossing.html">
+          <span class="ma-title">🏆 Bossing</span>
+          <span class="ma-desc">Track boss kill counts and personal bests</span>
+        </a>
+        
+        <a class="modal-action" href="/Pages/More_Pages/clueScrolls.html">
+          <span class="ma-title">📜 Clue Solver</span>
+          <span class="ma-desc">Solve anagrams, ciphers, emotes &amp; puzzle boxes</span>
+        </a>
+        
+        <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">
+          <span class="ma-title">🍄 Fairy Rings</span>
+          <span class="ma-desc">All 46 ring codes with pins &amp; personal notes</span>
+        </a>
+        
+        <a class="modal-action" href="/Pages/More_Pages/goals.html">
+          <span class="ma-title">📊 Goals</span>
+          <span class="ma-desc">Set and track XP &amp; level goals per skill</span>
+        </a>
+        
+        <a class="modal-action" href="/Pages/More_Pages/petLog.html">
+          <span class="ma-title">🐾 Pet Log</span>
+          <span class="ma-desc">Log your pet drops and track your collection</span>
+        </a>
+        
+        <a class="modal-action" href="/Pages/More_Pages/quests.html">
+          <span class="ma-title">🗺️ Quests</span>
+          <span class="ma-desc">Quest list with requirements and completion tracking</span>
+        </a>
+        
+        <a class="modal-action" href="/Pages/More_Pages/timers.html">
+          <span class="ma-title">⏰ Timers</span>
+          <span class="ma-desc">Farm runs, birdhouses &amp; custom growth timers</span>
+        </a>
+      </div>
     </div>
-    <button class="note-close" id="note-close">✕</button>
   </div>
-  <div class="note-body">
-    <textarea class="note-textarea" id="note-textarea"
-              placeholder="Add a note… e.g. nearest bank, items to bring, quest requirements…"
-              maxlength="500"></textarea>
-    <div class="note-actions">
-      <button class="note-save" id="note-save">Save Note</button>
-      <button class="note-delete" id="note-delete">Delete</button>
+  
+  <div id="toast"></div>
+  
+  <!-- ── Note Sheet ── -->
+  <div class="note-sheet-overlay" id="note-overlay"></div>
+  <div class="note-sheet" id="note-sheet">
+    <div class="note-handle" id="note-handle"></div>
+    <div class="note-header">
+      <div class="note-code-badge" id="note-code-badge">AIQ</div>
+      <div class="note-header-info">
+        <div class="note-header-dest" id="note-dest"></div>
+        <div class="note-header-region" id="note-region"></div>
+      </div>
+      <button class="note-close" id="note-close">✕</button>
+    </div>
+    <div class="note-body">
+      <textarea class="note-textarea" id="note-textarea" placeholder="Add a note… e.g. nearest bank, items to bring, quest requirements…" maxlength="500"></textarea>
+      <div class="note-actions">
+        <button class="note-save" id="note-save">Save Note</button>
+        <button class="note-delete" id="note-delete">Delete</button>
+      </div>
     </div>
   </div>
-</div>
-
-<script type="module">
-import { initPage, storage, showToast } from '../../JS/shared.js';
-
-initPage('more');
-
-// ── Fairy ring data ──────────────────────────────────────────────────────────
-// [code, destination, region, wikiSlug]
-const RINGS = [
-  // ── A ──
-  ['AIQ', 'Mudskipper Point',                    'Feldip Hills'],
-  ['AIR', 'Gorak Plane',                         'Gorak Plane'],
-  ['AIS', 'Island east of Trollheim',            'Troll Country'],
-  ['AJQ', 'Cave south of Dorgesh-Kaan',          'Dorgesh-Kaan'],
-  ['AJR', 'Slayer Tower',                        'Morytania'],
-  ['AJS', 'North of Witchaven',                  'Kandarin'],
-  ['AKQ', 'Realm of the Fisher King',            'Enchanted Valley'],
-  ['AKS', 'Feldip Hills',                        'Feldip Hills'],
-  ['ALP', 'Lighthouse',                          'Kandarin'],
-  ['ALQ', 'Haunted Mine',                        'Morytania'],
-  ['ALR', 'Abyssal Area',                        'Abyss'],
-  ['ALS', 'Cemetery (south of Port Phasmatys)',  'Morytania'],
-  // ── B ──
-  ['BIP', 'South-west of Rantz\'s cave',         'Feldip Hills'],
-  ['BIQ', 'Wizards\' Tower',                     'Misthalin'],
-  ['BIS', 'Ardougne Zoo',                        'Kandarin'],
-  ['BJQ', 'Ship Yard (Karamja)',                 'Karamja'],
-  ['BJR', 'Encounters in The Abyss',             'Abyss'],
-  ['BJS', 'Near Zulrah\'s Shrine',               'Tirannwn'],
-  ['BKP', 'South of Canifis',                    'Morytania'],
-  ['BKQ', 'Enchanted Valley',                    'Enchanted Valley'],
-  ['BKR', 'Mort Myre Swamp',                     'Morytania'],
-  ['BKS', 'Penguins near Miscellania',           'Fremennik'],
-  ['BLP', 'TzHaar City',                         'Karamja'],
-  ['BLQ', 'West of Nardah',                      'Kharidian Desert'],
-  ['BLR', 'Legends\' Guild',                     'Kandarin'],
-  // ── C ──
-  ['CIP', 'Miscellania',                         'Fremennik'],
-  ['CIQ', 'Fremennik Slayer Dungeon',            'Fremennik'],
-  ['CIR', 'Gu\'Tanoth',                          'Kandarin'],
-  ['CIS', 'South of Dorgesh-Kaan',               'Dorgesh-Kaan'],
-  ['CJR', 'Sinclair Mansion',                    'Kandarin'],
-  ['CKP', 'Corsair Cove',                        'Feldip Hills'],
-  ['CKR', 'South of Tai Bwo Wannai',             'Karamja'],
-  ['CKS', 'Canifis (Mort Myre)',                 'Morytania'],
-  ['CLP', 'McGrubor\'s Wood',                    'Kandarin'],
-  ['CLR', 'Elf Camp',                            'Tirannwn'],
-  ['CLS', 'Hazelmere\'s Island',                 'Kandarin'],
-  // ── D ──
-  ['DIP', 'Haunted Woods east of Canifis',       'Morytania'],
-  ['DIR', 'Gorak Plane (second)',                'Gorak Plane'],
-  ['DIS', 'Fairy Resistance Hideout',            'Zanaris'],
-  ['DJP', 'Tower of Life',                       'Kandarin'],
-  ['DJR', 'Keldagrim entrance',                  'Fremennik'],
-  ['DKP', 'Piscatoris Fishing Colony',           'Kandarin'],
-  ['DKQ', 'Iceberg (Penguins)',                  'Fremennik'],
-  ['DKR', 'Edgeville',                           'Misthalin'],
-  ['DKS', 'Snowy Hunter Area',                   'Fremennik'],
-  ['DLQ', 'North of Nardah',                     'Kharidian Desert'],
-  ['DLR', 'Poison Waste',                        'Tirannwn'],
-  ['DLS', 'Myreque Hideout entrance',            'Morytania'],
-];
-
-// Region → accent colour
-const REGION_COLORS = {
-  'Morytania':        '#9b59b6',
-  'Kandarin':         '#2980b9',
-  'Karamja':          '#27ae60',
-  'Kharidian Desert': '#e67e22',
-  'Fremennik':        '#3498db',
-  'Tirannwn':         '#16a085',
-  'Feldip Hills':     '#e74c3c',
-  'Misthalin':        '#c5a028',
-  'Abyss':            '#8e44ad',
-  'Dorgesh-Kaan':     '#95a5a6',
-  'Enchanted Valley': '#f39c12',
-  'Gorak Plane':      '#c0392b',
-  'Zanaris':          '#b888ff',
-};
-
-const NOTES_KEY = 'osts_fairy_notes_v1';
-const PINS_KEY  = 'osts_fairy_pins_v1';
-
-// ── State ────────────────────────────────────────────────────────────────────
-let activeFilter  = 'All';
-let searchQuery   = '';
-let activeCode    = null;
-let pins          = storage.get(PINS_KEY, []);
-
-function savePins()           { storage.set(PINS_KEY, pins); }
-function isPinned(code)       { return pins.includes(code); }
-function togglePin(code) {
-  pins = isPinned(code) ? pins.filter(p => p !== code) : [code, ...pins];
-  savePins();
-  render();
-}
-
-// ── Notes CRUD ───────────────────────────────────────────────────────────────
-function getNotes()              { return storage.get(NOTES_KEY, {}); }
-function getNote(code)           { return getNotes()[code] || ''; }
-function saveNote(code, text)    { const n = getNotes(); n[code] = text; storage.set(NOTES_KEY, n); }
-function deleteNote(code)        { const n = getNotes(); delete n[code]; storage.set(NOTES_KEY, n); }
-function hasNote(code)           { return !!getNote(code).trim(); }
-
-// ── Regions list ─────────────────────────────────────────────────────────────
-const ALL_REGIONS = ['All', ...new Set(RINGS.map(r => r[2])).values()].sort((a,b) => a === 'All' ? -1 : a.localeCompare(b));
-
-// ── Render filter chips ───────────────────────────────────────────────────────
-function renderFilters() {
-  const wrap = document.getElementById('fr-filters');
-  wrap.innerHTML = ALL_REGIONS.map(r =>
-    `<button class="fr-filter${r === activeFilter ? ' active' : ''}" data-region="${r}">${r}</button>`
-  ).join('');
-  wrap.querySelectorAll('.fr-filter').forEach(btn => {
-    btn.addEventListener('click', () => {
-      activeFilter = btn.dataset.region;
-      renderFilters();
-      renderPinned();
-      renderGrid();
-    });
-  });
-}
-
-// ── Card HTML builder ─────────────────────────────────────────────────────────
-function ringCardHtml(code, dest, region) {
-  const color      = REGION_COLORS[region] || 'var(--gold)';
-  const noted      = hasNote(code);
-  const pinned     = isPinned(code);
-  const noteText   = getNote(code);
-  const notePreview = noteText.trim()
-    ? `<div class="fr-note-preview">${noteText.trim().slice(0, 80)}${noteText.trim().length > 80 ? '…' : ''}</div>`
-    : '';
-  return `
+  
+  <script type="module">
+    import { initPage, storage, showToast } from '../../JS/shared.js';
+    
+    initPage('more');
+    
+    // ── Fairy ring data ──────────────────────────────────────────────────────────
+    // [code, destination, region, wikiSlug]
+    const RINGS = [
+      // ── A ──
+      ['AIQ', 'Mudskipper Point', 'Asgarnia'],
+      ['AIR', 'South-east of Ardougne (empty island)', 'Islands'],
+      ['AIS', 'Auburn Valley', 'Varlamore'],
+      ['AJP', 'Avium Savannah', 'Varlamore'],
+      ['AJQ', 'Cave south of Dorgesh-Kaan', 'Dungeons'],
+      ['AJR', 'Slayer cave SE of Rellekka', 'Kandarin'],
+      ['AJS', 'Penguins near Miscellania', 'Islands'],
+      ['AKP', 'Necropolis', 'Kharidian Desert'],
+      ['AKQ', 'Piscatoris Hunter area', 'Kandarin'],
+      ['AKR', 'Hosidius Vinery', 'Great Kourend'],
+      ['AKS', 'Feldip Hunter area', 'Feldip Hills'],
+      ['ALP', 'Lighthouse', 'Islands'],
+      ['ALQ', 'Haunted Woods east of Canifis', 'Morytania'],
+      ['ALR', 'Abyssal Area', 'Other Realms'],
+      ['ALS', "McGrubor's Wood", 'Kandarin'],
+      // ── B ──
+      ['BIP', 'South-west of Mort Myre (empty island)', 'Islands'],
+      ['BIQ', 'Near Kalphite Hive', 'Kharidian Desert'],
+      ['BIS', 'Ardougne Zoo', 'Kandarin'],
+      ['BJP', 'Isle of Souls', 'Islands'],
+      ['BJR', 'Realm of the Fisher King', 'Other Realms'],
+      ['BJS', 'Near Zul-Andra', 'Islands'],
+      ['BKP', 'Chompy Marsh, south of Castle Wars', 'Feldip Hills'],
+      ['BKQ', 'Enchanted Valley', 'Other Realms'],
+      ['BKR', 'Mort Myre Swamp, south of Canifis', 'Morytania'],
+      ['BKS', 'Zanaris', 'Other Realms'],
+      ['BLP', 'TzHaar area', 'Karamja'],
+      ['BLQ', "Yu'biusk", 'Other Realms'],
+      ['BLR', "Legends' Guild", 'Kandarin'],
+      ['BLS', 'South of Mount Quidamortem', 'Kebos Lowlands'],
+      // ── C ──
+      ['CIP', 'Miscellania', 'Fremennik'],
+      ['CIQ', 'North-west of Yanille', 'Kandarin'],
+      ['CIR', 'South of Mount Karuulm', 'Kebos Lowlands'],
+      ['CIS', 'Arceuus Library', 'Great Kourend'],
+      ['CJQ', 'The Great Conch', 'Other Realms'],
+      ['CJR', 'Sinclair Mansion (east)', 'Kandarin'],
+      ['CKP', "Cosmic entity's plane", 'Other Realms'],
+      ['CKQ', 'Aldarin', 'Varlamore'],
+      ['CKR', 'South of Tai Bwo Wannai Village', 'Karamja'],
+      ['CKS', 'Canifis', 'Morytania'],
+      ['CLP', 'Draynor island', 'Islands'],
+      ['CLR', 'Ape Atoll', 'Islands'],
+      ['CLS', "Hazelmere's house", 'Islands'],
+      // ── D ──
+      ['DIP', 'Abyssal Nexus (Abyssal Sire)', 'Other Realms'],
+      ['DIQ', 'Player-owned house (superior garden)', 'POH'],
+      ['DIR', "Gorak's Plane", 'Other Realms'],
+      ['DIS', "Wizards' Tower", 'Misthalin'],
+      ['DJP', 'Tower of Life', 'Kandarin'],
+      ['DJR', 'Chasm of Fire', 'Great Kourend'],
+      ['DKP', 'Gnome glider, Karamja', 'Karamja'],
+      ['DKR', 'Edgeville', 'Misthalin'],
+      ['DKS', 'Polar Hunter area / Keldagrim entrance', 'Fremennik'],
+      ['DLP', 'Grimstone Dungeon', 'Other Realms'],
+      ['DLQ', 'North of Nardah', 'Kharidian Desert'],
+      ['DLR', 'Poison Waste south of Isafdar', 'Tirannwn'],
+      ['DLS', 'Myreque hideout under The Hollows', 'Morytania'],
+    ];
+    
+    // Region → accent colour
+    const REGION_COLORS = {
+      'Asgarnia': '#c0a060',
+      'Dungeons': '#7f8c8d',
+      'Feldip Hills': '#e74c3c',
+      'Fremennik': '#3498db',
+      'Great Kourend': '#8e44ad',
+      'Islands': '#1abc9c',
+      'Karamja': '#27ae60',
+      'Kandarin': '#2980b9',
+      'Kebos Lowlands': '#d35400',
+      'Kharidian Desert': '#e67e22',
+      'Misthalin': '#c5a028',
+      'Morytania': '#9b59b6',
+      'Other Realms': '#8e44ad',
+      'POH': '#bdc3c7',
+      'Tirannwn': '#16a085',
+      'Varlamore': '#e91e63',
+    };
+    
+    const NOTES_KEY = 'osts_fairy_notes_v1';
+    const PINS_KEY = 'osts_fairy_pins_v1';
+    
+    // ── State ────────────────────────────────────────────────────────────────────
+    let activeFilter = 'All';
+    let searchQuery = '';
+    let activeCode = null;
+    let pins = storage.get(PINS_KEY, []);
+    
+    function savePins() { storage.set(PINS_KEY, pins); }
+    
+    function isPinned(code) { return pins.includes(code); }
+    
+    function togglePin(code) {
+      pins = isPinned(code) ? pins.filter(p => p !== code) : [code, ...pins];
+      savePins();
+      render();
+    }
+    
+    // ── Notes CRUD ───────────────────────────────────────────────────────────────
+    function getNotes() { return storage.get(NOTES_KEY, {}); }
+    
+    function getNote(code) { return getNotes()[code] || ''; }
+    
+    function saveNote(code, text) {
+      const n = getNotes();
+      n[code] = text;
+      storage.set(NOTES_KEY, n);
+    }
+    
+    function deleteNote(code) {
+      const n = getNotes();
+      delete n[code];
+      storage.set(NOTES_KEY, n);
+    }
+    
+    function hasNote(code) { return !!getNote(code).trim(); }
+    
+    // ── Regions list ─────────────────────────────────────────────────────────────
+    const ALL_REGIONS = ['All', ...new Set(RINGS.map(r => r[2])).values()].sort((a, b) => a === 'All' ? -1 : a.localeCompare(b));
+    
+    // ── Render filter chips ───────────────────────────────────────────────────────
+    function renderFilters() {
+      const wrap = document.getElementById('fr-filters');
+      wrap.innerHTML = ALL_REGIONS.map(r =>
+        `<button class="fr-filter${r === activeFilter ? ' active' : ''}" data-region="${r}">${r}</button>`
+      ).join('');
+      wrap.querySelectorAll('.fr-filter').forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeFilter = btn.dataset.region;
+          renderFilters();
+          renderPinned();
+          renderGrid();
+        });
+      });
+    }
+    
+    // ── Card HTML builder ─────────────────────────────────────────────────────────
+    function ringCardHtml(code, dest, region) {
+      const color = REGION_COLORS[region] || 'var(--gold)';
+      const noted = hasNote(code);
+      const pinned = isPinned(code);
+      const noteText = getNote(code);
+      const notePreview = noteText.trim() ?
+        `<div class="fr-note-preview">${noteText.trim().slice(0, 80)}${noteText.trim().length > 80 ? '…' : ''}</div>` :
+        '';
+      return `
   <div class="fr-card${noted ? ' has-note' : ''}${pinned ? ' is-pinned' : ''}" data-code="${code}" style="--fr-color:${color}">
     <button class="fr-pin-btn${pinned ? ' active' : ''}" data-pin="${code}" aria-label="Pin ${code}">📌</button>
     <button class="fr-note-btn${noted ? ' active' : ''}" data-note="${code}" aria-label="Note for ${code}">📝</button>
@@ -476,40 +690,40 @@ function ringCardHtml(code, dest, region) {
     <span class="fr-region">${region}</span>
     ${notePreview}
   </div>`;
-}
-
-// ── Bind card buttons ─────────────────────────────────────────────────────────
-function bindCardEvents(container) {
-  container.querySelectorAll('[data-pin]').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      togglePin(btn.dataset.pin);
-    });
-  });
-  container.querySelectorAll('[data-note]').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      const ring = RINGS.find(r => r[0] === btn.dataset.note);
-      if (ring) openNoteSheet(ring[0], ring[1], ring[2]);
-    });
-  });
-}
-
-// ── Main render ───────────────────────────────────────────────────────────────
-function render() {
-  renderFilters();
-  renderPinned();
-  renderGrid();
-}
-
-// ── Render pinned section ─────────────────────────────────────────────────────
-function renderPinned() {
-  const root       = document.getElementById('fr-pinned');
-  const validPins  = pins.filter(code => RINGS.find(r => r[0] === code));
-
-  if (!validPins.length) { root.innerHTML = ''; return; }
-
-  root.innerHTML = `
+    }
+    
+    // ── Bind card buttons ─────────────────────────────────────────────────────────
+    function bindCardEvents(container) {
+      container.querySelectorAll('[data-pin]').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          togglePin(btn.dataset.pin);
+        });
+      });
+      container.querySelectorAll('[data-note]').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          const ring = RINGS.find(r => r[0] === btn.dataset.note);
+          if (ring) openNoteSheet(ring[0], ring[1], ring[2]);
+        });
+      });
+    }
+    
+    // ── Main render ───────────────────────────────────────────────────────────────
+    function render() {
+      renderFilters();
+      renderPinned();
+      renderGrid();
+    }
+    
+    // ── Render pinned section ─────────────────────────────────────────────────────
+    function renderPinned() {
+      const root = document.getElementById('fr-pinned');
+      const validPins = pins.filter(code => RINGS.find(r => r[0] === code));
+      
+      if (!validPins.length) { root.innerHTML = ''; return; }
+      
+      root.innerHTML = `
     <div class="data-label">Pinned</div>
     <div class="fr-grid" style="margin-bottom:14px">
       ${validPins.map(code => {
@@ -517,138 +731,143 @@ function renderPinned() {
         return ring ? ringCardHtml(ring[0], ring[1], ring[2]) : '';
       }).join('')}
     </div>`;
-
-  bindCardEvents(root);
-}
-
-// ── Render all rings grid ─────────────────────────────────────────────────────
-function renderGrid() {
-  const grid = document.getElementById('fr-grid');
-  const q    = searchQuery.toLowerCase();
-
-  const filtered = RINGS.filter(([code, dest, region]) => {
-    const matchFilter = activeFilter === 'All' || region === activeFilter;
-    const matchSearch = !q || code.toLowerCase().includes(q) || dest.toLowerCase().includes(q) || region.toLowerCase().includes(q);
-    return matchFilter && matchSearch;
-  });
-
-  document.getElementById('fr-count').textContent =
-    filtered.length === RINGS.length ? `${RINGS.length} rings total` : `${filtered.length} of ${RINGS.length} rings`;
-
-  if (!filtered.length) {
-    grid.innerHTML = '<div class="fr-empty">No rings match your search.</div>';
-    return;
-  }
-
-  grid.innerHTML = filtered.map(([code, dest, region]) => ringCardHtml(code, dest, region)).join('');
-  bindCardEvents(grid);
-}
-
-// ── Note sheet ───────────────────────────────────────────────────────────────
-function openNoteSheet(code, dest, region) {
-  activeCode = code;
-  const color = REGION_COLORS[region] || 'var(--gold)';
-
-  document.getElementById('note-code-badge').textContent  = code;
-  document.getElementById('note-code-badge').style.color  = color;
-  document.getElementById('note-dest').textContent        = dest;
-  document.getElementById('note-region').textContent      = region;
-  document.getElementById('note-textarea').value          = getNote(code);
-  document.getElementById('note-delete').disabled         = !hasNote(code);
-
-  document.getElementById('note-overlay').classList.add('show');
-  requestAnimationFrame(() => document.getElementById('note-sheet').classList.add('show'));
-
-  // Focus textarea after animation
-  setTimeout(() => document.getElementById('note-textarea').focus(), 320);
-}
-
-function closeNoteSheet() {
-  document.getElementById('note-sheet').classList.remove('show');
-  document.getElementById('note-overlay').classList.remove('show');
-  activeCode = null;
-}
-
-document.getElementById('note-close').addEventListener('click', closeNoteSheet);
-document.getElementById('note-overlay').addEventListener('click', closeNoteSheet);
-
-document.getElementById('note-save').addEventListener('click', () => {
-  if (!activeCode) return;
-  const text = document.getElementById('note-textarea').value.trim();
-  if (text) {
-    saveNote(activeCode, text);
-    showToast('📝 Note saved');
-  } else {
-    deleteNote(activeCode);
-    showToast('🗑 Note cleared');
-  }
-  closeNoteSheet();
-  render();
-});
-
-document.getElementById('note-delete').addEventListener('click', () => {
-  if (!activeCode) return;
-  deleteNote(activeCode);
-  showToast('🗑 Note deleted');
-  closeNoteSheet();
-  render();
-});
-
-// Enable delete button when textarea changes
-document.getElementById('note-textarea').addEventListener('input', () => {
-  document.getElementById('note-delete').disabled = false;
-});
-
-// ── Drag to close note sheet ──────────────────────────────────────────────────
-(function makeDraggable() {
-  const sheet    = document.getElementById('note-sheet');
-  const handle   = document.getElementById('note-handle');
-  const header   = sheet.querySelector('.note-header');
-  const dragZone = handle || header;
-
-  let startY = 0, dragY = 0, active = false;
-
-  dragZone.addEventListener('touchstart', e => {
-    startY = e.touches[0].clientY;
-    dragY  = 0;
-    active = true;
-    sheet.style.transition = 'none';
-  }, { passive: true });
-
-  window.addEventListener('touchmove', e => {
-    if (!active) return;
-    dragY = Math.max(0, e.touches[0].clientY - startY);
-    sheet.style.transform = `translateY(${dragY}px)`;
-  }, { passive: true });
-
-  window.addEventListener('touchend', () => {
-    if (!active) return;
-    active = false;
-    sheet.style.transition = '';
-    if (dragY > 100) {
-      closeNoteSheet();
-    } else {
-      sheet.style.transform = 'translateY(0)';
+      
+      bindCardEvents(root);
     }
-    dragY = 0;
-  });
-})();
-
-// ── Search ───────────────────────────────────────────────────────────────────
-document.getElementById('fr-search').addEventListener('input', e => {
-  searchQuery = e.target.value;
-  renderPinned();
-  renderGrid();
-});
-
-// ── Settings tools ────────────────────────────────────────────────────────────
-document.getElementById('clear-pins-btn').addEventListener('click', () => {
-  pins = []; savePins(); render();
-  showToast('📌 All pins cleared');
-});
-
-// ── Boot ─────────────────────────────────────────────────────────────────────
-render();
-</script>
+    
+    // ── Render all rings grid ─────────────────────────────────────────────────────
+    function renderGrid() {
+      const grid = document.getElementById('fr-grid');
+      const q = searchQuery.toLowerCase();
+      
+      const filtered = RINGS.filter(([code, dest, region]) => {
+        const matchFilter = activeFilter === 'All' || region === activeFilter;
+        const matchSearch = !q || code.toLowerCase().includes(q) || dest.toLowerCase().includes(q) || region.toLowerCase().includes(q);
+        return matchFilter && matchSearch;
+      });
+      
+      document.getElementById('fr-count').textContent =
+        filtered.length === RINGS.length ? `${RINGS.length} rings total` : `${filtered.length} of ${RINGS.length} rings`;
+      
+      if (!filtered.length) {
+        grid.innerHTML = '<div class="fr-empty">No rings match your search.</div>';
+        return;
+      }
+      
+      grid.innerHTML = filtered.map(([code, dest, region]) => ringCardHtml(code, dest, region)).join('');
+      bindCardEvents(grid);
+    }
+    
+    // ── Note sheet ───────────────────────────────────────────────────────────────
+    function openNoteSheet(code, dest, region) {
+      activeCode = code;
+      const color = REGION_COLORS[region] || 'var(--gold)';
+      
+      document.getElementById('note-code-badge').textContent = code;
+      document.getElementById('note-code-badge').style.color = color;
+      document.getElementById('note-dest').textContent = dest;
+      document.getElementById('note-region').textContent = region;
+      document.getElementById('note-textarea').value = getNote(code);
+      document.getElementById('note-delete').disabled = !hasNote(code);
+      
+      document.getElementById('note-overlay').classList.add('show');
+      requestAnimationFrame(() => document.getElementById('note-sheet').classList.add('show'));
+      
+      // Focus textarea after animation
+      setTimeout(() => document.getElementById('note-textarea').focus(), 320);
+    }
+    
+    function closeNoteSheet() {
+      document.getElementById('note-sheet').classList.remove('show');
+      document.getElementById('note-overlay').classList.remove('show');
+      activeCode = null;
+    }
+    
+    document.getElementById('note-close').addEventListener('click', closeNoteSheet);
+    document.getElementById('note-overlay').addEventListener('click', closeNoteSheet);
+    
+    document.getElementById('note-save').addEventListener('click', () => {
+      if (!activeCode) return;
+      const text = document.getElementById('note-textarea').value.trim();
+      if (text) {
+        saveNote(activeCode, text);
+        showToast('📝 Note saved');
+      } else {
+        deleteNote(activeCode);
+        showToast('🗑 Note cleared');
+      }
+      closeNoteSheet();
+      render();
+    });
+    
+    document.getElementById('note-delete').addEventListener('click', () => {
+      if (!activeCode) return;
+      deleteNote(activeCode);
+      showToast('🗑 Note deleted');
+      closeNoteSheet();
+      render();
+    });
+    
+    // Enable delete button when textarea changes
+    document.getElementById('note-textarea').addEventListener('input', () => {
+      document.getElementById('note-delete').disabled = false;
+    });
+    
+    // ── Drag to close note sheet ──────────────────────────────────────────────────
+    (function makeDraggable() {
+      const sheet = document.getElementById('note-sheet');
+      const handle = document.getElementById('note-handle');
+      const header = sheet.querySelector('.note-header');
+      const dragZone = handle || header;
+      
+      let startY = 0,
+        dragY = 0,
+        active = false;
+      
+      dragZone.addEventListener('touchstart', e => {
+        startY = e.touches[0].clientY;
+        dragY = 0;
+        active = true;
+        sheet.style.transition = 'none';
+      }, { passive: true });
+      
+      window.addEventListener('touchmove', e => {
+        if (!active) return;
+        dragY = Math.max(0, e.touches[0].clientY - startY);
+        sheet.style.transform = `translateY(${dragY}px)`;
+      }, { passive: true });
+      
+      window.addEventListener('touchend', () => {
+        if (!active) return;
+        active = false;
+        sheet.style.transition = '';
+        if (dragY > 100) {
+          closeNoteSheet();
+        } else {
+          sheet.style.transform = 'translateY(0)';
+        }
+        dragY = 0;
+      });
+    })();
+    
+    // ── Search ───────────────────────────────────────────────────────────────────
+    document.getElementById('fr-search').addEventListener('input', e => {
+      searchQuery = e.target.value;
+      renderPinned();
+      renderGrid();
+    });
+    
+    // ── Settings tools ────────────────────────────────────────────────────────────
+    document.getElementById('clear-pins-btn').addEventListener('click', () => {
+      pins = [];
+      savePins();
+      render();
+      showToast('📌 All pins cleared');
+    });
+    
+    // ── Boot ─────────────────────────────────────────────────────────────────────
+    render();
+  </script>
 </body>
+
 </html>

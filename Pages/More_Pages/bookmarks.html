@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2b241b">
+  <link rel="manifest" href="/manifest.json">
+  <title>OSTS — Bookmarks</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+
+    /* ── Filter chips ── */
+    .bm-filters {
+      display:flex; gap:6px; overflow-x:auto; padding-bottom:4px;
+      margin-bottom:10px; scrollbar-width:none;
+    }
+    .bm-filters::-webkit-scrollbar { display:none; }
+    .bm-filter {
+      flex-shrink:0; padding:5px 12px; border-radius:999px;
+      font-size:11px; font-weight:700; border:1px solid var(--border);
+      background:var(--surface2); color:var(--muted); cursor:pointer;
+      transition:all .15s; white-space:nowrap; display:flex; align-items:center; gap:5px;
+    }
+    .bm-filter.active { background:var(--gold); color:#000; border-color:var(--gold); }
+    .bm-filter-count {
+      background:rgba(0,0,0,.25); color:inherit;
+      font-size:9px; font-weight:800; padding:1px 5px;
+      border-radius:999px; min-width:16px; text-align:center;
+    }
+    .bm-filter.active .bm-filter-count { background:rgba(0,0,0,.2); }
+
+    /* ── Count ── */
+    .bm-count {
+      font-size:11px; color:var(--muted); margin-bottom:10px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .bm-clear-all {
+      font-size:11px; font-weight:700; color:var(--red);
+      background:none; border:none; cursor:pointer; padding:2px 6px;
+      border-radius:6px; transition:background .15s;
+    }
+    .bm-clear-all:hover { background:rgba(248,81,73,.1); }
+
+    /* ── Section header ── */
+    .bm-section-hdr {
+      display:flex; align-items:center; gap:8px;
+      font-size:11px; font-weight:800; color:var(--muted);
+      text-transform:uppercase; letter-spacing:.6px;
+      margin:14px 0 7px; padding-bottom:5px;
+      border-bottom:1px solid var(--border);
+    }
+    .bm-section-hdr:first-child { margin-top:0; }
+
+    /* ── Bookmark card ── */
+    .bm-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:12px; padding:11px 12px 10px 15px;
+      display:flex; align-items:center; gap:10px;
+      position:relative; transition:border-color .15s;
+    }
+    .bm-card::before {
+      content:''; position:absolute; top:0; left:0; bottom:0; width:4px;
+      background:var(--src-col, var(--gold));
+      border-radius:12px 0 0 12px;
+    }
+    .bm-card + .bm-card { margin-top:6px; }
+
+    .bm-icon {
+      flex-shrink:0; font-size:20px; width:36px; height:36px;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--surface2); border:1px solid var(--border);
+      border-radius:9px;
+    }
+    .bm-icon img { width:24px; height:24px; object-fit:contain; }
+
+    .bm-info { flex:1; min-width:0; }
+    .bm-title {
+      font-size:13px; font-weight:700; color:var(--text);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      margin-bottom:2px;
+    }
+    .bm-meta  { font-size:11px; color:var(--muted); line-height:1.4; }
+    .bm-badge {
+      font-size:9px; font-weight:700; padding:2px 6px;
+      border-radius:999px; margin-right:4px;
+      background:var(--surface2); border:1px solid var(--border);
+      color:var(--muted); text-transform:uppercase; letter-spacing:.4px;
+    }
+
+    .bm-actions { display:flex; gap:5px; flex-shrink:0; }
+    .bm-btn {
+      padding:6px 10px; border-radius:8px; font-size:11px; font-weight:700;
+      border:1px solid var(--border); background:var(--surface2);
+      color:var(--muted); cursor:pointer; transition:all .15s; white-space:nowrap;
+    }
+    .bm-btn:hover { border-color:var(--gold); color:var(--gold); }
+    .bm-btn.danger:hover { border-color:var(--red); color:var(--red); }
+
+    /* ── Empty state ── */
+    .bm-empty {
+      text-align:center; padding:48px 20px;
+      color:var(--muted); font-size:13px; line-height:1.8;
+    }
+    .bm-empty-icon { font-size:40px; margin-bottom:12px; }
+    .bm-empty a { color:var(--gold); font-weight:600; }
+
+    /* ── Category empty (inline) ── */
+    .bm-cat-empty {
+      padding:14px 15px; border-radius:12px;
+      background:var(--surface); border:1px dashed var(--border);
+      font-size:12px; color:var(--muted); text-align:center; line-height:1.6;
+    }
+    .bm-cat-empty a { color:var(--gold); font-weight:600; }
+
+    /* ── Section list ── */
+    .bm-section { margin-bottom:4px; }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>OSTS</h1>
+  <div class="hdr-actions">
+    <button id="install-btn" style="display:none">Install</button>
+    <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
+  </div>
+</header>
+
+<div id="settings-overlay"></div>
+<div id="settings-panel" aria-hidden="true">
+  <div class="settings-head">
+    <h2>Settings</h2>
+    <button class="settings-close" id="settings-close">✕</button>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Appearance</div>
+    <div class="theme-options">
+      <button class="theme-chip" data-theme="dark">Dark</button>
+      <button class="theme-chip" data-theme="light">Light</button>
+      <button class="theme-chip" data-theme="brown">Brown</button>
+    </div>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Bookmarks</div>
+    <button class="push-btn" id="clear-all-btn" style="background:rgba(248,81,73,.12);border-color:var(--red);color:var(--red)">Clear All Bookmarks</button>
+  </div>
+</div>
+
+<div id="main">
+  <div class="page active">
+
+    <!-- Filters -->
+    <div class="bm-filters" id="bm-filters"></div>
+
+    <!-- Count + clear -->
+    <div class="bm-count">
+      <span id="bm-count-text">Loading…</span>
+      <button class="bm-clear-all" id="bm-clear-visible" style="display:none">Clear visible</button>
+    </div>
+
+    <!-- Content -->
+    <div id="bm-content"></div>
+
+  </div>
+</div>
+
+<nav id="bottom-nav"></nav>
+
+<div class="modal-overlay" id="more-menu-overlay">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <div><div class="modal-title">More</div></div>
+      <button class="modal-close" id="more-menu-close">✕</button>
+    </div>
+<div class="modal-actions">
+
+  <a class="modal-action" href="/Pages/More_Pages/bestiary.html">
+    <span class="ma-title">🐉 Bestiary</span>
+    <span class="ma-desc">Look up monsters, combat stats &amp; slayer info</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/bookmarks.html">
+    <span class="ma-title">🔖 Bookmarks</span>
+    <span class="ma-desc">Your saved clues, fairy rings, timers &amp; more</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/bossing.html">
+    <span class="ma-title">🏆 Bossing</span>
+    <span class="ma-desc">Track boss kill counts and personal bests</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/clueScrolls.html">
+    <span class="ma-title">📜 Clue Solver</span>
+    <span class="ma-desc">Solve anagrams, ciphers, emotes &amp; puzzle boxes</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">
+    <span class="ma-title">🍄 Fairy Rings</span>
+    <span class="ma-desc">All 46 ring codes with pins &amp; personal notes</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/goals.html">
+    <span class="ma-title">📊 Goals</span>
+    <span class="ma-desc">Set and track XP &amp; level goals per skill</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/petLog.html">
+    <span class="ma-title">🐾 Pet Log</span>
+    <span class="ma-desc">Log your pet drops and track your collection</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/quests.html">
+    <span class="ma-title">🗺️ Quests</span>
+    <span class="ma-desc">Quest list with requirements and completion tracking</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/timers.html">
+    <span class="ma-title">⏰ Timers</span>
+    <span class="ma-desc">Farm runs, birdhouses &amp; custom growth timers</span>
+  </a>
+
+</div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+import { initPage, showToast, settings } from '../../JS/shared.js';
+
+// ─── Storage keys for every bookmarkable system in OSTS ───────────────────────
+const KEYS = {
+  clues:    'osts_clue_bookmarks_v2',    // array of clue IDs (string)
+  rings:    'osts_fairy_pins_v1',        // array of ring codes (string)
+  timers:   'osts_timer_pins_v2',        // array of timer IDs (string)
+  goals:    'osts-goals-v1',             // array of goal objects (Goals page)
+  monsters: 'osts_bestiary_bookmarks_v2',// array of monster names (future — bestiary page)
+  bosses:   'osts_boss_bookmarks_v2',    // array of boss names   (future — bossing page)
+  quests:   'osts_quest_bookmarks_v2',   // array of quest names  (future — quests page)
+};
+
+// ─── Source definitions ───────────────────────────────────────────────────────
+const SOURCES = [
+  { id:'clues',    label:'Clue Scrolls', icon:'📜', col:'#b388ff', href:'/Pages/More_Pages/clueScrolls.html',  future:false },
+  { id:'rings',    label:'Fairy Rings',  icon:'🍄', col:'#c9a35a', href:'/Pages/More_Pages/fairyRings.html',   future:false },
+  { id:'timers',   label:'Timers',       icon:'⏰', col:'#58a6ff', href:'/Pages/More_Pages/timers.html',        future:false },
+  { id:'goals',    label:'Goals',        icon:'📊', col:'#f1c40f', href:'/Pages/More_Pages/goals.html',        future:false },
+  { id:'monsters', label:'Monsters',     icon:'🐉', col:'#e74c3c', href:'/Pages/More_Pages/bestiary.html',     future:true  },
+  { id:'bosses',   label:'Bosses',       icon:'🏆', col:'#f0883e', href:'/Pages/More_Pages/bossing.html',      future:false },
+  { id:'quests',   label:'Quests',       icon:'📝', col:'#3fb950', href:'/Pages/More_Pages/quests.html',       future:false },
+];
+
+// ─── Lookup tables ────────────────────────────────────────────────────────────
+
+// Fairy rings — [code, destination, region]
+const RING_DATA = [
+  ['AIQ','Mudskipper Point','Feldip Hills'],['AIR','Gorak Plane','Gorak Plane'],
+  ['AIS','Island east of Trollheim','Troll Country'],['AJQ','Cave south of Dorgesh-Kaan','Dorgesh-Kaan'],
+  ['AJR','Slayer Tower','Morytania'],['AJS','North of Witchaven','Kandarin'],
+  ['AKQ','Realm of the Fisher King','Enchanted Valley'],['AKS','Feldip Hills','Feldip Hills'],
+  ['ALP','Lighthouse','Kandarin'],['ALQ','Haunted Mine','Morytania'],
+  ['ALR','Abyssal Area','Abyss'],['ALS','Cemetery (south of Port Phasmatys)','Morytania'],
+  ['BIP',"South-west of Rantz's cave",'Feldip Hills'],['BIQ',"Wizards' Tower",'Misthalin'],
+  ['BIS','Ardougne Zoo','Kandarin'],['BJQ','Ship Yard (Karamja)','Karamja'],
+  ['BJR','Encounters in The Abyss','Abyss'],['BJS',"Near Zulrah's Shrine",'Tirannwn'],
+  ['BKP','South of Canifis','Morytania'],['BKQ','Enchanted Valley','Enchanted Valley'],
+  ['BKR','Mort Myre Swamp','Morytania'],['BKS','Penguins near Miscellania','Fremennik'],
+  ['BLP','TzHaar City','Karamja'],['BLQ','West of Nardah','Kharidian Desert'],
+  ['BLR',"Legends' Guild",'Kandarin'],['CIP','Miscellania','Fremennik'],
+  ['CIQ','Fremennik Slayer Dungeon','Fremennik'],["CIR","Gu'Tanoth",'Kandarin'],
+  ['CIS','South of Dorgesh-Kaan','Dorgesh-Kaan'],['CJR','Sinclair Mansion','Kandarin'],
+  ['CKP','Corsair Cove','Feldip Hills'],['CKR','South of Tai Bwo Wannai','Karamja'],
+  ['CKS','Canifis (Mort Myre)','Morytania'],["CLP","McGrubor's Wood",'Kandarin'],
+  ['CLR','Elf Camp','Tirannwn'],["CLS","Hazelmere's Island",'Kandarin'],
+  ['DIP','Haunted Woods east of Canifis','Morytania'],['DIR','Gorak Plane (second)','Gorak Plane'],
+  ['DIS','Fairy Resistance Hideout','Zanaris'],['DJP','Tower of Life','Kandarin'],
+  ['DJR','Keldagrim entrance','Fremennik'],['DKP','Piscatoris Fishing Colony','Kandarin'],
+  ['DKQ','Iceberg (Penguins)','Fremennik'],['DKR','Edgeville','Misthalin'],
+  ['DKS','Snowy Hunter Area','Fremennik'],['DLQ','North of Nardah','Kharidian Desert'],
+  ['DLR','Poison Waste','Tirannwn'],['DLS','Myreque Hideout entrance','Morytania'],
+];
+const RING_MAP = Object.fromEntries(RING_DATA.map(r => [r[0], { dest:r[1], region:r[2] }]));
+
+// Timers — id → { name, group, dur }
+const TIMER_DATA = [
+  // Herbs
+  ['guam','Guam','🌿 Herb','1h 20m'],['marrentill','Marrentill','🌿 Herb','1h 20m'],
+  ['tarromin','Tarromin','🌿 Herb','1h 20m'],['harralander','Harralander','🌿 Herb','1h 20m'],
+  ['ranarr','Ranarr','🌿 Herb','1h 20m'],['toadflax','Toadflax','🌿 Herb','1h 20m'],
+  ['irit','Irit','🌿 Herb','1h 20m'],['avantoe','Avantoe','🌿 Herb','1h 20m'],
+  ['kwuarm','Kwuarm','🌿 Herb','1h 20m'],['snapdragon','Snapdragon','🌿 Herb','1h 20m'],
+  ['cadantine','Cadantine','🌿 Herb','1h 20m'],['lantadyme','Lantadyme','🌿 Herb','1h 20m'],
+  ['dwarf-weed','Dwarf Weed','🌿 Herb','1h 20m'],['torstol','Torstol','🌿 Herb','1h 20m'],
+  // Allotments
+  ['potato','Potato','❖ Allotment','40m'],['onion','Onion','❖ Allotment','40m'],
+  ['tomato','Tomato','❖ Allotment','40m'],['sweetcorn','Sweetcorn','❖ Allotment','1h'],
+  ['strawberry','Strawberry','❖ Allotment','1h'],['watermelon','Watermelon','❖ Allotment','1h 20m'],
+  // Trees
+  ['oak','Oak','🌲 Tree','2h 40m'],['willow','Willow','🌲 Tree','4h'],
+  ['maple','Maple','🌲 Tree','5h 20m'],['yew','Yew','🌲 Tree','6h 40m'],
+  ['magic-tree','Magic Tree','🌲 Tree','8h'],
+  // Fruit Trees
+  ['apple','Apple','🍎 Fruit Tree','16h'],['banana','Banana','🍎 Fruit Tree','16h'],
+  ['orange','Orange','🍎 Fruit Tree','16h'],['pineapple','Pineapple','🍎 Fruit Tree','16h'],
+  ['papaya','Papaya','🍎 Fruit Tree','16h'],['palm','Palm','🍎 Fruit Tree','16h'],
+  ['dragonfruit','Dragonfruit','🍎 Fruit Tree','16h'],
+  // Birdhouses
+  ['bird-house','Bird House','◉ Birdhouse','50m'],['oak-bird-house','Oak Bird House','◉ Birdhouse','50m'],
+  ['willow-bird-house','Willow Bird House','◉ Birdhouse','50m'],
+  ['teak-bird-house','Teak Bird House','◉ Birdhouse','50m'],
+  ['maple-bird-house','Maple Bird House','◉ Birdhouse','50m'],
+  ['yew-bird-house','Yew Bird House','◉ Birdhouse','50m'],
+  ['magic-bird-house','Magic Bird House','◉ Birdhouse','50m'],
+  ['redwood-bird-house','Redwood Bird House','◉ Birdhouse','50m'],
+  // Extras
+  ['battlestaves','Battlestaves','⋯ Daily','24h'],['herb-boxes','Herb Boxes','⋯ Daily','24h'],
+  ['kingdom','Kingdom of Miscellania','⋯ Daily','24h'],['tears','Tears of Guthix','⋯ Weekly','168h'],
+];
+const TIMER_MAP = Object.fromEntries(TIMER_DATA.map(t => [t[0], { name:t[1], group:t[2], dur:t[3] }]));
+
+// Clues — compact lookup (matches clueScrolls.html IDs)
+const TIER_COL  = { easy:'#3fb950', medium:'#58a6ff', hard:'#f0883e', elite:'#b388ff', master:'#ffd700' };
+const TYPE_ICON = { anagram:'🔤', cipher:'🔒', cryptic:'🗺️', coordinate:'📍', emote:'💃', map:'🗺', puzzle:'🧩', 'hot-cold':'🌡️' };
+const CLUE_DATA = {
+  // Easy
+  e1:{clue:'AN EARL',solution:'Ranael',tier:'easy',type:'anagram'},
+  e2:{clue:'CARPET AHOY',solution:'Apothecary',tier:'easy',type:'anagram'},
+  e3:{clue:'EEK ZERO OP',solution:'Zookeeper',tier:'easy',type:'anagram'},
+  e4:{clue:'LARK IN DOG',solution:'King Roald',tier:'easy',type:'anagram'},
+  e5:{clue:'SAND NUT',solution:'Dunstan',tier:'easy',type:'anagram'},
+  e6:{clue:'SEQUIN DIRGE',solution:'Queen Sigrid',tier:'easy',type:'anagram'},
+  e7:{clue:'BAIL TRIMS',solution:'Brimstail',tier:'easy',type:'anagram'},
+  e8:{clue:'Speak to Ned in Draynor Village.',solution:'Talk to Ned',tier:'easy',type:'cryptic'},
+  e9:{clue:'Talk to the bartender of the Rusty Anchor.',solution:'Bartender',tier:'easy',type:'cryptic'},
+  e10:{clue:'Talk to the Doomsayer.',solution:'Doomsayer',tier:'easy',type:'cryptic'},
+  e11:{clue:"Speak to the Seers' Village hairdresser.",solution:'Hairdresser',tier:'easy',type:'cryptic'},
+  e12:{clue:"Talk to Wayne's Chains in Falador.",solution:'Wayne',tier:'easy',type:'cryptic'},
+  e13:{clue:'In a town where guards carry crossbows, talk to the museum curator.',solution:'Curator Haig Halen',tier:'easy',type:'cryptic'},
+  e14:{clue:'X marks the spot (Draynor Village)',solution:'Dig at X',tier:'easy',type:'map'},
+  e15:{clue:'X marks the spot (Lumbridge Swamp)',solution:'Dig at X',tier:'easy',type:'map'},
+  e16:{clue:"00° 05' N, 01° 13' E",solution:'Dig',tier:'easy',type:'coordinate'},
+  e17:{clue:"00° 13' S, 07° 08' E",solution:'Dig',tier:'easy',type:'coordinate'},
+  // Medium
+  m1:{clue:'A ZEN SHE',solution:'Zenesha',tier:'medium',type:'anagram'},
+  m2:{clue:'ERR CURE IT',solution:'Recruiter',tier:'medium',type:'anagram'},
+  m3:{clue:'ARM CITY',solution:'Marcy',tier:'medium',type:'anagram'},
+  m4:{clue:'MOTHERBOARD',solution:'Brother Omad',tier:'medium',type:'anagram'},
+  m5:{clue:'GUHCHO',solution:'(ROT-3 decode)',tier:'medium',type:'cipher'},
+  m6:{clue:'Speak to Ellis in Al Kharid.',solution:'Ellis',tier:'medium',type:'cryptic'},
+  m7:{clue:"Talk to the Squire at the White Knights' Castle.",solution:'Squire',tier:'medium',type:'cryptic'},
+  m8:{clue:"Panic at the Agility Pyramid wearing a Pharaoh's sceptre.",solution:'Panic emote',tier:'medium',type:'emote'},
+  m9:{clue:'Cry in the Catherby bank wearing Snakeskin bandana, dragonhide chaps, amulet of magic.',solution:'Cry emote',tier:'medium',type:'emote'},
+  m10:{clue:"01° 18' N, 14° 15' E",solution:'Dig',tier:'medium',type:'coordinate'},
+  m11:{clue:"03° 39' S, 13° 58' E",solution:'Dig',tier:'medium',type:'coordinate'},
+  // Hard
+  h1:{clue:'RATAI',solution:'Tarai',tier:'hard',type:'anagram'},
+  h2:{clue:"Scattered coins in the far corner (Rogues' Den).",solution:'Search chest',tier:'hard',type:'cryptic'},
+  h3:{clue:"The beasts retreat for their Queen. Dig near her bed.",solution:'Dig (Kalphite Lair)',tier:'hard',type:'cryptic'},
+  h4:{clue:"Talk to the gnome pilot north of Oo'glog.",solution:'Waydar',tier:'hard',type:'cryptic'},
+  h5:{clue:"Flap in the Warrior's Guild bank with Dragon Halberd.",solution:'Flap emote',tier:'hard',type:'emote'},
+  h6:{clue:'Spin in Varrock Castle courtyard in black armour.',solution:'Spin emote',tier:'hard',type:'emote'},
+  h7:{clue:"09° 33' N, 02° 15' E",solution:'Dig',tier:'hard',type:'coordinate'},
+  h8:{clue:"12° 45' N, 20° 09' E",solution:'Dig (Wilderness)',tier:'hard',type:'coordinate'},
+  // Elite
+  el1:{clue:"Fiendish cooks don't dig near their ovens.",solution:"Dig (Cooks' Guild)",tier:'elite',type:'cryptic'},
+  el2:{clue:'Buried in the centre of Ape Atoll.',solution:'Dig (Ape Atoll)',tier:'elite',type:'cryptic'},
+  el3:{clue:"Search boxes outside the Legends' Guild.",solution:'Search boxes',tier:'elite',type:'cryptic'},
+  el4:{clue:'Cry in the TzHaar gem store wearing fire cape and Obsidian shield.',solution:'Cry emote',tier:'elite',type:'emote'},
+  el5:{clue:"13° 46' N, 21° 37' E",solution:'Dig (Waterbirth Island)',tier:'elite',type:'coordinate'},
+  el6:{clue:"04° 41' S, 22° 30' E",solution:'Dig (Shilo Village)',tier:'elite',type:'coordinate'},
+  // Master
+  mas1:{clue:'IN BAR',solution:'Brain',tier:'master',type:'anagram'},
+  mas2:{clue:'Dig in front of the icy altar.',solution:'Dig (GWD)',tier:'master',type:'cryptic'},
+  mas3:{clue:"Dance at Fishing Trawler in full Angler's outfit.",solution:'Dance emote',tier:'master',type:'emote'},
+  mas4:{clue:"24° 58' N, 22° 45' E",solution:'Dig (Weiss)',tier:'master',type:'coordinate'},
+  mas5:{clue:"11° 41' N, 14° 58' E",solution:'Dig (Wilderness)',tier:'master',type:'coordinate'},
+  mas6:{clue:'Hot/Cold — use the Strange device.',solution:'Follow readings',tier:'master',type:'hot-cold'},
+  // Puzzles
+  'pz-castle':{clue:'Castle puzzle box',solution:'Slide puzzle',tier:'hard',type:'puzzle'},
+  'pz-troll':{clue:'Troll puzzle box',solution:'Slide puzzle',tier:'hard',type:'puzzle'},
+  'pz-tree':{clue:'Tree puzzle box',solution:'Slide puzzle',tier:'hard',type:'puzzle'},
+  'pz-gnome':{clue:'Gnome Child puzzle box',solution:'Slide puzzle',tier:'master',type:'puzzle'},
+  'pz-cerberus':{clue:'Cerberus puzzle box',solution:'Slide puzzle',tier:'master',type:'puzzle'},
+  'pz-zulrah':{clue:'Zulrah puzzle box',solution:'Slide puzzle',tier:'master',type:'puzzle'},
+  'pz-tob':{clue:'Theatre of Blood puzzle box',solution:'Slide puzzle',tier:'master',type:'puzzle'},
+};
+
+// ─── Read all bookmark stores ─────────────────────────────────────────────────
+function readStore(key) {
+  try { return JSON.parse(localStorage.getItem(key) || '[]'); }
+  catch { return []; }
+}
+
+// Goals use a different key than the rest, and the exact key might vary
+// between versions of the goals page. Scan all likely candidates + any
+// localStorage key that looks like a goal array.
+function readGoals() {
+  const candidates = [
+    'osts-goals-v1', 'osts_goals_v1',
+    'osts-goals-v2', 'osts_goals_v2',
+    'osts-goals',    'osts_goals',
+  ];
+  // Try known keys first
+  for (const k of candidates) {
+    try {
+      const raw  = localStorage.getItem(k);
+      if (!raw) continue;
+      const data = JSON.parse(raw);
+      if (Array.isArray(data) && data.length > 0) return data;
+    } catch {}
+  }
+  // Fallback: scan every localStorage key for any array of goal-shaped objects
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key  = localStorage.key(i);
+      if (!key) continue;
+      if (!key.toLowerCase().includes('goal')) continue;
+      const data = JSON.parse(localStorage.getItem(key) || 'null');
+      if (Array.isArray(data) && data.length > 0 && data[0]?.id && data[0]?.name) {
+        console.log('[OSTS Bookmarks] Goals found at key:', key);
+        return data;
+      }
+    }
+  } catch {}
+  return [];
+}
+
+// Merge custom timers from timers.html into the lookup at render time
+function buildTimerLookup() {
+  const map = { ...TIMER_MAP }; // start with built-ins
+  try {
+    const customs = JSON.parse(localStorage.getItem('osts_custom_timers_v2') || '[]');
+    customs.forEach(t => {
+      if (t && t.id) {
+        map[t.id] = {
+          name:  t.name  || t.id,
+          group: '✏️ ' + (t.categoryLabel || 'Custom'),
+          dur:   t.dur   || '?',
+        };
+      }
+    });
+  } catch {}
+  return map;
+}
+
+function getAllBookmarks() {
+  return {
+    clues:    readStore(KEYS.clues),
+    rings:    readStore(KEYS.rings),
+    timers:   readStore(KEYS.timers),
+    goals:    readGoals(),             // scans multiple possible keys
+    monsters: readStore(KEYS.monsters),
+    bosses:   readStore(KEYS.bosses),
+    quests:   readStore(KEYS.quests),
+  };
+}
+
+function totalCount(bm) {
+  return Object.values(bm).reduce((s, a) => s + a.length, 0);
+}
+
+// ─── State ─────────────────────────────────────────────────────────────────────
+let activeFilter = 'all';
+let LIVE_TIMER_MAP = {}; // rebuilt on every render to catch custom timers
+
+// ─── Render ────────────────────────────────────────────────────────────────────
+function h(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function render() {
+  LIVE_TIMER_MAP = buildTimerLookup(); // rebuild to include any new custom timers
+  const bm = getAllBookmarks();
+  renderFilters(bm);
+  renderContent(bm);
+}
+
+function renderFilters(bm) {
+  const bar = document.getElementById('bm-filters');
+  const total = totalCount(bm);
+  const chips = [
+    { id:'all', label:'All', icon:'🔖', count:total },
+    ...SOURCES.map(s => ({ id:s.id, label:s.label, icon:s.icon, count: bm[s.id]?.length || 0 }))
+  ];
+  bar.innerHTML = chips.map(c => `
+    <button class="bm-filter${activeFilter===c.id?' active':''}" data-filter="${c.id}">
+      ${c.icon} ${c.label}
+      <span class="bm-filter-count">${c.count}</span>
+    </button>`).join('');
+
+  bar.querySelectorAll('.bm-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeFilter = btn.dataset.filter;
+      render();
+    });
+  });
+}
+
+function renderContent(bm) {
+  const content   = document.getElementById('bm-content');
+  const countText = document.getElementById('bm-count-text');
+  const clearBtn  = document.getElementById('bm-clear-visible');
+
+  const srcsToShow = activeFilter === 'all'
+    ? SOURCES
+    : SOURCES.filter(s => s.id === activeFilter);
+
+  // Count visible
+  const visibleCount = srcsToShow.reduce((s,src) => s + (bm[src.id]?.length||0), 0);
+  const total = totalCount(bm);
+  countText.textContent = total === 0
+    ? 'No bookmarks yet'
+    : `${visibleCount} bookmark${visibleCount!==1?'s':''} ${activeFilter!=='all'?'in this category':'total'}`;
+
+  clearBtn.style.display = visibleCount > 0 ? 'block' : 'none';
+
+  // All empty
+  if (total === 0) {
+    content.innerHTML = `
+      <div class="bm-empty">
+        <div class="bm-empty-icon">🔖</div>
+        No bookmarks yet.<br>
+        Visit a page and tap 🔖 to save items here.<br><br>
+        <a href="/Pages/More_Pages/clueScrolls.html">📜 Clue Solver</a> · 
+        <a href="/Pages/More_Pages/fairyRings.html">🍄 Fairy Rings</a> · 
+        <a href="/Pages/More_Pages/timers.html">⏰ Timers</a>
+      </div>`;
+    return;
+  }
+
+  content.innerHTML = srcsToShow.map(src => sectionHtml(src, bm[src.id] || [])).join('');
+
+  // Wire remove buttons (clues / rings / timers / future categories — string IDs)
+  content.querySelectorAll('[data-remove]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const { source, id } = btn.dataset;
+      const list = readStore(KEYS[source]);
+      const updated = list.filter(x => x !== id);
+      localStorage.setItem(KEYS[source], JSON.stringify(updated));
+      showToast('Bookmark removed');
+      render();
+    });
+  });
+
+  // Wire goal delete buttons (goals store objects, filter by .id)
+  content.querySelectorAll('[data-remove-goal]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const goalId = btn.dataset.goalId;
+      const list   = readStore(KEYS.goals);
+      const updated = list.filter(g => g.id !== goalId);
+      localStorage.setItem(KEYS.goals, JSON.stringify(updated));
+      showToast('Goal deleted');
+      render();
+    });
+  });
+}
+
+function sectionHtml(src, ids) {
+  if (activeFilter !== 'all' && activeFilter !== src.id) return '';
+
+  const headerHtml = `
+    <div class="bm-section-hdr" style="color:${src.col}">
+      ${src.icon} ${src.label}
+      <span style="font-size:10px;font-weight:600;color:var(--muted);text-transform:none;letter-spacing:0">
+        — ${ids.length} saved
+      </span>
+    </div>`;
+
+  if (src.future) {
+    return `${headerHtml}
+    <div class="bm-cat-empty">
+      Bookmarking coming soon to <a href="${src.href}">${src.label}</a>. 
+      Visit the page to see items — you'll be able to save them here once that feature is added.
+    </div>`;
+  }
+
+  if (ids.length === 0) {
+    const emptyMsg = src.id === 'goals'
+      ? `No goals set yet. <a href="${src.href}">Open Goals</a> to add one.`
+      : src.id === 'bosses'
+      ? `No bosses bookmarked yet. <a href="${src.href}">Open Bossing</a> and tap 🔖 on any boss to save it here.`
+      : src.id === 'quests'
+      ? `No quests bookmarked yet. <a href="${src.href}">Open Quests</a> and tap 🔖 on any quest to save it here.`
+      : `No ${src.label.toLowerCase()} bookmarked yet. <a href="${src.href}">Open ${src.label}</a> and tap 🔖 to save items here.`;
+    return `${headerHtml}<div class="bm-cat-empty">${emptyMsg}</div>`;
+  }
+
+  // Goals: ids is an array of goal objects — pass each object directly
+  // Everything else: ids is an array of string IDs
+  const cards = src.id === 'goals'
+    ? ids.map(goalObj => goalCardHtml(goalObj)).join('')
+    : ids.map(id => cardHtml(src, id)).join('');
+
+  return `<div class="bm-section">${headerHtml}${cards}</div>`;
+}
+
+function cardHtml(src, id) {
+  let title = id, meta = '', icon = src.icon, destHref = src.href;
+
+  if (src.id === 'clues') {
+    const c = CLUE_DATA[id];
+    if (!c) return '';
+    title = c.clue.length > 48 ? c.clue.slice(0,46)+'…' : c.clue;
+    const tierColor = TIER_COL[c.tier] || '#b88848';
+    meta = `
+      <span class="bm-badge" style="color:${tierColor};border-color:${tierColor}">${c.tier}</span>
+      <span class="bm-badge">${TYPE_ICON[c.type]||''} ${c.type}</span>
+      <span style="color:var(--gold);font-weight:700">→ ${h(c.solution)}</span>`;
+    icon = TYPE_ICON[c.type] || '📜';
+  }
+  else if (src.id === 'rings') {
+    const r = RING_MAP[id];
+    if (!r) return '';
+    title = `${id} — ${r.dest}`;
+    meta  = `<span class="bm-badge">${r.region}</span>`;
+    icon  = '🍄';
+  }
+  else if (src.id === 'timers') {
+    const t = LIVE_TIMER_MAP[id];
+    title = t ? t.name : (id.startsWith('c-') ? 'Custom Timer' : id);
+    meta  = t
+      ? `<span class="bm-badge">${t.group}</span> <span class="bm-badge">⏱ ${t.dur}</span>`
+      : `<span class="bm-badge">✏️ Custom</span>`;
+    icon  = '⏰';
+  }
+  else if (src.id === 'monsters') {
+    title = id;
+    meta  = `<span class="bm-badge">🐉 Monster</span>`;
+    icon  = '🐉';
+  }
+  else if (src.id === 'bosses') {
+    title = id;
+    meta  = `<span class="bm-badge">🏆 Boss</span> <span style="color:var(--muted);font-size:11px">View kill count on Bossing page</span>`;
+    icon  = '🏆';
+  }
+  else if (src.id === 'quests') {
+    title = id;
+    meta  = `<span class="bm-badge">📝 Quest</span>`;
+    icon  = '📝';
+  }
+
+  return `
+  <div class="bm-card" style="--src-col:${src.col}">
+    <div class="bm-icon">${icon}</div>
+    <div class="bm-info">
+      <div class="bm-title">${h(title)}</div>
+      <div class="bm-meta">${meta}</div>
+    </div>
+    <div class="bm-actions">
+      <button class="bm-btn" onclick="window.location.href='${src.href}'">Open</button>
+      <button class="bm-btn danger" data-remove data-source="${src.id}" data-id="${h(id)}" title="Remove bookmark">✕</button>
+    </div>
+  </div>`;
+}
+
+// ─── Goal card (goals store full objects, not IDs) ────────────────────────────
+const GOAL_TYPE_ICON = { skill:'⚔️', total:'📊', qp:'📜', custom:'🎯' };
+const GOAL_TYPE_LABEL = { skill:'Skill', total:'Total Level', qp:'Quest Points', custom:'Custom' };
+
+function goalCardHtml(g) {
+  if (!g || !g.id) return '';
+  const typeIcon  = GOAL_TYPE_ICON[g.type] || '🎯';
+  const typeLabel = GOAL_TYPE_LABEL[g.type] || g.type;
+  const goalHref  = '/Pages/More_Pages/goals.html';
+
+  // Progress bar if we have enough data
+  let progressHtml = '';
+  if (g.type === 'skill' && g.targetLevel && g.currentValue != null) {
+    // XP table lookup (first 14 levels for quick reference, full logic on goals page)
+    const XP = [0,0,83,174,276,388,512,650,801,969,1154,1358,1584,1833,2107,2411,2746,3115,3523,3973,4470,5018,5624,6291,7028,7842,8740,9730,10824,12031,13363,14833,16456,18247,20224,22406,24815,27473,30408,33648,37224,41171,45529,50339,55649,61512,67983,75127,83014,91721,101333,111945,123660,136594,150872,166636,184040,203254,224466,247886,273742,302288,333804,368599,407015,449428,496254,547953,605032,667991,737627,814445,899257,992895,1096278,1210421,1336443,1475581,1629200,1798808,1986068,2192818,2421087,2673114,2951373,3258594,3597792,3972294,4385776,4842295,5346332,5902831,6517253,7195629,7944614,8771558,9684577,10692629,11805606,13034431];
+    const targetXP = XP[Math.min(g.targetLevel, 99)] || 0;
+    const startXP  = g.startValue || 0;
+    const curXP    = g.currentValue || 0;
+    const range    = targetXP - startXP;
+    const pct      = range > 0 ? Math.min(100, Math.max(0, ((curXP - startXP) / range) * 100)) : (curXP >= targetXP ? 100 : 0);
+    const isDone   = pct >= 100;
+    progressHtml = `
+      <div style="margin-top:5px">
+        <div style="background:var(--surface3);border-radius:4px;height:5px;overflow:hidden">
+          <div style="width:${pct.toFixed(1)}%;height:100%;background:${isDone?'var(--green)':'var(--gold)'};border-radius:4px;transition:width .3s"></div>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px">${pct.toFixed(1)}% complete${isDone?' ✓':''}</div>
+      </div>`;
+  }
+
+  return `
+  <div class="bm-card" style="--src-col:#f1c40f">
+    <div class="bm-icon">${typeIcon}</div>
+    <div class="bm-info">
+      <div class="bm-title">${h(g.name || 'Goal')}</div>
+      <div class="bm-meta"><span class="bm-badge">${typeLabel}</span>${g.skill ? ` <span class="bm-badge">${h(g.skill)}</span>` : ''}</div>
+      ${progressHtml}
+    </div>
+    <div class="bm-actions">
+      <button class="bm-btn" onclick="window.location.href='${goalHref}'">Open</button>
+      <button class="bm-btn danger" data-remove-goal data-goal-id="${h(g.id)}" title="Delete goal">✕</button>
+    </div>
+  </div>`;
+}
+
+// ─── Clear visible ─────────────────────────────────────────────────────────────
+document.getElementById('bm-clear-visible').addEventListener('click', () => {
+  const srcs = activeFilter === 'all'
+    ? SOURCES.filter(s => !s.future && s.id !== 'goals') // goals need individual deletion
+    : SOURCES.filter(s => s.id === activeFilter && !s.future && s.id !== 'goals');
+  if (activeFilter === 'goals') {
+    showToast('Delete goals individually with ✕');
+    return;
+  }
+  srcs.forEach(s => localStorage.setItem(KEYS[s.id], '[]'));
+  showToast('Bookmarks cleared');
+  render();
+});
+
+// ─── Clear all (settings) ──────────────────────────────────────────────────────
+document.getElementById('clear-all-btn').addEventListener('click', () => {
+  Object.values(KEYS).forEach(k => localStorage.setItem(k, '[]'));
+  showToast('All bookmarks cleared');
+  settings.close();
+  render();
+});
+
+// ─── Settings wiring ──────────────────────────────────────────────────────────
+document.getElementById('settings-btn').addEventListener('click', ()=>settings.open());
+document.getElementById('settings-close').addEventListener('click', ()=>settings.close());
+document.getElementById('settings-overlay').addEventListener('click', ()=>settings.close());
+document.querySelectorAll('.theme-chip').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = btn.dataset.theme;
+    document.body.className = t==='dark'?'':`theme-${t}`;
+    localStorage.setItem('osts_theme_v2', t);
+  });
+});
+
+// ─── Init ──────────────────────────────────────────────────────────────────────
+initPage({ activePage:'more' });
+render();
+
+// Re-render when tab regains focus (bookmarks may have changed on another page)
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') render();
+});
+</script>
+</body>
+</html>

@@ -28,6 +28,17 @@
       padding: 5px 9px; cursor: pointer; transition: border-color .15s;
     }
     .sp-btn:hover { border-color: var(--gold); }
+
+    /* ── Boss bookmark button ── */
+    .boss-bm-btn {
+      background: none; border: none; cursor: pointer;
+      font-size: 16px; padding: 4px 6px; border-radius: 7px;
+      opacity: .4; transition: opacity .15s, transform .1s;
+      flex-shrink: 0; line-height: 1;
+    }
+    .boss-bm-btn:hover  { opacity: .8; }
+    .boss-bm-btn.saved  { opacity: 1; }
+    .boss-bm-btn:active { transform: scale(.85); }
   </style>
 </head>
 <body>
@@ -95,15 +106,54 @@
       <div><div class="modal-title">More</div></div>
       <button class="modal-close" id="more-menu-close">✕</button>
     </div>
-  <div class="modal-actions">
-      <a class="modal-action" href="/Pages/More_Pages/bestiary.html">🐉 Bestiary</a>
-      <a class="modal-action" href="/Pages/More_Pages/bossing.html">🏆 Bossing</a>
-      <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">🍄 Fairy Rings</a>
-      <a class="modal-action" href="/Pages/More_Pages/goals.html">📊 Goals</a>
-      <a class="modal-action" href="/Pages/More_Pages/petLog.html">🐾 Pet Log</a>
-      <a class="modal-action" href="/Pages/More_Pages/quests.html">🗺️ Quests</a>
-      <a class="modal-action" href="/Pages/More_Pages/timers.html">⏰ Timers</a>
-    </div>
+<div class="modal-actions">
+
+  <a class="modal-action" href="/Pages/More_Pages/bestiary.html">
+    <span class="ma-title">🐉 Bestiary</span>
+    <span class="ma-desc">Look up monsters, combat stats &amp; slayer info</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/bookmarks.html">
+    <span class="ma-title">🔖 Bookmarks</span>
+    <span class="ma-desc">Your saved clues, fairy rings, timers &amp; more</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/bossing.html">
+    <span class="ma-title">🏆 Bossing</span>
+    <span class="ma-desc">Track boss kill counts and personal bests</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/clueScrolls.html">
+    <span class="ma-title">📜 Clue Solver</span>
+    <span class="ma-desc">Solve anagrams, ciphers, emotes &amp; puzzle boxes</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">
+    <span class="ma-title">🍄 Fairy Rings</span>
+    <span class="ma-desc">All 46 ring codes with pins &amp; personal notes</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/goals.html">
+    <span class="ma-title">📊 Goals</span>
+    <span class="ma-desc">Set and track XP &amp; level goals per skill</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/petLog.html">
+    <span class="ma-title">🐾 Pet Log</span>
+    <span class="ma-desc">Log your pet drops and track your collection</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/quests.html">
+    <span class="ma-title">🗺️ Quests</span>
+    <span class="ma-desc">Quest list with requirements and completion tracking</span>
+  </a>
+
+  <a class="modal-action" href="/Pages/More_Pages/timers.html">
+    <span class="ma-title">⏰ Timers</span>
+    <span class="ma-desc">Farm runs, birdhouses &amp; custom growth timers</span>
+  </a>
+
+</div>
   </div>
 </div>
 
@@ -116,6 +166,22 @@ import {
 } from '/JS/shared.js';
 
 initPage('bossing');
+
+// ── Boss bookmarks ─────────────────────────────────────────────────────────────
+const BOSS_BOOK_KEY = 'osts_boss_bookmarks_v2';
+function getBossBookmarks()      { return storage.get(BOSS_BOOK_KEY, []); }
+function isBossBookmarked(name)  { return getBossBookmarks().includes(name); }
+function toggleBossBookmark(name) {
+  const list    = getBossBookmarks();
+  const updated = list.includes(name) ? list.filter(n => n !== name) : [...list, name];
+  storage.set(BOSS_BOOK_KEY, updated);
+  // Update all bookmark buttons for this boss
+  document.querySelectorAll(`[data-bm-boss="${CSS.escape(name)}"]`).forEach(btn => {
+    btn.classList.toggle('saved', updated.includes(name));
+    btn.title = updated.includes(name) ? 'Remove bookmark' : 'Bookmark this boss';
+  });
+  showToast(updated.includes(name) ? `${name} bookmarked 🔖` : `${name} removed`);
+}
 
 // ── Profile system ────────────────────────────────────────────────────────────
 const PROFILES_KEY    = 'osts_profiles_v2';
@@ -228,7 +294,10 @@ function renderBossing(data) {
           <div class="boss-mini">${e.rank > 0 ? 'Ranked' : 'Unranked'} · ${e.ehb.toFixed(1)} EHB</div>
         </div>
         <div class="boss-kc">${fmtNum(e.kc)} KC</div>
-        <div style="color:var(--muted);font-size:12px;padding-left:6px">▾</div>
+        <button class="boss-bm-btn${isBossBookmarked(e.name) ? ' saved' : ''}"
+          data-bm-boss="${e.name}"
+          title="${isBossBookmarked(e.name) ? 'Remove bookmark' : 'Bookmark this boss'}">🔖</button>
+        <div style="color:var(--muted);font-size:12px;padding-left:2px">▾</div>
       </summary>
       <div class="boss-body">
         <div class="boss-metrics">
@@ -244,6 +313,15 @@ function renderBossing(data) {
     item.addEventListener('toggle', () => {
       if (!item.open) return;
       document.querySelectorAll('.boss-item').forEach(other => { if (other !== item) other.open = false; });
+    });
+  });
+
+  // Bookmark buttons — stop propagation so <details> doesn't toggle on click
+  document.querySelectorAll('.boss-bm-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      e.preventDefault();
+      toggleBossBookmark(btn.dataset.bmBoss);
     });
   });
 }

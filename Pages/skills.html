@@ -41,9 +41,20 @@
 
     /* Drag handle */
     .sheet-handle {
-      width: 40px; height: 4px;
-      background: var(--border); border-radius: 2px;
-      margin: 10px auto 0;
+      width: 48px; height: 5px;
+      background: var(--border); border-radius: 3px;
+      margin: 8px auto 6px;
+      pointer-events: none; /* handled by drag-cap */
+    }
+
+    /* Full-width invisible drag zone — big thumb target over handle + header */
+    .sheet-drag-cap {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 80px;          /* covers pill + full header row */
+      z-index: 10;
+      cursor: grab;
+      -webkit-user-select: none; user-select: none;
     }
 
     .sheet-header {
@@ -129,14 +140,9 @@
       border-top-width: 3px; border-radius: 12px;
       padding: 10px 8px; display: flex; flex-direction: column;
       align-items: center; gap: 3px; cursor: pointer;
-      position: relative; overflow: hidden;
-      transition: border-color .15s, transform .15s;
+      position: relative; overflow: hidden; transition: border-color .15s;
     }
-    .skill-card:hover {
-      border-color: var(--sk-color, var(--gold));
-      border-top-color: var(--sk-color, var(--gold));
-      transform: translateY(-2px);
-    }
+    .skill-card:hover { filter: brightness(1.05); }
     .sk-icon { width: 28px; height: 28px; object-fit: contain; }
     .sk-name { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; }
     .sk-lvl  { font-size: 20px; font-weight: 700; line-height: 1.1; }
@@ -277,15 +283,54 @@
       <div><div class="modal-title">More</div></div>
       <button class="modal-close" id="more-menu-close">✕</button>
     </div>
-  <div class="modal-actions">
-      <a class="modal-action" href="/Pages/More_Pages/bestiary.html">🐉 Bestiary</a>
-      <a class="modal-action" href="/Pages/More_Pages/bossing.html">🏆 Bossing</a>
-      <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">🍄 Fairy Rings</a>
-      <a class="modal-action" href="/Pages/More_Pages/goals.html">📊 Goals</a>
-      <a class="modal-action" href="/Pages/More_Pages/petLog.html">🐾 Pet Log</a>
-      <a class="modal-action" href="/Pages/More_Pages/quests.html">🗺️ Quests</a>
-      <a class="modal-action" href="/Pages/More_Pages/timers.html">⏰ Timers</a>
-    </div>
+<div class="modal-actions">
+  
+  <a class="modal-action" href="/Pages/More_Pages/bestiary.html">
+    <span class="ma-title">🐉 Bestiary</span>
+    <span class="ma-desc">Look up monsters, combat stats &amp; slayer info</span>
+  </a>
+  
+  <a class="modal-action" href="/Pages/More_Pages/bookmarks.html">
+    <span class="ma-title">🔖 Bookmarks</span>
+    <span class="ma-desc">Your saved clues, fairy rings, timers &amp; more</span>
+  </a>
+  
+  <a class="modal-action" href="/Pages/More_Pages/bossing.html">
+    <span class="ma-title">🏆 Bossing</span>
+    <span class="ma-desc">Track boss kill counts and personal bests</span>
+  </a>
+  
+  <a class="modal-action" href="/Pages/More_Pages/clueScrolls.html">
+    <span class="ma-title">📜 Clue Solver</span>
+    <span class="ma-desc">Solve anagrams, ciphers, emotes &amp; puzzle boxes</span>
+  </a>
+  
+  <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">
+    <span class="ma-title">🍄 Fairy Rings</span>
+    <span class="ma-desc">All 46 ring codes with pins &amp; personal notes</span>
+  </a>
+  
+  <a class="modal-action" href="/Pages/More_Pages/goals.html">
+    <span class="ma-title">📊 Goals</span>
+    <span class="ma-desc">Set and track XP &amp; level goals per skill</span>
+  </a>
+  
+  <a class="modal-action" href="/Pages/More_Pages/petLog.html">
+    <span class="ma-title">🐾 Pet Log</span>
+    <span class="ma-desc">Log your pet drops and track your collection</span>
+  </a>
+  
+  <a class="modal-action" href="/Pages/More_Pages/quests.html">
+    <span class="ma-title">🗺️ Quests</span>
+    <span class="ma-desc">Quest list with requirements and completion tracking</span>
+  </a>
+  
+  <a class="modal-action" href="/Pages/More_Pages/timers.html">
+    <span class="ma-title">⏰ Timers</span>
+    <span class="ma-desc">Farm runs, birdhouses &amp; custom growth timers</span>
+  </a>
+  
+</div>
   </div>
 </div>
 
@@ -443,7 +488,7 @@ function renderSkills(data) {
            onerror="this.style.display='none'">
       <div class="ov-stats">
         <div class="ov-stat"><span class="ov-lbl">Total Level</span><span class="ov-val">${fmtNum(ovLvl)}</span></div>
-        <div class="ov-stat"><span class="ov-lbl">Total XP</span><span class="ov-val">${fmtXP(ovXp)}</span></div>
+        <div class="ov-stat"><span class="ov-lbl">Total XP</span><span class="ov-val">${fmtXPLong(ovXp)}</span></div>
         <div class="ov-stat"><span class="ov-lbl">Rank</span><span class="ov-val">${fmtRank(ovRnk)}</span></div>
       </div>
     </div>`;
@@ -456,12 +501,11 @@ function renderSkills(data) {
     const rnk  = s.rank;
     const prog = lvl >= 99 ? 1 : xpProgress(xp, lvl);
 
-    return `<div class="skill-card" data-skill="${id}" style="--sk-color:${color};border-top-color:${color}">
+    return `<div class="skill-card" data-skill="${id}" style="border-top-color:${color}">
       <img class="sk-icon" src="${icon}" alt="${name}" loading="lazy"
            onerror="this.style.display='none'">
       <div class="sk-name">${name}</div>
       <div class="sk-lvl" style="color:${color}">${lvl || '—'}</div>
-      <div class="sk-xp">${fmtXP(xp)}</div>
       <div class="sk-rank">${fmtRank(rnk)}</div>
       <div class="xp-bar-wrap">
         <div class="xp-bar-fill" style="width:${(prog*100).toFixed(1)}%;background:${color}"></div>
@@ -519,13 +563,13 @@ function r2mPlanHtml(skillId, skillName, lvl, xp, xpTo99) {
     <div class="r2m-plan-title">🗺 Road to Max Plan</div>
 
     <div class="r2m-row"><span class="k">Level</span><span class="v">${lvl} → 99</span></div>
-    <div class="r2m-row"><span class="k">XP to next level</span><span class="v">${fmtNum(xpNextLvl)}</span></div>
-    <div class="r2m-row"><span class="k">XP to 99</span><span class="v">${fmtNum(xpTo99)}</span></div>
+    <div class="r2m-row"><span class="k">XP to next level</span><span class="v">${fmtXPLong(xpNextLvl)}</span></div>
+    <div class="r2m-row"><span class="k">XP to 99</span><span class="v">${fmtXPLong(xpTo99)}</span></div>
 
     <span class="r2m-sub">Best Method</span>
     <div class="r2m-row"><span class="k">Activity</span><span class="v" style="color:var(--gold)">${methodName}</span></div>
-    <div class="r2m-row"><span class="k">XP / hr</span><span class="v" style="color:var(--gold)">${fmtNum(xphr)}</span></div>
-    <div class="r2m-row"><span class="k">XP / day (2hr session)</span><span class="v" style="color:var(--gold)">${fmtNum(xpPerDay)}</span></div>
+    <div class="r2m-row"><span class="k">XP / hr</span><span class="v" style="color:var(--gold)">${fmtXPLong(xphr)}</span></div>
+    <div class="r2m-row"><span class="k">XP / day (2hr session)</span><span class="v" style="color:var(--gold)">${fmtXPLong(xpPerDay)}</span></div>
 
     <span class="r2m-sub">Timeline</span>
     <div class="r2m-row"><span class="k">Hours to 99</span><span class="v">${Math.ceil(hoursTo99)} hrs</span></div>
@@ -562,7 +606,7 @@ function openSkillSheet(skillId, data) {
     const levelsNeeded = (skillCount * 99) - r2mTotal;
 
     document.getElementById('ss-name').textContent = 'Overall';
-    document.getElementById('ss-desc').textContent = `Total Level ${fmtNum(ovLvl)} · ${fmtXP(ovXp)} XP`;
+    document.getElementById('ss-desc').textContent = `Total Level ${fmtNum(ovLvl)} · ${fmtXPLong(ovXp)} XP`;
     document.getElementById('ss-icon').innerHTML   = `<img src="${icon}" alt="Overall" style="width:32px;height:32px;object-fit:contain">`;
 
     document.getElementById('ss-body').innerHTML = `
@@ -570,7 +614,7 @@ function openSkillSheet(skillId, data) {
         <div class="sheet-section-title">Stats</div>
         <div class="detail-stats">
           <div class="dstat"><div class="dval" style="color:${color}">${fmtNum(ovLvl)}</div><div class="dlbl">Total Level</div></div>
-          <div class="dstat"><div class="dval">${fmtXP(ovXp)}</div><div class="dlbl">Total XP</div></div>
+          <div class="dstat"><div class="dval">${fmtXPLong(ovXp)}</div><div class="dlbl">Total XP</div></div>
           <div class="dstat"><div class="dval">${fmtRank(ovRnk)}</div><div class="dlbl">Rank</div></div>
           <div class="dstat"><div class="dval">${maxed}</div><div class="dlbl">Maxed</div></div>
         </div>
@@ -591,7 +635,7 @@ function openSkillSheet(skillId, data) {
         </div>
         <div class="sh-prog-labels">
           <span>${r2mPct.toFixed(1)}% complete</span>
-          <span>${fmtXP(XP_FOR_99 * skillCount - r2mXpSum)} XP remaining</span>
+          <span>${fmtXPLong(XP_FOR_99 * skillCount - r2mXpSum)} XP remaining</span>
         </div>
       </div>`;
 
@@ -612,7 +656,7 @@ function openSkillSheet(skillId, data) {
   const lvlPct  = lvl >= 99 ? 100 : (xpProgress(xp, lvl) * 100);
 
   document.getElementById('ss-name').textContent = name;
-  document.getElementById('ss-desc').textContent = `Level ${lvl} · ${fmtXP(xp)} XP`;
+  document.getElementById('ss-desc').textContent = `Level ${lvl} · ${fmtXPLong(xp)} XP`;
   document.getElementById('ss-icon').innerHTML   = icon
     ? `<img src="${icon}" alt="${name}" style="width:32px;height:32px;object-fit:contain">` : '';
 
@@ -621,9 +665,9 @@ function openSkillSheet(skillId, data) {
       <div class="sheet-section-title">Stats</div>
       <div class="detail-stats">
         <div class="dstat"><div class="dval" style="color:${color}">${lvl}</div><div class="dlbl">Level</div></div>
-        <div class="dstat"><div class="dval">${fmtXP(xp)}</div><div class="dlbl">Total XP</div></div>
+        <div class="dstat"><div class="dval">${fmtXPLong(xp)}</div><div class="dlbl">Total XP</div></div>
         <div class="dstat"><div class="dval">${fmtRank(rnk)}</div><div class="dlbl">Rank</div></div>
-        <div class="dstat"><div class="dval" style="color:var(--blue)">${lvl >= 99 ? 'MAX' : fmtXP(nextReq)}</div><div class="dlbl">To Next Lvl</div></div>
+        <div class="dstat"><div class="dval" style="color:var(--blue)">${lvl >= 99 ? 'MAX' : fmtXPLong(nextReq)}</div><div class="dlbl">To Next Lvl</div></div>
       </div>
     </div>
 
@@ -632,8 +676,8 @@ function openSkillSheet(skillId, data) {
       <div class="ring-row">
         ${ringHtml(r2mPct, color)}
         <div class="ring-stats">
-          <div class="ring-stat"><span class="k">Current XP</span><span class="v">${fmtXP(xp)}</span></div>
-          <div class="ring-stat"><span class="k">XP to 99</span><span class="v gold">${lvl >= 99 ? 'MAX' : fmtXP(xpTo99)}</span></div>
+          <div class="ring-stat"><span class="k">Current XP</span><span class="v">${fmtXPLong(xp)}</span></div>
+          <div class="ring-stat"><span class="k">XP to 99</span><span class="v gold">${lvl >= 99 ? 'MAX' : fmtXPLong(xpTo99)}</span></div>
           <div class="ring-stat"><span class="k">Progress</span><span class="v gold">${r2mPct.toFixed(1)}%</span></div>
           <div class="ring-stat"><span class="k">Status</span><span class="v green">${lvl >= 99 ? '🏆 Maxed' : 'Level ' + lvl}</span></div>
         </div>
@@ -643,7 +687,7 @@ function openSkillSheet(skillId, data) {
       </div>
       <div class="sh-prog-labels">
         <span>${r2mPct.toFixed(1)}% to 99</span>
-        <span>${fmtNum(XP_FOR_99)} XP needed</span>
+        <span>${fmtXPLong(XP_FOR_99)} XP needed</span>
       </div>
     </div>
 
@@ -652,17 +696,66 @@ function openSkillSheet(skillId, data) {
   openSheet();
 }
 
+// Longhand XP formatter: 3900000 → "3,900,000"
+function fmtXPLong(n) {
+  return Number(n || 0).toLocaleString('en-GB');
+}
+
 function openSheet() {
   document.getElementById('skill-sheet-overlay').classList.add('show');
   requestAnimationFrame(() => document.getElementById('skill-sheet').classList.add('show'));
 }
 function closeSheet() {
-  document.getElementById('skill-sheet').classList.remove('show');
+  const sheet = document.getElementById('skill-sheet');
+  sheet.style.transition = '';
+  sheet.style.transform = '';
+  sheet.classList.remove('show');
   document.getElementById('skill-sheet-overlay').classList.remove('show');
 }
 
 document.getElementById('ss-close').addEventListener('click', closeSheet);
 document.getElementById('skill-sheet-overlay').addEventListener('click', closeSheet);
+
+// ─── Drag-down + horizontal swipe to close ────────────────────────────────
+(function attachSheetGestures() {
+  const sheet    = document.getElementById('skill-sheet');
+  const dragZone = sheet; // full sheet — activates when touch starts in top 80px
+  let startX = 0, startY = 0, dragY = 0, dragX = 0, active = false, dir = null;
+
+  dragZone.addEventListener('touchstart', e => {
+    // Only activate drag if touch starts within the top 80px of the sheet
+    const sheetTop = sheet.getBoundingClientRect().top;
+    if (e.touches[0].clientY - sheetTop > 80) return;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    dragY = dragX = 0; dir = null; active = true;
+    sheet.style.transition = 'none';
+  }, { passive: true });
+
+  window.addEventListener('touchmove', e => {
+    if (!active) return;
+    const dy = e.touches[0].clientY - startY;
+    const dx = e.touches[0].clientX - startX;
+    if (!dir) {
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 8) dir = 'h';
+      else if (Math.abs(dy) > 8) dir = 'v';
+    }
+    if (dir === 'v') { dragY = Math.max(0, dy); sheet.style.transform = `translateY(${dragY}px)`; }
+    else if (dir === 'h') { dragX = dx; sheet.style.transform = `translateX(${dragX}px)`; }
+  }, { passive: true });
+
+  window.addEventListener('touchend', () => {
+    if (!active) return;
+    active = false;
+    sheet.style.transition = 'transform .3s cubic-bezier(.25,.8,.25,1)';
+    if ((dir === 'v' && dragY > 100) || (dir === 'h' && Math.abs(dragX) > 120)) {
+      closeSheet();
+    } else {
+      sheet.style.transform = 'translateY(0)';
+    }
+    dragY = dragX = 0; dir = null;
+  });
+})();
 
 // ─────────────────────────────────────────────────────────────────────────────
 // UI helpers

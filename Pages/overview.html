@@ -473,6 +473,16 @@
           <div class="qv highlight" id="ov-next-99">—</div>
           <div class="qs" id="ov-next-99-sub">—</div>
         </div>
+        <div class="ov-quick-box">
+          <div class="qk">Quest Points</div>
+          <div class="qv highlight" id="ov-quest-pts">—</div>
+          <div class="qs" id="ov-quest-pts-sub">of 333 total</div>
+        </div>
+        <div class="ov-quick-box">
+          <div class="qk">Pets Collected</div>
+          <div class="qv highlight" id="ov-pets">0</div>
+          <div class="qs" id="ov-pets-sub">log in Pet Log →</div>
+        </div>
       </div>
 
       <!-- ── Road to Max ────────────────────────────────────────────── -->
@@ -575,15 +585,54 @@
       <div><div class="modal-title">More</div></div>
       <button class="modal-close" id="more-menu-close">✕</button>
     </div>
-  <div class="modal-actions">
-      <a class="modal-action" href="/Pages/More_Pages/bestiary.html">🐉 Bestiary</a>
-      <a class="modal-action" href="/Pages/More_Pages/bossing.html">🏆 Bossing</a>
-      <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">🍄 Fairy Rings</a>
-      <a class="modal-action" href="/Pages/More_Pages/goals.html">📊 Goals</a>
-      <a class="modal-action" href="/Pages/More_Pages/petLog.html">🐾 Pet Log</a>
-      <a class="modal-action" href="/Pages/More_Pages/quests.html">🗺️ Quests</a>
-      <a class="modal-action" href="More_Pages/timers.html">⏰ Timers</a>
-    </div>
+<div class="modal-actions">
+  
+  <a class="modal-action" href="/Pages/More_Pages/bestiary.html">
+    <span class="ma-title">🐉 Bestiary</span>
+    <span class="ma-desc">Look up monsters, combat stats &amp; slayer info</span>
+  </a>
+  
+  <a class="modal-action" href="/Pages/More_Pages/bookmarks.html">
+    <span class="ma-title">🔖 Bookmarks</span>
+    <span class="ma-desc">Your saved clues, fairy rings, timers &amp; more</span>
+  </a>
+  
+  <a class="modal-action" href="/Pages/More_Pages/bossing.html">
+    <span class="ma-title">🏆 Bossing</span>
+    <span class="ma-desc">Track boss kill counts and personal bests</span>
+  </a>
+  
+  <a class="modal-action" href="/Pages/More_Pages/clueScrolls.html">
+    <span class="ma-title">📜 Clue Solver</span>
+    <span class="ma-desc">Solve anagrams, ciphers, emotes &amp; puzzle boxes</span>
+  </a>
+  
+  <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">
+    <span class="ma-title">🍄 Fairy Rings</span>
+    <span class="ma-desc">All 46 ring codes with pins &amp; personal notes</span>
+  </a>
+  
+  <a class="modal-action" href="/Pages/More_Pages/goals.html">
+    <span class="ma-title">📊 Goals</span>
+    <span class="ma-desc">Set and track XP &amp; level goals per skill</span>
+  </a>
+  
+  <a class="modal-action" href="/Pages/More_Pages/petLog.html">
+    <span class="ma-title">🐾 Pet Log</span>
+    <span class="ma-desc">Log your pet drops and track your collection</span>
+  </a>
+  
+  <a class="modal-action" href="/Pages/More_Pages/quests.html">
+    <span class="ma-title">🗺️ Quests</span>
+    <span class="ma-desc">Quest list with requirements and completion tracking</span>
+  </a>
+  
+  <a class="modal-action" href="/Pages/More_Pages/timers.html">
+    <span class="ma-title">⏰ Timers</span>
+    <span class="ma-desc">Farm runs, birdhouses &amp; custom growth timers</span>
+  </a>
+  
+</div>
   </div>
 </div>
 
@@ -1041,6 +1090,26 @@ document.getElementById('btn-save-card').addEventListener('click', () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────
+// Local data helpers — reads from petLog + goals localStorage
+// ─────────────────────────────────────────────────────────────────────────
+
+function getLocalPetCount() {
+  try {
+    const pets = JSON.parse(localStorage.getItem('osts-pet-log-v2') || '[]');
+    return { total: pets.length, unique: new Set(pets.map(p => p.petName)).size };
+  } catch { return { total: 0, unique: 0 }; }
+}
+
+function getLocalQuestPoints() {
+  try {
+    const activeId = storage.get('osts_active_profile_v2', null);
+    const key = activeId ? `osts-qp-v1-${activeId}` : 'osts-qp-v1-guest';
+    const qp = storage.get(key, -1);
+    return typeof qp === 'number' && qp >= 0 ? qp : -1;
+  } catch { return -1; }
+}
+
+// ─────────────────────────────────────────────────────────────────────────
 // renderOverview
 // ─────────────────────────────────────────────────────────────────────────
 function renderOverview(data) {
@@ -1085,6 +1154,27 @@ function renderOverview(data) {
   document.getElementById('ov-top-skill-sub').textContent = topSkill ? fmtXP(topSkill.xp) + ' XP' : '—';
   document.getElementById('ov-next-99').textContent     = next99 ? `${SKILL_MAP[next99.id]?.name} ${next99.lvl}` : 'Maxed!';
   document.getElementById('ov-next-99-sub').textContent = next99 ? fmtXP(xpForLevel(99) - next99.xp) + ' to 99' : 'All skills maxed';
+
+  // Quest Points — from Goals page (osts-goals-v1, type === 'qp')
+  const questPts = getLocalQuestPoints();
+  const qpEl    = document.getElementById('ov-quest-pts');
+  const qpSubEl = document.getElementById('ov-quest-pts-sub');
+  if (questPts >= 0) {
+    qpEl.textContent    = questPts;
+    qpSubEl.textContent = 'of 333 total';
+  } else {
+    qpEl.textContent    = '—';
+    qpSubEl.textContent = 'track in Goals →';
+  }
+
+  // Pet Count — from Pet Log page (osts-pet-log-v2)
+  const { total: petTotal, unique: petUnique } = getLocalPetCount();
+  const petEl    = document.getElementById('ov-pets');
+  const petSubEl = document.getElementById('ov-pets-sub');
+  petEl.textContent    = petTotal;
+  petSubEl.textContent = petTotal === 0
+    ? 'log in Pet Log →'
+    : `${petUnique} unique pet${petUnique !== 1 ? 's' : ''}`;
 
   // Road to Max (XP-based %)
   const r2mTotal  = skillEntries.reduce((s, e) => s + Math.min(e.lvl, 99), 0);
@@ -1410,15 +1500,27 @@ async function drawProfileCard(data) {
 
     sep(Y_SEP1);
 
-    // Stats row
+    // Stats row — 6 items across full width
     const overall2=snap.overall||{};
     const combat2=calcCombat(snap);
-    const statItems=[[fmtNum(overall2.level||0),'TOTAL LEVEL'],[fmtXP(Number(overall2.experience||0)),'TOTAL XP'],[Number(overall2.rank||0)>0?'#'+fmtNum(overall2.rank):'Unranked','RANK'],[String(combat2||'—'),'COMBAT']];
-    const sw=(W-PAD*2)/4;
+    // Read directly from DOM — already populated by renderOverview when Save Card is clicked
+    const qpDom   = document.getElementById('ov-quest-pts')?.textContent?.trim();
+    const petsDom = document.getElementById('ov-pets')?.textContent?.trim();
+    const questPts2 = (qpDom && qpDom !== '—') ? qpDom : getLocalQuestPoints() >= 0 ? String(getLocalQuestPoints()) : '—';
+    const pets2     = (petsDom && petsDom !== '—') ? petsDom : String(getLocalPetCount().total);
+    const statItems=[
+      [fmtNum(overall2.level||0),'TOTAL LEVEL'],
+      [fmtXP(Number(overall2.experience||0)),'TOTAL XP'],
+      [Number(overall2.rank||0)>0?'#'+fmtNum(overall2.rank):'Unranked','RANK'],
+      [String(combat2||'—'),'COMBAT'],
+      [questPts2,'QUESTS'],
+      [pets2,'PETS'],
+    ];
+    const sw=(W-PAD*2)/statItems.length;
     statItems.forEach(([val,lbl],i)=>{
       const sx=PAD+i*sw;
-      ctx.font='bold 16px "Segoe UI",system-ui,sans-serif';ctx.fillStyle=C.gold2;ctx.textAlign='left';ctx.fillText(val,sx,Y_STATS+22);
-      ctx.font='9px "Segoe UI",system-ui,sans-serif';ctx.fillStyle=C.muted;ctx.fillText(lbl,sx,Y_STATS+38);
+      ctx.font='bold 13px "Segoe UI",system-ui,sans-serif';ctx.fillStyle=C.gold2;ctx.textAlign='left';ctx.fillText(val,sx,Y_STATS+22);
+      ctx.font='8px "Segoe UI",system-ui,sans-serif';ctx.fillStyle=C.muted;ctx.fillText(lbl,sx,Y_STATS+36);
     });
 
     sep(Y_SEP2);
