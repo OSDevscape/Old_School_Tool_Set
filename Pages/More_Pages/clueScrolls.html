@@ -10,6 +10,7 @@
   <style>
 
     :root {
+      --beginner: #f0f0f0;
       --easy:   #3fb950;
       --medium: #58a6ff;
       --hard:   #f0883e;
@@ -35,6 +36,7 @@
       transition:all .15s; white-space:nowrap;
     }
     .cs-filter.active                 { background:var(--gold);   color:#000; border-color:var(--gold); }
+    .cs-filter[data-tier="beginner"].active { background:var(--beginner); border-color:var(--beginner); color:#111; }
     .cs-filter[data-tier="easy"].active   { background:var(--easy);   border-color:var(--easy);   color:#000; }
     .cs-filter[data-tier="medium"].active { background:var(--medium); border-color:var(--medium); color:#000; }
     .cs-filter[data-tier="hard"].active   { background:var(--hard);   border-color:var(--hard);   color:#000; }
@@ -259,6 +261,7 @@
 
     <div class="cs-filters" id="cs-tier-filters">
       <button class="cs-filter active" data-tier="all">All Tiers</button>
+      <button class="cs-filter" data-tier="beginner">⬜ Beginner</button>
       <button class="cs-filter" data-tier="easy">🟢 Easy</button>
       <button class="cs-filter" data-tier="medium">🔵 Medium</button>
       <button class="cs-filter" data-tier="hard">🟠 Hard</button>
@@ -275,6 +278,8 @@
       <button class="cs-filter" data-type="coordinate">📍 Coordinate</button>
       <button class="cs-filter" data-type="emote">💃 Emote</button>
       <button class="cs-filter" data-type="map">🗺 Map</button>
+      <button class="cs-filter" data-type="challenge">❓ Challenge</button>
+      <button class="cs-filter" data-type="light-box">💡 Light Box</button>
       <button class="cs-filter" data-type="hot-cold">🌡️ Hot/Cold</button>
     </div>
 
@@ -292,54 +297,17 @@
       <div><div class="modal-title">More</div></div>
       <button class="modal-close" id="more-menu-close">✕</button>
     </div>
-<div class="modal-actions">
-  
-  <a class="modal-action" href="/Pages/More_Pages/bestiary.html">
-    <span class="ma-title">🐉 Bestiary</span>
-    <span class="ma-desc">Look up monsters, combat stats &amp; slayer info</span>
-  </a>
-  
-  <a class="modal-action" href="/Pages/More_Pages/bookmarks.html">
-    <span class="ma-title">🔖 Bookmarks</span>
-    <span class="ma-desc">Your saved clues, fairy rings, timers &amp; more</span>
-  </a>
-  
-  <a class="modal-action" href="/Pages/More_Pages/bossing.html">
-    <span class="ma-title">🏆 Bossing</span>
-    <span class="ma-desc">Track boss kill counts and personal bests</span>
-  </a>
-  
-  <a class="modal-action" href="/Pages/More_Pages/clueScrolls.html">
-    <span class="ma-title">📜 Clue Solver</span>
-    <span class="ma-desc">Solve anagrams, ciphers, emotes &amp; puzzle boxes</span>
-  </a>
-  
-  <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">
-    <span class="ma-title">🍄 Fairy Rings</span>
-    <span class="ma-desc">All 46 ring codes with pins &amp; personal notes</span>
-  </a>
-  
-  <a class="modal-action" href="/Pages/More_Pages/goals.html">
-    <span class="ma-title">📊 Goals</span>
-    <span class="ma-desc">Set and track XP &amp; level goals per skill</span>
-  </a>
-  
-  <a class="modal-action" href="/Pages/More_Pages/petLog.html">
-    <span class="ma-title">🐾 Pet Log</span>
-    <span class="ma-desc">Log your pet drops and track your collection</span>
-  </a>
-  
-  <a class="modal-action" href="/Pages/More_Pages/quests.html">
-    <span class="ma-title">🗺️ Quests</span>
-    <span class="ma-desc">Quest list with requirements and completion tracking</span>
-  </a>
-  
-  <a class="modal-action" href="/Pages/More_Pages/timers.html">
-    <span class="ma-title">⏰ Timers</span>
-    <span class="ma-desc">Farm runs, birdhouses &amp; custom growth timers</span>
-  </a>
-  
-</div>
+    <div class="modal-actions">
+      <a class="modal-action" href="/Pages/More_Pages/bestiary.html">🐉 Bestiary</a>
+      <a class="modal-action" href="/Pages/More_Pages/bookmarks.html">🔖 Bookmarks</a>
+      <a class="modal-action" href="/Pages/More_Pages/bossing.html">🏆 Bossing</a>
+      <a class="modal-action" href="/Pages/More_Pages/clueScrolls.html">📜 Clue Solver</a>
+      <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">🍄 Fairy Rings</a>
+      <a class="modal-action" href="/Pages/More_Pages/goals.html">📊 Goals</a>
+      <a class="modal-action" href="/Pages/More_Pages/petLog.html">🐾 Pet Log</a>
+      <a class="modal-action" href="/Pages/More_Pages/quests.html">🗺️ Quests</a>
+      <a class="modal-action" href="/Pages/More_Pages/timers.html">⏰ Timers</a>
+    </div>
   </div>
 </div>
 
@@ -349,9 +317,9 @@
 import { initPage, showToast, settings } from '/JS/shared.js';
 
 // ─── Meta ─────────────────────────────────────────────────────────────────────
-const TIER_COL  = { easy:'#3fb950', medium:'#58a6ff', hard:'#f0883e', elite:'#b388ff', master:'#ffd700' };
-const TIER_ICON = { easy:'🟢', medium:'🔵', hard:'🟠', elite:'🟣', master:'⭐' };
-const TYPE_ICON = { anagram:'🔤', cipher:'🔒', cryptic:'🗺️', coordinate:'📍', emote:'💃', map:'🗺', puzzle:'🧩', 'hot-cold':'🌡️' };
+const TIER_COL  = { beginner:'#e0e0e0', easy:'#3fb950', medium:'#58a6ff', hard:'#f0883e', elite:'#b388ff', master:'#ffd700' };
+const TIER_ICON = { beginner:'⬜', easy:'🟢', medium:'🔵', hard:'🟠', elite:'🟣', master:'⭐' };
+const TYPE_ICON = { anagram:'🔤', cipher:'🔒', cryptic:'🗺️', coordinate:'📍', emote:'💃', map:'🗺', puzzle:'🧩', 'hot-cold':'🌡️', challenge:'❓', 'light-box':'💡' };
 
 // ─── 6-section puzzle method ──────────────────────────────────────────────────
 // 5×5 grid — colour per cell [row][col]
@@ -411,81 +379,253 @@ const PUZZLES = [
   { id:'pz-tob',      name:'Theatre of Blood',  tiers:['master'],               img:'https://oldschool.runescape.wiki/images/Theatre_of_Blood_puzzle_solved.png?27f0d',             notes:'Master clue only. The Theatre of Blood raid scene.' },
 ];
 
-// ─── Regular Clue data ────────────────────────────────────────────────────────
+// ─── Clue Data ───────────────────────────────────────────────────────────────
+// Types per tier (OSRS wiki):
+//   Beginner : anagram, cryptic, emote, hot-cold, map
+//   Easy     : cryptic, emote, map   (no anagrams, no coordinates)
+//   Medium   : anagram, challenge, cipher, coordinate, cryptic, emote
+//   Hard     : anagram, challenge, cipher, coordinate, cryptic, emote, map, puzzle
+//   Elite    : anagram, challenge, coordinate, cryptic, emote, map, puzzle
+//   Master   : anagram, coordinate, cryptic, emote, hot-cold, light-box, puzzle
 const CLUES = [
-  // EASY — Anagrams
-  { id:'e1',  tier:'easy', type:'anagram',    clue:'AN EARL',        solution:'Ranael',       location:'Al Kharid — skirt shop south of bank',       items:[], answer:null, notes:'Talk to Ranael inside the small shop.' },
-  { id:'e2',  tier:'easy', type:'anagram',    clue:'CARPET AHOY',    solution:'Apothecary',   location:'SW Varrock — near the church',                items:[], answer:null, notes:'South-west corner of Varrock.' },
-  { id:'e3',  tier:'easy', type:'anagram',    clue:'EEK ZERO OP',    solution:'Zookeeper',    location:'Ardougne Zoo',                                items:[], answer:null, notes:'Talk to the Zookeeper at the Ardougne Zoo.' },
-  { id:'e4',  tier:'easy', type:'anagram',    clue:'LARK IN DOG',    solution:'King Roald',   location:'Varrock Palace — throne room',                items:[], answer:null, notes:'Talk to King Roald in the east wing.' },
-  { id:'e5',  tier:'easy', type:'anagram',    clue:'SAND NUT',       solution:'Dunstan',      location:'Burthorpe — smithy',                          items:[], answer:null, notes:'Talk to Dunstan the blacksmith.' },
-  { id:'e6',  tier:'easy', type:'anagram',    clue:'SEQUIN DIRGE',   solution:'Queen Sigrid', location:'Etceteria — castle',                          items:[], answer:null, notes:'Talk to Queen Sigrid in the Miscellania castle.' },
-  { id:'e7',  tier:'easy', type:'anagram',    clue:'BAIL TRIMS',     solution:'Brimstail',    location:'Gnome Stronghold — cave SW of stronghold',   items:[], answer:null, notes:'Talk to Brimstail in the cave.' },
-  // EASY — Cryptic
-  { id:'e8',  tier:'easy', type:'cryptic',    clue:'Speak to Ned in Draynor Village.',                             solution:'Talk to Ned',           location:'Draynor Village — near the jail',    items:[], answer:null, notes:'Ned is south of the Draynor market.' },
-  { id:'e9',  tier:'easy', type:'cryptic',    clue:'Talk to the bartender of the Rusty Anchor in Port Sarim.',    solution:'Talk to Bartender',     location:'Port Sarim — Rusty Anchor pub',      items:[], answer:null, notes:'The Rusty Anchor is in the north part of Port Sarim.' },
-  { id:'e10', tier:'easy', type:'cryptic',    clue:'Talk to the Doomsayer.',                                       solution:'Talk to Doomsayer',     location:'East of Lumbridge Castle gate',      items:[], answer:null, notes:'Stands east of the Lumbridge castle drawbridge.' },
-  { id:'e11', tier:'easy', type:'cryptic',    clue:"Speak to the Seers' Village hairdresser.",                    solution:'Talk to Hairdresser',   location:"Seers' Village — hair salon",        items:[], answer:null, notes:'The salon is in the centre of Seers\' Village.' },
-  { id:'e12', tier:'easy', type:'cryptic',    clue:"Talk to Wayne's Chains in Falador.",                          solution:'Talk to Wayne',         location:'Falador — chainbody shop',           items:[], answer:null, notes:'South-west area of Falador.' },
-  { id:'e13', tier:'easy', type:'cryptic',    clue:'In a town where guards are armed with crossbows, talk to the curator of the museum.', solution:'Talk to Curator Haig Halen', location:'Varrock Museum', items:[], answer:null, notes:'North-east of Varrock Square.' },
-  // EASY — Map
-  { id:'e14', tier:'easy', type:'map',        clue:'X marks the spot (Draynor Village)',  solution:'Dig at X', location:'Draynor Village — south of the wheat field', items:['Spade'], answer:null, notes:'Walk south from the wheat field.' },
-  { id:'e15', tier:'easy', type:'map',        clue:'X marks the spot (Lumbridge Swamp)',  solution:'Dig at X', location:'Lumbridge Swamp — centre of swamp',           items:['Spade'], answer:null, notes:'Near the canoe station.' },
-  // EASY — Coordinate
-  { id:'e16', tier:'easy', type:'coordinate', clue:"00° 05' N, 01° 13' E", solution:'Dig', location:'Lumbridge — north of cow field',  items:['Spade'], answer:null, notes:'Use sextant, watch & chart.' },
-  { id:'e17', tier:'easy', type:'coordinate', clue:"00° 13' S, 07° 08' E", solution:'Dig', location:'Port Sarim docks area',            items:['Spade'], answer:null, notes:'Beware of nearby pirates.' },
-
-  // MEDIUM — Anagrams
-  { id:'m1',  tier:'medium', type:'anagram', clue:'A ZEN SHE',        solution:'Zenesha',       location:'East Ardougne — platebody shop',              items:[], answer:null, notes:'East of the Ardougne market.' },
-  { id:'m2',  tier:'medium', type:'anagram', clue:'ERR CURE IT',      solution:'Recruiter',     location:'West Ardougne — recruitment square',          items:[], answer:null, notes:'Plague city area.' },
-  { id:'m3',  tier:'medium', type:'anagram', clue:'ARM CITY',         solution:'Marcy',         location:'Draynor Village — jail',                      items:[], answer:null, notes:'Talk to Marcy inside the Draynor jail.' },
-  { id:'m4',  tier:'medium', type:'anagram', clue:'MOTHERBOARD',      solution:'Brother Omad',  location:'Monastery — SE of Ice Mountain',              items:[], answer:null, notes:'Talk to Brother Omad inside the monastery.' },
-  // MEDIUM — Cipher
-  { id:'m5',  tier:'medium', type:'cipher',  clue:'GUHCHO',           solution:'(ROT-3 decode)', location:'Check wiki for NPC', items:[], answer:null, notes:'Medium ciphers use ROT-3 substitution. Use the OSRS wiki cipher decoder tool.' },
-  // MEDIUM — Cryptic
-  { id:'m6',  tier:'medium', type:'cryptic', clue:'Speak to Ellis in Al Kharid.',    solution:'Talk to Ellis',  location:'Al Kharid — tannery',              items:[], answer:null, notes:'East of the Al Kharid gate.' },
-  { id:'m7',  tier:'medium', type:'cryptic', clue:"Talk to the Squire at the White Knights' Castle in Falador.", solution:'Talk to Squire', location:"Falador — White Knights' Castle courtyard", items:[], answer:null, notes:'The Squire patrols the outer courtyard.' },
-  // MEDIUM — Emote
-  { id:'m8',  tier:'medium', type:'emote', clue:"Panic at the Agility Pyramid wearing a Pharaoh's sceptre.", solution:'Panic emote', location:'Agility Pyramid — top platform', items:["Pharaoh's sceptre"], answer:null, notes:'Climb to the top of the Agility Pyramid in the desert.' },
-  { id:'m9',  tier:'medium', type:'emote', clue:'Cry in the Catherby bank wearing a Snakeskin bandana, dragonhide chaps and an amulet of magic.', solution:'Cry emote', location:'Catherby bank', items:['Snakeskin bandana','Dragonhide chaps','Amulet of magic'], answer:null, notes:'Wear all three items and Cry inside the bank.' },
-  // MEDIUM — Coordinate
-  { id:'m10', tier:'medium', type:'coordinate', clue:"01° 18' N, 14° 15' E", solution:'Dig', location:'Canifis — near the swamp', items:['Spade'], answer:null, notes:'North of Mort Myre Swamp. Beware of monsters.' },
-  { id:'m11', tier:'medium', type:'coordinate', clue:"03° 39' S, 13° 58' E", solution:'Dig', location:'Karamja — Tai Bwo Wannai jungle', items:['Spade'], answer:null, notes:'South of Brimhaven. Poisonous spiders.' },
-
-  // HARD — Anagram
-  { id:'h1',  tier:'hard', type:'anagram', clue:'RATAI', solution:'Tarai', location:'Shilo Village — gem stall', items:[], answer:null, notes:'Requires Shilo Village quest to access.' },
-  // HARD — Cryptic
-  { id:'h2',  tier:'hard', type:'cryptic', clue:'Scattered coins and gems fill the floor. The chest you seek is in the far corner.', solution:'Search chest', location:"Rogues' Den — Burthorpe", items:[], answer:null, notes:"Under the pub in Burthorpe." },
-  { id:'h3',  tier:'hard', type:'cryptic', clue:"The beasts retreat, for their Queen commands them. Dig near her bed.", solution:'Dig', location:"Kalphite Lair — Queen's chamber", items:['Spade'], answer:null, notes:"Dig near the Kalphite Queen's egg sac. High combat recommended." },
-  { id:'h4',  tier:'hard', type:'cryptic', clue:"Talk to the gnome pilot north of Oo'glog.", solution:'Talk to Waydar', location:"Feldip Hills — gnome glider N of Oo'glog", items:[], answer:null, notes:'Needs One Small Favour quest.' },
-  // HARD — Emote
-  { id:'h5',  tier:'hard', type:'emote', clue:"Flap in the Warrior's Guild bank wearing a Dragon Halberd.", solution:'Flap emote', location:"Warrior's Guild — bank", items:['Dragon halberd'], answer:null, notes:'Need 65 Attack + Strength or 130 combined to enter.' },
-  { id:'h6',  tier:'hard', type:'emote', clue:'Spin in the Varrock Castle courtyard wearing a black platebody, platelegs and plateskirt.', solution:'Spin emote', location:'Varrock Castle — inner courtyard', items:['Black platebody','Black platelegs or plateskirt'], answer:null, notes:'Do the Spin emote in the inner courtyard.' },
-  // HARD — Coordinate
-  { id:'h7',  tier:'hard', type:'coordinate', clue:"09° 33' N, 02° 15' E", solution:'Dig', location:'Mort Myre Swamp — central area', items:['Spade'], answer:null, notes:'Requires Nature Spirit quest.' },
-  { id:'h8',  tier:'hard', type:'coordinate', clue:"12° 45' N, 20° 09' E", solution:'Dig', location:'Wilderness — level 50+', items:['Spade'], answer:null, notes:'Deep Wilderness. Protect items.' },
-
-  // ELITE — Cryptic
-  { id:'el1', tier:'elite', type:'cryptic', clue:"Fiendish cooks probably won't dig holes near their ovens.", solution:'Dig', location:"Cooks' Guild — north of Varrock", items:['Spade',"Chef's hat or Cooking cape"], answer:null, notes:"Dig outside the north wall of Cooks' Guild." },
-  { id:'el2', tier:'elite', type:'cryptic', clue:'The treasure is buried in the centre of Ape Atoll.',        solution:'Dig', location:'Ape Atoll — centre of island', items:['Spade','Greegree'], answer:null, notes:'Need Monkey Madness to navigate safely.' },
-  { id:'el3', tier:'elite', type:'cryptic', clue:"Search the boxes just outside the Legends' Guild.",         solution:'Search boxes', location:"Legends' Guild — south gates", items:[], answer:null, notes:"Crates just outside the south gate." },
-  // ELITE — Emote
-  { id:'el4', tier:'elite', type:'emote', clue:'Cry in the TzHaar gem store wearing a fire cape and Obsidian shield.', solution:'Cry emote', location:'TzHaar City — gem store', items:['Fire cape','Obsidian shield'], answer:null, notes:'East side of TzHaar City.' },
-  // ELITE — Coordinate
-  { id:'el5', tier:'elite', type:'coordinate', clue:"13° 46' N, 21° 37' E", solution:'Dig', location:'Waterbirth Island — north-east shore', items:['Spade'], answer:null, notes:'Sail from Rellekka.' },
-  { id:'el6', tier:'elite', type:'coordinate', clue:"04° 41' S, 22° 30' E", solution:'Dig', location:'Shilo Village — east area', items:['Spade'], answer:null, notes:'Need Shilo Village quest.' },
-
-  // MASTER — Anagram
-  { id:'mas1', tier:'master', type:'anagram', clue:'IN BAR', solution:'Brain', location:'Stronghold of Security — Vault of War', items:[], answer:null, notes:'Deepest level of the Stronghold of Security.' },
-  // MASTER — Cryptic
-  { id:'mas2', tier:'master', type:'cryptic', clue:'Dig in front of the icy altar where only the most devoted pray.', solution:'Dig', location:'God Wars Dungeon — altar area', items:['Spade','60 Strength or Agility'], answer:null, notes:'High combat recommended for GWD.' },
-  // MASTER — Emote
-  { id:'mas3', tier:'master', type:'emote', clue:"Dance by the entrance to the Fishing Trawler wearing full Angler's outfit and a pet fish.", solution:'Dance emote', location:'Port Khazard — Fishing Trawler dock', items:["Angler hat","Angler top","Angler waders","Angler boots","Pet fish (any)"], answer:null, notes:'Full Angler outfit from Fishing Trawler minigame.' },
-  // MASTER — Coordinate
-  { id:'mas4', tier:'master', type:'coordinate', clue:"24° 58' N, 22° 45' E", solution:'Dig', location:'Weiss — hot spring area', items:['Spade'], answer:null, notes:'Need Making Friends with My Arm quest.' },
-  { id:'mas5', tier:'master', type:'coordinate', clue:"11° 41' N, 14° 58' E", solution:'Dig', location:'Wilderness — near Lava Maze (level 45+)', items:['Spade'], answer:null, notes:'Protect items. Protect from Melee recommended.' },
-  // MASTER — Hot/Cold
-  { id:'mas6', tier:'master', type:'hot-cold', clue:'Hot/Cold — use the Strange device.', solution:'Follow temperature readings, then dig', location:'Random worldwide location', items:['Strange device (given with clue)'], answer:null, notes:'"Hot" = closer, "Cold" = farther, "Boiling" = dig! Given by Watson after combining 4 lower-tier clues. Does not need a spade in your inventory — the device handles it.' },
+  { id:"b1", tier:"beginner", type:"anagram", clue:"AN EARL", solution:"Ranael", location:"Al Kharid \u2014 skirt shop", items:[], answer:null, notes:"Talk to Ranael in the platelegs/plateskirt shop in Al Kharid." },
+  { id:"b2", tier:"beginner", type:"anagram", clue:"CHAR GAME DISORDER", solution:"Archmage Sedridor", location:"Wizards' Tower \u2014 basement", items:[], answer:null, notes:"Talk to Archmage Sedridor in the basement of the Wizards' Tower." },
+  { id:"b3", tier:"beginner", type:"anagram", clue:"CARPET AHOY", solution:"Apothecary", location:"South-west Varrock", items:[], answer:null, notes:"The Apothecary is in the south-west corner of Varrock." },
+  { id:"b4", tier:"beginner", type:"anagram", clue:"I CORD", solution:"Doric", location:"North of Falador", items:[], answer:null, notes:"Doric is just north of Falador on the path to Taverley." },
+  { id:"b5", tier:"beginner", type:"anagram", clue:"IN BAR", solution:"Brian", location:"Port Sarim \u2014 battleaxe shop", items:[], answer:null, notes:"Brian runs the battleaxe shop in Port Sarim." },
+  { id:"b6", tier:"beginner", type:"anagram", clue:"RAIN COVE", solution:"Veronica", location:"Outside Draynor Manor", items:[], answer:null, notes:"Veronica stands outside the front gate of Draynor Manor." },
+  { id:"b7", tier:"beginner", type:"anagram", clue:"RUG DETER", solution:"Gertrude", location:"West of Varrock, south of the Cooks' Guild", items:[], answer:null, notes:"Gertrude is found west of Varrock near her house." },
+  { id:"b8", tier:"beginner", type:"anagram", clue:"SIR SHARE RED", solution:"Hairdresser", location:"Western Falador", items:[], answer:null, notes:"The hairdresser is in the salon in western Falador." },
+  { id:"b9", tier:"beginner", type:"anagram", clue:"TAUNT ROOF", solution:"Fortunato", location:"Draynor Village Market", items:[], answer:null, notes:"Fortunato is the wine stall merchant in Draynor Village Market." },
+  { id:"b10", tier:"beginner", type:"cryptic", clue:"Always walking around the castle grounds and somehow knows everyone's age.", solution:"Talk to Hans", location:"Lumbridge Castle \u2014 courtyard", items:[], answer:null, notes:"Hans walks around Lumbridge Castle courtyard." },
+  { id:"b11", tier:"beginner", type:"cryptic", clue:"In the place Duke Horacio calls home, talk to a man with a hat dropped by goblins.", solution:"Talk to the Cook", location:"Lumbridge Castle \u2014 kitchen", items:[], answer:null, notes:"The Cook is in the kitchen of Lumbridge Castle. Goblins drop chef's hats." },
+  { id:"b12", tier:"beginner", type:"cryptic", clue:"In a village of barbarians, I am the one who guards the village from up high.", solution:"Talk to Hunding", location:"Barbarian Village \u2014 east tower", items:[], answer:null, notes:"Hunding is at the top of the tower on the east side of Barbarian Village." },
+  { id:"b13", tier:"beginner", type:"cryptic", clue:"Talk to Charlie the Tramp in Varrock.", solution:"Talk to Charlie the Tramp", location:"Varrock \u2014 south entrance", items:[], answer:null, notes:"Charlie the Tramp is by the southern entrance to Varrock. He will give you a task." },
+  { id:"b14", tier:"beginner", type:"cryptic", clue:"Near the open desert I reside, to get past me you must abide.", solution:"Talk to Shantay", location:"Shantay Pass \u2014 south of Al Kharid", items:[], answer:null, notes:"Shantay is at the Shantay Pass south of Al Kharid." },
+  { id:"b15", tier:"beginner", type:"emote", clue:"Beckon in the Digsite, near the eastern winch. Bow before you talk to me.", solution:"Beckon emote", location:"Digsite \u2014 eastern winch", items:["Green hat","Snakeskin boots","Iron pickaxe"], answer:null, notes:"Equip items, perform Beckon, then Bow before talking to the Funny-looking archaeologist." },
+  { id:"b16", tier:"beginner", type:"emote", clue:"Clap in the Flax field north of Seers' Village.", solution:"Clap emote", location:"North of Seers' Village \u2014 flax field", items:[], answer:null, notes:"Clap in the flax field directly north of Seers' Village bank." },
+  { id:"b17", tier:"beginner", type:"map", clue:"X marks the spot \u2014 west of Champions' Guild", solution:"Dig at X", location:"West of Champions' Guild, outside Varrock", items:["Spade"], answer:null, notes:"Single tree west of Champions' Guild. Dig two squares east of it." },
+  { id:"b18", tier:"beginner", type:"map", clue:"X marks the spot \u2014 standing stones north of Falador", solution:"Dig at X", location:"Due east of Falador's north gate", items:["Spade"], answer:null, notes:"East of Falador's north gate near the agility grapple shortcut icon." },
+  { id:"b19", tier:"beginner", type:"map", clue:"X marks the spot \u2014 south of Draynor bank", solution:"Dig at X", location:"South of Draynor Village bank, by fishing spot", items:["Spade"], answer:null, notes:"South of Draynor bank by the water." },
+  { id:"b20", tier:"beginner", type:"map", clue:"X marks the spot \u2014 south-east Varrock mine", solution:"Dig at X", location:"South-east Varrock mine", items:["Spade"], answer:null, notes:"Dig one square west of the small fern in the SE Varrock mine." },
+  { id:"b21", tier:"beginner", type:"map", clue:"X marks the spot \u2014 behind the Wizards' Tower", solution:"Dig at X", location:"Behind (south of) the Wizards' Tower", items:["Spade"], answer:null, notes:"One tile north of fern south of tower. Fairy ring DIS is very close." },
+  { id:"b22", tier:"beginner", type:"hot-cold", clue:"Buried beneath the ground, who knows where it's found. Speak to Reldo first.", solution:"Follow strange device", location:"Lumbridge area (short range)", items:["Strange device (from Reldo)"], answer:null, notes:"Speak to Reldo in Varrock Castle library to get the device. Beginner locations are all near Lumbridge." },
+  { id:"e1", tier:"easy", type:"cryptic", clue:"A crate found in the tower of a church is your next location.", solution:"Search crate", location:"East Ardougne \u2014 church 2nd floor", items:[], answer:null, notes:"Climb ladder in the church in East Ardougne. Search crates on the 2nd floor." },
+  { id:"e2", tier:"easy", type:"cryptic", clue:"Belladonna, my dear. If only I had gloves, then I could hold you at last.", solution:"Talk to Tool Leprechaun", location:"Draynor Manor \u2014 belladonna patch", items:[], answer:null, notes:"Talk to the Tool Leprechaun at the belladonna farming patch." },
+  { id:"e3", tier:"easy", type:"cryptic", clue:"Dig in the centre of a great kingdom of 5 cities.", solution:"Dig", location:"Great Kourend \u2014 central statue", items:["Spade"], answer:null, notes:"Dig in front of the large statue in the centre of Great Kourend." },
+  { id:"e4", tier:"easy", type:"cryptic", clue:"He's been studying unusual tree migrations.", solution:"Talk to Ranulph", location:"Auburnvale \u2014 western end (Varlamore)", items:[], answer:null, notes:"Talk to Ranulph at the western end of Auburnvale." },
+  { id:"e5", tier:"easy", type:"cryptic", clue:"I wonder how many bronze swords he has handed out.", solution:"Talk to Vannaka", location:"Edgeville Dungeon", items:[], answer:null, notes:"Talk to Vannaka the Slayer master in Edgeville Dungeon." },
+  { id:"e6", tier:"easy", type:"cryptic", clue:"I would make a chemistry joke, but I'm afraid I wouldn't get a reaction.", solution:"Talk to the Chemist", location:"West of Rimmington", items:[], answer:null, notes:"The Chemist is west of Rimmington's house portal." },
+  { id:"e7", tier:"easy", type:"cryptic", clue:"Look in the ground floor crates of houses in Falador.", solution:"Search crate", location:"Falador \u2014 house east of east bank", items:[], answer:null, notes:"The house is east of Falador's east bank." },
+  { id:"e8", tier:"easy", type:"cryptic", clue:"One of the sailors in Port Sarim is your next destination.", solution:"Talk to Captain Tobias", location:"Port Sarim \u2014 docks", items:[], answer:null, notes:"Speak to Captain Tobias on the docks of Port Sarim." },
+  { id:"e9", tier:"easy", type:"cryptic", clue:"Salty peter.", solution:"Talk to Konoo", location:"Hosidius \u2014 east of Woodcutting Guild", items:[], answer:null, notes:"Konoo is digging saltpetre in Hosidius, east of the Woodcutting Guild." },
+  { id:"e10", tier:"easy", type:"cryptic", clue:"Search a bookcase in Lumbridge swamp.", solution:"Search bookcase", location:"Lumbridge Swamp \u2014 Father Urhney's house", items:[], answer:null, notes:"Father Urhney's house is on the west side of Lumbridge Swamp." },
+  { id:"e11", tier:"easy", type:"cryptic", clue:"Search a bookcase in the Wizards' Tower.", solution:"Search bookcase", location:"Wizards' Tower \u2014 1st floor", items:[], answer:null, notes:"Search the bookcase on the 1st floor of the Wizards' Tower." },
+  { id:"e12", tier:"easy", type:"cryptic", clue:"Search a wardrobe in Draynor.", solution:"Search wardrobe", location:"Draynor Village \u2014 Aggie's house", items:[], answer:null, notes:"Search the north wardrobe in Aggie's house in Draynor Village." },
+  { id:"e13", tier:"easy", type:"cryptic", clue:"Search chests found in the upstairs of shops in Port Sarim.", solution:"Search chest", location:"Port Sarim \u2014 Wydin's Food Store 2nd floor", items:[], answer:null, notes:"Search the east chest on the 2nd floor of Wydin's Food Store." },
+  { id:"e14", tier:"easy", type:"cryptic", clue:"Search for a crate in a building in Hemenster.", solution:"Search crate", location:"Hemenster \u2014 north of fishing contest area", items:[], answer:null, notes:"House north of Fishing Contest area, west of Grandpa Jack." },
+  { id:"e15", tier:"easy", type:"cryptic", clue:"Search for a crate in Varrock Castle.", solution:"Search crate", location:"Varrock Castle \u2014 kitchen corner", items:[], answer:null, notes:"Search the crate in the corner of the kitchen in Varrock Castle." },
+  { id:"e16", tier:"easy", type:"cryptic", clue:"Search for a crate on the ground floor of a house in Seers' Village.", solution:"Search crate", location:"Seers' Village \u2014 Phantuwti's house (south of pub)", items:[], answer:null, notes:"Search the crate in Phantuwti Fanstuwi Farsight's house." },
+  { id:"e17", tier:"easy", type:"cryptic", clue:"Search the bookcase in the monastery.", solution:"Search bookcase", location:"Edgeville Monastery \u2014 south-east bookcase", items:[], answer:null, notes:"Search the south-eastern bookcase at Edgeville Monastery." },
+  { id:"e18", tier:"easy", type:"cryptic", clue:"Search the boxes in a shop in Taverley.", solution:"Search boxes", location:"Taverley \u2014 Gaius' Two Handed Shop", items:[], answer:null, notes:"South of Taverley's house portal." },
+  { id:"e19", tier:"easy", type:"cryptic", clue:"Search the boxes in one of the tents in Al Kharid.", solution:"Search boxes", location:"Al Kharid \u2014 tent east of silk trader", items:[], answer:null, notes:"Search the crates in the tent east of the Silk trader." },
+  { id:"e20", tier:"easy", type:"cryptic", clue:"Search the boxes in the house near the south entrance to Varrock.", solution:"Search boxes", location:"Varrock \u2014 first house left of south entrance", items:[], answer:null, notes:"First house on left entering from Varrock's southern entrance." },
+  { id:"e21", tier:"easy", type:"cryptic", clue:"Search the boxes just outside the Armour shop in East Ardougne.", solution:"Search boxes", location:"East Ardougne \u2014 outside Zenesha's Plate Mail Body Shop", items:[], answer:null, notes:"Just outside Zenesha's shop in East Ardougne." },
+  { id:"e22", tier:"easy", type:"cryptic", clue:"Search the boxes of Falador's general store.", solution:"Search boxes", location:"Falador \u2014 General Store", items:[], answer:null, notes:"The general store is in western Falador." },
+  { id:"e23", tier:"easy", type:"cryptic", clue:"Search the chest in Fred the Farmer's bedroom.", solution:"Search chest", location:"North-west of Lumbridge \u2014 Fred the Farmer's house", items:[], answer:null, notes:"Search the chest by Fred the Farmer's bed." },
+  { id:"e24", tier:"easy", type:"emote", clue:"Jump for joy at the beehives. Equip a desert shirt, green gnome robe bottoms and a steel axe.", solution:"Jump for Joy emote", location:"West of Catherby \u2014 beehives", items:["Desert shirt","Green gnome robe bottoms","Steel axe"], answer:null, notes:"Beehives are located west of Catherby." },
+  { id:"e25", tier:"easy", type:"emote", clue:"Panic in the Limestone Mine. Equip bronze platelegs, a steel pickaxe and a steel medium helmet.", solution:"Panic emote", location:"Limestone Mine \u2014 east of Lumber Yard", items:["Bronze platelegs","Steel pickaxe","Steel medium helmet"], answer:null, notes:"East of the Lumber Yard north-east of Varrock." },
+  { id:"e26", tier:"easy", type:"emote", clue:"Spin in the Varrock Castle courtyard. Equip a black axe, a coif and a ruby ring.", solution:"Spin emote", location:"Varrock Castle \u2014 courtyard", items:["Black axe","Coif","Ruby ring"], answer:null, notes:"Spin in the courtyard with all items equipped." },
+  { id:"e27", tier:"easy", type:"emote", clue:"Wave on Mudskipper Point. Equip a black cape, leather chaps and a steel mace.", solution:"Wave emote", location:"Mudskipper Point", items:["Black cape","Leather chaps","Steel mace"], answer:null, notes:"Fairy ring AIQ teleports you directly to Mudskipper Point." },
+  { id:"e28", tier:"easy", type:"emote", clue:"Yawn in Draynor Marketplace. Equip studded leather chaps, an iron kiteshield and a steel longsword.", solution:"Yawn emote", location:"Draynor Village \u2014 marketplace", items:["Studded leather chaps","Iron kiteshield","Steel longsword"], answer:null, notes:"In the market area near the stalls." },
+  { id:"e29", tier:"easy", type:"map", clue:"X marks the spot \u2014 north of Al Kharid mine", solution:"Dig at X", location:"Just north of Al Kharid, centre of mine", items:["Spade"], answer:null, notes:"In the centre of the Al Kharid mine, north of town." },
+  { id:"e30", tier:"easy", type:"map", clue:"X marks the spot \u2014 behind the Wizards' Tower (Easy)", solution:"Dig at X", location:"Directly behind (south of) Wizards' Tower", items:["Spade"], answer:null, notes:"One tile north of fern. Fairy ring DIS is very close." },
+  { id:"e31", tier:"easy", type:"map", clue:"X marks the spot \u2014 Galahad's house area", solution:"Dig at X", location:"One tile west of Galahad's north door, west of McGrubor's Wood", items:["Spade"], answer:null, notes:"Fairy ring ALS is close. Squeeze through broken fence." },
+  { id:"e32", tier:"easy", type:"map", clue:"X marks the spot \u2014 east of Falador north gate", solution:"Dig at X", location:"Due east of Falador's north gate", items:["Spade"], answer:null, notes:"Look for agility grapple shortcut icon on minimap." },
+  { id:"m1", tier:"medium", type:"anagram", clue:"A BAKER", solution:"Baraek", location:"Varrock Square \u2014 fur trader", items:[], answer:"5", notes:"How many stalls are there in Varrock Square? Answer: 5" },
+  { id:"m2", tier:"medium", type:"anagram", clue:"A BAS", solution:"Saba", location:"Cave on path to Death Plateau, west of Burthorpe", items:[], answer:null, notes:"No challenge scroll." },
+  { id:"m3", tier:"medium", type:"anagram", clue:"A BASIC ANTI POT", solution:"Captain Tobias", location:"Port Sarim \u2014 docks", items:[], answer:"6", notes:"How many ships are docked at Port Sarim? Answer: 6" },
+  { id:"m4", tier:"medium", type:"anagram", clue:"AHA JAR", solution:"Jaraah", location:"The Emir's Arena \u2014 hospital", items:[], answer:null, notes:"No challenge scroll." },
+  { id:"m5", tier:"medium", type:"anagram", clue:"A HEART", solution:"Aretha", location:"Soul Altar", items:[], answer:"2", notes:"32 - 5x = 22, what is x? Answer: 2" },
+  { id:"m6", tier:"medium", type:"anagram", clue:"ARC O LINE", solution:"Caroline", location:"North Witchaven \u2014 next to the row boat", items:[], answer:"11", notes:"How many fishermen on the fishing platform? Answer: 11" },
+  { id:"m7", tier:"medium", type:"anagram", clue:"AREA CHEF TREK", solution:"Father Aereck", location:"Lumbridge \u2014 church", items:[], answer:"19", notes:"How many gravestones in the church graveyard? Answer: 19 (20 if Jarvis died in 2017 Halloween event)" },
+  { id:"m8", tier:"medium", type:"anagram", clue:"ARE COL", solution:"Oracle", location:"Peak of Ice Mountain, west of Edgeville", items:[], answer:"48", notes:"If x=15 and y=3, what is 3x+y? Answer: 48" },
+  { id:"m9", tier:"medium", type:"anagram", clue:"ARMCHAIR THE PELT", solution:"Charlie the Tramp", location:"Next to south entrance of Varrock", items:[], answer:"0", notes:"How many coins if you have 0 and try to buy 10 loaves at 3 coins each? Answer: 0" },
+  { id:"m10", tier:"medium", type:"anagram", clue:"BAIL TRIMS", solution:"Brimstail", location:"Cave west of Stronghold Slayer Cave, Tree Gnome Stronghold", items:[], answer:null, notes:"No challenge scroll." },
+  { id:"m12", tier:"medium", type:"anagram", clue:"CLASH ION", solution:"Nicholas", location:"North-east Port Piscarilius, north of fishing shop", items:[], answer:"4", notes:"How many windows are in Tynan's shop? Answer: 4" },
+  { id:"m13", tier:"medium", type:"anagram", clue:"DT RUN B", solution:"Brundt the Chieftain", location:"Rellekka \u2014 main hall", items:[], answer:"5", notes:"How many people are waiting for the next bard to perform? Answer: 5" },
+  { id:"m14", tier:"medium", type:"anagram", clue:"EEK ZERO OP", solution:"Zoo keeper", location:"Ardougne Zoo", items:[], answer:"50", notes:"How many animals in the zoo total? Answer: 50 (51 if Eagles' Peak completed)" },
+  { id:"m15", tier:"medium", type:"anagram", clue:"EL OW", solution:"Lowe", location:"Varrock \u2014 archery store", items:[], answer:null, notes:"No challenge scroll." },
+  { id:"m16", tier:"medium", type:"anagram", clue:"GOBLETS ODD TOES", solution:"Otto Godblessed", location:"South of Barbarian Outpost \u2014 Otto's Grotto", items:[], answer:"2", notes:"How many types of dragon beneath the whirlpool's cavern? Answer: 2" },
+  { id:"m17", tier:"medium", type:"anagram", clue:"GOBLIN KERN", solution:"King Bolren", location:"Tree Gnome Village \u2014 next to spirit tree", items:[], answer:null, notes:"No challenge scroll." },
+  { id:"m18", tier:"medium", type:"anagram", clue:"GOT A BOY", solution:"Gabooty", location:"Centre of Tai Bwo Wannai", items:[], answer:"11", notes:"How many buildings in the village? Answer: 11" },
+  { id:"m19", tier:"medium", type:"anagram", clue:"HALT US", solution:"Luthas", location:"Banana plantation on Musa Point, Karamja", items:[], answer:null, notes:"No challenge scroll." },
+  { id:"m20", tier:"medium", type:"anagram", clue:"HEORIC", solution:"Eohric", location:"Burthorpe Castle \u2014 top floor", items:[], answer:"36", notes:"King Arthur and Merlin at Round Table with 8 knights. Degrees each? Answer: 36" },
+  { id:"m21", tier:"medium", type:"anagram", clue:"HICK JET", solution:"Jethick", location:"West Ardougne \u2014 town square", items:[], answer:"38", notes:"How many graves in the city graveyard? Answer: 38" },
+  { id:"m22", tier:"medium", type:"anagram", clue:"HIS PHOR", solution:"Horphis", location:"Arceuus Library", items:[], answer:"1", notes:"On a scale of 1-10, how helpful is Logosia? Answer: 1" },
+  { id:"m23", tier:"medium", type:"anagram", clue:"I AM SIR", solution:"Marisi", location:"Hosidius \u2014 allotment patch", items:[], answer:"5", notes:"How many cities form the Kingdom of Great Kourend? Answer: 5" },
+  { id:"m24", tier:"medium", type:"anagram", clue:"I DOOM ICON INN", solution:"Dominic Onion", location:"Nightmare Zone", items:[], answer:"9500", notes:"How many reward points does a herb box cost? Answer: 9,500" },
+  { id:"m25", tier:"medium", type:"anagram", clue:"I EVEN", solution:"Nieve", location:"Gnome Stronghold \u2014 Slayer master", items:[], answer:"2", notes:"How many farming patches in Gnome Stronghold? Answer: 2" },
+  { id:"m26", tier:"medium", type:"anagram", clue:"KAY SIR", solution:"Sir Kay", location:"Camelot Castle \u2014 courtyard", items:[], answer:"6", notes:"How many fountains within the grounds of Camelot castle? Answer: 6" },
+  { id:"m27", tier:"medium", type:"anagram", clue:"LAME T", solution:"Metla", location:"Stonecutter Outpost, Avium Savannah (Varlamore)", items:[], answer:null, notes:"No challenge scroll." },
+  { id:"m28", tier:"medium", type:"anagram", clue:"LARK IN DOG", solution:"King Roald", location:"Varrock Palace \u2014 ground floor", items:[], answer:"24", notes:"How many bookcases in the palace library? Answer: 24" },
+  { id:"m29", tier:"medium", type:"anagram", clue:"LEAKEY", solution:"Kaylee", location:"Falador \u2014 Rising Sun Inn", items:[], answer:"18", notes:"How many chairs in the Rising Sun? Answer: 18" },
+  { id:"m30", tier:"medium", type:"anagram", clue:"LOW LAG", solution:"Gallow", location:"Hosidius \u2014 Vinery", items:[], answer:"12", notes:"How many vine patches in this vinery? Answer: 12" },
+  { id:"m31", tier:"medium", type:"anagram", clue:"ME IF", solution:"Femi", location:"Outside gates of Tree Gnome Stronghold", items:[], answer:null, notes:"No challenge scroll." },
+  { id:"m32", tier:"medium", type:"anagram", clue:"NOD MED", solution:"Edmond", location:"Behind north-western house in East Ardougne", items:[], answer:"3", notes:"How many pigeon cages behind Jerico's house? Answer: 3" },
+  { id:"m33", tier:"medium", type:"anagram", clue:"NOT RAG", solution:"Elder Torgan", location:"North-west of the Summer Shore market", items:[], answer:null, notes:"No challenge scroll. Elder Torgan is in a house with a cooking range symbol." },
+  { id:"m34", tier:"medium", type:"anagram", clue:"OK CO", solution:"Cook", location:"Lumbridge Castle \u2014 ground floor kitchen", items:[], answer:"9", notes:"How many cannons does Lumbridge Castle have? Answer: 9" },
+  { id:"m35", tier:"medium", type:"anagram", clue:"PACINNG A TAIE", solution:"Captain Ginea", location:"East of the War Tent, Shayzien Encampment", items:[], answer:"113", notes:"1 soldier handles 6 lizardmen. How many soldiers for 678? Answer: 113" },
+  { id:"m36", tier:"medium", type:"anagram", clue:"PEAK REFLEX", solution:"Flax keeper", location:"Flax field south of Seers' Village", items:[], answer:"676", notes:"If I have 1014 flax and spin a third, how many remain? Answer: 676" },
+  { id:"m37", tier:"medium", type:"anagram", clue:"PEATY PERT", solution:"Party Pete", location:"Falador Party Room", items:[], answer:null, notes:"No challenge scroll." },
+  { id:"m38", tier:"medium", type:"anagram", clue:"QUE SIR", solution:"Squire", location:"Falador Castle Courtyard", items:[], answer:"654", notes:"2 White Knights handle 3 Kinshra. How many WK against 981 Kinshra? Answer: 654" },
+  { id:"m39", tier:"medium", type:"anagram", clue:"R AK MI", solution:"Karim", location:"Al Kharid \u2014 kebab shop south of furnace", items:[], answer:"5", notes:"I have 16 kebabs, eat one, share rest between 3 friends. How many each? Answer: 5" },
+  { id:"m40", tier:"medium", type:"anagram", clue:"RATAI", solution:"Taria", location:"Rimmington \u2014 bush patch", items:[], answer:"7", notes:"How many buildings in Rimmington? Answer: 7" },
+  { id:"m41", tier:"medium", type:"anagram", clue:"R SLICER", solution:"Clerris", location:"Dense essence mine", items:[], answer:"738", notes:"1000 blood runes, cast 131 ice barrage. How many left? Answer: 738" },
+  { id:"m42", tier:"medium", type:"anagram", clue:"SAND NUT", solution:"Dunstan", location:"Anvil in north-eastern Burthorpe", items:[], answer:"8", notes:"How much Smithing XP for smelting a blurite bar? Answer: 8" },
+  { id:"m43", tier:"medium", type:"anagram", clue:"TAMED ROCKS", solution:"Dockmaster", location:"Port Piscarilius \u2014 NE of general store", items:[], answer:"5", notes:"What is the cube root of 125? Answer: 5" },
+  { id:"m44", tier:"medium", type:"anagram", clue:"THICKNO", solution:"Hickton", location:"Catherby \u2014 Hickton's Archery Emporium", items:[], answer:"2", notes:"How many ranges in Catherby? Answer: 2" },
+  { id:"m45", tier:"medium", type:"anagram", clue:"UESNKRL NRIEDDO", solution:"Drunken soldier", location:"Shayzien \u2014 Cloak and Stagger tavern", items:[], answer:"598", notes:"If 13 soldiers kill 46 lizardmen each, total killed in a day? Answer: 598" },
+  { id:"m46", tier:"medium", type:"anagram", clue:"VESTE", solution:"Steve", location:"By entrance to Stronghold Slayer Cave", items:[], answer:"2", notes:"How many farming patches in Gnome Stronghold? Answer: 2" },
+  { id:"m47", tier:"medium", type:"cipher", clue:"BMJ UIF LFCBC TFMMFS", solution:"Ali the Kebab Seller \u2014 ROT-1", location:"Pollnivneach", items:[], answer:"399", notes:"How many coins for 133 kebabs? Answer: 399. After The Feud, talk to Isma'il instead." },
+  { id:"m48", tier:"medium", type:"cipher", clue:"CUTE HI", solution:"Teicuh \u2014 ROT-1", location:"Rune Shop in Tal Teklan", items:[], answer:"4097", notes:"Death rune=220, air=3, water=4. Cast Water Blast 17 times. Answer: 4,097" },
+  { id:"m49", tier:"medium", type:"cipher", clue:"ECRVCKP MJCNGF", solution:"Captain Khaled \u2014 ROT-2", location:"Port Piscarilius \u2014 large eastern building", items:[], answer:"5", notes:"How many fishing cranes? Answer: 5. Reminisce teleport in Book of the Dead is close." },
+  { id:"m50", tier:"medium", type:"cipher", clue:"GUHCHO", solution:"Drezel \u2014 ROT-3", location:"Paterdomus Temple cave, north of temple", items:[], answer:"7", notes:"Fairy ring CKS then north-west to end of bridge. Answer: 7" },
+  { id:"m51", tier:"medium", type:"cipher", clue:"QSPGFTTPS HSBDLMFCPOF", solution:"Professor Gracklebone \u2014 ROT-1", location:"Arceuus Library \u2014 1st floor (fairy ring CIS)", items:[], answer:"9", notes:"How many round tables on this floor of the library? Answer: 9" },
+  { id:"m52", tier:"medium", type:"cipher", clue:"XJABSE USBJCPSO", solution:"Wizard Traiborn \u2014 ROT-1", location:"Wizards' Tower \u2014 2nd floor (fairy ring DIS)", items:[], answer:"3150", notes:"How many air runes to cast 630 wind waves? Answer: 3,150" },
+  { id:"m53", tier:"medium", type:"coordinate", clue:"00\u00b0 05' S, 01\u00b0 13' E", solution:"Dig", location:"West of Tree Gnome Village, south of fruit tree patch", items:["Spade"], answer:null, notes:"On the east side of the river from the Observatory." },
+  { id:"m54", tier:"medium", type:"coordinate", clue:"00\u00b0 13' S, 13\u00b0 58' E", solution:"Dig", location:"Karamja \u2014 west of general store, between two small lakes", items:["Spade"], answer:null, notes:"Close to Amulet of glory teleport to Karamja." },
+  { id:"m55", tier:"medium", type:"coordinate", clue:"00\u00b0 20' S, 23\u00b0 15' E", solution:"Dig", location:"South of the Water Altar ruins", items:["Spade"], answer:null, notes:"South of the Water Altar." },
+  { id:"m56", tier:"medium", type:"coordinate", clue:"00\u00b0 30' N, 24\u00b0 16' E", solution:"Dig", location:"North-east of Zanaris shed entrance in Lumbridge Swamp", items:["Spade"], answer:null, notes:"The Zanaris shed entrance is in Lumbridge Swamp." },
+  { id:"m57", tier:"medium", type:"coordinate", clue:"00\u00b0 31' S, 17\u00b0 43' E", solution:"Dig", location:"South of Port Sarim \u2014 by Asgarnian Ice Dungeon ladder", items:["Spade"], answer:null, notes:"Close to fairy ring AIQ." },
+  { id:"m58", tier:"medium", type:"coordinate", clue:"01\u00b0 18' S, 14\u00b0 15' E", solution:"Dig", location:"Karamja \u2014 western seaweed spawn across from Musa Point", items:["Spade"], answer:null, notes:"Use fairy ring DKP or gnome glider to Karamja." },
+  { id:"m59", tier:"medium", type:"coordinate", clue:"02\u00b0 43' S, 33\u00b0 26' E", solution:"Dig", location:"North of teak tree south-east of Uzer", items:["Spade"], answer:null, notes:"Fairy ring DLQ in Nardah, run north then east." },
+  { id:"m60", tier:"medium", type:"coordinate", clue:"02\u00b0 48' N, 22\u00b0 30' E", solution:"Dig", location:"Just west of H.A.M. Hideout trapdoor", items:["Spade"], answer:null, notes:"2 east and 1 south of nearest tree to building." },
+  { id:"m61", tier:"medium", type:"coordinate", clue:"09\u00b0 33' N, 02\u00b0 15' E", solution:"Dig", location:"Baxtorian Falls \u2014 second island, north of dead tree", items:["Spade","Rope","Started Waterfall Quest"], answer:null, notes:"Board the log raft, use rope on rock to reach the island." },
+  { id:"m62", tier:"medium", type:"coordinate", clue:"11\u00b0 41' N, 14\u00b0 58' E", solution:"Dig", location:"Burthorpe \u2014 north of table east of pub", items:["[","\"","S","p","a","d","e","\"","]"], answer:null, notes:"Immediately north of a table in Burthorpe." },
+  { id:"m63", tier:"medium", type:"coordinate", clue:"22\u00b0 30' N, 03\u00b0 01' E", solution:"Dig", location:"Miscellania \u2014 end of path to mining area", items:["Spade","Fremennik Trials"], answer:null, notes:"Fairy ring CIP or Ring of wealth (Throne of Miscellania)." },
+  { id:"h1", tier:"hard", type:"anagram", clue:"BAKER CLIMB", solution:"Brambickle", location:"Trollweiss Mountain", items:[], answer:"Puzzle box", notes:"Located on Trollweiss Mountain." },
+  { id:"h2", tier:"hard", type:"anagram", clue:"BLUE GRIM GUIDED", solution:"Lumbridge Guide", location:"Just outside Lumbridge Castle", items:[], answer:"Puzzle box", notes:"The Lumbridge Guide stands just outside the castle." },
+  { id:"h3", tier:"hard", type:"anagram", clue:"BY LOOK", solution:"Bolkoy", location:"Tree Gnome Village \u2014 general store", items:[], answer:"13", notes:"How many flowers in the clearing below this platform? Answer: 13" },
+  { id:"h4", tier:"hard", type:"anagram", clue:"C ON GAME HOC", solution:"Gnome Coach", location:"Outside Gnome Ball course, west of Grand Tree", items:[], answer:"6", notes:"How many gnomes on the Gnome Ball field have red patches? Answer: 6" },
+  { id:"h5", tier:"hard", type:"anagram", clue:"COPPER ORE CRYPTS", solution:"Prospector Percy", location:"Motherlode Mine (pickaxe needed to reach him)", items:[], answer:"12", notes:"Everyone at a party shook hands, 66 total. How many people? Answer: 12" },
+  { id:"h6", tier:"hard", type:"anagram", clue:"DARN DRAKE", solution:"Daer Krand", location:"Sisterhood Sanctuary \u2014 upstairs eastern wing, north of The Nightmare's arena", items:[], answer:"Puzzle box", notes:"Puzzle box." },
+  { id:"h7", tier:"hard", type:"anagram", clue:"DEKAGRAM", solution:"Dark mage", location:"Centre of the inner ring of the Abyss", items:[], answer:"13", notes:"How many rifts in the Abyss? Answer: 13. NPC Contact does NOT work." },
+  { id:"h8", tier:"hard", type:"anagram", clue:"DO SAY MORE", solution:"Doomsayer", location:"East of Lumbridge Castle, near Lumbridge Guide", items:[], answer:"95", notes:"What is 40 divided by 1/2 plus 15? Answer: 95" },
+  { id:"h9", tier:"hard", type:"anagram", clue:"DRAGONS LAMENT", solution:"Strange Old Man", location:"Barrows \u2014 gravedigger", items:[], answer:"40", notes:"One pipe fills barrel in 1hr, other in 2hrs. Minutes to fill both? Answer: 40" },
+  { id:"h10", tier:"hard", type:"anagram", clue:"DR WARDEN FUNK", solution:"Drunken Dwarf", location:"Keldagrim \u2014 east side, house with broken glass", items:[], answer:"Puzzle box", notes:"Puzzle box." },
+  { id:"h11", tier:"hard", type:"anagram", clue:"MOTHERBOARD", solution:"Brother Omad", location:"Monastery south of Ardougne", items:[], answer:"129", notes:"Next number: 12,13,15,17,111,113,117,119,123...? Answer: 129" },
+  { id:"h12", tier:"hard", type:"anagram", clue:"MY MANGLE LAL", solution:"Lammy Langle", location:"Hosidius \u2014 spirit tree patch", items:[], answer:"Puzzle box", notes:"Puzzle box." },
+  { id:"h13", tier:"hard", type:"anagram", clue:"O BIRDZ A ZANY EN PC", solution:"Cap'n Izzy No-Beard", location:"Entrance of Brimhaven Agility Arena", items:[], answer:"33", notes:"How many banana trees in the plantation? Answer: 33" },
+  { id:"h14", tier:"hard", type:"anagram", clue:"QUIT HORRIBLE TYRANT", solution:"Brother Tranquility", location:"Mos Le'Harmless or Harmony Island", items:[], answer:"7", notes:"49 bottles of rum between 7 pirates, how many each? Answer: 7" },
+  { id:"h15", tier:"hard", type:"anagram", clue:"RAT MAT WITHIN", solution:"Martin Thwait", location:"Rogues' Den", items:[], answer:"2", notes:"How many natural fires burn in Rogues' Den? Answer: 2" },
+  { id:"h16", tier:"hard", type:"anagram", clue:"SLIDE WOMAN", solution:"Wise Old Man", location:"Draynor Village", items:[], answer:"28", notes:"How many bookcases in the Wise Old Man's house? Answer: 28" },
+  { id:"h17", tier:"hard", type:"anagram", clue:"VEIL VEDA", solution:"Evil Dave", location:"Edgeville \u2014 trapdoor west of bank (evil rats room)", items:[], answer:"666", notes:"What is 333 multiplied by 2? Answer: 666. Requires Shadow of the Storm to open trapdoor." },
+  { id:"h18", tier:"hard", type:"anagram", clue:"WOO AN EGG KIWI", solution:"King Awowogei", location:"Ape Atoll \u2014 south of the Ape Atoll Teleport building", items:["Karamjan monkey greegree","M'speak amulet (unless MM2 done)"], answer:"24", notes:"303 bananas shared between 31 friends, how many left over? Answer: 24" },
+  { id:"h19", tier:"hard", type:"cipher", clue:"BSOPME MZETQPS", solution:"Arnold Lydspor \u2014 ROT-1", location:"Piscatoris Fishing Colony \u2014 general store/bank (north of fairy ring AKQ)", items:[], answer:"Puzzle box", notes:"Puzzle box. Requires Swan Song." },
+  { id:"h20", tier:"hard", type:"cipher", clue:"BXJA UNJMNA YRCAR", solution:"Soar Leader Pitri \u2014 ROT-1", location:"Hunter Guild \u2014 2nd floor (north-west of fairy ring AJP)", items:[], answer:"Puzzle box", notes:"Puzzle box. Requires Children of the Sun." },
+  { id:"h21", tier:"hard", type:"cipher", clue:"GBJSZ RVFFO", solution:"Fairy Queen \u2014 ROT-1", location:"Fairy Resistance Hideout", items:[], answer:"Puzzle box", notes:"Use fairy rings in order: AIR, DLR, DJQ, AJS. Requires Fairytale II - Cure a Queen." },
+  { id:"h22", tier:"hard", type:"cipher", clue:"HCKTA IQFHCVJGT", solution:"Fairy Godfather \u2014 ROT-2", location:"Zanaris \u2014 throne room", items:[], answer:"64", notes:"How many total fairy ring codes are possible? Answer: 64. Requires started Fairytale I." },
+  { id:"h23", tier:"hard", type:"cipher", clue:"IWPPLQTP", solution:"Gunnjorn \u2014 decode on wiki", location:"Barbarian Outpost Agility course", items:[], answer:"Puzzle box", notes:"Puzzle box." },
+  { id:"h24", tier:"hard", type:"cipher", clue:"OVEXON", solution:"Eluned \u2014 ROT-3", location:"Outside Lletya or north-east of Tyras Camp (Prifddinas post Song of Elves)", items:[], answer:"53000", notes:"5 large crystals (10k) + 3 small (1k). Total? Answer: 53,000. Requires started Regicide." },
+  { id:"h25", tier:"hard", type:"cipher", clue:"UZZU MUJHRKYYKJ", solution:"Otto Godblessed \u2014 ROT-6", location:"Otto's Grotto", items:[], answer:"3", notes:"How many pyre sites around this lake? Answer: 3" },
+  { id:"h26", tier:"hard", type:"cipher", clue:"VTYR APCNTGLW", solution:"King Percival \u2014 decode on wiki", location:"Fisher Realm \u2014 2nd story of castle (fairy ring BJR, run south to castle)", items:[], answer:"5", notes:"How many cannons on this castle? Answer: 5. Requires partial Holy Grail." },
+  { id:"h27", tier:"hard", type:"cipher", clue:"YAROYGR", solution:"Sulisal \u2014 decode on wiki", location:"Sulisal's Superb Fishing Store in Kastori", items:[], answer:"4", notes:"If a fish feeds 4 people and I'm hosting 15 guests, how many whole fish? Answer: 4" },
+  { id:"h28", tier:"hard", type:"cipher", clue:"ZHLUG ROG PDQ", solution:"Weird Old Man \u2014 ROT-3", location:"Kalphite Lair entrance (north-west of fairy ring BIQ)", items:[], answer:"150", notes:"SIX LEGS! 25 of them! How many legs? Answer: 150" },
+  { id:"h29", tier:"hard", type:"cipher", clue:"ZSBKDO ZODO", solution:"Pirate Pete \u2014 ROT-1", location:"Dock north-east of the Ectofuntus", items:[], answer:"Puzzle box", notes:"Puzzle box." },
+  { id:"h30", tier:"hard", type:"emote", clue:"Beckon on the east coast of the Kharazi Jungle. Beware of double agents! Equip any vestment stole and a heraldic rune shield.", solution:"Beckon emote", location:"Kharazi Jungle \u2014 east coast", items:["Any vestment stole (60 Prayer req)","Heraldic rune shield"], answer:null, notes:"Requires started Legends' Quest. Axe + machete needed or 79 Agility." },
+  { id:"h31", tier:"hard", type:"emote", clue:"Blow a kiss between the tables in Shilo Village bank. Beware of double agents! Equip a blue mystic hat, bone spear and rune platebody.", solution:"Blow a Kiss emote", location:"Shilo Village bank", items:["Blue mystic hat","Bone spear","Rune platebody"], answer:null, notes:"Requires Shilo Village quest. Gilded/trimmed rune platebody do NOT work." },
+  { id:"h32", tier:"hard", type:"emote", clue:"Blow a raspberry in the Fishing Guild bank. Beware of double agents! Equip an elemental shield, blue d'hide chaps and a rune warhammer.", solution:"Blow a Raspberry emote", location:"Fishing Guild bank", items:["Elemental shield","Blue dragonhide chaps","Rune warhammer"], answer:null, notes:"Requires Elemental Workshop I and 68 Fishing to enter." },
+  { id:"h33", tier:"hard", type:"emote", clue:"Bow at the top of the lighthouse. Beware of double agents! Equip a blue d'hide body, blue d'hide vambraces and no jewellery.", solution:"Bow emote", location:"Lighthouse \u2014 top", items:["Blue dragonhide body","Blue dragonhide vambraces","No jewellery worn"], answer:null, notes:"Requires Horror from the Deep (repaired lighting mechanism). Fairy ring ALP." },
+  { id:"h34", tier:"hard", type:"emote", clue:"Cheer at the top of the Agility Pyramid. Beware of double agents! Equip a blue mystic robe top and any rune heraldic shield.", solution:"Cheer emote", location:"Agility Pyramid \u2014 top", items:["Blue mystic robe top","Any rune heraldic shield"], answer:null, notes:"Requires 30 Agility. Only the blue mystic robe TOP works, not bottom." },
+  { id:"h35", tier:"hard", type:"emote", clue:"Dance at the cat-doored pyramid in Sophanem. Beware of double agents! Equip a ring of life, an uncharged amulet of glory and an adamant two-handed sword.", solution:"Dance emote", location:"Sophanem \u2014 cat-doored pyramid", items:["Ring of life","Uncharged amulet of glory","Adamant two-handed sword"], answer:null, notes:"Partial Icthlarin's Little Helper required. Glory MUST be uncharged." },
+  { id:"h36", tier:"hard", type:"emote", clue:"Headbang at the exam centre. Beware of double agents! Equip a mystic fire staff, a diamond bracelet and rune boots.", solution:"Headbang emote", location:"Digsite Exam Centre (south of Digsite)", items:["Mystic fire staff","Diamond bracelet","Rune boots"], answer:null, notes:"" },
+  { id:"h37", tier:"hard", type:"emote", clue:"Jig at Jiggig. Beware of double agents! Equip a rune spear, rune platelegs and any rune heraldic helm.", solution:"Jig emote", location:"Jiggig \u2014 south of Castle Wars", items:["Rune spear","Rune platelegs","Any rune heraldic helm"], answer:null, notes:"Requires Big Chompy Bird Hunting + Jungle Potion to start Zogre Flesh Eaters. Gilded/trimmed rune platelegs do NOT work." },
+  { id:"h38", tier:"hard", type:"emote", clue:"Panic by the pilot on White Wolf Mountain. Beware of double agents! Equip mithril platelegs, a ring of life and a rune axe.", solution:"Panic emote", location:"White Wolf Mountain \u2014 Captain Bleemadge", items:["Mithril platelegs","Ring of life","Rune axe"], answer:null, notes:"Beware aggressive level 73 Big Wolf nearby." },
+  { id:"h39", tier:"hard", type:"emote", clue:"Panic in the heart of the Haunted Woods. Beware of double agents! Have no items equipped.", solution:"Panic emote", location:"Haunted Woods \u2014 east of fairy ring ALQ", items:[], answer:null, notes:"Nothing equipped. Beware Feral Vampyres in the area." },
+  { id:"h40", tier:"hard", type:"emote", clue:"Panic on the Wilderness volcano bridge. Beware of double agents! Equip any headband and crozier.", solution:"Panic emote", location:"Blighted Volcano \u2014 bridge, NE Wilderness", items:["Any headband","Any crozier (60 Prayer)"], answer:null, notes:"Blighted Volcano is in north-east Wilderness. Beware PKers. Consider a Clue Box." },
+  { id:"h41", tier:"hard", type:"emote", clue:"Salute in the banana plantation. Beware of double agents! Equip a diamond ring, amulet of power and nothing on chest and legs.", solution:"Salute emote", location:"Musa Point \u2014 banana plantation, Karamja", items:["Diamond ring","Amulet of power","Nothing on chest or legs"], answer:null, notes:"Perform near STASH if built." },
+  { id:"h42", tier:"hard", type:"emote", clue:"Salute in the centre of the mess hall. Beware of double agents! Equip a rune halberd, rune platebody and an amulet of strength.", solution:"Salute emote", location:"Kourend \u2014 mess hall (salute in kitchen area)", items:["Rune halberd","Rune platebody","Amulet of strength"], answer:null, notes:"Kourend Castle Teleport is close. Salute in the KITCHEN, not dining room." },
+  { id:"h43", tier:"hard", type:"emote", clue:"Yawn in the rogues' general store. Beware of double agents! Equip an adamant square shield, blue dragon vambraces and a rune pickaxe.", solution:"Yawn emote", location:"Wilderness \u2014 Bandit Camp general store (level 23)", items:["Adamant square shield","Blue dragonhide vambraces","Rune pickaxe"], answer:null, notes:"Burning amulet can get you close. Beware PKers and level 130 Bandits." },
+  { id:"h44", tier:"hard", type:"map", clue:"X marks the spot \u2014 Lumberyard crate", solution:"Search crate", location:"North-east of Varrock \u2014 inside the Lumberyard", items:[], answer:null, notes:"Search the crate inside the Lumberyard." },
+  { id:"h45", tier:"hard", type:"map", clue:"X marks the spot \u2014 Dark Warriors' Fortress", solution:"Search crates", location:"Level 14 Wilderness \u2014 Dark Warriors' Fortress, SW courtyard", items:["Spade"], answer:null, notes:"Beware level 145 dark warriors and PKers." },
+  { id:"h46", tier:"hard", type:"map", clue:"X marks the spot \u2014 south of Yanille bank", solution:"Search/dig", location:"South of Yanille bank, behind house with anvil", items:["Spade"], answer:null, notes:"" },
+  { id:"h47", tier:"hard", type:"map", clue:"X marks the spot \u2014 Legends' Guild picnic tables", solution:"Dig", location:"Picnic tables south of Legends' Guild, NE of East Ardougne", items:["Spade"], answer:null, notes:"South of fairy ring BLR." },
+  { id:"h48", tier:"hard", type:"coordinate", clue:"00\u00b0 00' N, 07\u00b0 13' W", solution:"Dig", location:"Tirannwn \u2014 west spawn of roving elves, near Tyras Camp", items:["Spade","Regicide"], answer:"Saradomin wizard", notes:"Beware stick traps. Fairy ring BJS (76 Agility) and run north to Tyras Camp." },
+  { id:"h49", tier:"hard", type:"coordinate", clue:"01\u00b0 30' N, 20\u00b0 01' E", solution:"Dig", location:"Draynor island \u2014 via fairy ring CLP only", items:["Spade","Fairy ring access"], answer:"Saradomin wizard", notes:"ONLY reachable via fairy ring CLP. Partial Fairytale II needed for fairy rings." },
+  { id:"h50", tier:"hard", type:"coordinate", clue:"02\u00b0 39' N, 29\u00b0 58' E", solution:"Dig", location:"Eastern side of the Emir's Arena", items:["Spade"], answer:"None", notes:"No fight at this coordinate." },
+  { id:"h51", tier:"hard", type:"coordinate", clue:"03\u00b0 45' S, 22\u00b0 45' E", solution:"Dig", location:"Bedabin Camp \u2014 north side of watering hole, Kharidian Desert", items:["Spade"], answer:"Saradomin wizard", notes:"Just south-west of Shantay Pass." },
+  { id:"h52", tier:"hard", type:"coordinate", clue:"05\u00b0 37' N, 31\u00b0 15' E", solution:"Dig", location:"Mort Myre Swamp \u2014 north of Nature Spirit's grotto", items:["Spade","Partial Nature Spirit"], answer:"Saradomin wizard", notes:"Bring druid pouches for ghasts. Fairy ring BIP nearby." },
+  { id:"h53", tier:"hard", type:"coordinate", clue:"08\u00b0 03' N, 31\u00b0 16' E", solution:"Dig", location:"Mort Myre Swamp \u2014 SW of fairy ring BKR", items:["Spade","Started Priest in Peril"], answer:"Saradomin wizard", notes:"Between easternmost and middle logs. Bring druid pouches." },
+  { id:"h54", tier:"hard", type:"coordinate", clue:"13\u00b0 46' N, 21\u00b0 01' E", solution:"Dig", location:"North of Edgeville level 11 Wilderness, SW of Ferox Enclave", items:["Spade"], answer:"Zamorak wizard", notes:"Near horseshoe-shaped mushroom patch." },
+  { id:"h55", tier:"hard", type:"coordinate", clue:"16\u00b0 07' N, 22\u00b0 45' E", solution:"Dig", location:"Wilderness \u2014 Graveyard of Shadows, north of dead tree", items:["Spade"], answer:"Zamorak wizard", notes:"In the Graveyard of Shadows." },
+  { id:"h56", tier:"hard", type:"coordinate", clue:"16\u00b0 43' N, 19\u00b0 13' E", solution:"Dig", location:"Wilderness \u2014 Bandit Camp level 23, northern section", items:["Spade"], answer:"Zamorak wizard", notes:"Burning amulet can teleport close." },
+  { id:"h57", tier:"hard", type:"coordinate", clue:"21\u00b0 24' N, 17\u00b0 54' E", solution:"Dig", location:"Wilderness level 41 \u2014 west of Lava Maze, near KBD ladder", items:["Spade"], answer:"Zamorak wizard", notes:"Burning amulet or Ghorrock Teleport to get close." },
+  { id:"el1", tier:"elite", type:"anagram", clue:"AT HERG", solution:"Regath", location:"Arceuus \u2014 south-east corner General Store", items:[], answer:"25", notes:"What is -5 to the power of 2? Answer: 25" },
+  { id:"el2", tier:"elite", type:"anagram", clue:"CAREER IN MOON", solution:"Oneiromancer", location:"Astral Altar on Lunar Isle", items:[], answer:"25", notes:"How many Suqah inhabit Lunar Isle? Answer: 25" },
+  { id:"el3", tier:"elite", type:"anagram", clue:"Cirr Jad", solution:"Jardric", location:"Fossil Island \u2014 museum camp", items:[], answer:"1", notes:"What is 3 to the power of 0? Answer: 1" },
+  { id:"el4", tier:"elite", type:"anagram", clue:"COOL NERD", solution:"Old Crone", location:"East of the Slayer Tower", items:[], answer:"619", notes:"Combined combat level of each species in Slayer Tower? Answer: 619" },
+  { id:"el5", tier:"elite", type:"anagram", clue:"DR HITMAN", solution:"Mandrith", location:"Outside the Wilderness Resource Area", items:[], answer:"28", notes:"How many scorpions live under the pit? Answer: 28" },
+  { id:"el6", tier:"elite", type:"anagram", clue:"LADDER MEMO GUV", solution:"Guard Vemmeldo", location:"Bank east of Stronghold Slayer Cave", items:[], answer:"3", notes:"How many magic trees inside the Gnome Stronghold? Answer: 3" },
+  { id:"el7", tier:"elite", type:"anagram", clue:"MACHETE CLAM", solution:"Cam the Camel", location:"Outside gates of the Emir's Arena", items:[], answer:"6", notes:"How many items can carry water in Gielinor? Answer: 6" },
+  { id:"el8", tier:"elite", type:"anagram", clue:"MAJORS LAVA BADS AIR", solution:"Ambassador Alvijar", location:"NE Dorgesh-Kaan \u2014 middle floor (requires Another Slice of H.A.M.)", items:[], answer:"2505", notes:"Double the miles before initial Dorgeshuun veteran. Answer: 2,505" },
+  { id:"el9", tier:"elite", type:"anagram", clue:"NO OWNER", solution:"Oronwen", location:"Lletya \u2014 Seamstress shop", items:[], answer:"20", notes:"Minimum quest points to reach Lletya? Answer: 20" },
+  { id:"el10", tier:"elite", type:"anagram", clue:"OUR OWN NEEDS", solution:"Nurse Wooned", location:"Shayzien Encampment \u2014 infirmary", items:[], answer:"16", notes:"How many wounded soldiers in the camp? Answer: 16" },
+  { id:"el11", tier:"elite", type:"anagram", clue:"SNAKES SO I SAIL", solution:"Lisse Isaakson", location:"Neitiznot", items:[], answer:"2", notes:"How many arctic logs for a large fremennik round shield? Answer: 2" },
+  { id:"el12", tier:"elite", type:"anagram", clue:"UNLEASH NIGHT MIST", solution:"Sigli the Huntsman", location:"Rellekka", items:[], answer:"302", notes:"Combined Slayer requirement of every monster in Slayer cave? Answer: 302" },
+  { id:"el13", tier:"elite", type:"cryptic", clue:"Fiendish cooks probably won't dig holes near their ovens.", solution:"Dig", location:"Cooks' Guild \u2014 north side, outside (north of Varrock)", items:["Spade","Chef's hat or Cooking cape"], answer:null, notes:"Dig outside the north wall of the Cooks' Guild." },
+  { id:"el14", tier:"elite", type:"cryptic", clue:"The treasure is buried in the centre of Ape Atoll.", solution:"Dig", location:"Ape Atoll \u2014 centre of island", items:["Spade","Greegree"], answer:null, notes:"Requires Monkey Madness I. Bring ninja greegree (48 Agility) or Kruk greegree." },
+  { id:"el15", tier:"elite", type:"cryptic", clue:"Search the boxes just outside the Legends' Guild.", solution:"Search boxes", location:"Legends' Guild \u2014 south gates", items:[], answer:null, notes:"Crates just outside the south gate." },
+  { id:"el16", tier:"elite", type:"cryptic", clue:"The magic of 4 colours, an early experience of the light fantastic.", solution:"Talk to Traiborn", location:"Wizards' Tower \u2014 1st floor", items:[], answer:"3150", notes:"How many air runes to cast 630 wind waves? Answer: 3,150" },
+  { id:"el17", tier:"elite", type:"emote", clue:"Blow a kiss in the heart of the lava maze. Equip black d'hide chaps, a spotted cape and a rolling pin.", solution:"Blow a Kiss emote", location:"Wilderness \u2014 centre of Lava Maze", items:["Black dragonhide chaps","Spotted cape","Rolling pin"], answer:null, notes:"A slashing weapon or knife needed to navigate the maze." },
+  { id:"el18", tier:"elite", type:"emote", clue:"Bow on the ground floor of the Legends' Guild. Equip Legends' cape, a dragon battleaxe and an amulet of glory.", solution:"Bow emote", location:"Legends' Guild \u2014 ground floor", items:["Legends' cape","Dragon battleaxe","Amulet of glory (any charges)"], answer:null, notes:"Requires completion of Legends' Quest." },
+  { id:"el19", tier:"elite", type:"emote", clue:"Bow upstairs in the Edgeville Monastery. Equip a completed prayer book.", solution:"Bow emote", location:"Edgeville Monastery \u2014 upstairs", items:["Any completed god book"], answer:null, notes:"Requires 31 Prayer to enter. Any completed god book works." },
+  { id:"el20", tier:"elite", type:"emote", clue:"Cheer in the Shadow dungeon. Equip a rune crossbow, climbing boots and any mitre.", solution:"Cheer emote", location:"Shadow Dungeon", items:["Rune crossbow","Climbing boots","Any mitre"], answer:null, notes:"Requires partial Desert Treasure I. Bring ring of visibility or ring of shadows." },
+  { id:"el21", tier:"elite", type:"emote", clue:"Dance on the Fishing Platform. Equip barrows gloves, an amulet of glory and a dragon med helm.", solution:"Dance emote", location:"Fishing Platform", items:["Barrows gloves","Amulet of glory","Dragon med helm"], answer:null, notes:"Barrows gloves require full Recipe for Disaster." },
+  { id:"el22", tier:"elite", type:"emote", clue:"Headbang at the top of the Slayer Tower. Equip a seercull, a combat bracelet and helm of neitiznot.", solution:"Headbang emote", location:"Slayer Tower \u2014 top floor", items:["Seercull","Combat bracelet","Helm of Neitiznot"], answer:null, notes:"Requires The Fremennik Isles. Bring nosepeg for spectres." },
+  { id:"el23", tier:"elite", type:"emote", clue:"Headbang in the Fight Arena pub. Equip a pirate bandana, a dragonstone necklace and a magic longbow.", solution:"Headbang emote", location:"Fight Arena \u2014 pub west of arena", items:["Pirate bandana","Dragonstone necklace","Magic longbow"], answer:null, notes:"West side of Fight Arena, near Nightmare Zone." },
+  { id:"el24", tier:"elite", type:"emote", clue:"Jump for joy at the Neitiznot rune rock. Equip rune boots, a proselyte hauberk and a dragonstone ring.", solution:"Jump for Joy emote", location:"Neitiznot \u2014 rune rock", items:["Rune boots","Proselyte hauberk","Dragonstone ring"], answer:null, notes:"Requires Fremennik Isles and The Slug Menace (for Proselyte Hauberk)." },
+  { id:"el25", tier:"elite", type:"emote", clue:"Jump for joy in the Ancient Cavern. Equip a granite shield, splitbark body and any rune heraldic helm.", solution:"Jump for Joy emote", location:"Ancient Cavern", items:["Granite shield","Splitbark body","Any rune heraldic helm"], answer:null, notes:"Requires started Barbarian Training miniquest. Rune heraldic helm = Treasure Trails item, not POH painted helm." },
+  { id:"el26", tier:"elite", type:"emote", clue:"Laugh by the fountain of heroes. Equip splitbark legs, dragon boots and a rune longsword.", solution:"Laugh emote", location:"Heroes' Guild \u2014 fountain of heroes", items:["Splitbark legs","Dragon boots","Rune longsword"], answer:null, notes:"Requires completion of Heroes' Quest." },
+  { id:"el27", tier:"elite", type:"emote", clue:"Panic at the area flowers meet snow. Equip blue d'hide vambraces, a dragon spear and a rune plateskirt.", solution:"Panic emote", location:"Trollweiss Mountain \u2014 Trollweiss flowers (after sledding)", items:["Blue dragonhide vambraces","Dragon spear","Rune plateskirt"], answer:null, notes:"Bring a sled. Poisoned dragon spear does NOT work." },
+  { id:"el28", tier:"elite", type:"emote", clue:"Salute by the Charcoal Burners. Equip a Farmer's strawhat, Shayzien body (5) and Pyromancer robes.", solution:"Salute emote", location:"Hosidius \u2014 charcoal furnace south of Hosidius", items:["Farmer's strawhat","Shayzien body (5)","Pyromancer robe top"], answer:null, notes:"" },
+  { id:"el29", tier:"elite", type:"emote", clue:"Salute in the warriors' guild bank. Equip only a black salamander.", solution:"Salute emote", location:"Warriors' Guild \u2014 bank", items:["Black salamander only (70 Ranged/Magic/Attack)"], answer:null, notes:"Black salamander requires 70 in all three combat styles." },
+  { id:"el30", tier:"elite", type:"emote", clue:"Spin in West Ardougne Church. Equip a dragon spear and red d'hide chaps.", solution:"Spin emote", location:"West Ardougne Church", items:["Dragon spear","Red dragonhide chaps"], answer:null, notes:"" },
+  { id:"el31", tier:"elite", type:"emote", clue:"Yawn at the top of Trollheim. Equip a lava battlestaff, black d'hide vambraces and a mind shield.", solution:"Yawn emote", location:"Trollheim \u2014 summit", items:["Lava battlestaff","Black dragonhide vambraces","Mind shield"], answer:null, notes:"Requires Elemental Workshop I and II, and parts of Troll Stronghold." },
+  { id:"el32", tier:"elite", type:"map", clue:"X marks the spot \u2014 SW Ape Atoll shack", solution:"Search crate", location:"South-west coast of Ape Atoll \u2014 small shack", items:[], answer:null, notes:"Fairy ring CLR. Bring ninja or Kruk greegree if MM2 not done." },
+  { id:"el33", tier:"elite", type:"map", clue:"X marks the spot \u2014 east of Zul-Andra building", solution:"Dig/search", location:"Zul-Andra \u2014 east of small building, next to tree", items:[], answer:null, notes:"Requires starting Regicide. Fairy ring BJS (76 Agility)." },
+  { id:"el34", tier:"elite", type:"map", clue:"X marks the spot \u2014 south of Soul Altar", solution:"Dig", location:"Directly south of the Soul Altar", items:["Spade"], answer:null, notes:"Soul Altar is in Zeah." },
+  { id:"el35", tier:"elite", type:"map", clue:"X marks the spot \u2014 east of Burgh de Rott furnace", solution:"Dig", location:"East of the Burgh de Rott furnace", items:["Spade"], answer:null, notes:"Requires starting In Aid of the Myreque." },
+  { id:"el36", tier:"elite", type:"map", clue:"X marks the spot \u2014 north-east of Castle Wars", solution:"Dig", location:"North-east of Castle Wars, just west of fairy ring CIQ", items:["Spade"], answer:null, notes:"" },
+  { id:"el37", tier:"elite", type:"coordinate", clue:"00\u00b0 18' S, 02\u00b0 35' W", solution:"Dig", location:"Lletya \u2014 flax field south of bank", items:["Spade","Started Mourning Ends Pt I"], answer:"Armadylean/Bandosian guard", notes:"Image shows north facing east \u2014 use this for orientation." },
+  { id:"el38", tier:"elite", type:"coordinate", clue:"02\u00b0 35' S, 11\u00b0 52' E", solution:"Dig", location:"Hardwood Grove at Tai Bwo Wannai", items:["Spade","Jungle Potion","100 trading sticks"], answer:"Armadylean/Bandosian guard", notes:"100 trading sticks unless Karamja elite diary done." },
+  { id:"el39", tier:"elite", type:"coordinate", clue:"03\u00b0 09' S, 42\u00b0 50' E", solution:"Dig", location:"NE of Mos Le'Harmless \u2014 small island via Mos Le'Harmless Cave western staircase", items:["Spade","Cabin Fever","Witchwood icon","Light source"], answer:"Armadylean/Bandosian guard", notes:"Remember witchwood icon for cave. Light source needed unless fire pit lit." },
+  { id:"el40", tier:"elite", type:"coordinate", clue:"19\u00b0 56' N, 02\u00b0 31' W", solution:"Dig", location:"Neitiznot \u2014 very south-east, 4 spaces west of ladder", items:["Spade","Partial Fremennik Isles"], answer:"Armadylean/Bandosian guard", notes:"" },
+  { id:"el41", tier:"elite", type:"coordinate", clue:"21\u00b0 03' N, 24\u00b0 13' E", solution:"Dig", location:"Wilderness level 40 \u2014 Lava Dragon Isle", items:["Spade","Anti-dragon shield or Antifire"], answer:"Armadylean/Bandosian guard", notes:"Bring dragonfire protection." },
+  { id:"el42", tier:"elite", type:"coordinate", clue:"24\u00b0 15' N, 13\u00b0 30' E", solution:"Dig", location:"Weiss \u2014 inside largest building", items:["Spade","Partial Making Friends with My Arm"], answer:"Armadylean/Bandosian guard", notes:"Complete quest to point where you speak to Mother." },
+  { id:"el43", tier:"elite", type:"coordinate", clue:"22\u00b0 54' N, 29\u00b0 01' E", solution:"Dig", location:"Fountain of Rune \u2014 small C-shaped wall, NE Wilderness", items:["Spade"], answer:"Armadylean/Bandosian guard", notes:"" },
+  { id:"mas1", tier:"master", type:"anagram", clue:"A Elf Knows", solution:"Snowflake", location:"Weiss", items:[], answer:"Light box or puzzle box", notes:"" },
+  { id:"mas2", tier:"master", type:"anagram", clue:"Brucie Catnap", solution:"Captain Bruce", location:"Shayzien", items:[], answer:"Light box or puzzle box", notes:"" },
+  { id:"mas3", tier:"master", type:"anagram", clue:"Car If Ices", solution:"Sacrifice", location:"Zul-Andra \u2014 dock near Priestess Zul-Gwenwynig", items:[], answer:"Light box or puzzle box", notes:"" },
+  { id:"mas4", tier:"master", type:"anagram", clue:"Ded War", solution:"Edward", location:"Inside Rogues' Castle (deep Wilderness)", items:[], answer:"Light box or puzzle box", notes:"Deep Wilderness. Beware PKers and Chaos Elemental nearby." },
+  { id:"mas5", tier:"master", type:"anagram", clue:"Dim Tharn", solution:"Mandrith", location:"Outside the Wilderness Resource Area", items:[], answer:"Light box or puzzle box", notes:"" },
+  { id:"mas6", tier:"master", type:"anagram", clue:"Duo Plug", solution:"Dugopul", location:"Ape Atoll \u2014 graveyard south of Awowogei's throne room", items:[], answer:"Light box or puzzle box", notes:"" },
+  { id:"mas7", tier:"master", type:"anagram", clue:"Forlun", solution:"Runolf", location:"Miscellania and Etceteria Dungeon", items:[], answer:"Light box or puzzle box", notes:"Requires partial completion of Royal Trouble." },
+  { id:"mas8", tier:"master", type:"anagram", clue:"Im N Zezim", solution:"Immenizz", location:"Inside Puro-Puro", items:[], answer:"Light box or puzzle box", notes:"The impling inside Puro-Puro." },
+  { id:"mas9", tier:"master", type:"anagram", clue:"Mal in Tau", solution:"Luminata", location:"East of Burgh de Rott entrance, in town", items:[], answer:"Light box or puzzle box", notes:"" },
+  { id:"mas10", tier:"master", type:"anagram", clue:"Mold La Ran", solution:"Old Man Ral", location:"Meiyerditch", items:[], answer:"Light box or puzzle box", notes:"" },
+  { id:"mas11", tier:"master", type:"anagram", clue:"Mus Kil Reader", solution:"Radimus Erkle", location:"Legends' Guild", items:[], answer:"Light box or puzzle box", notes:"" },
+  { id:"mas12", tier:"master", type:"anagram", clue:"Rip Maul", solution:"Primula", location:"Myths' Guild", items:[], answer:"Light box or puzzle box", notes:"" },
+  { id:"mas13", tier:"master", type:"anagram", clue:"Rue Go", solution:"Goreu", location:"Lletya", items:[], answer:"Light box or puzzle box", notes:"" },
+  { id:"mas14", tier:"master", type:"anagram", clue:"Slam Duster Grail", solution:"Guildmaster Lars", location:"Woodcutting Guild in Hosidius", items:[], answer:"Light box or puzzle box", notes:"" },
+  { id:"mas15", tier:"master", type:"anagram", clue:"Ten Wigs On", solution:"Wingstone", location:"Between Nardah and the Agility Pyramid", items:[], answer:"Light box or puzzle box", notes:"" },
+  { id:"mas16", tier:"master", type:"anagram", clue:"Twenty Cure Iron", solution:"New Recruit Tony", location:"Graveyard of Heroes in Shayzien", items:[], answer:"Light box or puzzle box", notes:"" },
+  { id:"mas17", tier:"master", type:"cryptic", clue:"Dig in front of the icy altar where only the most devoted pray.", solution:"Dig", location:"God Wars Dungeon \u2014 altar area", items:["Spade","60 Strength or Agility to enter"], answer:"Ancient Wizards or Brassican Mage", notes:"High combat recommended. Navigate GWD to reach the altar." },
+  { id:"mas18", tier:"master", type:"emote", clue:"Beckon by a collection of crystalline maple trees. Beware of double agents! Equip Bryophyta's staff and a nature tiara.", solution:"Beckon emote", location:"Prifddinas \u2014 crystalline maple trees", items:["Bryophyta's staff","Nature tiara"], answer:"Double agent", notes:"Requires Song of the Elves." },
+  { id:"mas19", tier:"master", type:"coordinate", clue:"24\u00b0 56' N, 22\u00b0 28' E", solution:"Dig", location:"Wilderness \u2014 north of Deserted Keep, 6 north of spider web", items:["Spade"], answer:"Ancient Wizards or Brassican Mage", notes:"Reachable via teleport lever." },
+  { id:"mas20", tier:"master", type:"coordinate", clue:"25\u00b0 03' N, 17\u00b0 05' E", solution:"Dig", location:"NW of Wilderness Agility Course, NE corner of Frozen Waste Plateau (level 56)", items:["Spade"], answer:"Ancient Wizards or Brassican Mage", notes:"Ghorrock Teleport (96 Magic) or Ice Plateau Teleport via Lunar Spellbook." },
+  { id:"mas22", tier:"master", type:"hot-cold", clue:"Master Hot/Cold \u2014 collect the strange device from Jorral.", solution:"Follow temperature readings then dig", location:"Anywhere on the mainland", items:["Strange device (from Jorral, requires Making History)","Food"], answer:"Ancient Wizards or Brassican Mage", notes:"Device deals 3-8 damage each use \u2014 can be fatal. Single-combat = Brassican Mage. Multi-combat = 3 Ancient Wizards covering all attack styles." },
+  { id:"mas23", tier:"master", type:"light-box", clue:"Light box puzzle \u2014 solve the correct switch combination.", solution:"Find and flip the correct switches (A-H)", location:"Solved in inventory \u2014 no specific location", items:[], answer:"None", notes:"5x5 grid of lights, 8 switches labeled A-H. 20 valid solutions. Check the OSRS wiki Light box page for the full solution table. Brute-force order (left to right): ABAC ABAD ABAC ABAE ABAC ABAD ABAC ABAF etc." },
 ];
 
 // ─── State ─────────────────────────────────────────────────────────────────────
@@ -588,7 +728,9 @@ function clueCardHtml(c) {
 // ─── Filter ────────────────────────────────────────────────────────────────────
 function filterAll() {
   const res = [];
-  const showPuzzle = activeType === 'all' || activeType === 'puzzle';
+  // Puzzle boxes: show only when "All Tiers" OR explicitly filtering "Puzzle" type
+  // Never bleed into a specific tier filter — they have their own Puzzle chip
+  const showPuzzle = activeType === 'puzzle' || (activeType === 'all' && activeTier === 'all');
   const showOther  = activeType === 'all' || activeType !== 'puzzle';
   const q = searchQ.toLowerCase();
 
