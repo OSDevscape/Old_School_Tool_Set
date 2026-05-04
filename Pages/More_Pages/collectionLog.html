@@ -311,73 +311,25 @@
   </div>
 </div>
 
-<!-- Bottom Nav -->
 <nav id="bottom-nav"></nav>
 
-<!-- More Menu -->
 <div class="modal-overlay" id="more-menu-overlay">
   <div class="modal-sheet">
     <div class="modal-head">
       <div><div class="modal-title">More</div></div>
       <button class="modal-close" id="more-menu-close">✕</button>
     </div>
-<div class="modal-actions">
-
-  <a class="modal-action" href="/Pages/More_Pages/bestiary.html">
-    <span class="ma-title">🐉 Bestiary</span>
-    <span class="ma-desc">Look up monsters, combat stats &amp; slayer info</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/bookmarks.html">
-    <span class="ma-title">🔖 Bookmarks</span>
-    <span class="ma-desc">Your saved clues, fairy rings, timers &amp; more</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/bossing.html">
-    <span class="ma-title">🏆 Bossing</span>
-    <span class="ma-desc">Track boss kill counts and personal bests</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/clueScrolls.html">
-    <span class="ma-title">📜 Clue Solver</span>
-    <span class="ma-desc">Solve anagrams, ciphers, emotes &amp; puzzle boxes</span>
-  </a>
-
-    <a class="modal-action" href="/Pages/More_Pages/collectionLog.html">
-    <span class="ma-title">📒 Collection Log</span>
-    <span class="ma-desc">Track your collection log progress</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">
-    <span class="ma-title">🍄 Fairy Rings</span>
-    <span class="ma-desc">All 55 ring codes with pins &amp; personal notes</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/goals.html">
-    <span class="ma-title">📊 Goals</span>
-    <span class="ma-desc">Set and track XP &amp; level goals per skill</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/grandExchange.html">
-    <span class="ma-title">💰 Grand Exchange</span>
-    <span class="ma-desc">Track item prices and market trends</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/petLog.html">
-    <span class="ma-title">🐾 Pet Log</span>
-    <span class="ma-desc">Log your pet drops and track your collection</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/quests.html">
-    <span class="ma-title">🗺️ Quests</span>
-    <span class="ma-desc">Quest list with requirements and completion tracking</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/timers.html">
-    <span class="ma-title">⏰ Timers</span>
-    <span class="ma-desc">Farm runs, birdhouses &amp; custom growth timers</span>
-  </a>
-
+    <div class="modal-actions">
+      <a class="modal-action" href="/Pages/More_Pages/bestiary.html">🐉 Bestiary</a>
+      <a class="modal-action" href="/Pages/More_Pages/bookmarks.html">🔖 Bookmarks</a>
+      <a class="modal-action" href="/Pages/More_Pages/bossing.html">🏆 Bossing</a>
+      <a class="modal-action" href="/Pages/More_Pages/clueScrolls.html">📜 Clue Solver</a>
+      <a class="modal-action" href="/Pages/More_Pages/collectionLog.html">📒 Collection Log</a>
+      <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">🍄 Fairy Rings</a>
+      <a class="modal-action" href="/Pages/More_Pages/goals.html">📊 Goals</a>
+      <a class="modal-action" href="/Pages/More_Pages/petLog.html">🐾 Pet Log</a>
+      <a class="modal-action" href="/Pages/More_Pages/quests.html">🗺️ Quests</a>
+      <a class="modal-action" href="/Pages/More_Pages/timers.html">⏰ Timers</a>
     </div>
   </div>
 </div>
@@ -533,9 +485,12 @@ const CAT_META = {
 
 // ─── Storage ──────────────────────────────────────────────────────────────────
 const STORE_KEY = 'osts_clog_v2';
-let obtained = new Set(storage.get(STORE_KEY, []));
+const BOOK_KEY  = 'osts_clog_bookmarks_v2';
+let obtained  = new Set(storage.get(STORE_KEY, []));
+let entryBMs  = new Set(storage.get(BOOK_KEY, []));
 
 function save() { storage.set(STORE_KEY, [...obtained]); }
+function saveBookmarks() { storage.set(BOOK_KEY, [...entryBMs]); }
 
 function itemKey(entryId, idx) { return `${entryId}::${idx}`; }
 
@@ -709,6 +664,26 @@ function renderList() {
       });
     });
 
+    // Bookmark entry
+    card.querySelector('[data-action="bookmark-entry"]')?.addEventListener('click', e => {
+      e.stopPropagation();
+      const entry = CLOG_DATA.find(e => e.id === entryId);
+      if (entryBMs.has(entryId)) {
+        entryBMs.delete(entryId);
+        showToast(`${entry.name} removed from bookmarks`);
+      } else {
+        entryBMs.add(entryId);
+        showToast(`${entry.name} bookmarked 🔖`);
+      }
+      saveBookmarks();
+      // Update button in place without full re-render
+      const btn = card.querySelector('[data-action="bookmark-entry"]');
+      const saved = entryBMs.has(entryId);
+      btn.textContent = `🔖 ${saved ? 'Saved' : 'Save Log'}`;
+      btn.style.cssText = saved ? 'color:var(--gold);border-color:var(--gold);background:rgba(184,136,72,.12)' : '';
+      btn.classList.toggle('bookmarked', saved);
+    });
+
     // Mark all / clear buttons
     card.querySelector('[data-action="mark-all"]')?.addEventListener('click', e => {
       e.stopPropagation();
@@ -767,6 +742,7 @@ function entryCardHtml(e) {
     </div>
     <div class="cl-items">${itemsHtml}</div>
     <div class="cl-card-actions">
+      <button class="cl-act-btn${entryBMs.has(e.id) ? ' bookmarked' : ''}" data-action="bookmark-entry" style="${entryBMs.has(e.id) ? 'color:var(--gold);border-color:var(--gold);background:rgba(184,136,72,.12)' : ''}">🔖 ${entryBMs.has(e.id) ? 'Saved' : 'Save Log'}</button>
       <button class="cl-act-btn" data-action="mark-all">✓ Mark All</button>
       <button class="cl-act-btn danger" data-action="clear-entry">✕ Clear</button>
     </div>

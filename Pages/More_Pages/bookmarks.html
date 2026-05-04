@@ -165,73 +165,23 @@
   </div>
 </div>
 
-<!-- Bottom Nav -->
 <nav id="bottom-nav"></nav>
 
-<!-- More Menu -->
 <div class="modal-overlay" id="more-menu-overlay">
   <div class="modal-sheet">
     <div class="modal-head">
       <div><div class="modal-title">More</div></div>
       <button class="modal-close" id="more-menu-close">✕</button>
     </div>
-<div class="modal-actions">
-
-  <a class="modal-action" href="/Pages/More_Pages/bestiary.html">
-    <span class="ma-title">🐉 Bestiary</span>
-    <span class="ma-desc">Look up monsters, combat stats &amp; slayer info</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/bookmarks.html">
-    <span class="ma-title">🔖 Bookmarks</span>
-    <span class="ma-desc">Your saved clues, fairy rings, timers &amp; more</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/bossing.html">
-    <span class="ma-title">🏆 Bossing</span>
-    <span class="ma-desc">Track boss kill counts and personal bests</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/clueScrolls.html">
-    <span class="ma-title">📜 Clue Solver</span>
-    <span class="ma-desc">Solve anagrams, ciphers, emotes &amp; puzzle boxes</span>
-  </a>
-
-    <a class="modal-action" href="/Pages/More_Pages/collectionLog.html">
-    <span class="ma-title">📒 Collection Log</span>
-    <span class="ma-desc">Track your collection log progress</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">
-    <span class="ma-title">🍄 Fairy Rings</span>
-    <span class="ma-desc">All 55 ring codes with pins &amp; personal notes</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/goals.html">
-    <span class="ma-title">📊 Goals</span>
-    <span class="ma-desc">Set and track XP &amp; level goals per skill</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/grandExchange.html">
-    <span class="ma-title">💰 Grand Exchange</span>
-    <span class="ma-desc">Track item prices and market trends</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/petLog.html">
-    <span class="ma-title">🐾 Pet Log</span>
-    <span class="ma-desc">Log your pet drops and track your collection</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/quests.html">
-    <span class="ma-title">🗺️ Quests</span>
-    <span class="ma-desc">Quest list with requirements and completion tracking</span>
-  </a>
-
-  <a class="modal-action" href="/Pages/More_Pages/timers.html">
-    <span class="ma-title">⏰ Timers</span>
-    <span class="ma-desc">Farm runs, birdhouses &amp; custom growth timers</span>
-  </a>
-
+    <div class="modal-actions">
+      <a class="modal-action" href="/Pages/More_Pages/bestiary.html">🐉 Bestiary</a>
+      <a class="modal-action" href="/Pages/More_Pages/bossing.html">🏆 Bossing</a>
+      <a class="modal-action" href="/Pages/More_Pages/bookmarks.html">🔖 Bookmarks</a>
+      <a class="modal-action" href="/Pages/More_Pages/clueScrolls.html">📜 Clue Solver</a>
+      <a class="modal-action" href="/Pages/More_Pages/fairyRings.html">🍄 Fairy Rings</a>
+      <a class="modal-action" href="/Pages/More_Pages/goals.html">📊 Goals</a>
+      <a class="modal-action" href="/Pages/More_Pages/petLog.html">🐾 Pet Log</a>
+      <a class="modal-action" href="/Pages/More_Pages/timers.html">⏰ Timers</a>
     </div>
   </div>
 </div>
@@ -239,58 +189,154 @@
 <div id="toast"></div>
 
 <script type="module">
-import { initPage, showToast, settings } from '../../JS/shared.js';
+import { initPage, showToast, settings } from '/JS/shared.js';
 
 // ─── Storage keys for every bookmarkable system in OSTS ───────────────────────
 const KEYS = {
-  clues:    'osts_clue_bookmarks_v2',    // array of clue IDs (string)
-  rings:    'osts_fairy_pins_v1',        // array of ring codes (string)
-  timers:   'osts_timer_pins_v2',        // array of timer IDs (string)
-  goals:    'osts-goals-v1',             // array of goal objects (Goals page)
-  monsters: 'osts_bestiary_bookmarks_v2',// array of monster names (future — bestiary page)
-  bosses:   'osts_boss_bookmarks_v2',    // array of boss names   (future — bossing page)
-  quests:   'osts_quest_bookmarks_v2',   // array of quest names  (future — quests page)
+  clues:    'osts_clue_bookmarks_v2',
+  rings:    'osts_fairy_pins_v1',
+  timers:   'osts_timer_pins_v2',
+  goals:    'osts-goals-v1',
+  clog:     'osts_clog_bookmarks_v2',   // array of entry IDs (Collection Log)
+  ge:       'osts_ge_watchlist_v2',      // array of item IDs (Grand Exchange, stored as numbers)
+  monsters: 'osts_bestiary_bookmarks_v2',
+  bosses:   'osts_boss_bookmarks_v2',
+  quests:   'osts_quest_bookmarks_v2',
 };
+
+// ─── Collection Log entry lookup (name + cat + item count) ──────────────────
+// Compact version of CLOG_DATA for the bookmarks page
+const CLOG_LOOKUP = {
+  sire:{name:"Abyssal Sire",cat:"bosses",icon:"🌀",items:9},ahydra:{name:"Alchemical Hydra",cat:"bosses",icon:"🐍",items:11},
+  amoxliatl:{name:"Amoxliatl",cat:"bosses",icon:"❄️",items:4},araxxor:{name:"Araxxor",cat:"bosses",icon:"🕷️",items:10},
+  barrows:{name:"Barrows Chests",cat:"bosses",icon:"⚰️",items:25},brutus:{name:"Brutus",cat:"bosses",icon:"🐄",items:4},
+  bryophyta:{name:"Bryophyta",cat:"bosses",icon:"🌿",items:1},callisto:{name:"Callisto & Artio",cat:"bosses",icon:"🐻",items:6},
+  cerberus:{name:"Cerberus",cat:"bosses",icon:"🐕",items:7},chaos_ele:{name:"Chaos Elemental",cat:"bosses",icon:"💜",items:3},
+  chaos_fan:{name:"Chaos Fanatic",cat:"bosses",icon:"🤪",items:3},zilyana:{name:"Commander Zilyana",cat:"bosses",icon:"⚔️",items:8},
+  corp:{name:"Corporeal Beast",cat:"bosses",icon:"👻",items:7},crazy_arch:{name:"Crazy Archaeologist",cat:"bosses",icon:"🎩",items:3},
+  dagannoth:{name:"Dagannoth Kings",cat:"bosses",icon:"👑",items:10},deranged:{name:"Deranged Archaeologist",cat:"bosses",icon:"🔩",items:1},
+  doom_mok:{name:"Doom of Mokhaiotl",cat:"bosses",icon:"😈",items:6},duke:{name:"Duke Sucellus",cat:"bosses",icon:"🧊",items:10},
+  fight_caves:{name:"The Fight Caves",cat:"bosses",icon:"🔥",items:2},fortis_col:{name:"Fortis Colosseum",cat:"bosses",icon:"🏟️",items:9},
+  gauntlet:{name:"The Gauntlet",cat:"bosses",icon:"💎",items:5},graardor:{name:"General Graardor",cat:"bosses",icon:"🟠",items:8},
+  mole:{name:"Giant Mole",cat:"bosses",icon:"🦔",items:3},gargs:{name:"Grotesque Guardians",cat:"bosses",icon:"🗿",items:7},
+  hespori:{name:"Hespori",cat:"bosses",icon:"🌺",items:4},hueycoatl:{name:"The Hueycoatl",cat:"bosses",icon:"🐊",items:6},
+  inferno:{name:"The Inferno",cat:"bosses",icon:"🌋",items:2},kq:{name:"Kalphite Queen",cat:"bosses",icon:"🦂",items:6},
+  kbd:{name:"King Black Dragon",cat:"bosses",icon:"🐲",items:4},kraken:{name:"Kraken",cat:"bosses",icon:"🦑",items:4},
+  kreearra:{name:"Kree'arra",cat:"bosses",icon:"🦅",items:8},kril:{name:"K'ril Tsutsaroth",cat:"bosses",icon:"😡",items:8},
+  leviathan:{name:"The Leviathan",cat:"bosses",icon:"🌊",items:10},moons:{name:"Moons of Peril",cat:"bosses",icon:"🌙",items:13},
+  nex:{name:"Nex",cat:"bosses",icon:"💠",items:8},nightmare:{name:"The Nightmare",cat:"bosses",icon:"😴",items:12},
+  obor:{name:"Obor",cat:"bosses",icon:"🦴",items:1},ph_muspah:{name:"Phantom Muspah",cat:"bosses",icon:"👁️",items:6},
+  royal_titans:{name:"Royal Titans",cat:"bosses",icon:"👑",items:7},sarachnis:{name:"Sarachnis",cat:"bosses",icon:"🕸️",items:5},
+  scorpia:{name:"Scorpia",cat:"bosses",icon:"🦂",items:4},scurrius:{name:"Scurrius",cat:"bosses",icon:"🐀",items:2},
+  shellbane:{name:"Shellbane Gryphon",cat:"bosses",icon:"🦅",items:4},skotizo:{name:"Skotizo",cat:"bosses",icon:"🔴",items:6},
+  tempoross:{name:"Tempoross",cat:"bosses",icon:"🌊",items:12},thermy:{name:"Thermonuclear Smoke Devil",cat:"bosses",icon:"💨",items:5},
+  vardorvis:{name:"Vardorvis",cat:"bosses",icon:"🩸",items:10},venenatis:{name:"Venenatis & Spindel",cat:"bosses",icon:"🕷️",items:6},
+  vetion:{name:"Vet'ion & Calvar'ion",cat:"bosses",icon:"💀",items:6},vorkath:{name:"Vorkath",cat:"bosses",icon:"🐉",items:6},
+  whisperer:{name:"The Whisperer",cat:"bosses",icon:"🌑",items:10},wintertodt:{name:"Wintertodt",cat:"bosses",icon:"❄️",items:10},
+  yama:{name:"Yama",cat:"bosses",icon:"🔥",items:11},zalcano:{name:"Zalcano",cat:"bosses",icon:"⛏️",items:4},
+  zulrah:{name:"Zulrah",cat:"bosses",icon:"🐍",items:10},
+  cox:{name:"Chambers of Xeric",cat:"raids",icon:"🏔️",items:23},tob:{name:"Theatre of Blood",cat:"raids",icon:"🩸",items:17},
+  toa:{name:"Tombs of Amascut",cat:"raids",icon:"🏺",items:27},
+  clue_begin:{name:"Beginner Trails",cat:"clues",icon:"📜",items:16},clue_easy:{name:"Easy Trails",cat:"clues",icon:"🟢",items:131},
+  clue_med:{name:"Medium Trails",cat:"clues",icon:"🔵",items:115},clue_hard:{name:"Hard Trails",cat:"clues",icon:"🟠",items:134},
+  clue_elite:{name:"Elite Trails",cat:"clues",icon:"🟣",items:59},clue_master:{name:"Master Trails",cat:"clues",icon:"⭐",items:49},
+  clue_hard_rare:{name:"Hard Trails (Rare)",cat:"clues",icon:"💎",items:24},
+  clue_elite_rare:{name:"Elite Trails (Rare)",cat:"clues",icon:"💎",items:39},
+  clue_master_rare:{name:"Master Trails (Rare)",cat:"clues",icon:"💎",items:45},
+  clue_shared:{name:"Shared Trail Rewards",cat:"clues",icon:"📦",items:49},
+  scroll_cases:{name:"Scroll Cases",cat:"clues",icon:"📦",items:13},
+};
+
+// ─── GE item name lookup — loaded async from Wiki prices API ─────────────────
+let GE_ITEMS = {}; // id (number) → {name, icon, members}
+async function loadGEItems() {
+  try {
+    const r = await fetch('https://prices.runescape.wiki/api/v1/osrs/mapping', { headers:{ Accept:'application/json' } });
+    if (!r.ok) return;
+    const data = await r.json();
+    GE_ITEMS = {};
+    for (const item of data) GE_ITEMS[item.id] = { name: item.name, icon: item.icon || '', members: item.members };
+    // Re-render if GE section is visible
+    render();
+  } catch {}
+}
 
 // ─── Source definitions ───────────────────────────────────────────────────────
 const SOURCES = [
-  { id:'clues',    label:'Clue Scrolls', icon:'📜', col:'#b388ff', href:'/Pages/More_Pages/clueScrolls.html',  future:false },
-  { id:'rings',    label:'Fairy Rings',  icon:'🍄', col:'#c9a35a', href:'/Pages/More_Pages/fairyRings.html',   future:false },
-  { id:'timers',   label:'Timers',       icon:'⏰', col:'#58a6ff', href:'/Pages/More_Pages/timers.html',        future:false },
-  { id:'goals',    label:'Goals',        icon:'📊', col:'#f1c40f', href:'/Pages/More_Pages/goals.html',        future:false },
-  { id:'monsters', label:'Monsters',     icon:'🐉', col:'#e74c3c', href:'/Pages/More_Pages/bestiary.html',     future:true  },
-  { id:'bosses',   label:'Bosses',       icon:'🏆', col:'#f0883e', href:'/Pages/More_Pages/bossing.html',      future:false },
-  { id:'quests',   label:'Quests',       icon:'📝', col:'#3fb950', href:'/Pages/More_Pages/quests.html',       future:false },
+  { id:'clues',    label:'Clue Scrolls',   icon:'📜', col:'#b388ff', href:'/Pages/More_Pages/clueScrolls.html',   future:false },
+  { id:'rings',    label:'Fairy Rings',    icon:'🍄', col:'#c9a35a', href:'/Pages/More_Pages/fairyRings.html',    future:false },
+  { id:'timers',   label:'Timers',         icon:'⏰', col:'#58a6ff', href:'/Pages/More_Pages/timers.html',         future:false },
+  { id:'goals',    label:'Goals',          icon:'📊', col:'#f1c40f', href:'/Pages/More_Pages/goals.html',         future:false },
+  { id:'clog',     label:'Collection Log', icon:'📒', col:'#3fb950', href:'/Pages/More_Pages/collectionLog.html', future:false },
+  { id:'ge',       label:'GE Watchlist',   icon:'💰', col:'#e8a030', href:'/Pages/More_Pages/grandExchange.html', future:false },
+  { id:'monsters', label:'Monsters',       icon:'🐉', col:'#e74c3c', href:'/Pages/More_Pages/bestiary.html',      future:true  },
+  { id:'bosses',   label:'Bosses',         icon:'🏆', col:'#f0883e', href:'/Pages/More_Pages/bossing.html',       future:false },
+  { id:'quests',   label:'Quests',         icon:'📝', col:'#3fb950', href:'/Pages/More_Pages/quests.html',        future:false },
 ];
 
 // ─── Lookup tables ────────────────────────────────────────────────────────────
 
 // Fairy rings — [code, destination, region]
 const RING_DATA = [
-  ['AIQ','Mudskipper Point','Feldip Hills'],['AIR','Gorak Plane','Gorak Plane'],
-  ['AIS','Island east of Trollheim','Troll Country'],['AJQ','Cave south of Dorgesh-Kaan','Dorgesh-Kaan'],
-  ['AJR','Slayer Tower','Morytania'],['AJS','North of Witchaven','Kandarin'],
-  ['AKQ','Realm of the Fisher King','Enchanted Valley'],['AKS','Feldip Hills','Feldip Hills'],
-  ['ALP','Lighthouse','Kandarin'],['ALQ','Haunted Mine','Morytania'],
-  ['ALR','Abyssal Area','Abyss'],['ALS','Cemetery (south of Port Phasmatys)','Morytania'],
-  ['BIP',"South-west of Rantz's cave",'Feldip Hills'],['BIQ',"Wizards' Tower",'Misthalin'],
-  ['BIS','Ardougne Zoo','Kandarin'],['BJQ','Ship Yard (Karamja)','Karamja'],
-  ['BJR','Encounters in The Abyss','Abyss'],['BJS',"Near Zulrah's Shrine",'Tirannwn'],
-  ['BKP','South of Canifis','Morytania'],['BKQ','Enchanted Valley','Enchanted Valley'],
-  ['BKR','Mort Myre Swamp','Morytania'],['BKS','Penguins near Miscellania','Fremennik'],
-  ['BLP','TzHaar City','Karamja'],['BLQ','West of Nardah','Kharidian Desert'],
-  ['BLR',"Legends' Guild",'Kandarin'],['CIP','Miscellania','Fremennik'],
-  ['CIQ','Fremennik Slayer Dungeon','Fremennik'],["CIR","Gu'Tanoth",'Kandarin'],
-  ['CIS','South of Dorgesh-Kaan','Dorgesh-Kaan'],['CJR','Sinclair Mansion','Kandarin'],
-  ['CKP','Corsair Cove','Feldip Hills'],['CKR','South of Tai Bwo Wannai','Karamja'],
-  ['CKS','Canifis (Mort Myre)','Morytania'],["CLP","McGrubor's Wood",'Kandarin'],
-  ['CLR','Elf Camp','Tirannwn'],["CLS","Hazelmere's Island",'Kandarin'],
-  ['DIP','Haunted Woods east of Canifis','Morytania'],['DIR','Gorak Plane (second)','Gorak Plane'],
-  ['DIS','Fairy Resistance Hideout','Zanaris'],['DJP','Tower of Life','Kandarin'],
-  ['DJR','Keldagrim entrance','Fremennik'],['DKP','Piscatoris Fishing Colony','Kandarin'],
-  ['DKQ','Iceberg (Penguins)','Fremennik'],['DKR','Edgeville','Misthalin'],
-  ['DKS','Snowy Hunter Area','Fremennik'],['DLQ','North of Nardah','Kharidian Desert'],
-  ['DLR','Poison Waste','Tirannwn'],['DLS','Myreque Hideout entrance','Morytania'],
+  // ── A codes ──
+  ['AIQ','Mudskipper Point',                     'Asgarnia'],
+  ['AIR','South-east of Ardougne (empty island)','Islands'],
+  ['AIS','Auburn Valley',                        'Varlamore'],
+  ['AJP','Avium Savannah',                       'Varlamore'],
+  ['AJQ','Cave south of Dorgesh-Kaan',           'Dungeons'],
+  ['AJR','Slayer cave SE of Rellekka',           'Kandarin'],
+  ['AJS','Penguins near Miscellania',            'Islands'],
+  ['AKP','Necropolis',                           'Kharidian Desert'],
+  ['AKQ','Piscatoris Hunter area',               'Kandarin'],
+  ['AKR','Hosidius Vinery',                      'Great Kourend'],
+  ['AKS','Feldip Hunter area',                   'Feldip Hills'],
+  ['ALP','Lighthouse',                           'Islands'],
+  ['ALQ','Haunted Woods east of Canifis',        'Morytania'],
+  ['ALR','Abyssal Area',                         'Other Realms'],
+  ['ALS',"McGrubor's Wood",                      'Kandarin'],
+  // ── B codes ──
+  ['BIP','South-west of Mort Myre (empty island)','Islands'],
+  ['BIQ','Near Kalphite Hive',                   'Kharidian Desert'],
+  ['BIS','Ardougne Zoo',                         'Kandarin'],
+  ['BJP','Isle of Souls',                        'Islands'],
+  ['BJR','Realm of the Fisher King',             'Other Realms'],
+  ['BJS','Near Zul-Andra',                       'Islands'],
+  ['BKP','Chompy Marsh, south of Castle Wars',   'Feldip Hills'],
+  ['BKQ','Enchanted Valley',                     'Other Realms'],
+  ['BKR','Mort Myre Swamp, south of Canifis',    'Morytania'],
+  ['BKS','Zanaris',                              'Other Realms'],
+  ['BLP','TzHaar area',                          'Karamja'],
+  ['BLQ',"Yu'biusk",                             'Other Realms'],
+  ['BLR',"Legends' Guild",                       'Kandarin'],
+  ['BLS','South of Mount Quidamortem',           'Kebos Lowlands'],
+  // ── C codes ──
+  ['CIP','Miscellania',                          'Fremennik'],
+  ['CIQ','North-west of Yanille',                'Kandarin'],
+  ['CIR','South of Mount Karuulm',               'Kebos Lowlands'],
+  ['CIS','Arceuus Library',                      'Great Kourend'],
+  ['CJQ','The Great Conch',                      'Other Realms'],
+  ['CJR','Sinclair Mansion (east)',               'Kandarin'],
+  ['CKP',"Cosmic entity's plane",                'Other Realms'],
+  ['CKQ','Aldarin',                              'Varlamore'],
+  ['CKR','South of Tai Bwo Wannai Village',      'Karamja'],
+  ['CKS','Canifis',                              'Morytania'],
+  ['CLP','Draynor island',                       'Islands'],
+  ['CLR','Ape Atoll',                            'Islands'],
+  ['CLS',"Hazelmere's house",                    'Islands'],
+  // ── D codes ──
+  ['DIP','Abyssal Nexus (Abyssal Sire)',         'Other Realms'],
+  ['DIQ','Player-owned house (superior garden)', 'POH'],
+  ['DIR',"Gorak's Plane",                        'Other Realms'],
+  ['DIS',"Wizards' Tower",                       'Misthalin'],
+  ['DJP','Tower of Life',                        'Kandarin'],
+  ['DJR','Chasm of Fire',                        'Great Kourend'],
+  ['DKP','Gnome glider, Karamja',                'Karamja'],
+  ['DKR','Edgeville',                            'Misthalin'],
+  ['DKS','Polar Hunter area / Keldagrim entrance','Fremennik'],
+  ['DLP','Grimstone Dungeon',                    'Other Realms'],
+  ['DLQ','North of Nardah',                      'Kharidian Desert'],
+  ['DLR','Poison Waste south of Isafdar',        'Tirannwn'],
+  ['DLS','Myreque hideout under The Hollows',    'Morytania'],
 ];
 const RING_MAP = Object.fromEntries(RING_DATA.map(r => [r[0], { dest:r[1], region:r[2] }]));
 
@@ -461,7 +507,9 @@ function getAllBookmarks() {
     clues:    readStore(KEYS.clues),
     rings:    readStore(KEYS.rings),
     timers:   readStore(KEYS.timers),
-    goals:    readGoals(),             // scans multiple possible keys
+    goals:    readGoals(),
+    clog:     readStore(KEYS.clog),    // array of entry IDs
+    ge:       readStore(KEYS.ge).map(Number).filter(Boolean), // GE stores numbers
     monsters: readStore(KEYS.monsters),
     bosses:   readStore(KEYS.bosses),
     quests:   readStore(KEYS.quests),
@@ -590,6 +638,10 @@ function sectionHtml(src, ids) {
   if (ids.length === 0) {
     const emptyMsg = src.id === 'goals'
       ? `No goals set yet. <a href="${src.href}">Open Goals</a> to add one.`
+      : src.id === 'clog'
+      ? `No logs bookmarked yet. <a href="${src.href}">Open Collection Log</a>, expand any entry and tap 🔖 Save Log.`
+      : src.id === 'ge'
+      ? `No items on your GE watchlist. <a href="${src.href}">Open Grand Exchange</a> and tap 🔖 Watch on any item.`
       : src.id === 'bosses'
       ? `No bosses bookmarked yet. <a href="${src.href}">Open Bossing</a> and tap 🔖 on any boss to save it here.`
       : src.id === 'quests'
@@ -599,10 +651,10 @@ function sectionHtml(src, ids) {
   }
 
   // Goals: ids is an array of goal objects — pass each object directly
-  // Everything else: ids is an array of string IDs
+  // Clog/GE/everything else: ids is an array of string or number IDs
   const cards = src.id === 'goals'
     ? ids.map(goalObj => goalCardHtml(goalObj)).join('')
-    : ids.map(id => cardHtml(src, id)).join('');
+    : ids.map(id => cardHtml(src, String(id))).join('');
 
   return `<div class="bm-section">${headerHtml}${cards}</div>`;
 }
@@ -635,6 +687,29 @@ function cardHtml(src, id) {
       ? `<span class="bm-badge">${t.group}</span> <span class="bm-badge">⏱ ${t.dur}</span>`
       : `<span class="bm-badge">✏️ Custom</span>`;
     icon  = '⏰';
+  }
+  else if (src.id === 'clog') {
+    // id is a clog entry ID string like "sire", "barrows", "tob"
+    // Look up from the embedded CLOG_LOOKUP table
+    const entry = CLOG_LOOKUP[id];
+    if (!entry) { title = id; meta = `<span class="bm-badge">📒 Collection Log</span>`; icon = '📒'; }
+    else {
+      title = entry.name;
+      icon  = entry.icon;
+      meta  = `<span class="bm-badge">📒 ${entry.cat.charAt(0).toUpperCase()+entry.cat.slice(1)}</span> <span class="bm-badge">${entry.items} items</span>`;
+    }
+  }
+  else if (src.id === 'ge') {
+    // id is a numeric item ID — look up from GE_ITEMS if loaded, else show raw id
+    const item = GE_ITEMS[id];
+    if (!item) { title = `Item #${id}`; meta = `<span class="bm-badge">💰 GE</span>`; icon = '💰'; }
+    else {
+      title = item.name;
+      icon  = item.icon
+        ? `<img src="https://oldschool.runescape.wiki/images/${item.icon.replace(/ /g,'_')}" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated" onerror="this.style.display='none'">`
+        : '💰';
+      meta  = `<span class="bm-badge">💰 GE Watchlist</span>${item.members ? ' <span class="bm-badge" style="color:#f1c40f;border-color:rgba(241,196,15,.3)">Members</span>' : ''}`;
+    }
   }
   else if (src.id === 'monsters') {
     title = id;
@@ -747,6 +822,7 @@ document.querySelectorAll('.theme-chip').forEach(btn => {
 
 // ─── Init ──────────────────────────────────────────────────────────────────────
 initPage({ activePage:'more' });
+loadGEItems(); // async — populates GE item names for watchlist cards
 render();
 
 // Re-render when tab regains focus (bookmarks may have changed on another page)
