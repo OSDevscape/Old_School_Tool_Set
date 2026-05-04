@@ -470,9 +470,9 @@ export const settings = {
 
 const NAV_PAGES = [
   { id: 'home',     label: 'Home',     icon: '🏠',  href: '/index.html' },
-  { id: 'overview', label: 'Dashboard', icon: '📱',   href:'/Pages/overview.html' },
-  { id: 'skills',   label: 'Skills',   icon: null,   href: '/Pages/skills.html', imgIcon: 'https://oldschool.runescape.wiki/images/thumb/Skills_icon.png/80px-Skills_icon.png' },
-  { id: 'gains',    label: 'Gains',    icon: '📈',  href: '/Pages/gains.html' },
+  { id: 'overview', label: 'Dashboard', icon: '📱',   href:'/src/features/overview/overview.html' },
+  { id: 'skills',   label: 'Skills',   icon: null,   href: '/src/features/skills/skills.html', imgIcon: 'https://oldschool.runescape.wiki/images/thumb/Skills_icon.png/80px-Skills_icon.png' },
+  { id: 'gains',    label: 'Gains',    icon: '📈',  href: '/src/features/gains/gains.html' },
   { id: 'more',     label: 'More',     icon: '…',   href: null },
 ];
 
