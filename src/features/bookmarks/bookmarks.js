@@ -1,0 +1,640 @@
+import { initPage, showToast, settings } from '/src/app/shared.js';
+
+// ─── Storage keys for every bookmarkable system in OSTS ───────────────────────
+const KEYS = {
+  clues:    'osts_clue_bookmarks_v2',
+  rings:    'osts_fairy_pins_v1',
+  timers:   'osts_timer_pins_v2',
+  goals:    'osts-goals-v1',
+  clog:     'osts_clog_bookmarks_v2',   // array of entry IDs (Collection Log)
+  ge:       'osts_ge_watchlist_v2',      // array of item IDs (Grand Exchange, stored as numbers)
+  monsters: 'osts_bestiary_bookmarks_v2',
+  bosses:   'osts_boss_bookmarks_v2',
+  quests:   'osts_quest_bookmarks_v2',
+};
+
+// ─── Collection Log entry lookup (name + cat + item count) ──────────────────
+// Compact version of CLOG_DATA for the bookmarks page
+const CLOG_LOOKUP = {
+  sire:{name:"Abyssal Sire",cat:"bosses",icon:"🌀",items:9},ahydra:{name:"Alchemical Hydra",cat:"bosses",icon:"🐍",items:11},
+  amoxliatl:{name:"Amoxliatl",cat:"bosses",icon:"❄️",items:4},araxxor:{name:"Araxxor",cat:"bosses",icon:"🕷️",items:10},
+  barrows:{name:"Barrows Chests",cat:"bosses",icon:"⚰️",items:25},brutus:{name:"Brutus",cat:"bosses",icon:"🐄",items:4},
+  bryophyta:{name:"Bryophyta",cat:"bosses",icon:"🌿",items:1},callisto:{name:"Callisto & Artio",cat:"bosses",icon:"🐻",items:6},
+  cerberus:{name:"Cerberus",cat:"bosses",icon:"🐕",items:7},chaos_ele:{name:"Chaos Elemental",cat:"bosses",icon:"💜",items:3},
+  chaos_fan:{name:"Chaos Fanatic",cat:"bosses",icon:"🤪",items:3},zilyana:{name:"Commander Zilyana",cat:"bosses",icon:"⚔️",items:8},
+  corp:{name:"Corporeal Beast",cat:"bosses",icon:"👻",items:7},crazy_arch:{name:"Crazy Archaeologist",cat:"bosses",icon:"🎩",items:3},
+  dagannoth:{name:"Dagannoth Kings",cat:"bosses",icon:"👑",items:10},deranged:{name:"Deranged Archaeologist",cat:"bosses",icon:"🔩",items:1},
+  doom_mok:{name:"Doom of Mokhaiotl",cat:"bosses",icon:"😈",items:6},duke:{name:"Duke Sucellus",cat:"bosses",icon:"🧊",items:10},
+  fight_caves:{name:"The Fight Caves",cat:"bosses",icon:"🔥",items:2},fortis_col:{name:"Fortis Colosseum",cat:"bosses",icon:"🏟️",items:9},
+  gauntlet:{name:"The Gauntlet",cat:"bosses",icon:"💎",items:5},graardor:{name:"General Graardor",cat:"bosses",icon:"🟠",items:8},
+  mole:{name:"Giant Mole",cat:"bosses",icon:"🦔",items:3},gargs:{name:"Grotesque Guardians",cat:"bosses",icon:"🗿",items:7},
+  hespori:{name:"Hespori",cat:"bosses",icon:"🌺",items:4},hueycoatl:{name:"The Hueycoatl",cat:"bosses",icon:"🐊",items:6},
+  inferno:{name:"The Inferno",cat:"bosses",icon:"🌋",items:2},kq:{name:"Kalphite Queen",cat:"bosses",icon:"🦂",items:6},
+  kbd:{name:"King Black Dragon",cat:"bosses",icon:"🐲",items:4},kraken:{name:"Kraken",cat:"bosses",icon:"🦑",items:4},
+  kreearra:{name:"Kree'arra",cat:"bosses",icon:"🦅",items:8},kril:{name:"K'ril Tsutsaroth",cat:"bosses",icon:"😡",items:8},
+  leviathan:{name:"The Leviathan",cat:"bosses",icon:"🌊",items:10},moons:{name:"Moons of Peril",cat:"bosses",icon:"🌙",items:13},
+  nex:{name:"Nex",cat:"bosses",icon:"💠",items:8},nightmare:{name:"The Nightmare",cat:"bosses",icon:"😴",items:12},
+  obor:{name:"Obor",cat:"bosses",icon:"🦴",items:1},ph_muspah:{name:"Phantom Muspah",cat:"bosses",icon:"👁️",items:6},
+  royal_titans:{name:"Royal Titans",cat:"bosses",icon:"👑",items:7},sarachnis:{name:"Sarachnis",cat:"bosses",icon:"🕸️",items:5},
+  scorpia:{name:"Scorpia",cat:"bosses",icon:"🦂",items:4},scurrius:{name:"Scurrius",cat:"bosses",icon:"🐀",items:2},
+  shellbane:{name:"Shellbane Gryphon",cat:"bosses",icon:"🦅",items:4},skotizo:{name:"Skotizo",cat:"bosses",icon:"🔴",items:6},
+  tempoross:{name:"Tempoross",cat:"bosses",icon:"🌊",items:12},thermy:{name:"Thermonuclear Smoke Devil",cat:"bosses",icon:"💨",items:5},
+  vardorvis:{name:"Vardorvis",cat:"bosses",icon:"🩸",items:10},venenatis:{name:"Venenatis & Spindel",cat:"bosses",icon:"🕷️",items:6},
+  vetion:{name:"Vet'ion & Calvar'ion",cat:"bosses",icon:"💀",items:6},vorkath:{name:"Vorkath",cat:"bosses",icon:"🐉",items:6},
+  whisperer:{name:"The Whisperer",cat:"bosses",icon:"🌑",items:10},wintertodt:{name:"Wintertodt",cat:"bosses",icon:"❄️",items:10},
+  yama:{name:"Yama",cat:"bosses",icon:"🔥",items:11},zalcano:{name:"Zalcano",cat:"bosses",icon:"⛏️",items:4},
+  zulrah:{name:"Zulrah",cat:"bosses",icon:"🐍",items:10},
+  cox:{name:"Chambers of Xeric",cat:"raids",icon:"🏔️",items:23},tob:{name:"Theatre of Blood",cat:"raids",icon:"🩸",items:17},
+  toa:{name:"Tombs of Amascut",cat:"raids",icon:"🏺",items:27},
+  clue_begin:{name:"Beginner Trails",cat:"clues",icon:"📜",items:16},clue_easy:{name:"Easy Trails",cat:"clues",icon:"🟢",items:131},
+  clue_med:{name:"Medium Trails",cat:"clues",icon:"🔵",items:115},clue_hard:{name:"Hard Trails",cat:"clues",icon:"🟠",items:134},
+  clue_elite:{name:"Elite Trails",cat:"clues",icon:"🟣",items:59},clue_master:{name:"Master Trails",cat:"clues",icon:"⭐",items:49},
+  clue_hard_rare:{name:"Hard Trails (Rare)",cat:"clues",icon:"💎",items:24},
+  clue_elite_rare:{name:"Elite Trails (Rare)",cat:"clues",icon:"💎",items:39},
+  clue_master_rare:{name:"Master Trails (Rare)",cat:"clues",icon:"💎",items:45},
+  clue_shared:{name:"Shared Trail Rewards",cat:"clues",icon:"📦",items:49},
+  scroll_cases:{name:"Scroll Cases",cat:"clues",icon:"📦",items:13},
+};
+
+// ─── GE item name lookup — loaded async from Wiki prices API ─────────────────
+let GE_ITEMS = {}; // id (number) → {name, icon, members}
+async function loadGEItems() {
+  try {
+    const r = await fetch('https://prices.runescape.wiki/api/v1/osrs/mapping', { headers:{ Accept:'application/json' } });
+    if (!r.ok) return;
+    const data = await r.json();
+    GE_ITEMS = {};
+    for (const item of data) GE_ITEMS[item.id] = { name: item.name, icon: item.icon || '', members: item.members };
+    // Re-render if GE section is visible
+    render();
+  } catch {}
+}
+
+// ─── Source definitions ───────────────────────────────────────────────────────
+const SOURCES = [
+  { id:'clues',    label:'Clue Scrolls',   icon:'📜', col:'#b388ff', href:'/Pages/More_Pages/clueScrolls.html',   future:false },
+  { id:'rings',    label:'Fairy Rings',    icon:'🍄', col:'#c9a35a', href:'/Pages/More_Pages/fairyRings.html',    future:false },
+  { id:'timers',   label:'Timers',         icon:'⏰', col:'#58a6ff', href:'/Pages/More_Pages/timers.html',         future:false },
+  { id:'goals',    label:'Goals',          icon:'📊', col:'#f1c40f', href:'/Pages/More_Pages/goals.html',         future:false },
+  { id:'clog',     label:'Collection Log', icon:'📒', col:'#3fb950', href:'/Pages/More_Pages/collectionLog.html', future:false },
+  { id:'ge',       label:'GE Watchlist',   icon:'💰', col:'#e8a030', href:'/Pages/More_Pages/grandExchange.html', future:false },
+  { id:'monsters', label:'Monsters',       icon:'🐉', col:'#e74c3c', href:'/Pages/More_Pages/bestiary.html',      future:true  },
+  { id:'bosses',   label:'Bosses',         icon:'🏆', col:'#f0883e', href:'/Pages/More_Pages/bossing.html',       future:false },
+  { id:'quests',   label:'Quests',         icon:'📝', col:'#3fb950', href:'/Pages/More_Pages/quests.html',        future:false },
+];
+
+// ─── Lookup tables ────────────────────────────────────────────────────────────
+
+// Fairy rings — [code, destination, region]
+const RING_DATA = [
+  // ── A codes ──
+  ['AIQ','Mudskipper Point',                     'Asgarnia'],
+  ['AIR','South-east of Ardougne (empty island)','Islands'],
+  ['AIS','Auburn Valley',                        'Varlamore'],
+  ['AJP','Avium Savannah',                       'Varlamore'],
+  ['AJQ','Cave south of Dorgesh-Kaan',           'Dungeons'],
+  ['AJR','Slayer cave SE of Rellekka',           'Kandarin'],
+  ['AJS','Penguins near Miscellania',            'Islands'],
+  ['AKP','Necropolis',                           'Kharidian Desert'],
+  ['AKQ','Piscatoris Hunter area',               'Kandarin'],
+  ['AKR','Hosidius Vinery',                      'Great Kourend'],
+  ['AKS','Feldip Hunter area',                   'Feldip Hills'],
+  ['ALP','Lighthouse',                           'Islands'],
+  ['ALQ','Haunted Woods east of Canifis',        'Morytania'],
+  ['ALR','Abyssal Area',                         'Other Realms'],
+  ['ALS',"McGrubor's Wood",                      'Kandarin'],
+  // ── B codes ──
+  ['BIP','South-west of Mort Myre (empty island)','Islands'],
+  ['BIQ','Near Kalphite Hive',                   'Kharidian Desert'],
+  ['BIS','Ardougne Zoo',                         'Kandarin'],
+  ['BJP','Isle of Souls',                        'Islands'],
+  ['BJR','Realm of the Fisher King',             'Other Realms'],
+  ['BJS','Near Zul-Andra',                       'Islands'],
+  ['BKP','Chompy Marsh, south of Castle Wars',   'Feldip Hills'],
+  ['BKQ','Enchanted Valley',                     'Other Realms'],
+  ['BKR','Mort Myre Swamp, south of Canifis',    'Morytania'],
+  ['BKS','Zanaris',                              'Other Realms'],
+  ['BLP','TzHaar area',                          'Karamja'],
+  ['BLQ',"Yu'biusk",                             'Other Realms'],
+  ['BLR',"Legends' Guild",                       'Kandarin'],
+  ['BLS','South of Mount Quidamortem',           'Kebos Lowlands'],
+  // ── C codes ──
+  ['CIP','Miscellania',                          'Fremennik'],
+  ['CIQ','North-west of Yanille',                'Kandarin'],
+  ['CIR','South of Mount Karuulm',               'Kebos Lowlands'],
+  ['CIS','Arceuus Library',                      'Great Kourend'],
+  ['CJQ','The Great Conch',                      'Other Realms'],
+  ['CJR','Sinclair Mansion (east)',               'Kandarin'],
+  ['CKP',"Cosmic entity's plane",                'Other Realms'],
+  ['CKQ','Aldarin',                              'Varlamore'],
+  ['CKR','South of Tai Bwo Wannai Village',      'Karamja'],
+  ['CKS','Canifis',                              'Morytania'],
+  ['CLP','Draynor island',                       'Islands'],
+  ['CLR','Ape Atoll',                            'Islands'],
+  ['CLS',"Hazelmere's house",                    'Islands'],
+  // ── D codes ──
+  ['DIP','Abyssal Nexus (Abyssal Sire)',         'Other Realms'],
+  ['DIQ','Player-owned house (superior garden)', 'POH'],
+  ['DIR',"Gorak's Plane",                        'Other Realms'],
+  ['DIS',"Wizards' Tower",                       'Misthalin'],
+  ['DJP','Tower of Life',                        'Kandarin'],
+  ['DJR','Chasm of Fire',                        'Great Kourend'],
+  ['DKP','Gnome glider, Karamja',                'Karamja'],
+  ['DKR','Edgeville',                            'Misthalin'],
+  ['DKS','Polar Hunter area / Keldagrim entrance','Fremennik'],
+  ['DLP','Grimstone Dungeon',                    'Other Realms'],
+  ['DLQ','North of Nardah',                      'Kharidian Desert'],
+  ['DLR','Poison Waste south of Isafdar',        'Tirannwn'],
+  ['DLS','Myreque hideout under The Hollows',    'Morytania'],
+];
+const RING_MAP = Object.fromEntries(RING_DATA.map(r => [r[0], { dest:r[1], region:r[2] }]));
+
+// Timers — id → { name, group, dur }
+const TIMER_DATA = [
+  // Herbs
+  ['guam','Guam','🌿 Herb','1h 20m'],['marrentill','Marrentill','🌿 Herb','1h 20m'],
+  ['tarromin','Tarromin','🌿 Herb','1h 20m'],['harralander','Harralander','🌿 Herb','1h 20m'],
+  ['ranarr','Ranarr','🌿 Herb','1h 20m'],['toadflax','Toadflax','🌿 Herb','1h 20m'],
+  ['irit','Irit','🌿 Herb','1h 20m'],['avantoe','Avantoe','🌿 Herb','1h 20m'],
+  ['kwuarm','Kwuarm','🌿 Herb','1h 20m'],['snapdragon','Snapdragon','🌿 Herb','1h 20m'],
+  ['cadantine','Cadantine','🌿 Herb','1h 20m'],['lantadyme','Lantadyme','🌿 Herb','1h 20m'],
+  ['dwarf-weed','Dwarf Weed','🌿 Herb','1h 20m'],['torstol','Torstol','🌿 Herb','1h 20m'],
+  // Allotments
+  ['potato','Potato','❖ Allotment','40m'],['onion','Onion','❖ Allotment','40m'],
+  ['tomato','Tomato','❖ Allotment','40m'],['sweetcorn','Sweetcorn','❖ Allotment','1h'],
+  ['strawberry','Strawberry','❖ Allotment','1h'],['watermelon','Watermelon','❖ Allotment','1h 20m'],
+  // Trees
+  ['oak','Oak','🌲 Tree','2h 40m'],['willow','Willow','🌲 Tree','4h'],
+  ['maple','Maple','🌲 Tree','5h 20m'],['yew','Yew','🌲 Tree','6h 40m'],
+  ['magic-tree','Magic Tree','🌲 Tree','8h'],
+  // Fruit Trees
+  ['apple','Apple','🍎 Fruit Tree','16h'],['banana','Banana','🍎 Fruit Tree','16h'],
+  ['orange','Orange','🍎 Fruit Tree','16h'],['pineapple','Pineapple','🍎 Fruit Tree','16h'],
+  ['papaya','Papaya','🍎 Fruit Tree','16h'],['palm','Palm','🍎 Fruit Tree','16h'],
+  ['dragonfruit','Dragonfruit','🍎 Fruit Tree','16h'],
+  // Birdhouses
+  ['bird-house','Bird House','◉ Birdhouse','50m'],['oak-bird-house','Oak Bird House','◉ Birdhouse','50m'],
+  ['willow-bird-house','Willow Bird House','◉ Birdhouse','50m'],
+  ['teak-bird-house','Teak Bird House','◉ Birdhouse','50m'],
+  ['maple-bird-house','Maple Bird House','◉ Birdhouse','50m'],
+  ['yew-bird-house','Yew Bird House','◉ Birdhouse','50m'],
+  ['magic-bird-house','Magic Bird House','◉ Birdhouse','50m'],
+  ['redwood-bird-house','Redwood Bird House','◉ Birdhouse','50m'],
+  // Extras
+  ['battlestaves','Battlestaves','⋯ Daily','24h'],['herb-boxes','Herb Boxes','⋯ Daily','24h'],
+  ['kingdom','Kingdom of Miscellania','⋯ Daily','24h'],['tears','Tears of Guthix','⋯ Weekly','168h'],
+];
+const TIMER_MAP = Object.fromEntries(TIMER_DATA.map(t => [t[0], { name:t[1], group:t[2], dur:t[3] }]));
+
+// Clues — compact lookup (matches clueScrolls.html IDs)
+const TIER_COL  = { easy:'#3fb950', medium:'#58a6ff', hard:'#f0883e', elite:'#b388ff', master:'#ffd700' };
+const TYPE_ICON = { anagram:'🔤', cipher:'🔒', cryptic:'🗺️', coordinate:'📍', emote:'💃', map:'🗺', puzzle:'🧩', 'hot-cold':'🌡️' };
+const CLUE_DATA = {
+  // Easy
+  e1:{clue:'AN EARL',solution:'Ranael',tier:'easy',type:'anagram'},
+  e2:{clue:'CARPET AHOY',solution:'Apothecary',tier:'easy',type:'anagram'},
+  e3:{clue:'EEK ZERO OP',solution:'Zookeeper',tier:'easy',type:'anagram'},
+  e4:{clue:'LARK IN DOG',solution:'King Roald',tier:'easy',type:'anagram'},
+  e5:{clue:'SAND NUT',solution:'Dunstan',tier:'easy',type:'anagram'},
+  e6:{clue:'SEQUIN DIRGE',solution:'Queen Sigrid',tier:'easy',type:'anagram'},
+  e7:{clue:'BAIL TRIMS',solution:'Brimstail',tier:'easy',type:'anagram'},
+  e8:{clue:'Speak to Ned in Draynor Village.',solution:'Talk to Ned',tier:'easy',type:'cryptic'},
+  e9:{clue:'Talk to the bartender of the Rusty Anchor.',solution:'Bartender',tier:'easy',type:'cryptic'},
+  e10:{clue:'Talk to the Doomsayer.',solution:'Doomsayer',tier:'easy',type:'cryptic'},
+  e11:{clue:"Speak to the Seers' Village hairdresser.",solution:'Hairdresser',tier:'easy',type:'cryptic'},
+  e12:{clue:"Talk to Wayne's Chains in Falador.",solution:'Wayne',tier:'easy',type:'cryptic'},
+  e13:{clue:'In a town where guards carry crossbows, talk to the museum curator.',solution:'Curator Haig Halen',tier:'easy',type:'cryptic'},
+  e14:{clue:'X marks the spot (Draynor Village)',solution:'Dig at X',tier:'easy',type:'map'},
+  e15:{clue:'X marks the spot (Lumbridge Swamp)',solution:'Dig at X',tier:'easy',type:'map'},
+  e16:{clue:"00° 05' N, 01° 13' E",solution:'Dig',tier:'easy',type:'coordinate'},
+  e17:{clue:"00° 13' S, 07° 08' E",solution:'Dig',tier:'easy',type:'coordinate'},
+  // Medium
+  m1:{clue:'A ZEN SHE',solution:'Zenesha',tier:'medium',type:'anagram'},
+  m2:{clue:'ERR CURE IT',solution:'Recruiter',tier:'medium',type:'anagram'},
+  m3:{clue:'ARM CITY',solution:'Marcy',tier:'medium',type:'anagram'},
+  m4:{clue:'MOTHERBOARD',solution:'Brother Omad',tier:'medium',type:'anagram'},
+  m5:{clue:'GUHCHO',solution:'(ROT-3 decode)',tier:'medium',type:'cipher'},
+  m6:{clue:'Speak to Ellis in Al Kharid.',solution:'Ellis',tier:'medium',type:'cryptic'},
+  m7:{clue:"Talk to the Squire at the White Knights' Castle.",solution:'Squire',tier:'medium',type:'cryptic'},
+  m8:{clue:"Panic at the Agility Pyramid wearing a Pharaoh's sceptre.",solution:'Panic emote',tier:'medium',type:'emote'},
+  m9:{clue:'Cry in the Catherby bank wearing Snakeskin bandana, dragonhide chaps, amulet of magic.',solution:'Cry emote',tier:'medium',type:'emote'},
+  m10:{clue:"01° 18' N, 14° 15' E",solution:'Dig',tier:'medium',type:'coordinate'},
+  m11:{clue:"03° 39' S, 13° 58' E",solution:'Dig',tier:'medium',type:'coordinate'},
+  // Hard
+  h1:{clue:'RATAI',solution:'Tarai',tier:'hard',type:'anagram'},
+  h2:{clue:"Scattered coins in the far corner (Rogues' Den).",solution:'Search chest',tier:'hard',type:'cryptic'},
+  h3:{clue:"The beasts retreat for their Queen. Dig near her bed.",solution:'Dig (Kalphite Lair)',tier:'hard',type:'cryptic'},
+  h4:{clue:"Talk to the gnome pilot north of Oo'glog.",solution:'Waydar',tier:'hard',type:'cryptic'},
+  h5:{clue:"Flap in the Warrior's Guild bank with Dragon Halberd.",solution:'Flap emote',tier:'hard',type:'emote'},
+  h6:{clue:'Spin in Varrock Castle courtyard in black armour.',solution:'Spin emote',tier:'hard',type:'emote'},
+  h7:{clue:"09° 33' N, 02° 15' E",solution:'Dig',tier:'hard',type:'coordinate'},
+  h8:{clue:"12° 45' N, 20° 09' E",solution:'Dig (Wilderness)',tier:'hard',type:'coordinate'},
+  // Elite
+  el1:{clue:"Fiendish cooks don't dig near their ovens.",solution:"Dig (Cooks' Guild)",tier:'elite',type:'cryptic'},
+  el2:{clue:'Buried in the centre of Ape Atoll.',solution:'Dig (Ape Atoll)',tier:'elite',type:'cryptic'},
+  el3:{clue:"Search boxes outside the Legends' Guild.",solution:'Search boxes',tier:'elite',type:'cryptic'},
+  el4:{clue:'Cry in the TzHaar gem store wearing fire cape and Obsidian shield.',solution:'Cry emote',tier:'elite',type:'emote'},
+  el5:{clue:"13° 46' N, 21° 37' E",solution:'Dig (Waterbirth Island)',tier:'elite',type:'coordinate'},
+  el6:{clue:"04° 41' S, 22° 30' E",solution:'Dig (Shilo Village)',tier:'elite',type:'coordinate'},
+  // Master
+  mas1:{clue:'IN BAR',solution:'Brain',tier:'master',type:'anagram'},
+  mas2:{clue:'Dig in front of the icy altar.',solution:'Dig (GWD)',tier:'master',type:'cryptic'},
+  mas3:{clue:"Dance at Fishing Trawler in full Angler's outfit.",solution:'Dance emote',tier:'master',type:'emote'},
+  mas4:{clue:"24° 58' N, 22° 45' E",solution:'Dig (Weiss)',tier:'master',type:'coordinate'},
+  mas5:{clue:"11° 41' N, 14° 58' E",solution:'Dig (Wilderness)',tier:'master',type:'coordinate'},
+  mas6:{clue:'Hot/Cold — use the Strange device.',solution:'Follow readings',tier:'master',type:'hot-cold'},
+  // Puzzles
+  'pz-castle':{clue:'Castle puzzle box',solution:'Slide puzzle',tier:'hard',type:'puzzle'},
+  'pz-troll':{clue:'Troll puzzle box',solution:'Slide puzzle',tier:'hard',type:'puzzle'},
+  'pz-tree':{clue:'Tree puzzle box',solution:'Slide puzzle',tier:'hard',type:'puzzle'},
+  'pz-gnome':{clue:'Gnome Child puzzle box',solution:'Slide puzzle',tier:'master',type:'puzzle'},
+  'pz-cerberus':{clue:'Cerberus puzzle box',solution:'Slide puzzle',tier:'master',type:'puzzle'},
+  'pz-zulrah':{clue:'Zulrah puzzle box',solution:'Slide puzzle',tier:'master',type:'puzzle'},
+  'pz-tob':{clue:'Theatre of Blood puzzle box',solution:'Slide puzzle',tier:'master',type:'puzzle'},
+};
+
+// ─── Read all bookmark stores ─────────────────────────────────────────────────
+function readStore(key) {
+  try { return JSON.parse(localStorage.getItem(key) || '[]'); }
+  catch { return []; }
+}
+
+// Goals use a different key than the rest, and the exact key might vary
+// between versions of the goals page. Scan all likely candidates + any
+// localStorage key that looks like a goal array.
+function readGoals() {
+  const candidates = [
+    'osts-goals-v1', 'osts_goals_v1',
+    'osts-goals-v2', 'osts_goals_v2',
+    'osts-goals',    'osts_goals',
+  ];
+  // Try known keys first
+  for (const k of candidates) {
+    try {
+      const raw  = localStorage.getItem(k);
+      if (!raw) continue;
+      const data = JSON.parse(raw);
+      if (Array.isArray(data) && data.length > 0) return data;
+    } catch {}
+  }
+  // Fallback: scan every localStorage key for any array of goal-shaped objects
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key  = localStorage.key(i);
+      if (!key) continue;
+      if (!key.toLowerCase().includes('goal')) continue;
+      const data = JSON.parse(localStorage.getItem(key) || 'null');
+      if (Array.isArray(data) && data.length > 0 && data[0]?.id && data[0]?.name) {
+        console.log('[OSTS Bookmarks] Goals found at key:', key);
+        return data;
+      }
+    }
+  } catch {}
+  return [];
+}
+
+// Merge custom timers from timers.html into the lookup at render time
+function buildTimerLookup() {
+  const map = { ...TIMER_MAP }; // start with built-ins
+  try {
+    const customs = JSON.parse(localStorage.getItem('osts_custom_timers_v2') || '[]');
+    customs.forEach(t => {
+      if (t && t.id) {
+        map[t.id] = {
+          name:  t.name  || t.id,
+          group: '✏️ ' + (t.categoryLabel || 'Custom'),
+          dur:   t.dur   || '?',
+        };
+      }
+    });
+  } catch {}
+  return map;
+}
+
+function getAllBookmarks() {
+  return {
+    clues:    readStore(KEYS.clues),
+    rings:    readStore(KEYS.rings),
+    timers:   readStore(KEYS.timers),
+    goals:    readGoals(),
+    clog:     readStore(KEYS.clog),    // array of entry IDs
+    ge:       readStore(KEYS.ge).map(Number).filter(Boolean), // GE stores numbers
+    monsters: readStore(KEYS.monsters),
+    bosses:   readStore(KEYS.bosses),
+    quests:   readStore(KEYS.quests),
+  };
+}
+
+function totalCount(bm) {
+  return Object.values(bm).reduce((s, a) => s + a.length, 0);
+}
+
+// ─── State ─────────────────────────────────────────────────────────────────────
+let activeFilter = 'all';
+let LIVE_TIMER_MAP = {}; // rebuilt on every render to catch custom timers
+
+// ─── Render ────────────────────────────────────────────────────────────────────
+function h(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function render() {
+  LIVE_TIMER_MAP = buildTimerLookup(); // rebuild to include any new custom timers
+  const bm = getAllBookmarks();
+  renderFilters(bm);
+  renderContent(bm);
+}
+
+function renderFilters(bm) {
+  const bar = document.getElementById('bm-filters');
+  const total = totalCount(bm);
+  const chips = [
+    { id:'all', label:'All', icon:'🔖', count:total },
+    ...SOURCES.map(s => ({ id:s.id, label:s.label, icon:s.icon, count: bm[s.id]?.length || 0 }))
+  ];
+  bar.innerHTML = chips.map(c => `
+    <button class="bm-filter${activeFilter===c.id?' active':''}" data-filter="${c.id}">
+      ${c.icon} ${c.label}
+      <span class="bm-filter-count">${c.count}</span>
+    </button>`).join('');
+
+  bar.querySelectorAll('.bm-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeFilter = btn.dataset.filter;
+      render();
+    });
+  });
+}
+
+function renderContent(bm) {
+  const content   = document.getElementById('bm-content');
+  const countText = document.getElementById('bm-count-text');
+  const clearBtn  = document.getElementById('bm-clear-visible');
+
+  const srcsToShow = activeFilter === 'all'
+    ? SOURCES
+    : SOURCES.filter(s => s.id === activeFilter);
+
+  // Count visible
+  const visibleCount = srcsToShow.reduce((s,src) => s + (bm[src.id]?.length||0), 0);
+  const total = totalCount(bm);
+  countText.textContent = total === 0
+    ? 'No bookmarks yet'
+    : `${visibleCount} bookmark${visibleCount!==1?'s':''} ${activeFilter!=='all'?'in this category':'total'}`;
+
+  clearBtn.style.display = visibleCount > 0 ? 'block' : 'none';
+
+  // All empty
+  if (total === 0) {
+    content.innerHTML = `
+      <div class="bm-empty">
+        <div class="bm-empty-icon">🔖</div>
+        No bookmarks yet.<br>
+        Visit a page and tap 🔖 to save items here.<br><br>
+        <a href="/Pages/More_Pages/clueScrolls.html">📜 Clue Solver</a> · 
+        <a href="/Pages/More_Pages/fairyRings.html">🍄 Fairy Rings</a> · 
+        <a href="/Pages/More_Pages/timers.html">⏰ Timers</a>
+      </div>`;
+    return;
+  }
+
+  content.innerHTML = srcsToShow.map(src => sectionHtml(src, bm[src.id] || [])).join('');
+
+  // Wire remove buttons (clues / rings / timers / future categories — string IDs)
+  content.querySelectorAll('[data-remove]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const { source, id } = btn.dataset;
+      const list = readStore(KEYS[source]);
+      const updated = list.filter(x => x !== id);
+      localStorage.setItem(KEYS[source], JSON.stringify(updated));
+      showToast('Bookmark removed');
+      render();
+    });
+  });
+
+  // Wire goal delete buttons (goals store objects, filter by .id)
+  content.querySelectorAll('[data-remove-goal]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const goalId = btn.dataset.goalId;
+      const list   = readStore(KEYS.goals);
+      const updated = list.filter(g => g.id !== goalId);
+      localStorage.setItem(KEYS.goals, JSON.stringify(updated));
+      showToast('Goal deleted');
+      render();
+    });
+  });
+}
+
+function sectionHtml(src, ids) {
+  if (activeFilter !== 'all' && activeFilter !== src.id) return '';
+
+  const headerHtml = `
+    <div class="bm-section-hdr" style="color:${src.col}">
+      ${src.icon} ${src.label}
+      <span style="font-size:10px;font-weight:600;color:var(--muted);text-transform:none;letter-spacing:0">
+        — ${ids.length} saved
+      </span>
+    </div>`;
+
+  if (src.future) {
+    return `${headerHtml}
+    <div class="bm-cat-empty">
+      Bookmarking coming soon to <a href="${src.href}">${src.label}</a>. 
+      Visit the page to see items — you'll be able to save them here once that feature is added.
+    </div>`;
+  }
+
+  if (ids.length === 0) {
+    const emptyMsg = src.id === 'goals'
+      ? `No goals set yet. <a href="${src.href}">Open Goals</a> to add one.`
+      : src.id === 'clog'
+      ? `No logs bookmarked yet. <a href="${src.href}">Open Collection Log</a>, expand any entry and tap 🔖 Save Log.`
+      : src.id === 'ge'
+      ? `No items on your GE watchlist. <a href="${src.href}">Open Grand Exchange</a> and tap 🔖 Watch on any item.`
+      : src.id === 'bosses'
+      ? `No bosses bookmarked yet. <a href="${src.href}">Open Bossing</a> and tap 🔖 on any boss to save it here.`
+      : src.id === 'quests'
+      ? `No quests bookmarked yet. <a href="${src.href}">Open Quests</a> and tap 🔖 on any quest to save it here.`
+      : `No ${src.label.toLowerCase()} bookmarked yet. <a href="${src.href}">Open ${src.label}</a> and tap 🔖 to save items here.`;
+    return `${headerHtml}<div class="bm-cat-empty">${emptyMsg}</div>`;
+  }
+
+  // Goals: ids is an array of goal objects — pass each object directly
+  // Clog/GE/everything else: ids is an array of string or number IDs
+  const cards = src.id === 'goals'
+    ? ids.map(goalObj => goalCardHtml(goalObj)).join('')
+    : ids.map(id => cardHtml(src, String(id))).join('');
+
+  return `<div class="bm-section">${headerHtml}${cards}</div>`;
+}
+
+function cardHtml(src, id) {
+  let title = id, meta = '', icon = src.icon, destHref = src.href;
+
+  if (src.id === 'clues') {
+    const c = CLUE_DATA[id];
+    if (!c) return '';
+    title = c.clue.length > 48 ? c.clue.slice(0,46)+'…' : c.clue;
+    const tierColor = TIER_COL[c.tier] || '#b88848';
+    meta = `
+      <span class="bm-badge" style="color:${tierColor};border-color:${tierColor}">${c.tier}</span>
+      <span class="bm-badge">${TYPE_ICON[c.type]||''} ${c.type}</span>
+      <span style="color:var(--gold);font-weight:700">→ ${h(c.solution)}</span>`;
+    icon = TYPE_ICON[c.type] || '📜';
+  }
+  else if (src.id === 'rings') {
+    const r = RING_MAP[id];
+    if (!r) return '';
+    title = `${id} — ${r.dest}`;
+    meta  = `<span class="bm-badge">${r.region}</span>`;
+    icon  = '🍄';
+  }
+  else if (src.id === 'timers') {
+    const t = LIVE_TIMER_MAP[id];
+    title = t ? t.name : (id.startsWith('c-') ? 'Custom Timer' : id);
+    meta  = t
+      ? `<span class="bm-badge">${t.group}</span> <span class="bm-badge">⏱ ${t.dur}</span>`
+      : `<span class="bm-badge">✏️ Custom</span>`;
+    icon  = '⏰';
+  }
+  else if (src.id === 'clog') {
+    // id is a clog entry ID string like "sire", "barrows", "tob"
+    // Look up from the embedded CLOG_LOOKUP table
+    const entry = CLOG_LOOKUP[id];
+    if (!entry) { title = id; meta = `<span class="bm-badge">📒 Collection Log</span>`; icon = '📒'; }
+    else {
+      title = entry.name;
+      icon  = entry.icon;
+      meta  = `<span class="bm-badge">📒 ${entry.cat.charAt(0).toUpperCase()+entry.cat.slice(1)}</span> <span class="bm-badge">${entry.items} items</span>`;
+    }
+  }
+  else if (src.id === 'ge') {
+    // id is a numeric item ID — look up from GE_ITEMS if loaded, else show raw id
+    const item = GE_ITEMS[id];
+    if (!item) { title = `Item #${id}`; meta = `<span class="bm-badge">💰 GE</span>`; icon = '💰'; }
+    else {
+      title = item.name;
+      icon  = item.icon
+        ? `<img src="https://oldschool.runescape.wiki/images/${item.icon.replace(/ /g,'_')}" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated" onerror="this.style.display='none'">`
+        : '💰';
+      meta  = `<span class="bm-badge">💰 GE Watchlist</span>${item.members ? ' <span class="bm-badge" style="color:#f1c40f;border-color:rgba(241,196,15,.3)">Members</span>' : ''}`;
+    }
+  }
+  else if (src.id === 'monsters') {
+    title = id;
+    meta  = `<span class="bm-badge">🐉 Monster</span>`;
+    icon  = '🐉';
+  }
+  else if (src.id === 'bosses') {
+    title = id;
+    meta  = `<span class="bm-badge">🏆 Boss</span> <span style="color:var(--muted);font-size:11px">View kill count on Bossing page</span>`;
+    icon  = '🏆';
+  }
+  else if (src.id === 'quests') {
+    title = id;
+    meta  = `<span class="bm-badge">📝 Quest</span>`;
+    icon  = '📝';
+  }
+
+  return `
+  <div class="bm-card" style="--src-col:${src.col}">
+    <div class="bm-icon">${icon}</div>
+    <div class="bm-info">
+      <div class="bm-title">${h(title)}</div>
+      <div class="bm-meta">${meta}</div>
+    </div>
+    <div class="bm-actions">
+      <button class="bm-btn" onclick="window.location.href='${src.href}'">Open</button>
+      <button class="bm-btn danger" data-remove data-source="${src.id}" data-id="${h(id)}" title="Remove bookmark">✕</button>
+    </div>
+  </div>`;
+}
+
+// ─── Goal card (goals store full objects, not IDs) ────────────────────────────
+const GOAL_TYPE_ICON = { skill:'⚔️', total:'📊', qp:'📜', custom:'🎯' };
+const GOAL_TYPE_LABEL = { skill:'Skill', total:'Total Level', qp:'Quest Points', custom:'Custom' };
+
+function goalCardHtml(g) {
+  if (!g || !g.id) return '';
+  const typeIcon  = GOAL_TYPE_ICON[g.type] || '🎯';
+  const typeLabel = GOAL_TYPE_LABEL[g.type] || g.type;
+  const goalHref  = '/Pages/More_Pages/goals.html';
+
+  // Progress bar if we have enough data
+  let progressHtml = '';
+  if (g.type === 'skill' && g.targetLevel && g.currentValue != null) {
+    // XP table lookup (first 14 levels for quick reference, full logic on goals page)
+    const XP = [0,0,83,174,276,388,512,650,801,969,1154,1358,1584,1833,2107,2411,2746,3115,3523,3973,4470,5018,5624,6291,7028,7842,8740,9730,10824,12031,13363,14833,16456,18247,20224,22406,24815,27473,30408,33648,37224,41171,45529,50339,55649,61512,67983,75127,83014,91721,101333,111945,123660,136594,150872,166636,184040,203254,224466,247886,273742,302288,333804,368599,407015,449428,496254,547953,605032,667991,737627,814445,899257,992895,1096278,1210421,1336443,1475581,1629200,1798808,1986068,2192818,2421087,2673114,2951373,3258594,3597792,3972294,4385776,4842295,5346332,5902831,6517253,7195629,7944614,8771558,9684577,10692629,11805606,13034431];
+    const targetXP = XP[Math.min(g.targetLevel, 99)] || 0;
+    const startXP  = g.startValue || 0;
+    const curXP    = g.currentValue || 0;
+    const range    = targetXP - startXP;
+    const pct      = range > 0 ? Math.min(100, Math.max(0, ((curXP - startXP) / range) * 100)) : (curXP >= targetXP ? 100 : 0);
+    const isDone   = pct >= 100;
+    progressHtml = `
+      <div style="margin-top:5px">
+        <div style="background:var(--surface3);border-radius:4px;height:5px;overflow:hidden">
+          <div style="width:${pct.toFixed(1)}%;height:100%;background:${isDone?'var(--green)':'var(--gold)'};border-radius:4px;transition:width .3s"></div>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px">${pct.toFixed(1)}% complete${isDone?' ✓':''}</div>
+      </div>`;
+  }
+
+  return `
+  <div class="bm-card" style="--src-col:#f1c40f">
+    <div class="bm-icon">${typeIcon}</div>
+    <div class="bm-info">
+      <div class="bm-title">${h(g.name || 'Goal')}</div>
+      <div class="bm-meta"><span class="bm-badge">${typeLabel}</span>${g.skill ? ` <span class="bm-badge">${h(g.skill)}</span>` : ''}</div>
+      ${progressHtml}
+    </div>
+    <div class="bm-actions">
+      <button class="bm-btn" onclick="window.location.href='${goalHref}'">Open</button>
+      <button class="bm-btn danger" data-remove-goal data-goal-id="${h(g.id)}" title="Delete goal">✕</button>
+    </div>
+  </div>`;
+}
+
+// ─── Clear visible ─────────────────────────────────────────────────────────────
+document.getElementById('bm-clear-visible').addEventListener('click', () => {
+  const srcs = activeFilter === 'all'
+    ? SOURCES.filter(s => !s.future && s.id !== 'goals') // goals need individual deletion
+    : SOURCES.filter(s => s.id === activeFilter && !s.future && s.id !== 'goals');
+  if (activeFilter === 'goals') {
+    showToast('Delete goals individually with ✕');
+    return;
+  }
+  srcs.forEach(s => localStorage.setItem(KEYS[s.id], '[]'));
+  showToast('Bookmarks cleared');
+  render();
+});
+
+// ─── Clear all (settings) ──────────────────────────────────────────────────────
+document.getElementById('clear-all-btn').addEventListener('click', () => {
+  Object.values(KEYS).forEach(k => localStorage.setItem(k, '[]'));
+  showToast('All bookmarks cleared');
+  settings.close();
+  render();
+});
+
+// ─── Settings wiring ──────────────────────────────────────────────────────────
+document.getElementById('settings-btn').addEventListener('click', ()=>settings.open());
+document.getElementById('settings-close').addEventListener('click', ()=>settings.close());
+document.getElementById('settings-overlay').addEventListener('click', ()=>settings.close());
+document.querySelectorAll('.theme-chip').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = btn.dataset.theme;
+    document.body.className = t==='dark'?'':`theme-${t}`;
+    localStorage.setItem('osts_theme_v2', t);
+  });
+});
+
+// ─── Init ──────────────────────────────────────────────────────────────────────
+initPage({ activePage:'more' });
+loadGEItems(); // async — populates GE item names for watchlist cards
+render();
+
+// Re-render when tab regains focus (bookmarks may have changed on another page)
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') render();
+});
