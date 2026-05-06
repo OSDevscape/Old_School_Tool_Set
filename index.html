@@ -8,146 +8,8 @@
   <title>OSTS — Home</title>
   <meta name="description" content="Old School Tool Set — OSRS news and player tracking.">
   <link rel="stylesheet" href="/src/styles/style.css">
-  <style>
-    /* ── Hero ── */
-    .landing-hero {
-      display: flex; align-items: center; gap: 12px;
-      padding: 14px; background: var(--surface);
-      border: 1px solid var(--border); border-radius: 14px; margin-bottom: 14px;
-    }
-    .hero-logo { width: 48px; height: 48px; object-fit: contain; border-radius: 10px; flex-shrink: 0; }
-    .hero-text h1 { font-size: 20px; font-weight: 800; color: var(--gold); line-height: 1.1; }
-    .hero-text p  { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  <link rel="stylesheet" href="/src/styles/index.css">
 
-    /* ── Section header ── */
-    .section-head {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 10px;
-    }
-    .section-head h2 {
-      font-size: 11px; font-weight: 700; color: var(--muted);
-      text-transform: uppercase; letter-spacing: .6px;
-    }
-    .refresh-btn {
-      background: none; border: none; color: var(--muted);
-      font-size: 16px; cursor: pointer; padding: 2px 6px;
-      border-radius: 6px; transition: color .15s; line-height: 1;
-    }
-    .refresh-btn:hover { color: var(--gold); }
-    .refresh-btn.spinning { display: inline-block; animation: spin .7s linear infinite; }
-
-    /* ── Recent players ── */
-    .recent-grid { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-    .recent-chip {
-      display: flex; align-items: center; gap: 8px;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 10px; padding: 9px 12px;
-      transition: border-color .15s, background .15s;
-      text-decoration: none;
-    }
-    .recent-chip:hover { border-color: var(--gold); background: var(--surface2); }
-    .rc-icon { font-size: 18px; flex-shrink: 0; }
-    .rc-info { min-width: 0; }
-    .rc-name { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
-    .rc-type { font-size: 10px; color: var(--muted); margin-top: 1px; }
-
-    .src-badge {
-      font-size: 9px; font-weight: 700; padding: 2px 7px;
-      border-radius: 999px; vertical-align: middle; margin-left: 5px;
-    }
-    .badge-global { background: rgba(63,185,80,.15); border: 1px solid var(--green); color: var(--green); }
-    .badge-local  { background: rgba(240,136,62,.15); border: 1px solid var(--orange,#f0883e); color: var(--orange,#f0883e); }
-    .rc-time { font-size: 10px; color: var(--muted); padding-left: 8px; flex-shrink: 0; white-space: nowrap; }
-    .recent-empty { font-size: 12px; color: var(--muted); padding: 4px 0 16px; line-height: 1.6; }
-
-    /* ── News cards — each card is fully distinct ── */
-    .news-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
-
-    .news-card {
-      display: block; text-decoration: none;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
-      transition: border-color .2s, transform .15s;
-    }
-    .news-card:hover  { border-color: var(--gold); transform: translateY(-1px); }
-    .news-card:active { transform: translateY(0); }
-
-    /* Thumbnail */
-    .news-thumb-wrap { position: relative; width: 100%; overflow: hidden; background: var(--surface2); }
-    .news-thumb-wrap img {
-      width: 100%; display: block; object-fit: cover;
-      transition: opacity .2s;
-    }
-    .news-card.featured .news-thumb-wrap img { height: 210px; }
-    .news-card:not(.featured) .news-thumb-wrap img { height: 170px; }
-    .news-thumb-fallback {
-      display: flex; align-items: center; justify-content: center;
-      font-size: 40px; color: var(--muted);
-    }
-    .news-card.featured .news-thumb-fallback { height: 100px; }
-    .news-card:not(.featured) .news-thumb-fallback { height: 80px; }
-
-    /* Meta row: category pill + date */
-    .news-meta {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 14px 0; gap: 8px;
-    }
-    .news-cat {
-      display: inline-block; padding: 3px 10px;
-      border-radius: 999px; font-size: 11px; font-weight: 700;
-      background: rgba(184,136,72,.15); border: 1px solid var(--gold);
-      color: var(--gold); white-space: nowrap;
-    }
-    .news-date { font-size: 11px; color: var(--muted); white-space: nowrap; }
-
-    /* Body */
-    .news-body { padding: 8px 14px 14px; }
-    .news-title {
-      font-size: 15px; font-weight: 700; color: var(--text);
-      line-height: 1.35; margin-bottom: 6px;
-    }
-    .news-card.featured .news-title { font-size: 17px; }
-    .news-desc {
-      font-size: 12px; color: var(--muted); line-height: 1.55;
-      display: -webkit-box; -webkit-line-clamp: 3;
-      line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-    }
-
-    /* ── Skeletons ── */
-    .skeleton { background: var(--surface2); border-radius: 8px; animation: shimmer 1.4s ease-in-out infinite; }
-    @keyframes shimmer { 0%,100%{opacity:1} 50%{opacity:.35} }
-    .skel-chip { width: 140px; height: 52px; border-radius: 10px; }
-    .skel-news-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; overflow: hidden;
-    }
-    .skel-thumb { width: 100%; height: 170px; border-radius: 0; }
-    .skel-body  { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 9px; }
-    .skel-line  { height: 11px; border-radius: 4px; }
-
-    .sp-profile-card {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 11px; padding: 10px 12px; margin-bottom: 6px;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .sp-profile-card.active { border-color: var(--gold); }
-    .sp-avatar {
-      width: 34px; height: 34px; flex-shrink: 0; background: var(--surface3);
-      border-radius: 8px; display: flex; align-items: center;
-      justify-content: center; font-size: 17px;
-    }
-    .sp-info { flex: 1; min-width: 0; }
-    .sp-nickname { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .sp-rsn-type { font-size: 11px; color: var(--muted); }
-    .sp-btn {
-      background: var(--surface3); border: 1px solid var(--border);
-      border-radius: 7px; color: var(--text); font-size: 11px; font-weight: 600;
-      padding: 5px 9px; cursor: pointer; transition: border-color .15s;
-    }
-    .sp-btn:hover { border-color: var(--gold); }
-  </style>
 </head>
 <body>
 
@@ -241,6 +103,7 @@
   </div>
 </div>
 
+
 <!-- Bottom Nav -->
 <nav id="bottom-nav"></nav>
 
@@ -273,6 +136,11 @@
     <span class="ma-desc">Solve anagrams, ciphers, emotes &amp; puzzle boxes</span>
   </a>
 
+    <a class="modal-action" href="/src/features/collectionLog/collectionLog.html">
+    <span class="ma-title">📒 Collection Log</span>
+    <span class="ma-desc">Track your collection log progress</span>
+  </a>
+
   <a class="modal-action" href="/src/features/fairyRings/fairyRings.html">
     <span class="ma-title">🍄 Fairy Rings</span>
     <span class="ma-desc">All 55 ring codes with pins &amp; personal notes</span>
@@ -281,6 +149,11 @@
   <a class="modal-action" href="/src/features/goals/goals.html">
     <span class="ma-title">📊 Goals</span>
     <span class="ma-desc">Set and track XP &amp; level goals per skill</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/grandExchange/grandExchange.html">
+    <span class="ma-title">💰 Grand Exchange</span>
+    <span class="ma-desc">Track item prices and market trends</span>
   </a>
 
   <a class="modal-action" href="/src/features/petLog/petLog.html">
@@ -298,10 +171,9 @@
     <span class="ma-desc">Farm runs, birdhouses &amp; custom growth timers</span>
   </a>
 
-</div>
+    </div>
   </div>
 </div>
-
 <div id="toast"></div>
 
 <script type="module" src="/src/app/index.js"></script>

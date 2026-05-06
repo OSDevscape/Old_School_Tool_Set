@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#2b241b">
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="/src/public/manifest.json">
   <title>OSTS — API Overview</title>
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/src/styles/style.css">
 
   <meta property="og:title"       content="Old School Tool Set API">
   <meta property="og:description" content="JSON API for Slayer Diaries, clan ranks, and Slayer Masters data.">
@@ -212,7 +212,7 @@
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () =>
-      navigator.serviceWorker.register('/service-worker.js').catch(console.error)
+      navigator.serviceWorker.register('/src/app/sw.js').catch(console.error)
     );
   }
 </script>

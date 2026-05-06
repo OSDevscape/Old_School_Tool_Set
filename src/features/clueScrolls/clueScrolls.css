@@ -1,0 +1,196 @@
+    :root {
+      --beginner: #f0f0f0;
+      --easy:   #3fb950;
+      --medium: #58a6ff;
+      --hard:   #f0883e;
+      --elite:  #b388ff;
+      --master: #ffd700;
+    }
+
+    .cs-search-wrap { display:flex; gap:8px; margin-bottom:10px; }
+    .cs-search {
+      flex:1; background:var(--surface2); border:1px solid var(--border);
+      border-radius:10px; color:var(--text); font-size:14px;
+      padding:9px 12px; outline:none; transition:border-color .15s;
+    }
+    .cs-search:focus { border-color:var(--gold); }
+    .cs-search::placeholder { color:var(--muted); }
+
+    .cs-filters { display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; margin-bottom:6px; scrollbar-width:none; }
+    .cs-filters::-webkit-scrollbar { display:none; }
+    .cs-filter {
+      flex-shrink:0; padding:5px 12px; border-radius:999px;
+      font-size:11px; font-weight:700; border:1px solid var(--border);
+      background:var(--surface2); color:var(--muted); cursor:pointer;
+      transition:all .15s; white-space:nowrap;
+    }
+    .cs-filter.active                 { background:var(--gold);   color:#000; border-color:var(--gold); }
+    .cs-filter[data-tier="beginner"].active { background:var(--beginner); border-color:var(--beginner); color:#111; }
+    .cs-filter[data-tier="easy"].active   { background:var(--easy);   border-color:var(--easy);   color:#000; }
+    .cs-filter[data-tier="medium"].active { background:var(--medium); border-color:var(--medium); color:#000; }
+    .cs-filter[data-tier="hard"].active   { background:var(--hard);   border-color:var(--hard);   color:#000; }
+    .cs-filter[data-tier="elite"].active  { background:var(--elite);  border-color:var(--elite);  color:#000; }
+    .cs-filter[data-tier="master"].active { background:var(--master); border-color:var(--master); color:#000; }
+
+    .cs-type-filters { display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; margin-bottom:10px; scrollbar-width:none; }
+    .cs-type-filters::-webkit-scrollbar { display:none; }
+
+    .cs-count { font-size:11px; color:var(--muted); margin-bottom:8px; text-align:right; }
+    .cs-list  { display:flex; flex-direction:column; gap:8px; }
+
+    /* ── Base card ── */
+    .cs-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:13px; overflow:hidden; cursor:pointer;
+      transition:border-color .15s;
+    }
+    .cs-card:active { border-color:var(--gold); }
+    .cs-card.open   { border-color:var(--gold); }
+
+    .cs-card-top {
+      display:flex; align-items:flex-start; gap:10px;
+      padding:11px 12px 10px 16px; position:relative;
+    }
+    .cs-card-top::before {
+      content:''; position:absolute; top:0; left:0; bottom:0; width:4px;
+      background:var(--tier-col, var(--gold)); border-radius:13px 0 0 13px;
+    }
+
+    .cs-badges { display:flex; gap:4px; flex-shrink:0; margin-top:2px; flex-direction:column; }
+    .cs-tier-badge {
+      font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px;
+      background:rgba(0,0,0,.3); color:var(--tier-col,var(--gold));
+      border:1px solid var(--tier-col,var(--gold));
+      text-transform:uppercase; letter-spacing:.5px; white-space:nowrap;
+    }
+    .cs-type-badge {
+      font-size:9px; font-weight:700; padding:2px 7px; border-radius:999px;
+      background:var(--surface2); color:var(--muted);
+      border:1px solid var(--border); text-transform:uppercase;
+      letter-spacing:.4px; white-space:nowrap;
+    }
+
+    .cs-card-main { flex:1; min-width:0; }
+    .cs-clue-text { font-size:13px; font-weight:600; color:var(--text); line-height:1.4; margin-bottom:4px; font-style:italic; }
+    .cs-solution  { font-size:12px; color:var(--gold); font-weight:700; }
+    .cs-location  { font-size:11px; color:var(--muted); margin-top:2px; }
+
+    .cs-chevron { font-size:14px; color:var(--muted); flex-shrink:0; transition:transform .2s; margin-top:2px; user-select:none; }
+    .cs-card.open .cs-chevron { transform:rotate(180deg); }
+
+    .cs-detail { display:none; border-top:1px solid var(--border); padding:12px 14px 13px 16px; }
+    .cs-card.open .cs-detail { display:block; }
+
+    .cs-detail-row { display:flex; gap:8px; align-items:flex-start; margin-bottom:8px; font-size:12px; }
+    .cs-detail-row:last-child { margin-bottom:0; }
+    .cs-detail-label { color:var(--muted); font-weight:600; white-space:nowrap; min-width:60px; font-size:11px; }
+    .cs-detail-val   { color:var(--text); line-height:1.5; flex:1; }
+
+    .cs-items-list { display:flex; gap:5px; flex-wrap:wrap; margin-top:4px; }
+    .cs-item-chip {
+      font-size:10px; font-weight:600; padding:3px 9px; border-radius:999px;
+      background:rgba(184,136,72,.12); border:1px solid var(--gold);
+      color:var(--gold); white-space:nowrap;
+    }
+
+    .cs-card-actions { display:flex; gap:6px; margin-top:10px; }
+    .cs-act-btn {
+      flex:1; padding:8px 0; border-radius:8px; font-size:11px; font-weight:700;
+      border:1px solid var(--border); background:var(--surface2);
+      color:var(--muted); cursor:pointer; transition:all .15s;
+    }
+    .cs-act-btn:hover      { border-color:var(--gold); color:var(--gold); }
+    .cs-act-btn.primary    { background:var(--gold); color:#000; border-color:var(--gold); }
+    .cs-act-btn.bookmarked { background:rgba(184,136,72,.15); color:var(--gold); border-color:var(--gold); }
+
+    /* ─────────────────────────────────────────
+       PUZZLE BOX STYLES
+    ───────────────────────────────────────── */
+    .puzzle-card .cs-card-top { align-items:stretch; }
+
+    /* Thumbnail */
+    .puzzle-thumb {
+      flex-shrink:0; width:76px; height:76px;
+      border-radius:9px; overflow:hidden;
+      background:var(--surface2); border:1px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .puzzle-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+    .puzzle-thumb-fb { font-size:30px; }
+
+    .puzzle-tiers { display:flex; gap:4px; flex-wrap:wrap; margin-top:5px; }
+
+    /* Solved image (expanded) */
+    .puzzle-solved-img {
+      width:100%; border-radius:10px; border:1px solid var(--border);
+      display:block; margin-bottom:5px;
+    }
+    .puzzle-img-caption { font-size:10px; color:var(--muted); text-align:center; margin-bottom:12px; }
+
+    /* 6-section guide */
+    .puzzle-guide {
+      background:var(--surface2); border:1px solid var(--border);
+      border-radius:10px; overflow:hidden; margin-top:10px;
+    }
+    .puzzle-guide-hdr {
+      font-size:11px; font-weight:800; color:var(--muted);
+      text-transform:uppercase; letter-spacing:.6px;
+      padding:8px 12px; border-bottom:1px solid var(--border);
+    }
+
+    /* Section colour grid — 5 cols, 5 rows */
+    .psg-wrap { padding:10px 12px 4px; }
+    .psg-label { font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+    .psg-grid  { display:grid; grid-template-columns:repeat(5,1fr); gap:3px; }
+    .psg-cell  {
+      aspect-ratio:1; border-radius:5px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:9px; font-weight:800; color:rgba(0,0,0,.75);
+    }
+
+    /* Steps */
+    .puzzle-steps { padding:6px 12px 8px; }
+    .puzzle-step  {
+      display:flex; align-items:flex-start; gap:8px;
+      padding:6px 0; border-bottom:1px solid rgba(255,255,255,.05);
+      font-size:12px;
+    }
+    .puzzle-step:last-child { border-bottom:none; }
+    .puzzle-step-num {
+      flex-shrink:0; width:20px; height:20px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:10px; font-weight:800; color:#000; margin-top:1px;
+    }
+    .s-red    { background:#e74c3c; }
+    .s-orange { background:#f0883e; }
+    .s-yellow { background:#f1c40f; }
+    .s-green  { background:#3fb950; }
+    .s-blue   { background:#58a6ff; }
+    .s-purple { background:#c084fc; }
+
+    .puzzle-step-text { flex:1; color:var(--text); line-height:1.5; }
+
+    .puzzle-warn {
+      margin:4px 12px 12px;
+      background:rgba(241,196,15,.07); border:1px solid rgba(241,196,15,.2);
+      border-radius:8px; padding:9px 11px;
+      font-size:11px; color:var(--text); line-height:1.6;
+    }
+    .puzzle-warn strong { color:#f1c40f; }
+
+    /* ── Tracker banner ── */
+    .cs-tracker {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:13px; padding:12px 14px; margin-bottom:12px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .cs-tracker-icon { font-size:22px; flex-shrink:0; }
+    .cs-tracker-info { flex:1; min-width:0; }
+    .cs-tracker-label { font-size:10px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-bottom:2px; }
+    .cs-tracker-step  { font-size:13px; font-weight:700; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .cs-tracker-clear { background:none; border:none; color:var(--muted); font-size:18px; cursor:pointer; padding:4px; }
+    .cs-tracker-clear:hover { color:var(--red); }
+
+    /* ── Empty ── */
+    .cs-empty { text-align:center; padding:48px 20px; color:var(--muted); font-size:13px; }
+    .cs-empty-icon { font-size:36px; margin-bottom:10px; }

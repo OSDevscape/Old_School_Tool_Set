@@ -1,0 +1,346 @@
+    /* ── Sticky top block (tabs + search together) ── */
+    .ge-sticky-top {
+      position:sticky; top:0; z-index:10;
+      background:var(--bg);
+      margin:-12px -12px 0; padding:0 12px 8px;
+      border-bottom:1px solid var(--border);
+    }
+
+    /* ── Page-level tabs ── */
+    .ge-tabs {
+      display:flex; background:var(--surface);
+      margin:0 -12px 10px;
+    }
+    .ge-tab {
+      flex:1; padding:10px 2px; text-align:center; font-size:11px; font-weight:700;
+      color:var(--muted); cursor:pointer; border-bottom:2px solid transparent;
+      transition:all .15s; user-select:none;
+    }
+    .ge-tab.active { color:var(--gold); border-bottom-color:var(--gold); }
+
+    /* ── Search bar ── */
+    .ge-search-wrap {
+      position:relative;
+    }
+    .ge-search {
+      width:100%; background:var(--surface2); border:1px solid var(--border);
+      border-radius:10px; color:var(--text); font-size:14px;
+      padding:10px 38px 10px 12px; outline:none; box-sizing:border-box;
+      transition:border-color .15s;
+    }
+    .ge-search:focus { border-color:var(--gold); }
+    .ge-search::placeholder { color:var(--muted); }
+    .ge-search-icon {
+      position:absolute; right:11px; top:50%; transform:translateY(-50%);
+      font-size:16px; pointer-events:none; opacity:.4;
+    }
+    .ge-search-clear {
+      position:absolute; right:11px; top:50%; transform:translateY(-50%);
+      font-size:16px; cursor:pointer; opacity:.5; background:none; border:none;
+      color:var(--text); padding:0; display:none;
+    }
+    .ge-search-clear.visible { display:block; }
+
+    /* ── Autocomplete dropdown ── */
+    .ge-autocomplete {
+      position:absolute; top:100%; left:0; right:0; z-index:50;
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:10px; margin-top:4px; overflow:hidden;
+      box-shadow:0 8px 24px rgba(0,0,0,.35); display:none;
+      max-height:280px; overflow-y:auto;
+    }
+    .ge-autocomplete.open { display:block; }
+    .ge-ac-item {
+      display:flex; align-items:center; gap:10px;
+      padding:9px 12px; cursor:pointer; transition:background .1s;
+    }
+    .ge-ac-item:hover { background:var(--surface2); }
+    .ge-ac-img { width:24px; height:24px; object-fit:contain; flex-shrink:0; image-rendering:pixelated; }
+    .ge-ac-name { font-size:13px; font-weight:600; color:var(--text); flex:1; }
+    .ge-ac-price { font-size:11px; font-weight:700; color:var(--gold); }
+
+    /* ── Loader ── */
+    .ge-loader {
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      padding:48px 20px; gap:12px;
+    }
+    .ge-spinner {
+      width:32px; height:32px; border:3px solid var(--border);
+      border-top-color:var(--gold); border-radius:50%;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .ge-loader-text { font-size:12px; color:var(--muted); }
+
+    /* ── Section headers ── */
+    .ge-section-hdr {
+      font-size:11px; font-weight:800; color:var(--muted);
+      text-transform:uppercase; letter-spacing:.6px;
+      margin:14px 0 7px; display:flex; align-items:center; gap:6px;
+    }
+    .ge-section-hdr:first-child { margin-top:0; }
+    .ge-section-hdr span { flex:1; }
+    .ge-section-link {
+      font-size:10px; font-weight:700; color:var(--gold);
+      background:none; border:none; cursor:pointer; padding:2px 6px;
+      border-radius:5px; text-decoration:none;
+    }
+
+    /* ── Sub-tabs (Rising/Falling within movers) ── */
+    .ge-subtabs {
+      display:flex; gap:6px; margin-bottom:8px;
+    }
+    .ge-subtab {
+      padding:5px 14px; border-radius:999px; font-size:11px; font-weight:700;
+      border:1px solid var(--border); background:var(--surface2);
+      color:var(--muted); cursor:pointer; transition:all .15s;
+    }
+    .ge-subtab.active.up   { background:#3fb950; color:#000; border-color:#3fb950; }
+    .ge-subtab.active.down { background:#e74c3c; color:#fff; border-color:#e74c3c; }
+
+    /* ── Item row card (compact) ── */
+    .ge-item-row {
+      display:flex; align-items:center; gap:10px;
+      padding:9px 12px; background:var(--surface); border:1px solid var(--border);
+      border-radius:11px; cursor:pointer; transition:border-color .15s;
+      margin-bottom:5px;
+    }
+    .ge-item-row:hover { border-color:var(--gold); }
+    .ge-item-thumb {
+      width:32px; height:32px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--surface2); border-radius:7px;
+    }
+    .ge-item-thumb img { width:28px; height:28px; object-fit:contain; image-rendering:pixelated; }
+    .ge-item-info { flex:1; min-width:0; }
+    .ge-item-name {
+      font-size:13px; font-weight:700; color:var(--text);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .ge-item-sub { font-size:11px; color:var(--muted); margin-top:1px; }
+    .ge-item-right { text-align:right; flex-shrink:0; }
+    .ge-item-price { font-size:13px; font-weight:800; color:var(--text); }
+    .ge-item-change {
+      font-size:11px; font-weight:700; margin-top:1px;
+    }
+    .ge-item-change.up   { color:#3fb950; }
+    .ge-item-change.down { color:#e74c3c; }
+    .ge-item-change.flat { color:var(--muted); }
+
+    /* ── Market pulse banner ── */
+    .ge-pulse {
+      display:flex; gap:8px; margin-bottom:12px; overflow-x:auto;
+      scrollbar-width:none; padding-bottom:2px;
+    }
+    .ge-pulse::-webkit-scrollbar { display:none; }
+    .ge-pulse-card {
+      flex-shrink:0; background:var(--surface); border:1px solid var(--border);
+      border-radius:11px; padding:10px 13px; min-width:120px;
+    }
+    .ge-pulse-label { font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; margin-bottom:3px; }
+    .ge-pulse-value { font-size:18px; font-weight:800; color:var(--text); line-height:1; }
+    .ge-pulse-sub   { font-size:10px; color:var(--muted); margin-top:2px; }
+
+    /* ═══════════════════════════════════════
+       ITEM DETAIL SHEET
+    ═══════════════════════════════════════ */
+    .ge-sheet-overlay {
+      position:fixed; inset:0; background:rgba(0,0,0,.5);
+      z-index:200; opacity:0; pointer-events:none;
+      transition:opacity .25s;
+    }
+    .ge-sheet-overlay.open { opacity:1; pointer-events:all; }
+
+    .ge-sheet {
+      position:fixed; bottom:0; left:0; right:0; z-index:201;
+      background:var(--surface); border-radius:20px 20px 0 0;
+      max-height:92dvh; overflow-y:auto;
+      transform:translateY(100%); transition:transform .3s cubic-bezier(.32,.72,0,1);
+      padding-bottom:env(safe-area-inset-bottom,0);
+    }
+    .ge-sheet.open { transform:translateY(0); }
+
+    .ge-sheet-drag {
+      width:36px; height:4px; background:var(--border);
+      border-radius:999px; margin:10px auto 0;
+    }
+    .ge-sheet-head {
+      display:flex; align-items:flex-start; gap:12px;
+      padding:12px 15px 10px;
+    }
+    .ge-sheet-icon {
+      width:52px; height:52px; background:var(--surface2);
+      border-radius:12px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      border:1px solid var(--border);
+    }
+    .ge-sheet-icon img { width:44px; height:44px; object-fit:contain; image-rendering:pixelated; }
+    .ge-sheet-title { flex:1; min-width:0; }
+    .ge-sheet-name {
+      font-size:17px; font-weight:800; color:var(--text);
+      line-height:1.2; margin-bottom:4px;
+    }
+    .ge-sheet-badges { display:flex; gap:5px; flex-wrap:wrap; }
+    .ge-badge {
+      font-size:9px; font-weight:700; padding:2px 7px; border-radius:999px;
+      border:1px solid var(--border); color:var(--muted);
+      background:var(--surface2); text-transform:uppercase; letter-spacing:.4px;
+    }
+    .ge-badge.members { color:#f1c40f; border-color:rgba(241,196,15,.3); }
+    .ge-sheet-close {
+      background:var(--surface2); border:none; width:32px; height:32px;
+      border-radius:50%; font-size:14px; cursor:pointer; color:var(--muted);
+      flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    }
+
+    /* Buy / Sell price display */
+    .ge-prices-row {
+      display:flex; gap:8px; padding:0 15px 12px;
+    }
+    .ge-price-box {
+      flex:1; background:var(--surface2); border-radius:12px;
+      padding:12px 13px; border:1px solid var(--border);
+    }
+    .ge-price-label  { font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+    .ge-price-amount { font-size:22px; font-weight:800; color:var(--text); line-height:1; }
+    .ge-price-sub    { font-size:10px; color:var(--muted); margin-top:3px; }
+    .ge-price-box.buy .ge-price-amount  { color:#f0883e; }
+    .ge-price-box.sell .ge-price-amount { color:#3fb950; }
+
+    /* Margin row */
+    .ge-margin-row {
+      display:flex; gap:8px; padding:0 15px 12px;
+    }
+    .ge-margin-chip {
+      flex:1; background:var(--surface2); border-radius:10px;
+      padding:9px 12px; text-align:center; border:1px solid var(--border);
+    }
+    .ge-margin-chip-label { font-size:9px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:2px; }
+    .ge-margin-chip-val   { font-size:15px; font-weight:800; color:var(--text); }
+
+    /* Chart area */
+    .ge-chart-section { padding:0 15px 12px; }
+    .ge-chart-controls {
+      display:flex; gap:5px; margin-bottom:8px;
+    }
+    .ge-chart-btn {
+      padding:4px 10px; border-radius:6px; font-size:10px; font-weight:700;
+      border:1px solid var(--border); background:var(--surface2);
+      color:var(--muted); cursor:pointer; transition:all .15s;
+    }
+    .ge-chart-btn.active { background:var(--gold); color:#000; border-color:var(--gold); }
+    .ge-chart-canvas-wrap {
+      background:var(--surface2); border-radius:10px; overflow:hidden;
+      border:1px solid var(--border); position:relative; height:160px;
+    }
+    #ge-chart-canvas { width:100%; height:160px; display:block; }
+    .ge-chart-loading {
+      position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+      font-size:11px; color:var(--muted);
+    }
+
+    /* Stats grid */
+    .ge-stats-grid {
+      display:grid; grid-template-columns:1fr 1fr; gap:7px;
+      padding:0 15px 12px;
+    }
+    .ge-stat-cell {
+      background:var(--surface2); border-radius:10px;
+      padding:10px 12px; border:1px solid var(--border);
+    }
+    .ge-stat-label { font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; margin-bottom:3px; }
+    .ge-stat-val   { font-size:14px; font-weight:800; color:var(--text); }
+    .ge-stat-val.green { color:#3fb950; }
+    .ge-stat-val.red   { color:#e74c3c; }
+    .ge-stat-val.gold  { color:var(--gold); }
+
+    /* Flip calculator */
+    .ge-calc-section { padding:0 15px 12px; }
+    .ge-calc-title { font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.6px; margin-bottom:8px; }
+    .ge-calc-row {
+      display:flex; align-items:center; gap:8px;
+    }
+    .ge-calc-input {
+      flex:1; background:var(--surface2); border:1px solid var(--border);
+      border-radius:9px; color:var(--text); font-size:14px; font-weight:700;
+      padding:10px 12px; outline:none; transition:border-color .15s;
+    }
+    .ge-calc-input:focus { border-color:var(--gold); }
+    .ge-calc-result {
+      background:var(--surface2); border:1px solid var(--border);
+      border-radius:9px; padding:10px 12px; min-width:120px;
+      text-align:right;
+    }
+    .ge-calc-result-label { font-size:9px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; }
+    .ge-calc-result-val { font-size:16px; font-weight:800; }
+    .ge-calc-result-val.profit { color:#3fb950; }
+    .ge-calc-result-val.loss   { color:#e74c3c; }
+
+    /* Sheet action buttons */
+    .ge-sheet-actions { display:flex; gap:7px; padding:0 15px 16px; }
+    .ge-sheet-btn {
+      flex:1; padding:11px 0; border-radius:10px; font-size:12px; font-weight:700;
+      border:1px solid var(--border); background:var(--surface2);
+      color:var(--muted); cursor:pointer; transition:all .15s;
+    }
+    .ge-sheet-btn:hover { border-color:var(--gold); color:var(--gold); }
+    .ge-sheet-btn.watching { background:rgba(184,136,72,.15); color:var(--gold); border-color:var(--gold); }
+    .ge-sheet-btn.external { background:var(--surface2); }
+
+    /* ── Watchlist ── */
+    .ge-watchlist-empty {
+      text-align:center; padding:48px 20px; color:var(--muted); font-size:13px; line-height:1.8;
+    }
+    .ge-watchlist-empty-icon { font-size:36px; margin-bottom:12px; }
+
+    /* ── Search results ── */
+    .ge-search-hint {
+      text-align:center; padding:32px 20px; color:var(--muted); font-size:12px; line-height:1.8;
+    }
+
+    /* ── Alch tab ── */
+    .ge-alch-filter-row {
+      display:flex; gap:6px; margin-bottom:10px; overflow-x:auto; scrollbar-width:none;
+    }
+    .ge-alch-filter-row::-webkit-scrollbar { display:none; }
+    .ge-alch-chip {
+      flex-shrink:0; padding:5px 13px; border-radius:999px; border:1px solid var(--border);
+      background:var(--surface2); color:var(--muted); font-size:11px; font-weight:700;
+      cursor:pointer; white-space:nowrap; transition:all .15s;
+    }
+    .ge-alch-chip.active { background:var(--gold); color:#000; border-color:var(--gold); }
+
+    .ge-alch-row {
+      display:flex; align-items:center; gap:9px;
+      padding:8px 11px; background:var(--surface); border:1px solid var(--border);
+      border-radius:11px; cursor:pointer; transition:border-color .15s; margin-bottom:5px;
+    }
+    .ge-alch-row:hover { border-color:var(--gold); }
+    .ge-alch-thumb {
+      width:28px; height:28px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--surface2); border-radius:6px;
+    }
+    .ge-alch-thumb img { width:24px; height:24px; object-fit:contain; image-rendering:pixelated; }
+    .ge-alch-name  { flex:1; min-width:0; font-size:12px; font-weight:700; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .ge-alch-cols  { display:flex; gap:12px; flex-shrink:0; }
+    .ge-alch-col   { text-align:right; min-width:52px; }
+    .ge-alch-col-label { font-size:9px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.3px; }
+    .ge-alch-col-val   { font-size:12px; font-weight:800; color:var(--text); }
+    .ge-alch-col-val.profit { color:#3fb950; }
+    .ge-alch-col-val.loss   { color:#e74c3c; }
+
+    .ge-alch-table-head {
+      display:flex; align-items:center; gap:9px;
+      padding:0 11px 5px; font-size:9px; font-weight:700;
+      color:var(--muted); text-transform:uppercase; letter-spacing:.4px;
+    }
+    .ge-alch-banner {
+      border-radius:10px; padding:9px 12px;
+      font-size:12px; font-weight:700; display:flex; align-items:center; gap:8px;
+    }
+    .ge-alch-banner.profit { background:rgba(63,185,80,.1); color:#3fb950; border:1px solid rgba(63,185,80,.25); }
+    .ge-alch-banner.loss   { background:rgba(231,76,60,.08); color:#e74c3c; border:1px solid rgba(231,76,60,.2); }
+
+    /* ── Updated timestamp ── */
+    .ge-updated { font-size:10px; color:var(--muted); text-align:right; margin-bottom:8px; }
