@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2b241b">
+  <link rel="manifest" href="/public/manifest.json">
+  <title>OSTS — Fairy Rings</title>
+  <link rel="stylesheet" href="/src/styles/style.css">
+  <link rel="stylesheet" href="/src/features/fairyRings/fairyRings.css">
+
+</head>
+
+<body>
+  
+  <header>
+    <h1>OSTS</h1>
+    <div class="hdr-actions">
+      <button id="install-btn" style="display:none">Install</button>
+      <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
+    </div>
+  </header>
+  
+  <div id="settings-overlay"></div>
+  <div id="settings-panel" aria-hidden="true">
+    <div class="settings-head">
+      <h2>Settings</h2>
+      <button class="settings-close" id="settings-close">✕</button>
+    </div>
+    <div class="settings-block">
+      <div class="settings-label">Appearance</div>
+      <div class="theme-options">
+        <button class="theme-chip" data-theme="dark">Dark</button>
+        <button class="theme-chip" data-theme="light">Light</button>
+        <button class="theme-chip" data-theme="brown">Brown</button>
+      </div>
+    </div>
+    <div class="settings-block">
+    </div>
+    
+    <div class="settings-block">
+      <div class="settings-label">Player Profiles</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.5">Manage profiles on the <a href="../overview.html" style="color:var(--gold);font-weight:600">Overview</a> page.</div>
+    </div>
+    
+    <div class="settings-block">
+      <div class="settings-label">Fairy Ring Tools</div>
+      <button class="push-btn" id="clear-pins-btn">Clear all pins</button>
+    </div>
+  </div>
+  
+  <div id="main">
+    <div class="page active">
+      
+      <!-- Search -->
+      <div class="fr-search-wrap">
+        <input class="fr-search" id="fr-search" type="search" placeholder="Search code or destination…" autocomplete="off">
+      </div>
+      
+      <!-- Region filters -->
+      <div class="fr-filters" id="fr-filters"></div>
+      
+      <!-- Pinned rings -->
+      <div id="fr-pinned"></div>
+      
+      <!-- Result count -->
+      <div class="fr-count" id="fr-count"></div>
+      
+      <!-- Cards -->
+      <div class="fr-grid" id="fr-grid"></div>
+      
+    </div>
+  </div>
+  
+<!-- Bottom Nav -->
+<nav id="bottom-nav"></nav>
+
+<!-- More Menu -->
+<div class="modal-overlay" id="more-menu-overlay">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <div><div class="modal-title">More</div></div>
+      <button class="modal-close" id="more-menu-close">✕</button>
+    </div>
+<div class="modal-actions">
+
+  <a class="modal-action" href="/src/features/bestiary/bestiary.html" style="border-color:var(--gold)">
+    <span class="ma-title">🐉 Bestiary</span>
+    <span class="ma-desc">Look up monsters, combat stats &amp; slayer info</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/bookmarks/bookmarks.html" style="border-color:var(--gold)">
+    <span class="ma-title">🔖 Bookmarks</span>
+    <span class="ma-desc">Your saved clues, fairy rings, timers &amp; more</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/bossing/bossing.html" style="border-color:var(--gold)">
+    <span class="ma-title">🏆 Bossing</span>
+    <span class="ma-desc">Track boss kill counts and personal bests</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/clueScrolls/clueScrolls.html" style="border-color:var(--gold)">
+    <span class="ma-title">📜 Clue Solver</span>
+    <span class="ma-desc">Solve anagrams, ciphers, emotes &amp; puzzle boxes</span>
+  </a>
+
+    <a class="modal-action" href="/src/features/collectionLog/collectionLog.html" >
+    <span class="ma-title">📒 Collection Log</span>
+    <span class="ma-desc">Track your collection log progress</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/fairyRings/fairyRings.html" style="border-color:var(--gold)">
+    <span class="ma-title">🍄 Fairy Rings</span>
+    <span class="ma-desc">All 55 ring codes with pins &amp; personal notes</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/goals/goals.html" style="border-color:var(--gold)">
+    <span class="ma-title">📊 Goals</span>
+    <span class="ma-desc">Set and track XP &amp; level goals per skill</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/guides/guides.html" style="border-color:var(--gold)">
+    <span class="ma-title">🎓 Guides & Tips</span>
+    <span class="ma-desc">YouTube guides from Theoatrix, Chymistry &amp; 10boot</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/grandExchange/grandExchange.html" style="border-color:var(--gold)">
+    <span class="ma-title">💰 Grand Exchange</span>
+    <span class="ma-desc">Track item prices and market trends</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/petLog/petLog.html" style="border-color:var(--gold)">
+    <span class="ma-title">🐾 Pet Log</span>
+    <span class="ma-desc">Log your pet drops and track your collection</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/quests/quests.html" style="border-color:var(--gold)">
+    <span class="ma-title">🗺️ Quests</span>
+    <span class="ma-desc">Quest list with requirements and completion tracking</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/timers/timers.html" style="border-color:var(--gold)">
+    <span class="ma-title">⏰ Timers</span>
+    <span class="ma-desc">Farm runs, birdhouses &amp; custom growth timers</span>
+  </a>
+
+    </div>
+  </div>
+</div>
+  
+  <div id="toast"></div>
+  
+  <!-- ── Note Sheet ── -->
+  <div class="note-sheet-overlay" id="note-overlay"></div>
+  <div class="note-sheet" id="note-sheet">
+    <div class="note-handle" id="note-handle"></div>
+    <div class="note-header">
+      <div class="note-code-badge" id="note-code-badge">AIQ</div>
+      <div class="note-header-info">
+        <div class="note-header-dest" id="note-dest"></div>
+        <div class="note-header-region" id="note-region"></div>
+      </div>
+      <button class="note-close" id="note-close">✕</button>
+    </div>
+    <div class="note-body">
+      <textarea class="note-textarea" id="note-textarea" placeholder="Add a note… e.g. nearest bank, items to bring, quest requirements…" maxlength="500"></textarea>
+      <div class="note-actions">
+        <button class="note-save" id="note-save">Save Note</button>
+        <button class="note-delete" id="note-delete">Delete</button>
+      </div>
+    </div>
+  </div>
+  
+<script type="module" src="/src/features/fairyRings/fairyRings.js"></script>
+
+  </script>
+</body>
+
+</html>

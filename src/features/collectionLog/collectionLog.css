@@ -1,0 +1,218 @@
+    /* ── Progress banner ── */
+    .cl-banner {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:14px; padding:14px 15px; margin-bottom:12px;
+    }
+    .cl-banner-top {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:10px;
+    }
+    .cl-banner-label { font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.6px; }
+    .cl-rank {
+      display:flex; align-items:center; gap:6px;
+      font-size:12px; font-weight:700; color:var(--gold);
+    }
+    .cl-rank-badge {
+      background:var(--gold); color:#000;
+      font-size:10px; font-weight:800; padding:2px 8px;
+      border-radius:999px; letter-spacing:.4px;
+    }
+    .cl-next-rank { font-size:10px; color:var(--muted); margin-top:2px; }
+
+    .cl-total-count {
+      font-size:28px; font-weight:800; color:var(--text);
+      letter-spacing:-1px; line-height:1;
+    }
+    .cl-total-sub { font-size:11px; color:var(--muted); margin-top:2px; }
+
+    .cl-progress-bar {
+      height:8px; background:var(--surface2); border-radius:999px; overflow:hidden;
+    }
+    .cl-progress-fill {
+      height:100%; background:linear-gradient(90deg,var(--gold),#e8a030);
+      border-radius:999px; transition:width .4s ease;
+    }
+
+    /* ── Category stat chips ── */
+    .cl-cat-stats {
+      display:flex; gap:6px; overflow-x:auto; margin-top:10px;
+      scrollbar-width:none; padding-bottom:2px;
+    }
+    .cl-cat-stats::-webkit-scrollbar { display:none; }
+    .cl-cat-stat {
+      flex-shrink:0; background:var(--surface2); border:1px solid var(--border);
+      border-radius:10px; padding:6px 10px; text-align:center; min-width:72px;
+      cursor:pointer; transition:border-color .15s;
+    }
+    .cl-cat-stat:hover { border-color:var(--gold); }
+    .cl-cat-stat.active { border-color:var(--gold); background:rgba(184,136,72,.1); }
+    .cl-cat-stat-icon { font-size:16px; line-height:1; margin-bottom:2px; }
+    .cl-cat-stat-pct  { font-size:13px; font-weight:800; color:var(--text); }
+    .cl-cat-stat-name { font-size:9px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.4px; }
+    .cl-cat-mini-bar  { height:3px; background:var(--border); border-radius:999px; margin-top:4px; overflow:hidden; }
+    .cl-cat-mini-fill { height:100%; background:var(--gold); border-radius:999px; }
+
+    /* ── Search ── */
+    .cl-search {
+      width:100%; background:var(--surface2); border:1px solid var(--border);
+      border-radius:10px; color:var(--text); font-size:14px;
+      padding:9px 12px; outline:none; margin-bottom:10px;
+      transition:border-color .15s; box-sizing:border-box;
+    }
+    .cl-search:focus { border-color:var(--gold); }
+    .cl-search::placeholder { color:var(--muted); }
+
+    /* ── Filter row ── */
+    .cl-filters {
+      display:flex; gap:6px; overflow-x:auto; margin-bottom:10px;
+      scrollbar-width:none; padding-bottom:2px;
+    }
+    .cl-filters::-webkit-scrollbar { display:none; }
+    .cl-filter {
+      flex-shrink:0; padding:5px 13px; border-radius:999px; border:1px solid var(--border);
+      background:var(--surface2); color:var(--muted); font-size:11px; font-weight:700;
+      cursor:pointer; white-space:nowrap; transition:all .15s;
+    }
+    .cl-filter.active { background:var(--gold); color:#000; border-color:var(--gold); }
+
+    /* ── Result count / sort ── */
+    .cl-toolbar {
+      display:flex; align-items:center; justify-content:space-between;
+      font-size:11px; color:var(--muted); margin-bottom:8px;
+    }
+    .cl-sort-btn {
+      background:var(--surface2); border:1px solid var(--border); border-radius:8px;
+      padding:4px 10px; font-size:10px; font-weight:700; color:var(--muted);
+      cursor:pointer; transition:all .15s;
+    }
+    .cl-sort-btn:hover { border-color:var(--gold); color:var(--gold); }
+
+    /* ── Entry cards ── */
+    .cl-list { display:flex; flex-direction:column; gap:7px; }
+
+    .cl-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:13px; overflow:hidden; transition:border-color .15s;
+    }
+    .cl-card.open   { border-color:var(--gold); }
+    .cl-card.done   { border-color:rgba(63,185,80,.35); }
+
+    .cl-card-top {
+      display:flex; align-items:center; gap:10px;
+      padding:10px 12px 10px 15px; cursor:pointer;
+      position:relative;
+    }
+    .cl-card-top::before {
+      content:''; position:absolute; top:0; left:0; bottom:0; width:4px;
+      background:var(--entry-col, var(--border));
+      border-radius:13px 0 0 13px;
+    }
+
+    .cl-entry-icon {
+      font-size:20px; flex-shrink:0; width:36px; height:36px;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--surface2); border-radius:9px;
+    }
+    .cl-entry-info { flex:1; min-width:0; }
+    .cl-entry-name {
+      font-size:13px; font-weight:700; color:var(--text);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      margin-bottom:3px;
+    }
+
+    .cl-entry-bar-wrap { display:flex; align-items:center; gap:7px; }
+    .cl-entry-bar {
+      flex:1; height:5px; background:var(--surface2);
+      border-radius:999px; overflow:hidden;
+    }
+    .cl-entry-fill {
+      height:100%; border-radius:999px;
+      background:linear-gradient(90deg,var(--gold),#e8a030);
+      transition:width .3s;
+    }
+    .cl-entry-fill.complete { background:linear-gradient(90deg,#3fb950,#27ae60); }
+    .cl-entry-count {
+      font-size:10px; font-weight:700; color:var(--muted);
+      flex-shrink:0; white-space:nowrap;
+    }
+    .cl-entry-count.complete { color:#3fb950; }
+
+    .cl-chevron {
+      font-size:13px; color:var(--muted); flex-shrink:0;
+      transition:transform .2s;
+    }
+    .cl-card.open .cl-chevron { transform:rotate(180deg); }
+
+    /* ── Item grid ── */
+    .cl-items {
+      display:none; border-top:1px solid var(--border);
+      padding:10px 12px 12px;
+      display:none; grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+      gap:5px;
+    }
+    .cl-card.open .cl-items { display:grid; }
+
+    .cl-item {
+      display:flex; align-items:center; gap:7px;
+      padding:7px 9px; border-radius:9px; cursor:pointer;
+      border:1px solid var(--border); background:var(--surface2);
+      transition:all .15s; user-select:none;
+    }
+    .cl-item:active { transform:scale(.96); }
+    .cl-item.got {
+      background:rgba(63,185,80,.1);
+      border-color:rgba(63,185,80,.4);
+    }
+    /* Official wiki item sprite */
+    .cl-item-img {
+      width:24px; height:24px; object-fit:contain; flex-shrink:0;
+      image-rendering:pixelated; /* keeps OSRS sprites crisp */
+    }
+    .cl-item.got .cl-item-img { opacity:.7; }
+    .cl-item-check {
+      width:16px; height:16px; border-radius:4px; flex-shrink:0;
+      border:2px solid var(--border); display:flex; align-items:center;
+      justify-content:center; font-size:10px; transition:all .12s;
+    }
+    .cl-item.got .cl-item-check {
+      background:#3fb950; border-color:#3fb950; color:#000;
+    }
+    .cl-item-name {
+      font-size:11px; font-weight:600; color:var(--text);
+      line-height:1.3; flex:1;
+    }
+    .cl-item.got .cl-item-name { color:rgba(63,185,80,.9); }
+
+    /* ── Action bar inside card ── */
+    .cl-card-actions {
+      display:flex; gap:6px; padding:0 12px 10px;
+    }
+    .cl-card.open .cl-card-actions { display:flex; }
+    .cl-card-actions { display:none; }
+    .cl-act-btn {
+      flex:1; padding:7px 0; border-radius:8px; font-size:11px; font-weight:700;
+      border:1px solid var(--border); background:var(--surface2);
+      color:var(--muted); cursor:pointer; transition:all .15s;
+    }
+    .cl-act-btn:hover { border-color:var(--gold); color:var(--gold); }
+    .cl-act-btn.danger:hover { border-color:var(--red); color:var(--red); }
+
+    /* ── Empty state ── */
+    .cl-empty {
+      text-align:center; padding:48px 20px;
+      color:var(--muted); font-size:13px; line-height:1.8;
+    }
+    .cl-empty-icon { font-size:36px; margin-bottom:12px; }
+
+    /* ── Rank milestone toast ── */
+    .cl-rank-milestone {
+      display:none; position:fixed; bottom:80px; left:50%; transform:translateX(-50%);
+      background:var(--gold); color:#000; font-size:13px; font-weight:800;
+      padding:10px 20px; border-radius:999px; z-index:999;
+      box-shadow:0 4px 20px rgba(0,0,0,.4); white-space:nowrap;
+      animation: fadeUp .4s ease;
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateX(-50%) translateY(12px); }
+      to   { opacity:1; transform:translateX(-50%) translateY(0); }
+    }

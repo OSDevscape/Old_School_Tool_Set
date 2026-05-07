@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2b241b">
+  <link rel="manifest" href="/public/manifest.json">
+  <title>OSTS — Quests</title>
+  <link rel="stylesheet" href="/src/styles/style.css" >
+  <link rel="stylesheet" href="/src/features/quests/quests.css"> 
+</head>
+<body>
+  
+<header>
+  <h1>Quests</h1>
+  <div class="hdr-actions">
+    <button id="install-btn">Install</button>
+    <button class="hdr-btn icon-btn" id="settings-btn">&#x2699;&#xFE0F;</button>
+  </div>
+</header>
+<div id="settings-overlay"></div>
+<div id="settings-panel" aria-hidden="true">
+  <div class="settings-head"><h2>Settings</h2><button class="settings-close" id="settings-close">&#x2715;</button></div>
+  <div class="settings-block">
+    <div class="settings-label">Appearance</div>
+    <div class="theme-options">
+      <button class="theme-chip" data-theme="dark">Dark</button>
+      <button class="theme-chip" data-theme="light">Light</button>
+      <button class="theme-chip" data-theme="brown">Brown</button>
+    </div>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Player Profiles</div>
+    <div id="sp-profile-list"></div>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Data</div>
+    <button class="push-btn" id="reset-quests-btn" style="color:var(--red);border-color:rgba(248,81,73,.3)">Reset all quest completions</button>
+  </div>
+</div>
+<div id="main">
+  <div class="page active" id="page-quests">
+    <div class="qp-hero">
+      <div class="qp-hero-icon">&#x1F4DC;</div>
+      <div class="qp-hero-info">
+        <div class="qp-hero-num"><span id="qp-cur">0</span> <span style="font-size:16px;color:var(--muted)">/ 333 QP</span></div>
+        <div class="qp-hero-label">Quest Points</div>
+        <div style="margin-top:8px"><div class="progress-wrap" style="height:6px;margin:0"><div class="progress-fill" id="qp-bar" style="width:0%"></div></div></div>
+        <div class="qp-hero-stats">
+          <div class="qp-stat"><b id="stat-done">0</b> / 189 done</div>
+          <div class="qp-stat">F2P: <b id="stat-f2p">0</b> / 46 QP</div>
+          <div class="qp-stat">Members: <b id="stat-mem">0</b> / 287 QP</div>
+        </div>
+      </div>
+    </div>
+    <div id="active-filter-chips" class="active-filter-chips" style="display:none"></div>
+    <div class="filter-bar">
+      <div class="quest-filters">
+        <button class="q-filter active" data-f="all">All</button>
+        <button class="q-filter" data-f="incomplete">Incomplete</button>
+        <button class="q-filter" data-f="done">Completed</button>
+        <button class="q-filter" data-f="f2p">Free</button>
+        <button class="q-filter" data-f="members">Members</button>
+      </div>
+      <button class="filter-btn" id="open-filter-btn">&#x2699; Filters</button>
+    </div>
+    <input class="quest-search" id="quest-search" type="text" placeholder="Search quests&#x2026;" autocomplete="off">
+    <div id="quest-list"></div>
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<nav id="bottom-nav"></nav>
+
+<!-- More Menu -->
+<div class="modal-overlay" id="more-menu-overlay">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <div><div class="modal-title">More</div></div>
+      <button class="modal-close" id="more-menu-close">✕</button>
+    </div>
+<div class="modal-actions">
+
+  <a class="modal-action" href="/src/features/bestiary/bestiary.html" style="border-color:var(--gold)">
+    <span class="ma-title">🐉 Bestiary</span>
+    <span class="ma-desc">Look up monsters, combat stats &amp; slayer info</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/bookmarks/bookmarks.html" style="border-color:var(--gold)">
+    <span class="ma-title">🔖 Bookmarks</span>
+    <span class="ma-desc">Your saved clues, fairy rings, timers &amp; more</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/bossing/bossing.html" style="border-color:var(--gold)">
+    <span class="ma-title">🏆 Bossing</span>
+    <span class="ma-desc">Track boss kill counts and personal bests</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/clueScrolls/clueScrolls.html" style="border-color:var(--gold)">
+    <span class="ma-title">📜 Clue Solver</span>
+    <span class="ma-desc">Solve anagrams, ciphers, emotes &amp; puzzle boxes</span>
+  </a>
+
+    <a class="modal-action" href="/src/features/collectionLog/collectionLog.html" >
+    <span class="ma-title">📒 Collection Log</span>
+    <span class="ma-desc">Track your collection log progress</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/fairyRings/fairyRings.html" style="border-color:var(--gold)">
+    <span class="ma-title">🍄 Fairy Rings</span>
+    <span class="ma-desc">All 55 ring codes with pins &amp; personal notes</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/goals/goals.html" style="border-color:var(--gold)">
+    <span class="ma-title">📊 Goals</span>
+    <span class="ma-desc">Set and track XP &amp; level goals per skill</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/guides/guides.html" style="border-color:var(--gold)">
+    <span class="ma-title">🎓 Guides & Tips</span>
+    <span class="ma-desc">YouTube guides from Theoatrix, Chymistry &amp; 10boot</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/grandExchange/grandExchange.html" style="border-color:var(--gold)">
+    <span class="ma-title">💰 Grand Exchange</span>
+    <span class="ma-desc">Track item prices and market trends</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/petLog/petLog.html" style="border-color:var(--gold)">
+    <span class="ma-title">🐾 Pet Log</span>
+    <span class="ma-desc">Log your pet drops and track your collection</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/quests/quests.html" style="border-color:var(--gold)">
+    <span class="ma-title">🗺️ Quests</span>
+    <span class="ma-desc">Quest list with requirements and completion tracking</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/timers/timers.html" style="border-color:var(--gold)">
+    <span class="ma-title">⏰ Timers</span>
+    <span class="ma-desc">Farm runs, birdhouses &amp; custom growth timers</span>
+  </a>
+
+    </div>
+  </div>
+</div>
+
+<!-- Filter Sheet -->
+<div class="q-sheet-overlay" id="filter-overlay">
+  <div class="q-sheet">
+    <div class="qs-handle"></div>
+    <div class="qs-head"><h3>Filters</h3><button class="qs-close" id="filter-close">&#x2715;</button></div>
+    <div class="qs-body">
+      <div class="fs-section">
+        <div class="fs-label">Difficulty</div>
+        <div class="fs-chips" id="fs-diff">
+          <button class="fs-chip active" data-diff="">All</button>
+          <button class="fs-chip" data-diff="N">Novice</button>
+          <button class="fs-chip" data-diff="I">Intermediate</button>
+          <button class="fs-chip" data-diff="E">Experienced</button>
+          <button class="fs-chip" data-diff="M">Master</button>
+          <button class="fs-chip" data-diff="G">Grandmaster</button>
+          <button class="fs-chip" data-diff="S">Special</button>
+        </div>
+      </div>
+      <div class="fs-section">
+        <div class="fs-label">Length</div>
+        <div class="fs-chips" id="fs-len">
+          <button class="fs-chip active" data-len="">All</button>
+          <button class="fs-chip" data-len="VS">Very Short</button>
+          <button class="fs-chip" data-len="S">Short</button>
+          <button class="fs-chip" data-len="M">Medium</button>
+          <button class="fs-chip" data-len="L">Long</button>
+          <button class="fs-chip" data-len="VL">Very Long</button>
+        </div>
+      </div>
+      <div class="fs-section">
+        <div class="fs-label">Series</div>
+        <div class="fs-chips" id="fs-series"></div>
+      </div>
+      <button class="fs-apply" id="filter-apply">Apply Filters</button>
+    </div>
+  </div>
+</div>
+<!-- Quest Detail Sheet -->
+<div class="q-sheet-overlay" id="detail-overlay" style="z-index:300">
+  <div class="q-sheet" style="max-height:92vh">
+    <div class="qs-handle"></div>
+    <div class="qd-hero">
+      <div class="qd-icon" id="qd-icon">&#x1F4DC;</div>
+      <div class="qd-title-wrap">
+        <div class="qd-title" id="qd-title">&#x2014;</div>
+        <div class="qd-badges" id="qd-badges"></div>
+      </div>
+      <button class="qd-close" id="detail-close">&#x2715;</button>
+    </div>
+    <div class="qs-body">
+      <button class="qd-complete-btn" id="qd-complete-btn">Mark Complete</button>
+      <div class="qd-section"><div class="qd-info-grid" id="qd-info-grid"></div></div>
+      <div class="qd-section" id="qd-desc-section"><div class="qd-sec-label">Overview</div><div class="qd-desc" id="qd-desc"></div></div>
+      <div class="qd-section" id="qd-skills-section" style="display:none"><div class="qd-sec-label">Skill Requirements</div><div id="qd-skills"></div></div>
+      <div class="qd-section" id="qd-quests-section" style="display:none"><div class="qd-sec-label">Quest Requirements</div><div id="qd-quests"></div></div>
+      <div class="qd-section" id="qd-items-section" style="display:none"><div class="qd-sec-label">Items Required</div><div id="qd-items"></div></div>
+      <div class="qd-section" id="qd-rec-section" style="display:none"><div class="qd-sec-label">Recommended</div><div id="qd-rec"></div></div>
+      <div class="qd-section" id="qd-enemies-section" style="display:none"><div class="qd-sec-label">Enemies to Defeat</div><div id="qd-enemies"></div></div>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script type="module" src="/src/features/quests/quests.js"></script>
+
+</body>
+</html>

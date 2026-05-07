@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2b241b">
+  <link rel="manifest" href="/public/manifest.json">
+  <title>OSTS — Guides</title>
+  <meta name="description" content="Old School RuneScape guides, tips and 1-99 skill videos from top OSRS creators.">
+  <link rel="stylesheet" href="/src/styles/style.css">
+  <link rel="stylesheet" href="/src/features/guides/guides.css">
+</head>
+<body>
+
+<header>
+  <h1>OSTS <span>Guides & Tips</span></h1>
+  <div class="hdr-actions">
+    <button class="hdr-btn icon-btn" id="settings-btn" aria-label="Settings">⚙️</button>
+  </div>
+</header>
+
+<div id="settings-overlay"></div>
+<div id="settings-panel" aria-hidden="true">
+  <div class="settings-head">
+    <h2>Settings</h2>
+    <button class="settings-close" id="settings-close">✕</button>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Appearance</div>
+    <div class="theme-options">
+      <button class="theme-chip" data-theme="dark">Dark</button>
+      <button class="theme-chip" data-theme="light">Light</button>
+      <button class="theme-chip" data-theme="brown">Brown</button>
+    </div>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Player Profiles</div>
+    <div id="sp-profile-list" style="margin-bottom:8px"></div>
+  </div>
+</div>
+
+<div id="main">
+  <div class="page active" id="page-guides">
+
+    <!-- Search -->
+    <div class="guide-search-wrap">
+      <span class="guide-search-icon">🔍</span>
+      <input class="guide-search" id="guide-search" type="text"
+             placeholder="Search guides, skills, creators…" autocomplete="off">
+    </div>
+
+    <!-- Category tabs -->
+    <div class="cat-tabs">
+      <button class="cat-tab active" data-cat="all">All</button>
+      <button class="cat-tab" data-cat="skilling">⛏ Skilling</button>
+      <button class="cat-tab" data-cat="bossing">🏆 Bossing</button>
+      <button class="cat-tab" data-cat="money">💰 Money Making</button>
+      <button class="cat-tab" data-cat="tips">💡 Tips & Tricks</button>
+      <button class="cat-tab" data-cat="questing">📜 Questing</button>
+    </div>
+
+    <!-- ── 10BOOT ───────────────────────────────────────────── -->
+    <div class="guide-section" id="section-boot" data-cats="all,tips,money,skilling,questing">
+
+      <div class="section-head">
+        <h2>10boot</h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="creator-card">
+        <div class="creator-head">
+          <img class="creator-avatar"
+               src="https://yt3.googleusercontent.com/ytc/AIdro_lT2cqV-TnNxJGrMRNGl2vJCbmJJlTHhbJtNsqPJA=s176-c-k-c0x00ffffff-no-rj"
+               alt="10boot"
+               onerror="this.outerHTML='<div class=\'creator-avatar placeholder\'>🥾</div>'">
+          <div class="creator-info">
+            <div class="creator-name">10boot</div>
+            <div class="creator-sub">OSRS tips, tricks & hidden secrets</div>
+          </div>
+          <a class="creator-link"
+             href="https://www.youtube.com/@10boot" target="_blank" rel="noopener">
+            ▶ Channel
+          </a>
+        </div>
+        <div class="creator-desc">
+          Covers OSRS tips, lesser-known game mechanics, questing strategies, and efficient
+          methods to progress your account. Great content for new and returning players.
+        </div>
+        <span class="creator-tag" style="background:rgba(63,185,80,.15);border:1px solid var(--green);color:var(--green)">Tips & Tricks</span>
+        <span class="creator-tag" style="background:rgba(184,136,72,.15);border:1px solid var(--gold);color:var(--gold)">Questing</span>
+        <span class="creator-tag" style="background:rgba(240,136,62,.15);border:1px solid var(--orange);color:var(--orange)">New Player</span>
+
+        <!-- Video row -->
+        <div class="video-row" style="margin-top:12px">
+
+          <a class="vid-card"
+             href="https://www.youtube.com/results?search_query=10boot+osrs+tips+tricks"
+             target="_blank" rel="noopener" data-cats="tips" data-keywords="tips tricks secrets 10boot">
+            <div class="vid-thumb-placeholder">
+              <span class="vid-icon">💡</span>
+              <div class="play-overlay">▶</div>
+            </div>
+            <div class="vid-info">
+              <div class="vid-title">OSRS Tips & Tricks</div>
+              <div class="vid-meta">
+                <span class="vid-creator">10boot</span>
+                <span class="vid-pill" style="border-color:var(--green);color:var(--green)">Tips</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="vid-card"
+             href="https://www.youtube.com/results?search_query=10boot+osrs+questing+guide"
+             target="_blank" rel="noopener" data-cats="questing" data-keywords="quest questing quests 10boot">
+            <div class="vid-thumb-placeholder">
+              <span class="vid-icon">📜</span>
+              <div class="play-overlay">▶</div>
+            </div>
+            <div class="vid-info">
+              <div class="vid-title">Quest Guides & Order</div>
+              <div class="vid-meta">
+                <span class="vid-creator">10boot</span>
+                <span class="vid-pill" style="border-color:var(--gold);color:var(--gold)">Questing</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="vid-card"
+             href="https://www.youtube.com/results?search_query=10boot+osrs+beginner+guide"
+             target="_blank" rel="noopener" data-cats="tips" data-keywords="beginner new player start guide 10boot">
+            <div class="vid-thumb-placeholder">
+              <span class="vid-icon">🌱</span>
+              <div class="play-overlay">▶</div>
+            </div>
+            <div class="vid-info">
+              <div class="vid-title">Beginner's Guide to OSRS</div>
+              <div class="vid-meta">
+                <span class="vid-creator">10boot</span>
+                <span class="vid-pill" style="border-color:var(--orange);color:var(--orange)">New Player</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="vid-card"
+             href="https://www.youtube.com/results?search_query=10boot+osrs+money+making"
+             target="_blank" rel="noopener" data-cats="money" data-keywords="money making gp gold 10boot">
+            <div class="vid-thumb-placeholder">
+              <span class="vid-icon">💰</span>
+              <div class="play-overlay">▶</div>
+            </div>
+            <div class="vid-info">
+              <div class="vid-title">Money Making Methods</div>
+              <div class="vid-meta">
+                <span class="vid-creator">10boot</span>
+                <span class="vid-pill" style="border-color:var(--orange);color:var(--orange)">GP/hr</span>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CHYMISTRY ──────────────────────────────────────── -->
+    <div class="guide-section" style="margin-top:4px" id="section-chym" data-cats="all,money,tips,bossing">
+
+      <div class="section-head">
+        <h2>Chymistry</h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="creator-card">
+        <div class="creator-head">
+          <img class="creator-avatar"
+               src="https://yt3.googleusercontent.com/ytc/AIdro_kzMqG3-YBLQK9EgEh7wNhZzJv5FoxEPKVCj3N5ZKQ=s176-c-k-c0x00ffffff-no-rj"
+               alt="Chymistry"
+               onerror="this.outerHTML='<div class=\'creator-avatar placeholder\'>⚗️</div>'">
+          <div class="creator-info">
+            <div class="creator-name">Chymistry</div>
+            <div class="creator-sub">In-depth OSRS guides & money makers</div>
+          </div>
+          <a class="creator-link"
+             href="https://www.youtube.com/@Chymistry" target="_blank" rel="noopener">
+            ▶ Channel
+          </a>
+        </div>
+        <div class="creator-desc">
+          Detailed OSRS content covering efficient money making methods, bossing strategies,
+          skilling breakdowns, and hidden game mechanics. Great for mid-to-late game players.
+        </div>
+        <span class="creator-tag" style="background:rgba(240,136,62,.15);border:1px solid var(--orange);color:var(--orange)">Money Making</span>
+        <span class="creator-tag" style="background:rgba(248,81,73,.15);border:1px solid var(--red);color:var(--red)">Bossing</span>
+        <span class="creator-tag" style="background:rgba(184,136,72,.15);border:1px solid var(--gold);color:var(--gold)">Efficiency</span>
+
+        <!-- Video row -->
+        <div class="video-row" style="margin-top:12px">
+
+          <a class="vid-card"
+             href="https://www.youtube.com/results?search_query=chymistry+osrs+money+making"
+             target="_blank" rel="noopener" data-cats="money" data-keywords="money making gold gp chymistry">
+            <div class="vid-thumb-placeholder">
+              <span class="vid-icon">💰</span>
+              <div class="play-overlay">▶</div>
+            </div>
+            <div class="vid-info">
+              <div class="vid-title">Money Making Methods</div>
+              <div class="vid-meta">
+                <span class="vid-creator">Chymistry</span>
+                <span class="vid-pill" style="border-color:var(--orange);color:var(--orange)">GP/hr</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="vid-card"
+             href="https://www.youtube.com/results?search_query=chymistry+osrs+bossing+guide"
+             target="_blank" rel="noopener" data-cats="bossing" data-keywords="boss bossing pvm chymistry">
+            <div class="vid-thumb-placeholder">
+              <span class="vid-icon">🏆</span>
+              <div class="play-overlay">▶</div>
+            </div>
+            <div class="vid-info">
+              <div class="vid-title">Bossing Guides & Setups</div>
+              <div class="vid-meta">
+                <span class="vid-creator">Chymistry</span>
+                <span class="vid-pill" style="border-color:var(--red);color:var(--red)">PvM</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="vid-card"
+             href="https://www.youtube.com/results?search_query=chymistry+osrs+ironman+guide"
+             target="_blank" rel="noopener" data-cats="tips" data-keywords="ironman tips guide chymistry">
+            <div class="vid-thumb-placeholder">
+              <span class="vid-icon">🛡</span>
+              <div class="play-overlay">▶</div>
+            </div>
+            <div class="vid-info">
+              <div class="vid-title">Ironman Guides & Tips</div>
+              <div class="vid-meta">
+                <span class="vid-creator">Chymistry</span>
+                <span class="vid-pill" style="border-color:var(--gold);color:var(--gold)">Ironman</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="vid-card"
+             href="https://www.youtube.com/results?search_query=chymistry+osrs+skilling"
+             target="_blank" rel="noopener" data-cats="skilling" data-keywords="skilling training chymistry">
+            <div class="vid-thumb-placeholder">
+              <span class="vid-icon">⛏</span>
+              <div class="play-overlay">▶</div>
+            </div>
+            <div class="vid-info">
+              <div class="vid-title">Skilling & Training Tips</div>
+              <div class="vid-meta">
+                <span class="vid-creator">Chymistry</span>
+                <span class="vid-pill" style="border-color:var(--blue);color:var(--blue)">XP/hr</span>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ── THEOATRIX 1-99 GUIDES ──────────────────────────── -->
+    <div class="guide-section" style="margin-top:4px" id="section-theo" data-cats="all,skilling">
+
+      <div class="section-head">
+        <h2>Theoatrix · 1-99 Skill Guides</h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="creator-card">
+        <div class="creator-head">
+          <img class="creator-avatar"
+               src="https://yt3.googleusercontent.com/ytc/AIdro_mwNjS_wEj0a7RQmL6UlRxSvkqT8yT5vM6RLKMnTnU=s176-c-k-c0x00ffffff-no-rj"
+               alt="Theoatrix"
+               onerror="this.outerHTML='<div class=\'creator-avatar placeholder\'>🎓</div>'">
+          <div class="creator-info">
+            <div class="creator-name">Theoatrix OSRS</div>
+            <div class="creator-sub">400K+ subscribers · Complete 1-99 skill guides</div>
+          </div>
+          <a class="creator-link"
+             href="https://www.youtube.com/@Theoatrix" target="_blank" rel="noopener">
+            ▶ Channel
+          </a>
+        </div>
+        <div class="creator-desc">
+          The definitive source for 1-99 training guides in Old School RuneScape.
+          Every skill covered with AFK methods, fastest XP, and ironman-friendly routes.
+        </div>
+        <span class="creator-tag" style="background:rgba(184,136,72,.15);border:1px solid var(--gold);color:var(--gold)">Skilling</span>
+        <span class="creator-tag" style="background:rgba(63,185,80,.15);border:1px solid var(--green);color:var(--green)">Ironman Friendly</span>
+        <span class="creator-tag" style="background:rgba(88,166,255,.15);border:1px solid var(--blue);color:var(--blue)">Beginner Friendly</span>
+
+        <!-- Skill grid dropdown toggle -->
+        <button class="theo-toggle" id="theo-toggle" aria-expanded="false">
+          <div class="theo-toggle-left">
+            <span>⛏</span>
+            <span class="theo-toggle-label">Browse 1-99 Skill Guides</span>
+            <span class="theo-toggle-count">24 skills</span>
+          </div>
+          <span class="theo-toggle-chevron">▼</span>
+        </button>
+
+        <!-- Collapsible skill grid -->
+        <div class="theo-dropdown" id="theo-dropdown">
+          <div class="theo-dropdown-inner">
+            <div class="theo-grid" id="theo-grid"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Empty state (search/filter) -->
+    <div class="guides-empty" id="guides-empty" style="display:none">
+      <div class="guides-empty-icon">🔍</div>
+      <div>No guides found for "<span id="empty-query"></span>"</div>
+      <div style="margin-top:6px;font-size:11px">Try a skill name, creator, or category</div>
+    </div>
+
+    <div style="height:12px"></div>
+
+  </div><!-- /page -->
+</div><!-- /main -->
+
+<!-- Bottom Nav -->
+<nav id="bottom-nav"></nav>
+
+<!-- More Menu -->
+<div class="modal-overlay" id="more-menu-overlay">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <div><div class="modal-title">More</div></div>
+      <button class="modal-close" id="more-menu-close">✕</button>
+    </div>
+<div class="modal-actions">
+
+  <a class="modal-action" href="/src/features/bestiary/bestiary.html" style="border-color:var(--gold)">
+    <span class="ma-title">🐉 Bestiary</span>
+    <span class="ma-desc">Look up monsters, combat stats &amp; slayer info</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/bookmarks/bookmarks.html" style="border-color:var(--gold)">
+    <span class="ma-title">🔖 Bookmarks</span>
+    <span class="ma-desc">Your saved clues, fairy rings, timers &amp; more</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/bossing/bossing.html" style="border-color:var(--gold)">
+    <span class="ma-title">🏆 Bossing</span>
+    <span class="ma-desc">Track boss kill counts and personal bests</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/clueScrolls/clueScrolls.html" style="border-color:var(--gold)">
+    <span class="ma-title">📜 Clue Solver</span>
+    <span class="ma-desc">Solve anagrams, ciphers, emotes &amp; puzzle boxes</span>
+  </a>
+
+    <a class="modal-action" href="/src/features/collectionLog/collectionLog.html" >
+    <span class="ma-title">📒 Collection Log</span>
+    <span class="ma-desc">Track your collection log progress</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/fairyRings/fairyRings.html" style="border-color:var(--gold)">
+    <span class="ma-title">🍄 Fairy Rings</span>
+    <span class="ma-desc">All 55 ring codes with pins &amp; personal notes</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/goals/goals.html" style="border-color:var(--gold)">
+    <span class="ma-title">📊 Goals</span>
+    <span class="ma-desc">Set and track XP &amp; level goals per skill</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/guides/guides.html" style="border-color:var(--gold)">
+    <span class="ma-title">🎓 Guides & Tips</span>
+    <span class="ma-desc">YouTube guides from Theoatrix, Chymistry &amp; 10boot</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/grandExchange/grandExchange.html" style="border-color:var(--gold)">
+    <span class="ma-title">💰 Grand Exchange</span>
+    <span class="ma-desc">Track item prices and market trends</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/petLog/petLog.html" style="border-color:var(--gold)">
+    <span class="ma-title">🐾 Pet Log</span>
+    <span class="ma-desc">Log your pet drops and track your collection</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/quests/quests.html" style="border-color:var(--gold)">
+    <span class="ma-title">🗺️ Quests</span>
+    <span class="ma-desc">Quest list with requirements and completion tracking</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/timers/timers.html" style="border-color:var(--gold)">
+    <span class="ma-title">⏰ Timers</span>
+    <span class="ma-desc">Farm runs, birdhouses &amp; custom growth timers</span>
+  </a>
+
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module" src="/src/features/guides/guides.js"></script>
+</body>
+</html>

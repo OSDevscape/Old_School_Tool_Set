@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2b241b">
+  <link rel="manifest" href="/public/manifest.json">
+  <title>OSTS — Timers</title>
+  <link rel="stylesheet" href="/src/styles/style.css">
+  <link rel="stylesheet" href="/src/features/timers/timers.css">
+  <style>
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>OSTS — Timers</h1>
+  <div class="hdr-actions">
+    <button id="install-btn">Install</button>
+    <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
+  </div>
+</header>
+
+<div id="settings-overlay"></div>
+<div id="settings-panel" aria-hidden="true">
+  <div class="settings-head">
+    <h2>Settings</h2>
+    <button class="settings-close" id="settings-close">✕</button>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Appearance</div>
+    <div class="theme-options">
+      <button class="theme-chip" data-theme="dark">Dark</button>
+      <button class="theme-chip" data-theme="light">Light</button>
+      <button class="theme-chip" data-theme="brown">Brown</button>
+    </div>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Player Profiles</div>
+    <div id="sp-profile-list" style="margin-bottom:8px"></div>
+  </div>
+
+  <div class="settings-block">
+    <div class="settings-label">Timer Tools</div>
+    <button class="push-btn" id="clear-progress-btn">Clear all timer progress</button>
+    <button class="push-btn" id="clear-pins-btn" style="margin-top:6px">Clear all pins</button>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Notifications</div>
+    <div class="push-note" id="push-status">Push notifications not set up.</div>
+    <button class="push-btn" id="enable-push-btn" style="margin-top:8px">Enable Push Notifications</button>
+  </div>
+</div>
+
+<div id="main">
+  <div class="page active" id="page-timers">
+    <div class="timer-shell">
+      <div class="timer-topbar">
+        <input id="timer-search" class="timer-search" placeholder="Search timers…">
+        <button class="timer-create-btn" id="open-create-btn">+ Create</button>
+      </div>
+      <div id="timer-pinned"></div>
+      <div id="timer-groups"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<nav id="bottom-nav"></nav>
+
+<!-- More Menu -->
+<div class="modal-overlay" id="more-menu-overlay">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <div><div class="modal-title">More</div></div>
+      <button class="modal-close" id="more-menu-close">✕</button>
+    </div>
+<div class="modal-actions">
+
+  <a class="modal-action" href="/src/features/bestiary/bestiary.html" style="border-color:var(--gold)">
+    <span class="ma-title">🐉 Bestiary</span>
+    <span class="ma-desc">Look up monsters, combat stats &amp; slayer info</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/bookmarks/bookmarks.html" style="border-color:var(--gold)">
+    <span class="ma-title">🔖 Bookmarks</span>
+    <span class="ma-desc">Your saved clues, fairy rings, timers &amp; more</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/bossing/bossing.html" style="border-color:var(--gold)">
+    <span class="ma-title">🏆 Bossing</span>
+    <span class="ma-desc">Track boss kill counts and personal bests</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/clueScrolls/clueScrolls.html" style="border-color:var(--gold)">
+    <span class="ma-title">📜 Clue Solver</span>
+    <span class="ma-desc">Solve anagrams, ciphers, emotes &amp; puzzle boxes</span>
+  </a>
+
+    <a class="modal-action" href="/src/features/collectionLog/collectionLog.html" >
+    <span class="ma-title">📒 Collection Log</span>
+    <span class="ma-desc">Track your collection log progress</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/fairyRings/fairyRings.html" style="border-color:var(--gold)">
+    <span class="ma-title">🍄 Fairy Rings</span>
+    <span class="ma-desc">All 55 ring codes with pins &amp; personal notes</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/goals/goals.html" style="border-color:var(--gold)">
+    <span class="ma-title">📊 Goals</span>
+    <span class="ma-desc">Set and track XP &amp; level goals per skill</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/guides/guides.html" style="border-color:var(--gold)">
+    <span class="ma-title">🎓 Guides & Tips</span>
+    <span class="ma-desc">YouTube guides from Theoatrix, Chymistry &amp; 10boot</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/grandExchange/grandExchange.html" style="border-color:var(--gold)">
+    <span class="ma-title">💰 Grand Exchange</span>
+    <span class="ma-desc">Track item prices and market trends</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/petLog/petLog.html" style="border-color:var(--gold)">
+    <span class="ma-title">🐾 Pet Log</span>
+    <span class="ma-desc">Log your pet drops and track your collection</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/quests/quests.html" style="border-color:var(--gold)">
+    <span class="ma-title">🗺️ Quests</span>
+    <span class="ma-desc">Quest list with requirements and completion tracking</span>
+  </a>
+
+  <a class="modal-action" href="/src/features/timers/timers.html" style="border-color:var(--gold)">
+    <span class="ma-title">⏰ Timers</span>
+    <span class="ma-desc">Farm runs, birdhouses &amp; custom growth timers</span>
+  </a>
+
+    </div>
+  </div>
+</div>
+
+<!-- Create Timer Sheet -->
+<div id="create-timer-overlay">
+  <div id="create-timer-sheet">
+    <div class="ct-handle"></div>
+    <div class="ct-head">
+      <h3>Create Custom Timer</h3>
+      <button class="ct-close" id="ct-close">✕</button>
+    </div>
+    <div class="ct-body">
+
+      <!-- Timer Name -->
+      <div class="ct-field">
+        <div class="ct-label">Timer Name</div>
+        <input id="ct-name" class="ct-input" type="text" placeholder="e.g. Ranarr, Birdhouse, Seaweed" autocomplete="off" maxlength="40">
+      </div>
+
+      <!-- Duration Picker -->
+      <div class="ct-field">
+        <div class="ct-label">Duration</div>
+        <button id="duration-picker-btn" class="ct-input picker-button placeholder">
+          <span id="duration-display">Select duration...</span>
+          <span>▼</span>
+        </button>
+      </div>
+
+      <!-- Category Picker -->
+      <div class="ct-field">
+        <div class="ct-label">Category <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--muted)">(optional)</span></div>
+        <button id="category-picker-btn" class="ct-input picker-button placeholder">
+          <span id="category-display">Select category...</span>
+          <span>▼</span>
+        </button>
+      </div>
+
+      <!-- Farming Location Picker -->
+      <div class="ct-field">
+        <div class="ct-label">Farming Location <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--muted)">(optional)</span></div>
+        <button id="location-picker-btn" class="ct-input picker-button placeholder">
+          <span id="location-display">Select farming location...</span>
+          <span>▼</span>
+        </button>
+        <div class="ct-hint">Adds location to timer name (e.g. "Ranarr - Falador")</div>
+      </div>
+
+      <div class="ct-err" id="ct-err"></div>
+      <button class="ct-submit" id="ct-submit">Add Timer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Duration Picker Modal -->
+<div id="duration-overlay">
+  <div id="duration-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <h3>Select Duration</h3>
+      <button class="modal-close-btn" id="dur-close">✕</button>
+    </div>
+    <div class="modal-grid" id="dur-grid"></div>
+    <div style="padding: 0 16px 16px;">
+      <div style="font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px;">Or enter custom duration</div>
+      <input id="custom-duration-input" class="ct-input" type="text" placeholder='e.g. "45m", "1h 30m", "3h"' autocomplete="off" style="margin-bottom: 8px;">
+      <button id="custom-duration-btn" class="ct-submit" style="margin: 0; padding: 10px;">Use Custom Duration</button>
+    </div>
+  </div>
+</div>
+
+<!-- Category Picker Modal -->
+<div id="category-overlay">
+  <div id="category-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <h3>Select Category</h3>
+      <button class="modal-close-btn" id="cat-close">✕</button>
+    </div>
+    <div class="modal-grid" id="cat-grid"></div>
+    <div style="padding: 0 16px 16px;">
+      <div style="font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px;">Or create new category</div>
+      <input id="custom-category-input" class="ct-input" type="text" placeholder="e.g. Daily Tasks, Weekly, Raids" autocomplete="off" maxlength="30" style="margin-bottom: 8px;">
+      <button id="custom-category-btn" class="ct-submit" style="margin: 0; padding: 10px;">Use Custom Category</button>
+    </div>
+  </div>
+</div>
+
+<!-- Farming Location Picker Modal -->
+<div id="location-overlay">
+  <div id="location-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <h3>Select Farming Location</h3>
+      <button class="modal-close-btn" id="loc-close">✕</button>
+    </div>
+    <div class="modal-grid" id="loc-grid"></div>
+  </div>
+</div>
+</div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module" src="/src/features/timers/timers.js"></script>
+</body>
+</html>

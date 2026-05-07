@@ -5,19 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#2b241b">
   <link rel="manifest" href="/public/manifest.json">
-  <title>OSTS — Home</title>
-  <meta name="description" content="Old School Tool Set — OSRS news and player tracking.">
+  <title>OSTS — Bestiary</title>
   <link rel="stylesheet" href="/src/styles/style.css">
-  <link rel="stylesheet" href="/src/styles/index.css">
-
 </head>
 <body>
 
 <header>
-  <h1>OSTS</h1>
+  <h1>OSTS — Bestiary</h1>
   <div class="hdr-actions">
     <button id="install-btn">Install</button>
-    <button class="hdr-btn icon-btn" id="settings-btn" aria-label="Settings">⚙️</button>
+    <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
   </div>
 </header>
 
@@ -35,74 +32,34 @@
       <button class="theme-chip" data-theme="brown">Brown</button>
     </div>
   </div>
+  </div>
   <div class="settings-block">
     <div class="settings-label">Player Profiles</div>
     <div id="sp-profile-list" style="margin-bottom:8px"></div>
-    <div style="font-size:11px;color:var(--muted)">
-      Manage profiles on the <a href="Pages/overview.html" style="color:var(--gold);font-weight:600">Overview</a> page.
-    </div>
   </div>
-
-</div>
 </div>
 
 <div id="main">
-  <div class="page active" id="page-home">
+  <div class="page active" id="page-bestiary">
+    <!-- Search / Filter bar -->
+    <input id="bestiary-search" class="timer-search" placeholder="Search monster, location, weakness…" style="margin-bottom:10px;width:100%">
 
-    <!-- Hero -->
-    <div class="landing-hero">
-      <img class="hero-logo"
-           src="https://gyazo.com/ec47322dca1b5586ef93be1810f250bf.png"
-           alt="OSTS" loading="lazy"
-           onerror="this.style.display='none'">
-      <div class="hero-text">
-        <h1>Old School Tool Set</h1>
-        <p>OSRS tracking, bossing stats, farming timers &amp; more.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px" id="category-chips">
+      <button class="period-tab active" data-cat="All">All</button>
+      <button class="period-tab" data-cat="Slayer">🎯 Slayer</button>
+      <button class="period-tab" data-cat="Bosses">🏆 Bosses</button>
+      <button class="period-tab" data-cat="Demons">😈 Demons</button>
+      <button class="period-tab" data-cat="Dragons">🐉 Dragons</button>
+      <button class="period-tab" data-cat="Undead">💀 Undead</button>
+    </div>
+
+    <div id="bestiary-list" style="margin-top:24px">
+      <div style="text-align:center;padding:40px 20px;color:var(--muted)">
+        <div style="font-size:64px;margin-bottom:12px">🐉</div>
+        <div style="font-size:15px;font-weight:600;color:var(--text)">Bestiary is being rebuilt.</div>
+        <div style="font-size:13px;margin-top:6px">Coming soon.</div>
       </div>
     </div>
-
-    <!-- Global Recent Players -->
-    <div class="section-head">
-      <h2>Recent Players <span class="src-badge badge-global">GLOBAL</span></h2>
-      <button class="refresh-btn" id="refresh-recent-global" title="Refresh global">↻</button>
-    </div>
-    <div id="recent-global-container">
-      <div class="recent-grid">
-        <div class="skeleton skel-chip"></div>
-        <div class="skeleton skel-chip"></div>
-        <div class="skeleton skel-chip"></div>
-      </div>
-    </div>
-
-    <!-- Local Recent Players -->
-    <div class="section-head" style="margin-top:4px">
-      <h2>Your Recent Searches <span class="src-badge badge-local">LOCAL</span></h2>
-      <button class="refresh-btn" id="refresh-recent-local" title="Refresh local">↻</button>
-    </div>
-    <div id="recent-local-container">
-      <div class="recent-grid">
-        <div class="skeleton skel-chip"></div>
-        <div class="skeleton skel-chip"></div>
-        <div class="skeleton skel-chip"></div>
-      </div>
-    </div>
-
-    <!-- OSRS News -->
-    <div class="section-head">
-      <h2>OSRS News</h2>
-      <button class="refresh-btn" id="refresh-news" title="Refresh">↻</button>
-    </div>
-    <div id="news-container">
-      <div class="news-list">
-        <div class="skel-news-card"><div class="skeleton skel-thumb" style="height:210px"></div><div class="skel-body"><div class="skeleton skel-line" style="width:30%"></div><div class="skeleton skel-line" style="width:100%"></div><div class="skeleton skel-line" style="width:70%"></div><div class="skeleton skel-line" style="width:55%"></div></div></div>
-        <div class="skel-news-card"><div class="skeleton skel-thumb"></div><div class="skel-body"><div class="skeleton skel-line" style="width:40%"></div><div class="skeleton skel-line" style="width:90%"></div><div class="skeleton skel-line" style="width:65%"></div></div></div>
-        <div class="skel-news-card"><div class="skeleton skel-thumb"></div><div class="skel-body"><div class="skeleton skel-line" style="width:25%"></div><div class="skeleton skel-line" style="width:85%"></div><div class="skeleton skel-line" style="width:75%"></div></div></div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
 
 <!-- Bottom Nav -->
 <nav id="bottom-nav"></nav>
@@ -179,9 +136,63 @@
     </div>
   </div>
 </div>
-
 <div id="toast"></div>
 
-<script type="module" src="/src/app/index.js"></script>
+<script type="module">
+import { initPage } from '/src/app/shared.js';
+initPage('bestiary');
+
+// Bestiary full implementation — coming next.
+// Will pull monster stats from OSRS Wiki Cargo API,
+// with Anthropic API fallback (same pattern as original OSTS bestiary).
+
+
+// ── Player Profiles ───────────────────────────────────────────────────────────
+const PROFILES_KEY_SP    = 'osts_profiles_v2';
+const ACTIVE_PROF_KEY_SP = 'osts_active_profile_v2';
+const SP_ICONS  = { ironman:'🛡', hardcore:'💀', ultimate:'🔱', regular:'⚔', gim:'👥', ghcim:'☠', ugim:'👥' };
+const SP_LABELS = { ironman:'Iron', hardcore:'HCIM', ultimate:'UIM', regular:'Regular', gim:'GIM', ghcim:'GHCIM', ugim:'UGIM' };
+
+function spGetProfiles() { return storage.get(PROFILES_KEY_SP, []); }
+function spGetActiveId()  { return storage.get(ACTIVE_PROF_KEY_SP, null); }
+function spSetActiveId(id){ storage.set(ACTIVE_PROF_KEY_SP, id); }
+function spNorm(t){ return normalizeAccountType(t); }
+
+function renderSpProfiles() {
+  const list = document.getElementById('sp-profile-list');
+  if (!list) return;
+  const profiles = spGetProfiles();
+  const activeId = spGetActiveId();
+  if (!profiles.length) {
+    list.innerHTML = '<div style="font-size:12px;color:var(--muted)">No saved profiles.<br>Search a player on <a href="overview.html" style="color:var(--gold)">Overview</a> to create one.</div>';
+    return;
+  }
+  const sorted = [...profiles].sort((a,b) => (b.id === activeId) - (a.id === activeId));
+  list.innerHTML = sorted.map(p => `
+    <div class="sp-profile-card${p.id === activeId ? ' active' : ''}">
+      <div class="sp-avatar">${SP_ICONS[spNorm(p.type)] || '⚔'}</div>
+      <div class="sp-info">
+        <div class="sp-nickname">${p.nickname}</div>
+        <div class="sp-rsn-type">${p.rsn} · ${SP_LABELS[spNorm(p.type)] || 'Iron'}</div>
+      </div>
+      ${p.id !== activeId ? `<button class="sp-btn" data-sp-load="${p.id}">Load</button>` : '<span style="font-size:10px;color:var(--gold)">Active</span>'}
+    </div>`).join('');
+
+  list.querySelectorAll('[data-sp-load]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const p = spGetProfiles().find(x => x.id === btn.dataset.spLoad);
+      if (!p) return;
+      spSetActiveId(p.id);
+      storage.set(STORAGE_KEYS.ACCOUNT_TYPE, spNorm(p.type));
+      storage.set(STORAGE_KEYS.RSN, p.rsn);
+      settings.close();
+      showToast('Switched to ' + p.nickname);
+    });
+  });
+}
+
+document.getElementById('settings-btn')?.addEventListener('click', renderSpProfiles, true);
+
+</script>
 </body>
 </html>

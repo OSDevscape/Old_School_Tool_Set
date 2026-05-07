@@ -5,19 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#2b241b">
   <link rel="manifest" href="/public/manifest.json">
-  <title>OSTS — Home</title>
-  <meta name="description" content="Old School Tool Set — OSRS news and player tracking.">
+  <title>OSTS — Bookmarks</title>
   <link rel="stylesheet" href="/src/styles/style.css">
-  <link rel="stylesheet" href="/src/styles/index.css">
+  <link rel="stylesheet" href="/src/features/bookmarks/bookmarks.css">
+  <style>
 
+
+
+  </style>
 </head>
 <body>
 
 <header>
   <h1>OSTS</h1>
   <div class="hdr-actions">
-    <button id="install-btn">Install</button>
-    <button class="hdr-btn icon-btn" id="settings-btn" aria-label="Settings">⚙️</button>
+    <button id="install-btn" style="display:none">Install</button>
+    <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
   </div>
 </header>
 
@@ -36,73 +39,28 @@
     </div>
   </div>
   <div class="settings-block">
-    <div class="settings-label">Player Profiles</div>
-    <div id="sp-profile-list" style="margin-bottom:8px"></div>
-    <div style="font-size:11px;color:var(--muted)">
-      Manage profiles on the <a href="Pages/overview.html" style="color:var(--gold);font-weight:600">Overview</a> page.
-    </div>
+    <div class="settings-label">Bookmarks</div>
+    <button class="push-btn" id="clear-all-btn" style="background:rgba(248,81,73,.12);border-color:var(--red);color:var(--red)">Clear All Bookmarks</button>
   </div>
-
-</div>
 </div>
 
 <div id="main">
-  <div class="page active" id="page-home">
+  <div class="page active">
 
-    <!-- Hero -->
-    <div class="landing-hero">
-      <img class="hero-logo"
-           src="https://gyazo.com/ec47322dca1b5586ef93be1810f250bf.png"
-           alt="OSTS" loading="lazy"
-           onerror="this.style.display='none'">
-      <div class="hero-text">
-        <h1>Old School Tool Set</h1>
-        <p>OSRS tracking, bossing stats, farming timers &amp; more.</p>
-      </div>
+    <!-- Filters -->
+    <div class="bm-filters" id="bm-filters"></div>
+
+    <!-- Count + clear -->
+    <div class="bm-count">
+      <span id="bm-count-text">Loading…</span>
+      <button class="bm-clear-all" id="bm-clear-visible" style="display:none">Clear visible</button>
     </div>
 
-    <!-- Global Recent Players -->
-    <div class="section-head">
-      <h2>Recent Players <span class="src-badge badge-global">GLOBAL</span></h2>
-      <button class="refresh-btn" id="refresh-recent-global" title="Refresh global">↻</button>
-    </div>
-    <div id="recent-global-container">
-      <div class="recent-grid">
-        <div class="skeleton skel-chip"></div>
-        <div class="skeleton skel-chip"></div>
-        <div class="skeleton skel-chip"></div>
-      </div>
-    </div>
-
-    <!-- Local Recent Players -->
-    <div class="section-head" style="margin-top:4px">
-      <h2>Your Recent Searches <span class="src-badge badge-local">LOCAL</span></h2>
-      <button class="refresh-btn" id="refresh-recent-local" title="Refresh local">↻</button>
-    </div>
-    <div id="recent-local-container">
-      <div class="recent-grid">
-        <div class="skeleton skel-chip"></div>
-        <div class="skeleton skel-chip"></div>
-        <div class="skeleton skel-chip"></div>
-      </div>
-    </div>
-
-    <!-- OSRS News -->
-    <div class="section-head">
-      <h2>OSRS News</h2>
-      <button class="refresh-btn" id="refresh-news" title="Refresh">↻</button>
-    </div>
-    <div id="news-container">
-      <div class="news-list">
-        <div class="skel-news-card"><div class="skeleton skel-thumb" style="height:210px"></div><div class="skel-body"><div class="skeleton skel-line" style="width:30%"></div><div class="skeleton skel-line" style="width:100%"></div><div class="skeleton skel-line" style="width:70%"></div><div class="skeleton skel-line" style="width:55%"></div></div></div>
-        <div class="skel-news-card"><div class="skeleton skel-thumb"></div><div class="skel-body"><div class="skeleton skel-line" style="width:40%"></div><div class="skeleton skel-line" style="width:90%"></div><div class="skeleton skel-line" style="width:65%"></div></div></div>
-        <div class="skel-news-card"><div class="skeleton skel-thumb"></div><div class="skel-body"><div class="skeleton skel-line" style="width:25%"></div><div class="skeleton skel-line" style="width:85%"></div><div class="skeleton skel-line" style="width:75%"></div></div></div>
-      </div>
-    </div>
+    <!-- Content -->
+    <div id="bm-content"></div>
 
   </div>
 </div>
-
 
 <!-- Bottom Nav -->
 <nav id="bottom-nav"></nav>
@@ -182,6 +140,6 @@
 
 <div id="toast"></div>
 
-<script type="module" src="/src/app/index.js"></script>
+<script type="module" src="/src/features/bookmarks/bookmarks.js"></script>
 </body>
 </html>
