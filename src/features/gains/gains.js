@@ -12,6 +12,8 @@
   let chartTimeline    = null;
   let chartLevels      = null;
   let chartSkillSheet  = null;   // chart inside the popup
+  let chartDonut       = null;
+  let chartRadar       = null;
 
   const PERIOD_LABELS = { day: 'Today', week: 'This Week', month: 'This Month', year: 'This Year' };
   const PERIOD_DAYS   = { day: 1,       week: 7,           month: 30,           year: 365 };
@@ -89,6 +91,7 @@
       currentRsn = data.displayName || data.username || rsn;
       document.getElementById('player-name-header').textContent = ' — ' + currentRsn;
       renderLevelsChart(data);
+      renderRadarChart(data);
       await loadGains(currentRsn, currentPeriod);
       showToast('✅ ' + currentRsn);
     } catch (err) { showError(err.message); }
@@ -163,6 +166,9 @@
         if (entry) openGainSheet(entry, totalGained);
       });
     });
+
+    // Donut — XP breakdown for this period
+    renderDonutChart(entries);
   }
 
   // ── Gain Detail Sheet ───────────────────────────────────────────────────────
@@ -272,6 +278,19 @@
             </div>
           </div>`}
 
+      <!-- Individual skill heatmap -->
+      <div class="chart-section" style="margin-bottom:12px">
+        <h3>Activity Heatmap</h3>
+        <div id="sheet-heatmap" class="heatmap-container">
+          <div class="heatmap-loading"><div class="spinner"></div> Loading…</div>
+        </div>
+        <div class="heatmap-legend">
+          <span>Less</span>
+          <div class="hm-legend-cells" id="sheet-heatmap-legend"></div>
+          <span>More</span>
+        </div>
+      </div>
+
       <!-- Individual XP over time chart -->
       <div class="chart-section" style="margin-bottom:0">
         <h3>XP Over Time</h3>
@@ -307,10 +326,13 @@
   async function loadSkillTimeline(rsn, skillId, period, color) {
     try {
       const timeline = await wom.getTimeline(rsn, skillId, period);
+      renderHeatmap('sheet-heatmap', 'sheet-heatmap-legend', timeline, color);
       renderSkillChart(timeline, color);
     } catch (err) {
       const wrap = document.getElementById('sheet-chart-wrap');
       if (wrap) wrap.innerHTML = '<div style="text-align:center;padding:20px;font-size:12px;color:var(--muted)">Chart data unavailable</div>';
+      const hm = document.getElementById('sheet-heatmap');
+      if (hm) hm.innerHTML = '';
     }
   }
 
@@ -382,6 +404,7 @@
     try {
       const timeline = await wom.getTimeline(rsn, 'overall', period);
       renderOverviewChart(timeline);
+      renderHeatmap('heatmap-overall', 'heatmap-legend-cells', timeline, '#b88848');
     } catch (err) {
       console.warn('[OSTS] Overview timeline failed:', err.message);
     }
@@ -475,42 +498,211 @@
   function clearError()   { const e = document.getElementById('error-msg'); e.textContent=''; e.classList.remove('show'); }
   function showError(msg) { const e = document.getElementById('error-msg'); e.textContent=msg; e.classList.add('show'); }
 
-  // ── Drag-to-close (down or horizontal swipe) ─────────────────────────────────
+  // ── Heatmap ──────────────────────────────────────────────────────────────────
+  function renderHeatmap(containerId, legendId, timeline, color) {
+    const container = document.getElementById(containerId);
+    const legendEl  = document.getElementById(legendId);
+    if (!container) return;
+
+    if (!timeline?.length || timeline.length < 2) {
+      container.innerHTML = '<div style="text-align:center;padding:16px;font-size:12px;color:var(--muted)">Not enough data</div>';
+      return;
+    }
+
+    // Convert cumulative XP to daily gains
+    const daily = [];
+    for (let i = 1; i < timeline.length; i++) {
+      const diff = Number(timeline[i].value) - Number(timeline[i-1].value);
+      daily.push({ date: new Date(timeline[i].date), xp: Math.max(0, diff) });
+    }
+
+    const maxXP = Math.max(...daily.map(d => d.xp), 1);
+    const isYear = daily.length > 60;
+
+    // Build legend
+    if (legendEl) {
+      legendEl.innerHTML = [0.1, 0.3, 0.55, 0.75, 1].map(t => {
+        const hex = Math.round(t * 220).toString(16).padStart(2, '0');
+        return `<div class="hm-cell hm-cell-sm" style="background:${color}${hex}"></div>`;
+      }).join('');
+    }
+
+    if (isYear) {
+      // GitHub-style: 7 rows (days of week), columns = weeks
+      // Pad start so day 0 lands on its correct weekday
+      const firstDay = daily[0].date.getDay(); // 0=Sun
+      const padCount = firstDay; // Sun=0 → no pad; Mon=1 → 1 empty cell etc.
+
+      const cells = [];
+      for (let i = 0; i < padCount; i++) cells.push('<div class="hm-cell hm-cell-sm hm-empty"></div>');
+      for (const d of daily) {
+        const intensity = d.xp / maxXP;
+        const alpha = d.xp === 0 ? '18' : Math.round(30 + intensity * 200).toString(16).padStart(2, '0');
+        const label = d.date.toLocaleDateString('en-GB', { month: 'short', day: 'numeric' }) + ': +' + fmtXPLong(d.xp) + ' XP';
+        cells.push(`<div class="hm-cell hm-cell-sm" style="background:${color}${alpha}" title="${label}"></div>`);
+      }
+
+      container.innerHTML = `<div class="heatmap-year">${cells.join('')}</div>`;
+    } else {
+      // Row of labelled cells for day/week/month
+      const cells = daily.map(d => {
+        const intensity = d.xp / maxXP;
+        const alpha = d.xp === 0 ? '18' : Math.round(30 + intensity * 200).toString(16).padStart(2, '0');
+        const label = d.date.toLocaleDateString('en-GB', { weekday: 'short', month: 'short', day: 'numeric' });
+        const shortLbl = daily.length <= 7
+          ? d.date.toLocaleDateString('en-GB', { weekday: 'short' })
+          : d.date.toLocaleDateString('en-GB', { day: 'numeric' });
+        return `
+          <div class="hm-col">
+            <div class="hm-cell hm-cell-lg" style="background:${color}${alpha}"
+              title="${label}: +${fmtXPLong(d.xp)} XP"></div>
+            <div class="hm-date">${shortLbl}</div>
+          </div>`;
+      });
+      container.innerHTML = `<div class="heatmap-row">${cells.join('')}</div>`;
+    }
+  }
+
+  // ── Donut — period XP breakdown ──────────────────────────────────────────────
+  function renderDonutChart(entries) {
+    const canvas = document.getElementById('chart-donut');
+    if (!canvas || !entries?.length) return;
+    if (chartDonut) { chartDonut.destroy(); chartDonut = null; }
+
+    // Top 8 by XP, rest grouped as "Other"
+    const sorted = [...entries].sort((a, b) => b.gained - a.gained);
+    const top    = sorted.slice(0, 8);
+    const rest   = sorted.slice(8);
+    const restXP = rest.reduce((s, e) => s + e.gained, 0);
+
+    const labels = top.map(e => e.name);
+    const values = top.map(e => e.gained);
+    const colors = top.map(e => e.color);
+
+    if (restXP > 0) { labels.push('Other'); values.push(restXP); colors.push('#555'); }
+
+    chartDonut = new Chart(canvas, {
+      type: 'doughnut',
+      data: {
+        labels,
+        datasets: [{
+          data: values,
+          backgroundColor: colors.map(c => c + 'cc'),
+          borderColor:     colors,
+          borderWidth: 1.5,
+          hoverOffset: 6,
+        }],
+      },
+      options: {
+        responsive: true,
+        cutout: '62%',
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+              color: '#8b949e',
+              font: { size: 10 },
+              boxWidth: 10,
+              padding: 8,
+            },
+          },
+          tooltip: {
+            callbacks: {
+              label: ctx => {
+                const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                const pct   = ((ctx.parsed / total) * 100).toFixed(1);
+                return ` ${fmtXPLong(ctx.parsed)} XP (${pct}%)`;
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  // ── Radar — skill level profile ──────────────────────────────────────────────
+  function renderRadarChart(data) {
+    const canvas = document.getElementById('chart-radar');
+    if (!canvas) return;
+    if (chartRadar) { chartRadar.destroy(); chartRadar = null; }
+
+    const snap   = data.latestSnapshot?.data?.skills || {};
+    const skills = SKILLS.filter(([id]) => id !== 'overall');
+    const levels = skills.map(([id]) => Number(snap[id]?.level || 1));
+
+    chartRadar = new Chart(canvas, {
+      type: 'radar',
+      data: {
+        labels: skills.map(([, n]) => n),
+        datasets: [{
+          label: 'Level',
+          data: levels,
+          backgroundColor: 'rgba(184,136,72,0.15)',
+          borderColor: '#b88848',
+          borderWidth: 2,
+          pointBackgroundColor: skills.map(([,,,c]) => c),
+          pointBorderColor: '#0000',
+          pointRadius: 3,
+          pointHoverRadius: 5,
+        }],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          r: {
+            min: 0,
+            max: 99,
+            ticks: {
+              stepSize: 33,
+              color: '#8b949e',
+              font: { size: 8 },
+              backdropColor: 'transparent',
+            },
+            grid:        { color: '#21262d' },
+            angleLines:  { color: '#21262d' },
+            pointLabels: { color: '#8b949e', font: { size: 9 } },
+          },
+        },
+        plugins: { legend: { display: false } },
+      },
+    });
+  }
+
+  // ── Drag-to-close ─────────────────────────────────────────────────────────────
   function makeDraggable(sheetEl, closeFn) {
-    let startX = 0, startY = 0, dragY = 0, dragX = 0, active = false, dir = null;
+    let startY = 0, dragY = 0, active = false;
 
     // Attach to whole sheet — activates only when touch starts in top 80px
     sheetEl.addEventListener('touchstart', e => {
       const sheetTop = sheetEl.getBoundingClientRect().top;
       if (e.touches[0].clientY - sheetTop > 80) return;
-      startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
-      dragY = dragX = 0; dir = null; active = true;
+      dragY = 0; active = true;
       sheetEl.style.transition = 'none';
     }, { passive: true });
 
     window.addEventListener('touchmove', e => {
       if (!active) return;
       const dy = e.touches[0].clientY - startY;
-      const dx = e.touches[0].clientX - startX;
-      if (!dir) {
-        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 8) dir = 'h';
-        else if (Math.abs(dy) > 8) dir = 'v';
-      }
-      if (dir === 'v') { dragY = Math.max(0, dy); sheetEl.style.transform = `translateY(${dragY}px)`; }
-      else if (dir === 'h') { dragX = dx; sheetEl.style.transform = `translateX(${dragX}px)`; }
+      dragY = Math.max(0, dy);
+      sheetEl.style.transform = `translateY(${dragY}px)`;
     }, { passive: true });
 
     window.addEventListener('touchend', () => {
       if (!active) return;
       active = false;
       sheetEl.style.transition = '';
-      if ((dir === 'v' && dragY > 100) || (dir === 'h' && Math.abs(dragX) > 120)) {
-        closeFn();
+      if (dragY > 100) {
+        sheetEl.style.transform = 'translateY(110%)';
+        setTimeout(() => {
+          closeFn();
+          sheetEl.style.transform = '';
+        }, 320);
       } else {
-        sheetEl.style.transform = 'translateY(0)';
+        sheetEl.style.transform = '';
       }
-      dragY = dragX = 0; dir = null;
+      dragY = 0;
     });
   }
 
@@ -525,6 +717,7 @@
     currentRsn = cached.displayName || cached.username || '';
     if (currentRsn) document.getElementById('player-name-header').textContent = ' — ' + currentRsn;
     renderLevelsChart(cached);
+    renderRadarChart(cached);
     if (currentRsn) loadGains(currentRsn, currentPeriod);
   } else {
     const lastRsn = storage.get(STORAGE_KEYS.RSN, '');
