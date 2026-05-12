@@ -347,8 +347,38 @@ export async function fetchPlayer(rsn, accountType = null) {
   // Step 1: WOM (primary snapshot + player metadata)
   const womData = await wom.getPlayer(rsn);
 
-  // Determine account type from WOM response or provided override
-  const type = normalizeAccountType(accountType || womData.type, 'ironman');
+  // Determine account type — hiscores is ground truth, WOM is the hint
+  const womRaw    = womData.type;
+  const womStatus = (womData.status || '').toLowerCase();
+  let detectedType = normalizeAccountType(accountType || womRaw, 'unknown');
+
+  if (!accountType) {
+    const probeTypes = ['gim', 'ghcim', 'hardcore', 'ultimate', 'ironman'];
+    const probeResults = await Promise.allSettled(
+      probeTypes.map(async pt => {
+        const url = `/.netlify/functions/hiscores?player=${encodeURIComponent(rsn)}&type=${pt}`;
+        const res = await fetch(url);
+        if (!res.ok) return { type: pt, ranked: false };
+        const json = await res.json();
+        const data = parseHiscoresCSV(json.csv);
+        return { type: pt, ranked: (data?.skills?.overall?.rank ?? -1) > 0 };
+      })
+    );
+    for (const result of probeResults) {
+      if (result.status === 'fulfilled' && result.value.ranked) {
+        detectedType = result.value.type;
+        break;
+      }
+    }
+    if (detectedType === 'unknown') detectedType = 'regular';
+
+    // Dead HCIM: OSRS keeps them on HCIM board so probe can't detect death — trust WOM status
+    if (detectedType === 'hardcore' && womStatus === 'dead') {
+      detectedType = 'ironman';
+    }
+  }
+
+  const type = detectedType;
   womData.type = type;
 
   // Step 2: Hiscores (authoritative current data)
@@ -591,7 +621,7 @@ export function initPage(activePage) {
 
   // Register service worker immediately (separate from push opt-in)
   if ('serviceWorker' in navigator) {
-    import('./bootstrap.js')
+    import('/src/app/bootstrap.js')
       .then(({ registerSW }) => registerSW())
       .catch(() => {});
   }

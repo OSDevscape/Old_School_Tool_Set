@@ -1,4 +1,4 @@
-  import {
+import {
     initPage, fetchPlayer, player, wom, settings, showToast, storage,
     STORAGE_KEYS, SKILLS, SKILL_MAP, fmtXP, fmtRank,
     xpForLevel, xpProgress, normalizeAccountType,
@@ -292,12 +292,18 @@
   }
 
   function closeGainSheet() {
-    document.getElementById('gain-sheet').classList.remove('show');
+    const sheet = document.getElementById('gain-sheet');
+    sheet.classList.remove('show');
+    sheet.style.transform = '';   // reset drag offset so next open is clean
     document.getElementById('gain-sheet-overlay').classList.remove('show');
     if (chartSkillSheet) { chartSkillSheet.destroy(); chartSkillSheet = null; }
   }
 
-  document.getElementById('gs-close').addEventListener('click', closeGainSheet);
+  // Delegate X button clicks — sheet innerHTML is replaced each open,
+  // so we listen on the stable parent sheet element instead
+  document.getElementById('gain-sheet').addEventListener('click', e => {
+    if (e.target.closest('#gs-close')) closeGainSheet();
+  });
   document.getElementById('gain-sheet-overlay').addEventListener('click', closeGainSheet);
 
   // ── Drag to close ────────────────────────────────────────────────────────────

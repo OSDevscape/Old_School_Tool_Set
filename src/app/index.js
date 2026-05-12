@@ -244,6 +244,7 @@ function renderSpProfiles() {
   });
 }
 document.getElementById('settings-btn')?.addEventListener('click', renderSpProfiles, true);
+
 // ── Push Notifications ────────────────────────────────────────────────────────
 (function initPushUI() {
   const btn    = document.getElementById('push-enable-btn');
@@ -254,11 +255,8 @@ document.getElementById('settings-btn')?.addEventListener('click', renderSpProfi
     if (status) { status.textContent = msg; status.style.color = colour; }
   }
 
-  // Reflect current permission state on load
   if (!('Notification' in window) || !('PushManager' in window)) {
-    btn.disabled = true;
-    setStatus('Push not supported on this browser.');
-    return;
+    btn.disabled = true; setStatus('Push not supported on this browser.'); return;
   }
   if (Notification.permission === 'granted') {
     btn.textContent = '✅ Push Notifications Enabled';
@@ -278,10 +276,10 @@ document.getElementById('settings-btn')?.addEventListener('click', renderSpProfi
       await registerPush();
       btn.textContent = '✅ Push Notifications Enabled';
       setStatus('You will receive push notifications.', 'var(--gold)');
-    } catch (err) {
+    } catch (e) {
       btn.disabled = false;
       btn.textContent = '🔔 Enable Push Notifications';
-      setStatus(err.message || 'Failed to enable push.', 'var(--error, #e74c3c)');
+      setStatus(e.message || 'Failed to enable push.', 'var(--error, #e74c3c)');
     }
   });
 })();
