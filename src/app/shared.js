@@ -177,15 +177,13 @@ export const player = {
 export function normalizeAccountType(raw, fallback = 'ironman') {
   const key = String(raw || '').trim().toLowerCase().replace(/[^a-z]/g, '');
   const map = {
-    regular:'regular', main:'regular', normal:'regular', nonironman:'regular',
+    regular:'regular', main:'regular', normal:'regular',
     ironman:'ironman', iron:'ironman', im:'ironman',
     hardcore:'hardcore', hcim:'hardcore', hardcoreironman:'hardcore',
     ultimate:'ultimate', uim:'ultimate', ultimateironman:'ultimate',
     gim:'gim', group:'gim', groupironman:'gim', groupiron:'gim',
     ghcim:'ghcim', grouphardcore:'ghcim', grouphardcoreironman:'ghcim',
-    hardcoregroupironman:'ghcim', hardcoregroupim:'ghcim',
     ugim:'ugim', unrankedgroup:'ugim', unrankedgroupironman:'ugim',
-    unrankedgroupim:'ugim',
   };
   return map[key] || fallback;
 }
@@ -356,9 +354,6 @@ export async function fetchPlayer(rsn, accountType = null) {
   console.log('[OSTS] WOM raw type:', womRaw, '→ normalized:', detectedType);
 
   if (!accountType) {
-    // Probe all specialized hiscores boards in parallel.
-    // Priority order: gim > ghcim > hardcore > ultimate > ironman > regular
-    // A player only ranks on boards they qualify for.
     const probeTypes = ['gim', 'ghcim', 'hardcore', 'ultimate', 'ironman'];
     const probeResults = await Promise.allSettled(
       probeTypes.map(async pt => {
@@ -370,8 +365,6 @@ export async function fetchPlayer(rsn, accountType = null) {
         return { type: pt, ranked: (data?.skills?.overall?.rank ?? -1) > 0 };
       })
     );
-
-    // Pick highest-priority board where they're ranked
     for (const result of probeResults) {
       if (result.status === 'fulfilled' && result.value.ranked) {
         detectedType = result.value.type;
@@ -379,13 +372,10 @@ export async function fetchPlayer(rsn, accountType = null) {
         break;
       }
     }
-
-    // Final fallback
     if (detectedType === 'unknown') detectedType = 'regular';
   }
 
   const type = detectedType;
-  womData.type = type;
 
   // Step 2: Hiscores (authoritative current data)
   let hiscoresData = null;
@@ -636,7 +626,7 @@ export function initPage(activePage) {
 
   // Register service worker immediately (separate from push opt-in)
   if ('serviceWorker' in navigator) {
-    import('./bootstrap.js')
+    import('/src/app/bootstrap.js')
       .then(({ registerSW }) => registerSW())
       .catch(() => {});
   }
