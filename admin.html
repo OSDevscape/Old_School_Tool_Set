@@ -434,20 +434,22 @@ document.querySelectorAll('nav a[data-sec]').forEach(a => {
 sectionLoaders.stats = async () => {
   try {
     const d = await api({ action: 'stats' });
-    document.getElementById('s-users').textContent    = d.totalUsers ?? '–';
-    document.getElementById('s-sessions').textContent = d.activeSessions ?? '–';
-    document.getElementById('s-push').textContent     = d.pushSubs ?? '–';
-    document.getElementById('s-30').textContent       = d.signups30 ?? '–';
+    document.getElementById('s-users').textContent    = Number(d.totalUsers    ?? 0);
+    document.getElementById('s-sessions').textContent = Number(d.activeSessions ?? 0);
+    document.getElementById('s-push').textContent     = Number(d.pushSubs       ?? 0);
+    document.getElementById('s-30').textContent       = Number(d.signups30      ?? 0);
 
     // Signups chart
     const chartEl  = document.getElementById('signup-chart');
     const labelsEl = document.getElementById('signup-labels');
     if (d.signups7?.length) {
-      const max = Math.max(...d.signups7.map(r => r.count), 1);
-      chartEl.innerHTML  = d.signups7.map(r => {
-        const pct = Math.max(5, Math.round((r.count / max) * 100));
+      // Force Number — mysql2 may return COUNT(*) as BigInt
+      const counts = d.signups7.map(r => Number(r.count));
+      const max    = Math.max(...counts, 1);
+      chartEl.innerHTML  = d.signups7.map((r, i) => {
+        const pct = Math.max(5, Math.round((counts[i] / max) * 100));
         const day = new Date(r.day).toLocaleDateString('en-GB', { weekday:'short', day:'numeric' });
-        return `<div class="chart-bar" style="height:${pct}%" data-tip="${day}: ${r.count}"></div>`;
+        return `<div class="chart-bar" style="height:${pct}%" data-tip="${day}: ${counts[i]}"></div>`;
       }).join('');
       labelsEl.innerHTML = d.signups7.map(r => {
         const day = new Date(r.day).toLocaleDateString('en-GB', { weekday:'short' });
