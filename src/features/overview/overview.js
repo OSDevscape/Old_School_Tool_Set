@@ -406,7 +406,7 @@ document.getElementById('disconnect-btn').addEventListener('click', () => {
 updatePushStatus();
 document.getElementById('enable-push-btn').addEventListener('click', async () => {
   try {
-    const { registerPush } = await import('../JS/bootstrap.js');
+    const { registerPush } = await import('/src/app/bootstrap.js');
     await registerPush();
     showToast('✅ Push notifications enabled');
     updatePushStatus();
