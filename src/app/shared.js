@@ -177,13 +177,15 @@ export const player = {
 export function normalizeAccountType(raw, fallback = 'ironman') {
   const key = String(raw || '').trim().toLowerCase().replace(/[^a-z]/g, '');
   const map = {
-    regular:'regular', main:'regular', normal:'regular',
+    regular:'regular', main:'regular', normal:'regular', nonironman:'regular',
     ironman:'ironman', iron:'ironman', im:'ironman',
     hardcore:'hardcore', hcim:'hardcore', hardcoreironman:'hardcore',
     ultimate:'ultimate', uim:'ultimate', ultimateironman:'ultimate',
     gim:'gim', group:'gim', groupironman:'gim', groupiron:'gim',
     ghcim:'ghcim', grouphardcore:'ghcim', grouphardcoreironman:'ghcim',
+    hardcoregroupironman:'ghcim', hardcoregroupim:'ghcim',
     ugim:'ugim', unrankedgroup:'ugim', unrankedgroupironman:'ugim',
+    unrankedgroupim:'ugim',
   };
   return map[key] || fallback;
 }
@@ -347,8 +349,35 @@ export async function fetchPlayer(rsn, accountType = null) {
   // Step 1: WOM (primary snapshot + player metadata)
   const womData = await wom.getPlayer(rsn);
 
-  // Determine account type from WOM response or provided override
-  const type = normalizeAccountType(accountType || womData.type, 'ironman');
+  // Determine account type — WOM first, then hiscores probe if uncertain
+  let womType = normalizeAccountType(accountType || womData.type, 'unknown');
+
+  // If WOM says regular/unknown, probe hiscores boards to find the true type.
+  // Order matters: GIM before ironman variants so GIMs aren't mis-classified.
+  if (!accountType && (womType === 'regular' || womType === 'unknown' || womType === 'ironman')) {
+    const probeOrder = ['gim', 'hardcore', 'ultimate', 'ironman'];
+    for (const probeType of probeOrder) {
+      // Skip ironman re-probe if WOM already said ironman
+      if (probeType === womType) break;
+      try {
+        const probeUrl = `/.netlify/functions/hiscores?player=${encodeURIComponent(rsn)}&type=${probeType}`;
+        const probeRes = await fetch(probeUrl);
+        if (probeRes.ok) {
+          const probeJson = await probeRes.json();
+          const probeData = parseHiscoresCSV(probeJson.csv);
+          // Ranked (rank > 0) on this board = confirmed type
+          if (probeData?.skills?.overall?.rank > 0) {
+            womType = probeType;
+            break;
+          }
+        }
+      } catch { /* non-fatal */ }
+    }
+    // If still unknown after probing, fall back to regular
+    if (womType === 'unknown') womType = 'regular';
+  }
+
+  const type = womType;
   womData.type = type;
 
   // Step 2: Hiscores (authoritative current data)
