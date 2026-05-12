@@ -349,35 +349,42 @@ export async function fetchPlayer(rsn, accountType = null) {
   // Step 1: WOM (primary snapshot + player metadata)
   const womData = await wom.getPlayer(rsn);
 
-  // Determine account type — WOM first, then hiscores probe if uncertain
-  let womType = normalizeAccountType(accountType || womData.type, 'unknown');
+  // Determine account type — hiscores is ground truth, WOM is the hint
+  const womRaw = womData.type;
+  let detectedType = normalizeAccountType(accountType || womRaw, 'unknown');
 
-  // If WOM says regular/unknown, probe hiscores boards to find the true type.
-  // Order matters: GIM before ironman variants so GIMs aren't mis-classified.
-  if (!accountType && (womType === 'regular' || womType === 'unknown' || womType === 'ironman')) {
-    const probeOrder = ['gim', 'hardcore', 'ultimate', 'ironman'];
-    for (const probeType of probeOrder) {
-      // Skip ironman re-probe if WOM already said ironman
-      if (probeType === womType) break;
-      try {
-        const probeUrl = `/.netlify/functions/hiscores?player=${encodeURIComponent(rsn)}&type=${probeType}`;
-        const probeRes = await fetch(probeUrl);
-        if (probeRes.ok) {
-          const probeJson = await probeRes.json();
-          const probeData = parseHiscoresCSV(probeJson.csv);
-          // Ranked (rank > 0) on this board = confirmed type
-          if (probeData?.skills?.overall?.rank > 0) {
-            womType = probeType;
-            break;
-          }
-        }
-      } catch { /* non-fatal */ }
+  console.log('[OSTS] WOM raw type:', womRaw, '→ normalized:', detectedType);
+
+  if (!accountType) {
+    // Probe all specialized hiscores boards in parallel.
+    // Priority order: gim > ghcim > hardcore > ultimate > ironman > regular
+    // A player only ranks on boards they qualify for.
+    const probeTypes = ['gim', 'ghcim', 'hardcore', 'ultimate', 'ironman'];
+    const probeResults = await Promise.allSettled(
+      probeTypes.map(async pt => {
+        const url = `/.netlify/functions/hiscores?player=${encodeURIComponent(rsn)}&type=${pt}`;
+        const res = await fetch(url);
+        if (!res.ok) return { type: pt, ranked: false };
+        const json = await res.json();
+        const data = parseHiscoresCSV(json.csv);
+        return { type: pt, ranked: (data?.skills?.overall?.rank ?? -1) > 0 };
+      })
+    );
+
+    // Pick highest-priority board where they're ranked
+    for (const result of probeResults) {
+      if (result.status === 'fulfilled' && result.value.ranked) {
+        detectedType = result.value.type;
+        console.log('[OSTS] Hiscores probe detected type:', detectedType);
+        break;
+      }
     }
-    // If still unknown after probing, fall back to regular
-    if (womType === 'unknown') womType = 'regular';
+
+    // Final fallback
+    if (detectedType === 'unknown') detectedType = 'regular';
   }
 
-  const type = womType;
+  const type = detectedType;
   womData.type = type;
 
   // Step 2: Hiscores (authoritative current data)
