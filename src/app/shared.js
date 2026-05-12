@@ -559,6 +559,15 @@ export async function sendLocalNotification(title, body, tag = 'osts') {
  * activePage: string matching NAV_PAGES id
  */
 export function initPage(activePage) {
+  // ── Auth gate — redirect to home if not logged in ──────────────────────────
+  if (activePage !== 'home') {
+    try {
+      const auth = JSON.parse(localStorage.getItem('osts_auth_v1') || 'null');
+      if (!auth?.token) { window.location.replace('/'); return; }
+    } catch { window.location.replace('/'); return; }
+  }
+  // ──────────────────────────────────────────────────────────────────────────
+
   theme.init();
   renderNav(activePage);
   initMoreMenu();

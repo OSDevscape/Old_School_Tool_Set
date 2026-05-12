@@ -244,6 +244,141 @@ function renderSpProfiles() {
   });
 }
 document.getElementById('settings-btn')?.addEventListener('click', renderSpProfiles, true);
+// ── Auth ──────────────────────────────────────────────────────────────────────
+const AUTH_KEY = 'osts_auth_v1';
+
+function getAuth() {
+  try { return JSON.parse(localStorage.getItem(AUTH_KEY) || 'null'); }
+  catch { return null; }
+}
+function setAuth(data) {
+  if (data) localStorage.setItem(AUTH_KEY, JSON.stringify(data));
+  else localStorage.removeItem(AUTH_KEY);
+}
+
+async function authFetch(payload) {
+  const res = await fetch('/.netlify/functions/auth', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+// ── Auth gate UI ──────────────────────────────────────────────────────────────
+const gate        = document.getElementById('auth-gate');
+const tabLogin    = document.getElementById('auth-tab-login');
+const tabRegister = document.getElementById('auth-tab-register');
+const usernameEl  = document.getElementById('auth-username');
+const passwordEl  = document.getElementById('auth-password');
+const errorEl     = document.getElementById('auth-error');
+const submitBtn   = document.getElementById('auth-submit-btn');
+
+let authMode = 'login';
+
+window.authShowTab = function(mode) {
+  authMode = mode;
+  errorEl.textContent = '';
+  const isLogin = mode === 'login';
+  submitBtn.textContent = isLogin ? 'Log In' : 'Create Account';
+  tabLogin.style.background    = isLogin ? 'var(--gold,#c9a35a)' : 'transparent';
+  tabLogin.style.color         = isLogin ? '#1a1510' : 'var(--muted,#8a7560)';
+  tabRegister.style.background = isLogin ? 'transparent' : 'var(--gold,#c9a35a)';
+  tabRegister.style.color      = isLogin ? 'var(--muted,#8a7560)' : '#1a1510';
+};
+
+submitBtn?.addEventListener('click', async () => {
+  const username = usernameEl.value.trim();
+  const password = passwordEl.value;
+  errorEl.textContent = '';
+  if (!username || !password) { errorEl.textContent = 'Please fill in all fields.'; return; }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = '⏳ Please wait…';
+  try {
+    const data = await authFetch({ action: authMode, username, password });
+    setAuth({ token: data.token, username: data.username, userId: data.userId });
+    hideGate();
+    updateAuthSettings();
+    showToast(`Welcome, ${data.username}!`);
+  } catch (e) {
+    errorEl.textContent = e.message;
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = authMode === 'login' ? 'Log In' : 'Create Account';
+  }
+});
+
+// Allow Enter key to submit
+[usernameEl, passwordEl].forEach(el => {
+  el?.addEventListener('keydown', e => { if (e.key === 'Enter') submitBtn?.click(); });
+});
+
+function hideGate() {
+  if (gate) gate.style.display = 'none';
+}
+
+// ── Auth settings ─────────────────────────────────────────────────────────────
+function updateAuthSettings() {
+  const auth = getAuth();
+  const info = document.getElementById('auth-settings-info');
+  if (info && auth) info.textContent = `Logged in as ${auth.username}`;
+}
+
+document.getElementById('logout-btn')?.addEventListener('click', () => {
+  setAuth(null);
+  showToast('Logged out.');
+  // Show gate again
+  if (gate) gate.style.display = 'flex';
+  usernameEl.value = '';
+  passwordEl.value = '';
+  authShowTab('login');
+});
+
+document.getElementById('delete-account-btn')?.addEventListener('click', () => {
+  document.getElementById('delete-confirm-block').style.display = 'block';
+  document.getElementById('auth-settings-block').style.display = 'none';
+  document.getElementById('delete-password-input').focus();
+});
+
+document.getElementById('delete-cancel-btn')?.addEventListener('click', () => {
+  document.getElementById('delete-confirm-block').style.display = 'none';
+  document.getElementById('auth-settings-block').style.display = 'block';
+  document.getElementById('delete-password-input').value = '';
+  document.getElementById('delete-error').textContent = '';
+});
+
+document.getElementById('delete-confirm-btn')?.addEventListener('click', async () => {
+  const auth     = getAuth();
+  const password = document.getElementById('delete-password-input').value;
+  const errEl    = document.getElementById('delete-error');
+  errEl.textContent = '';
+  if (!password) { errEl.textContent = 'Enter your password to confirm.'; return; }
+  if (!auth?.token) { errEl.textContent = 'Not logged in.'; return; }
+
+  const btn = document.getElementById('delete-confirm-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Deleting…';
+  try {
+    await authFetch({ action: 'delete', token: auth.token, password });
+    setAuth(null);
+    document.getElementById('delete-confirm-block').style.display = 'none';
+    document.getElementById('auth-settings-block').style.display = 'block';
+    document.getElementById('delete-password-input').value = '';
+    showToast('Account deleted.');
+    if (gate) gate.style.display = 'flex';
+    usernameEl.value = '';
+    passwordEl.value = '';
+    authShowTab('login');
+  } catch (e) {
+    errEl.textContent = e.message;
+    btn.disabled = false;
+    btn.textContent = 'Delete';
+  }
+});
+
 // ── Push Notifications ────────────────────────────────────────────────────────
 (function initPushUI() {
   const btn    = document.getElementById('push-enable-btn');
@@ -254,11 +389,8 @@ document.getElementById('settings-btn')?.addEventListener('click', renderSpProfi
     if (status) { status.textContent = msg; status.style.color = colour; }
   }
 
-  // Reflect current permission state on load
   if (!('Notification' in window) || !('PushManager' in window)) {
-    btn.disabled = true;
-    setStatus('Push not supported on this browser.');
-    return;
+    btn.disabled = true; setStatus('Push not supported on this browser.'); return;
   }
   if (Notification.permission === 'granted') {
     btn.textContent = '✅ Push Notifications Enabled';
@@ -266,7 +398,7 @@ document.getElementById('settings-btn')?.addEventListener('click', renderSpProfi
     setStatus('You will receive push notifications.');
   } else if (Notification.permission === 'denied') {
     btn.disabled = true;
-    setStatus('Notifications blocked — enable in your browser settings.', 'var(--error, #e74c3c)');
+    setStatus('Notifications blocked — enable in your browser settings.', '#e74c3c');
   }
 
   btn.addEventListener('click', async () => {
@@ -278,10 +410,30 @@ document.getElementById('settings-btn')?.addEventListener('click', renderSpProfi
       await registerPush();
       btn.textContent = '✅ Push Notifications Enabled';
       setStatus('You will receive push notifications.', 'var(--gold)');
-    } catch (err) {
+    } catch (e) {
       btn.disabled = false;
       btn.textContent = '🔔 Enable Push Notifications';
-      setStatus(err.message || 'Failed to enable push.', 'var(--error, #e74c3c)');
+      setStatus(e.message || 'Failed to enable push.', '#e74c3c');
     }
   });
+})();
+
+// ── Boot auth check ───────────────────────────────────────────────────────────
+(async function bootAuth() {
+  const auth = getAuth();
+  if (!auth?.token) {
+    // No session — show gate
+    if (gate) gate.style.display = 'flex';
+    return;
+  }
+  // Verify token is still valid
+  try {
+    await authFetch({ action: 'verify', token: auth.token });
+    hideGate();
+    updateAuthSettings();
+  } catch {
+    // Token expired/invalid
+    setAuth(null);
+    if (gate) gate.style.display = 'flex';
+  }
 })();

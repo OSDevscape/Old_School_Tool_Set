@@ -13,6 +13,71 @@
 </head>
 <body>
 
+<!-- ── Auth Gate ─────────────────────────────────────────────────────────── -->
+<div id="auth-gate" style="
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg,#1a1510);
+  display:flex;align-items:center;justify-content:center;
+  padding:16px;
+">
+  <div style="
+    width:100%;max-width:380px;
+    background:var(--surface,#2b241b);
+    border:1px solid var(--border,#4a3f2f);
+    border-radius:12px;padding:28px 24px;
+  ">
+    <!-- Logo -->
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:28px;font-weight:700;color:var(--gold,#c9a35a)">OSTS</div>
+      <div style="font-size:12px;color:var(--muted,#8a7560);margin-top:2px">Old School Tool Set</div>
+    </div>
+
+    <!-- Tab toggle -->
+    <div style="display:flex;border:1px solid var(--border,#4a3f2f);border-radius:8px;margin-bottom:20px;overflow:hidden">
+      <button id="auth-tab-login" onclick="authShowTab('login')" style="
+        flex:1;padding:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;
+        background:var(--gold,#c9a35a);color:#1a1510;transition:.15s
+      ">Log In</button>
+      <button id="auth-tab-register" onclick="authShowTab('register')" style="
+        flex:1;padding:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;
+        background:transparent;color:var(--muted,#8a7560);transition:.15s
+      ">Create Account</button>
+    </div>
+
+    <!-- Disclaimer -->
+    <div style="
+      background:rgba(201,163,90,0.08);border:1px solid rgba(201,163,90,0.25);
+      border-radius:6px;padding:8px 10px;margin-bottom:16px;font-size:11px;
+      color:var(--gold,#c9a35a);line-height:1.5
+    ">
+      ⚠️ This is your <strong>OSTS account</strong> — not your RuneScape login.
+      Do not use your RSN or in-game password here.
+    </div>
+
+    <!-- Fields -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <input id="auth-username" type="text" placeholder="Username" autocomplete="username"
+        maxlength="20" style="
+          padding:10px 12px;border-radius:6px;border:1px solid var(--border,#4a3f2f);
+          background:var(--bg,#1a1510);color:var(--text,#e8dcc8);font-size:14px;
+          outline:none;width:100%;box-sizing:border-box
+        ">
+      <input id="auth-password" type="password" placeholder="Password" autocomplete="current-password"
+        maxlength="64" style="
+          padding:10px 12px;border-radius:6px;border:1px solid var(--border,#4a3f2f);
+          background:var(--bg,#1a1510);color:var(--text,#e8dcc8);font-size:14px;
+          outline:none;width:100%;box-sizing:border-box
+        ">
+      <div id="auth-error" style="font-size:12px;color:#e74c3c;min-height:16px"></div>
+      <button id="auth-submit-btn" style="
+        padding:11px;border-radius:6px;border:none;cursor:pointer;font-size:14px;font-weight:700;
+        background:var(--gold,#c9a35a);color:#1a1510;width:100%;transition:.15s
+      ">Log In</button>
+    </div>
+  </div>
+</div>
+
+
 <header>
   <h1>OSTS</h1>
   <div class="hdr-actions">
@@ -43,11 +108,42 @@
     </div>
   </div>
 
+  <div class="settings-block" id="auth-settings-block">
+    <div class="settings-label">Account</div>
+    <div id="auth-settings-info" style="font-size:12px;color:var(--muted);margin-bottom:8px"></div>
+    <button id="logout-btn" style="
+      width:100%;padding:8px 12px;border-radius:6px;border:1px solid var(--border);
+      background:var(--surface);color:var(--text);font-size:13px;cursor:pointer;
+      text-align:left;margin-bottom:6px
+    ">🚪 Log Out</button>
+    <button id="delete-account-btn" style="
+      width:100%;padding:8px 12px;border-radius:6px;border:1px solid #e74c3c;
+      background:transparent;color:#e74c3c;font-size:13px;cursor:pointer;text-align:left
+    ">🗑️ Delete Account</button>
+  </div>
+
+  <div id="delete-confirm-block" style="display:none" class="settings-block">
+    <div class="settings-label" style="color:#e74c3c">Confirm Delete</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:8px">
+      Enter your password to permanently delete your account.
+    </div>
+    <input id="delete-password-input" type="password" placeholder="Your password"
+      style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid var(--border);
+      background:var(--bg);color:var(--text);font-size:13px;box-sizing:border-box;margin-bottom:6px">
+    <div id="delete-error" style="font-size:11px;color:#e74c3c;margin-bottom:6px;min-height:14px"></div>
+    <div style="display:flex;gap:6px">
+      <button id="delete-cancel-btn" style="flex:1;padding:8px;border-radius:6px;border:1px solid var(--border);
+        background:var(--surface);color:var(--text);font-size:13px;cursor:pointer">Cancel</button>
+      <button id="delete-confirm-btn" style="flex:1;padding:8px;border-radius:6px;border:none;
+        background:#e74c3c;color:#fff;font-size:13px;font-weight:700;cursor:pointer">Delete</button>
+    </div>
+  </div>
+
   <div class="settings-block">
     <div class="settings-label">Push Notifications</div>
     <button id="push-enable-btn" style="
       width:100%;padding:8px 12px;border-radius:6px;border:1px solid var(--border);
-      background:var(--surface);color:var(--text);font-size:13px;cursor:pointer;text-align:left;">
+      background:var(--surface);color:var(--text);font-size:13px;cursor:pointer;text-align:left">
       🔔 Enable Push Notifications
     </button>
     <div id="push-status" style="font-size:11px;color:var(--muted);margin-top:4px"></div>
