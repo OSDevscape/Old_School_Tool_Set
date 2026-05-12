@@ -38,7 +38,7 @@ function recentChipsHtml(list) {
         : typeLabel(p.type);
       return `
         <a class="recent-chip"
-           href="Pages/overview.html?rsn=${encodeURIComponent(p.rsn)}"
+           href="/src/features/overview/overview.html?rsn=${encodeURIComponent(p.rsn)}"
            title="Load ${p.rsn}">
           <span class="rc-icon">${typeIcon(p.type)}</span>
           <div class="rc-info">
@@ -88,7 +88,7 @@ async function loadLocalRecent() {
     }
   } catch {}
   el.innerHTML = `<div class="recent-empty">No local searches yet.<br>
-    Search a player on the <a href="Pages/overview.html" style="color:var(--gold);font-weight:600">Overview</a> page to get started.</div>`;
+    Search a player on the <a href="/src/features/overview/overview.html" style="color:var(--gold);font-weight:600">Overview</a> page to get started.</div>`;
 }
 
 // ── OSRS News ─────────────────────────────────────────────────────────────────
@@ -239,8 +239,49 @@ function renderSpProfiles() {
       if (!p) return;
       spSetActiveId(p.id);
       settings.close();
-      window.location.href = 'Pages/overview.html?rsn=' + encodeURIComponent(p.rsn);
+      window.location.href = '/src/features/overview/overview.html?rsn=' + encodeURIComponent(p.rsn);
     });
   });
 }
 document.getElementById('settings-btn')?.addEventListener('click', renderSpProfiles, true);
+// ── Push Notifications ────────────────────────────────────────────────────────
+(function initPushUI() {
+  const btn    = document.getElementById('push-enable-btn');
+  const status = document.getElementById('push-status');
+  if (!btn) return;
+
+  function setStatus(msg, colour = 'var(--muted)') {
+    if (status) { status.textContent = msg; status.style.color = colour; }
+  }
+
+  // Reflect current permission state on load
+  if (!('Notification' in window) || !('PushManager' in window)) {
+    btn.disabled = true;
+    setStatus('Push not supported on this browser.');
+    return;
+  }
+  if (Notification.permission === 'granted') {
+    btn.textContent = '✅ Push Notifications Enabled';
+    btn.disabled = true;
+    setStatus('You will receive push notifications.');
+  } else if (Notification.permission === 'denied') {
+    btn.disabled = true;
+    setStatus('Notifications blocked — enable in your browser settings.', 'var(--error, #e74c3c)');
+  }
+
+  btn.addEventListener('click', async () => {
+    btn.disabled = true;
+    btn.textContent = '⏳ Requesting permission…';
+    setStatus('');
+    try {
+      const { registerPush } = await import('/src/app/bootstrap.js');
+      await registerPush();
+      btn.textContent = '✅ Push Notifications Enabled';
+      setStatus('You will receive push notifications.', 'var(--gold)');
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = '🔔 Enable Push Notifications';
+      setStatus(err.message || 'Failed to enable push.', 'var(--error, #e74c3c)');
+    }
+  });
+})();
