@@ -45,14 +45,9 @@
     <div class="settings-label">Account</div>
     <input id="rsn-input" class="settings-rsn-input" type="text"
            placeholder="Enter RSN…" autocomplete="off" spellcheck="false">
-    <div class="account-type-grid" id="account-type-grid">
-      <button class="acct-btn active" data-type="ironman">🛡 Ironman</button>
-      <button class="acct-btn" data-type="hardcore">💀 HCIM</button>
-      <button class="acct-btn" data-type="ultimate">🔱 UIM</button>
-      <button class="acct-btn" data-type="regular">⚔ Main</button>
-      <button class="acct-btn" data-type="gim">👥 GIM</button>
-      <button class="acct-btn" data-type="ghcim">☠ GHCIM</button>
-    </div>
+    <div id="account-type-detected" style="
+      font-size:11px;color:var(--muted);margin:4px 0 6px;min-height:16px;
+    "></div>
     <button class="search-btn" id="push-update-btn">Push update</button>
     <button class="push-btn"   id="search-btn">Search</button>
     <button class="disconnect-btn" id="disconnect-btn">Disconnect RSN</button>

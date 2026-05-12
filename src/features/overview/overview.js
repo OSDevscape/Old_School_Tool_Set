@@ -342,17 +342,8 @@ const PANEL_ORDER = [
 
 const XP_FOR_99 = 13_034_431;
 
-// ── Account type buttons ─────────────────────────────────────────────────
+// ── Account type (auto-detected on search) ───────────────────────────────
 let currentAccountType = storage.get(STORAGE_KEYS.ACCOUNT_TYPE, 'ironman');
-document.querySelectorAll('.acct-btn[data-type]').forEach(btn => {
-  if (btn.dataset.type === currentAccountType) btn.classList.add('active');
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.acct-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentAccountType = btn.dataset.type;
-    storage.set(STORAGE_KEYS.ACCOUNT_TYPE, currentAccountType);
-  });
-});
 
 // ── Search ───────────────────────────────────────────────────────────────
 document.getElementById('search-btn').addEventListener('click', loadPlayer);
@@ -362,8 +353,18 @@ async function loadPlayer() {
   if (!rsn) { showToast('Enter a player name'); return; }
   setLoading(true); clearError(); hideContent();
   try {
-    const data = await fetchPlayer(rsn, currentAccountType);
+    const data = await fetchPlayer(rsn, null); // auto-detect type from WOM
     player.set(data);
+    // Sync detected type back into state
+    currentAccountType = normalizeAccountType(data.type, 'ironman');
+    storage.set(STORAGE_KEYS.ACCOUNT_TYPE, currentAccountType);
+    // Show detected type in UI
+    const detectedEl = document.getElementById('account-type-detected');
+    if (detectedEl) {
+      const label = (ACCOUNT_TYPES[currentAccountType] || ACCOUNT_TYPES.ironman).label;
+      const icon  = (ACCOUNT_TYPES[currentAccountType] || ACCOUNT_TYPES.ironman).icon;
+      detectedEl.textContent = `Detected: ${icon} ${label}`;
+    }
     renderOverview(data);
     settings.close();
     showToast('✅ ' + (data.displayName || rsn) + ' loaded');
