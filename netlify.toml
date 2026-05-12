@@ -10,7 +10,7 @@
     X-Content-Type-Options = "nosniff"
 
 [[headers]]
-  for = "/src/public/sw.js"
+  for = "/public/sw.js"
   [headers.values]
     Cache-Control = "no-cache"
     Service-Worker-Allowed = "/"

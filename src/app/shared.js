@@ -348,12 +348,12 @@ export async function fetchPlayer(rsn, accountType = null) {
   const womData = await wom.getPlayer(rsn);
 
   // Determine account type — hiscores is ground truth, WOM is the hint
-  const womRaw = womData.type;
+  const womRaw    = womData.type;
+  const womStatus = (womData.status || '').toLowerCase(); // 'alive' | 'dead' | ''
   let detectedType = normalizeAccountType(accountType || womRaw, 'unknown');
 
-  console.log('[OSTS] WOM raw type:', womRaw, '→ normalized:', detectedType);
-
   if (!accountType) {
+    // Probe all specialized hiscores boards in parallel
     const probeTypes = ['gim', 'ghcim', 'hardcore', 'ultimate', 'ironman'];
     const probeResults = await Promise.allSettled(
       probeTypes.map(async pt => {
@@ -368,14 +368,22 @@ export async function fetchPlayer(rsn, accountType = null) {
     for (const result of probeResults) {
       if (result.status === 'fulfilled' && result.value.ranked) {
         detectedType = result.value.type;
-        console.log('[OSTS] Hiscores probe detected type:', detectedType);
         break;
       }
     }
     if (detectedType === 'unknown') detectedType = 'regular';
+
+    // ── Dead HCIM downgrade ─────────────────────────────────────────────────
+    // OSRS hiscores keeps dead HCIMs on the HCIM board, so the probe
+    // alone can't detect death. Trust WOM's status field instead.
+    if (detectedType === 'hardcore' && womStatus === 'dead') {
+      detectedType = 'ironman';
+      console.log('[OSTS] HCIM dead — downgraded to ironman');
+    }
   }
 
   const type = detectedType;
+  console.log('[OSTS] WOM raw type:', womRaw, 'status:', womStatus, '→ final:', type);
 
   // Step 2: Hiscores (authoritative current data)
   let hiscoresData = null;

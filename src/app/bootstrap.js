@@ -16,7 +16,7 @@ let _swRegistration = null;
 export async function registerSW() {
   if (!('serviceWorker' in navigator)) return null;
   try {
-    _swRegistration = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+    _swRegistration = await navigator.serviceWorker.register('/public/sw.js', { scope: '/' });
     console.log('[OSTS] SW registered — scope:', _swRegistration.scope);
 
     // Check for waiting SW and notify user

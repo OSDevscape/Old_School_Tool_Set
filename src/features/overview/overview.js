@@ -353,17 +353,14 @@ async function loadPlayer() {
   if (!rsn) { showToast('Enter a player name'); return; }
   setLoading(true); clearError(); hideContent();
   try {
-    const data = await fetchPlayer(rsn, null); // auto-detect type from WOM
+    const data = await fetchPlayer(rsn, null); // auto-detect type
     player.set(data);
-    // Sync detected type back into state
     currentAccountType = normalizeAccountType(data.type, 'ironman');
     storage.set(STORAGE_KEYS.ACCOUNT_TYPE, currentAccountType);
-    // Show detected type in UI
-    const detectedEl = document.getElementById('account-type-detected');
-    if (detectedEl) {
-      const label = (ACCOUNT_TYPES[currentAccountType] || ACCOUNT_TYPES.ironman).label;
-      const icon  = (ACCOUNT_TYPES[currentAccountType] || ACCOUNT_TYPES.ironman).icon;
-      detectedEl.textContent = `Detected: ${icon} ${label}`;
+    const detEl = document.getElementById('account-type-detected');
+    if (detEl) {
+      const info = ACCOUNT_TYPES[currentAccountType] || ACCOUNT_TYPES.ironman;
+      detEl.textContent = `Detected: ${info.icon} ${info.label}`;
     }
     renderOverview(data);
     settings.close();
