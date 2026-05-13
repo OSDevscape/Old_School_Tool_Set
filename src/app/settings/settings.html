@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2b241b">
+  <link rel="manifest" href="/public/manifest.json">
+  <title>OSTS — Settings</title>
+  <link rel="stylesheet" href="/src/styles/style.css">
+  <link rel="stylesheet" href="/src/app/settings/settings.css">
+</head>
+<body>
+
+<header>
+  <button class="hdr-btn icon-btn" id="back-btn" aria-label="Back">←</button>
+  <h1>Settings</h1>
+</header>
+
+<div id="main">
+  <div class="page active settings-page">
+
+    <!-- ── Appearance ─────────────────────────────────────────────────────── -->
+    <div class="settings-group">
+      <div class="settings-group-label">Appearance</div>
+      <div class="settings-row">
+        <div class="theme-options">
+          <button class="theme-chip" data-theme="dark">Dark</button>
+          <button class="theme-chip" data-theme="light">Light</button>
+          <button class="theme-chip" data-theme="brown">Brown</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Account ────────────────────────────────────────────────────────── -->
+    <div class="settings-group">
+      <div class="settings-group-label">Account</div>
+      <div class="settings-row">
+        <div class="settings-section-body">
+          <input id="rsn-input" class="settings-rsn-input" type="text"
+                 placeholder="Enter RSN…" autocomplete="off" spellcheck="false">
+          <div class="account-type-detected" id="account-type-detected"></div>
+          <button class="search-btn" id="search-btn">Search</button>
+          <button class="push-btn" id="push-update-btn">Push update</button>
+          <button class="disconnect-btn" id="disconnect-btn">Disconnect RSN</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Profiles ───────────────────────────────────────────────────────── -->
+    <div class="settings-group">
+      <div class="settings-group-label">Saved Profiles</div>
+      <div class="settings-row">
+        <div class="settings-section-body">
+          <p class="sp-note">Save multiple RSNs and switch between them instantly.</p>
+          <div id="sp-profile-list"></div>
+          <div class="sp-save-row">
+            <button class="sp-save-btn secondary" id="sp-save-current" disabled>Save current</button>
+            <button class="sp-save-btn primary"   id="sp-save-new"     disabled>Save as new</button>
+          </div>
+          <div class="sp-nickname-row" id="sp-nickname-row" style="display:none">
+            <input class="sp-nickname-input" id="sp-nickname-input" type="text"
+                   placeholder="Nickname…" maxlength="20" autocomplete="off" spellcheck="false">
+            <button class="sp-nickname-confirm" id="sp-nickname-confirm">Save</button>
+            <button class="sp-nickname-cancel"  id="sp-nickname-cancel">✕</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Push Notifications ─────────────────────────────────────────────── -->
+    <div class="settings-group">
+      <div class="settings-group-label">Notifications</div>
+      <div class="settings-row">
+        <div class="settings-section-body">
+          <button id="push-enable-btn" class="push-btn">🔔 Enable Push Notifications</button>
+          <div id="push-status" class="push-status-text"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Timers ─────────────────────────────────────────────────────────── -->
+    <div class="settings-group">
+      <div class="settings-group-label">Timers</div>
+      <div class="settings-row">
+        <div class="settings-section-body" style="display:flex;flex-direction:column;gap:8px">
+          <button class="push-btn" id="clear-progress-btn">Clear all timer progress</button>
+          <button class="push-btn" id="clear-pins-btn">Clear all pins</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Collection Log ─────────────────────────────────────────────────── -->
+    <div class="settings-group">
+      <div class="settings-group-label">Collection Log</div>
+      <div class="settings-row">
+        <div class="settings-section-body">
+          <button class="btn-danger" id="reset-clog-btn">Reset all progress</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PWA ────────────────────────────────────────────────────────────── -->
+    <div class="settings-group" id="install-group" style="display:none">
+      <div class="settings-group-label">App</div>
+      <div class="settings-row">
+        <div class="settings-section-body">
+          <button class="search-btn" id="install-btn-settings">⬇️ Install App</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-footer">OSTS — Old School Tool Set</div>
+
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<nav id="bottom-nav"></nav>
+
+<!-- More Menu -->
+<div class="modal-overlay" id="more-menu-overlay">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <div><div class="modal-title">More</div></div>
+      <button class="modal-close" id="more-menu-close">✕</button>
+    </div>
+    <div class="modal-actions">
+      <a class="modal-action" href="/src/features/bestiary/bestiary.html" style="border-color:var(--gold)">
+        <span class="ma-title">🐉 Bestiary</span>
+        <span class="ma-desc">Look up monsters, combat stats &amp; slayer info</span>
+      </a>
+      <a class="modal-action" href="/src/features/bookmarks/bookmarks.html" style="border-color:var(--gold)">
+        <span class="ma-title">🔖 Bookmarks</span>
+        <span class="ma-desc">Your saved clues, fairy rings, timers &amp; more</span>
+      </a>
+      <a class="modal-action" href="/src/features/bossing/bossing.html" style="border-color:var(--gold)">
+        <span class="ma-title">🏆 Bossing</span>
+        <span class="ma-desc">Track boss kill counts and personal bests</span>
+      </a>
+      <a class="modal-action" href="/src/features/clueScrolls/clueScrolls.html" style="border-color:var(--gold)">
+        <span class="ma-title">📜 Clue Solver</span>
+        <span class="ma-desc">Solve anagrams, ciphers, emotes &amp; puzzle boxes</span>
+      </a>
+      <a class="modal-action" href="/src/features/collectionLog/collectionLog.html">
+        <span class="ma-title">📒 Collection Log</span>
+        <span class="ma-desc">Track your collection log progress</span>
+      </a>
+      <a class="modal-action" href="/src/features/fairyRings/fairyRings.html" style="border-color:var(--gold)">
+        <span class="ma-title">🍄 Fairy Rings</span>
+        <span class="ma-desc">All 55 ring codes with pins &amp; personal notes</span>
+      </a>
+      <a class="modal-action" href="/src/features/goals/goals.html" style="border-color:var(--gold)">
+        <span class="ma-title">📊 Goals</span>
+        <span class="ma-desc">Set and track XP &amp; level goals per skill</span>
+      </a>
+      <a class="modal-action" href="/src/features/guides/guides.html" style="border-color:var(--gold)">
+        <span class="ma-title">🎓 Guides &amp; Tips</span>
+        <span class="ma-desc">YouTube guides from Theoatrix, Chymistry &amp; 10boot</span>
+      </a>
+      <a class="modal-action" href="/src/features/grandExchange/grandExchange.html" style="border-color:var(--gold)">
+        <span class="ma-title">💰 Grand Exchange</span>
+        <span class="ma-desc">Track item prices and market trends</span>
+      </a>
+      <a class="modal-action" href="/src/features/petLog/petLog.html" style="border-color:var(--gold)">
+        <span class="ma-title">🐾 Pet Log</span>
+        <span class="ma-desc">Log your pet drops and track your collection</span>
+      </a>
+      <a class="modal-action" href="/src/features/quests/quests.html" style="border-color:var(--gold)">
+        <span class="ma-title">🗺️ Quests</span>
+        <span class="ma-desc">Quest list with requirements and completion tracking</span>
+      </a>
+      <a class="modal-action" href="/src/features/timers/timers.html" style="border-color:var(--gold)">
+        <span class="ma-title">⏰ Timers</span>
+        <span class="ma-desc">Farm runs, birdhouses &amp; custom growth timers</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module" src="/src/app/settings/settings.js"></script>
+</body>
+</html>

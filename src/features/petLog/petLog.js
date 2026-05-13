@@ -1,4 +1,4 @@
-import { initPage, showToast } from '/src/app/shared.js';
+import { initPage, showToast, player, updateHeaderName } from '/src/app/shared.js';
 
 const KEY = 'osts-pet-log-v2';
 const TOTAL_PETS = 68;
@@ -322,6 +322,7 @@ window.deletePet = function () {
 
 // Initialize
 initPage('more');
+updateHeaderName();
 
 renderFilters();
 renderPets();

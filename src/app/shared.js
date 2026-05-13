@@ -366,16 +366,12 @@ export async function fetchPlayer(rsn, accountType = null) {
     );
     for (const result of probeResults) {
       if (result.status === 'fulfilled' && result.value.ranked) {
-        detectedType = result.value.type;
-        break;
+        detectedType = result.value.type; break;
       }
     }
     if (detectedType === 'unknown') detectedType = 'regular';
-
-    // Dead HCIM: OSRS keeps them on HCIM board so probe can't detect death — trust WOM status
-    if (detectedType === 'hardcore' && womStatus === 'dead') {
-      detectedType = 'ironman';
-    }
+    // Dead HCIM: hiscores keeps them on HCIM board — trust WOM status
+    if (detectedType === 'hardcore' && womStatus === 'dead') detectedType = 'ironman';
   }
 
   const type = detectedType;
@@ -475,25 +471,24 @@ export async function fetchPlayer(rsn, accountType = null) {
 
 // ─── Settings Panel ──────────────────────────────────────────────────────────
 
+
+// ─── Header Player Name ───────────────────────────────────────────────────────
+
+export function updateHeaderName() {
+  const el = document.getElementById('player-name-header');
+  if (!el) return;
+  const rsn = player.getRsn();
+  el.textContent = rsn ? ` — ${rsn}` : '';
+}
+
 export const settings = {
   open() {
-    document.body.classList.add('settings-open');
-    const panel = document.getElementById('settings-panel');
-    const overlay = document.getElementById('settings-overlay');
-    if (panel)   { panel.classList.add('show'); panel.setAttribute('aria-hidden', 'false'); }
-    if (overlay) { overlay.style.display = 'block'; }
+    window.location.href = '/src/app/settings/settings.html';
   },
   close() {
-    document.body.classList.remove('settings-open');
-    const panel = document.getElementById('settings-panel');
-    const overlay = document.getElementById('settings-overlay');
-    if (panel)   { panel.classList.remove('show'); panel.setAttribute('aria-hidden', 'true'); }
-    if (overlay) { overlay.style.display = 'none'; }
+    // No-op: settings is now a full page
   },
-  bindCloseOnOverlay() {
-    const overlay = document.getElementById('settings-overlay');
-    if (overlay) overlay.addEventListener('click', () => this.close());
-  },
+  bindCloseOnOverlay() {},
 };
 
 // ─── Navigation ──────────────────────────────────────────────────────────────
@@ -594,30 +589,18 @@ export function initPage(activePage) {
   initMoreMenu();
   initInstallPrompt();
 
-  // Settings panel bindings (if present on this page)
+  // Settings btn navigates to settings page
   document.getElementById('settings-btn')?.addEventListener('click', e => {
     e.preventDefault(); settings.open();
   });
-  document.getElementById('settings-close')?.addEventListener('click', e => {
-    e.preventDefault(); settings.close();
-  });
-  settings.bindCloseOnOverlay();
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') settings.close(); });
 
-  // Theme chips
-  document.querySelectorAll('.theme-chip[data-theme]').forEach(btn => {
-    btn.addEventListener('click', () => theme.apply(btn.dataset.theme));
-  });
-
-  // RSN input enter key
+  // RSN input enter key (overview page)
   document.getElementById('rsn-input')?.addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('search-btn')?.click();
   });
 
-  // Restore last RSN
-  const lastRsn = storage.get(STORAGE_KEYS.RSN, '');
-  const inp = document.getElementById('rsn-input');
-  if (inp && lastRsn) inp.value = lastRsn;
+  // Header player name
+  updateHeaderName();
 
   // Register service worker immediately (separate from push opt-in)
   if ('serviceWorker' in navigator) {

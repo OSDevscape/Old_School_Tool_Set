@@ -2,9 +2,11 @@ import {
     initPage, fetchPlayer, player, wom, settings, showToast, storage,
     STORAGE_KEYS, SKILLS, SKILL_MAP, fmtXP, fmtRank,
     xpForLevel, xpProgress, normalizeAccountType,
+    updateHeaderName,
   } from '/src/app/shared.js';
 
   initPage('gains');
+updateHeaderName();
 
   let currentPeriod    = 'week';
   let currentRsn       = '';
@@ -294,13 +296,12 @@ import {
   function closeGainSheet() {
     const sheet = document.getElementById('gain-sheet');
     sheet.classList.remove('show');
-    sheet.style.transform = '';   // reset drag offset so next open is clean
+    sheet.style.transform = '';  // reset drag offset
     document.getElementById('gain-sheet-overlay').classList.remove('show');
     if (chartSkillSheet) { chartSkillSheet.destroy(); chartSkillSheet = null; }
   }
 
-  // Delegate X button clicks — sheet innerHTML is replaced each open,
-  // so we listen on the stable parent sheet element instead
+  // X button — use delegation since sheet innerHTML is replaced on every open
   document.getElementById('gain-sheet').addEventListener('click', e => {
     if (e.target.closest('#gs-close')) closeGainSheet();
   });
@@ -512,6 +513,7 @@ import {
       active = false;
       sheetEl.style.transition = '';
       if ((dir === 'v' && dragY > 100) || (dir === 'h' && Math.abs(dragX) > 120)) {
+        sheetEl.style.transform = '';
         closeFn();
       } else {
         sheetEl.style.transform = 'translateY(0)';

@@ -1,0 +1,322 @@
+/* ── Settings Page ─────────────────────────────────────────────────────────── */
+
+.settings-page {
+  padding: 12px 12px 24px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ── Section groups ── */
+.settings-group {
+  margin-bottom: 10px;
+}
+
+.settings-group-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  padding: 0 4px;
+  margin-bottom: 6px;
+}
+
+/* ── Rows ── */
+.settings-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+  min-height: 52px;
+}
+
+.settings-item:last-child {
+  border-bottom: none;
+}
+
+.settings-item-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.settings-item-icon {
+  font-size: 20px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.settings-item-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.settings-item-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.settings-item-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.settings-item-right {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+/* ── Theme chips ── */
+.theme-options {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+}
+
+.theme-chip {
+  flex: 1;
+  padding: 9px 4px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .15s;
+  text-align: center;
+}
+
+.theme-chip.active,
+.theme-chip:hover {
+  background: var(--gold);
+  color: #111;
+  border-color: var(--gold);
+}
+
+/* ── Profile cards ── */
+.sp-profile-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sp-profile-card.active {
+  border-color: var(--gold);
+}
+
+.sp-avatar {
+  width: 34px; height: 34px; flex-shrink: 0;
+  background: var(--surface3); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+}
+
+.sp-info { flex: 1; min-width: 0; }
+.sp-nickname { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sp-rsn-type { font-size: 11px; color: var(--muted); }
+
+.sp-btn {
+  background: var(--surface3); border: 1px solid var(--border);
+  border-radius: 7px; color: var(--text); font-size: 11px; font-weight: 600;
+  padding: 5px 9px; cursor: pointer; flex-shrink: 0;
+}
+.sp-btn:hover { border-color: var(--gold); }
+
+.sp-note {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  padding: 0 2px;
+}
+
+.sp-save-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.sp-save-btn {
+  flex: 1;
+  padding: 9px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  transition: all .15s;
+}
+
+.sp-save-btn.primary {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #111;
+}
+
+.sp-save-btn.secondary {
+  background: var(--surface2);
+  color: var(--text);
+}
+
+.sp-save-btn:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+.sp-save-btn:not(:disabled):hover {
+  border-color: var(--gold);
+}
+
+.sp-nickname-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  align-items: center;
+}
+
+.sp-nickname-input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+}
+
+.sp-nickname-input:focus { border-color: var(--gold); }
+
+.sp-nickname-confirm,
+.sp-nickname-cancel {
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+}
+
+.sp-nickname-confirm { background: var(--gold); border-color: var(--gold); color: #111; }
+
+/* ── Account section ── */
+.settings-rsn-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  margin-bottom: 6px;
+}
+
+.settings-rsn-input:focus { border-color: var(--gold); }
+
+.account-type-detected {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 2px 0 8px;
+  min-height: 16px;
+}
+
+.search-btn, .push-btn, .disconnect-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  transition: all .15s;
+  text-align: center;
+}
+
+.search-btn {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #111;
+}
+
+.push-btn {
+  background: var(--surface2);
+  color: var(--text);
+}
+
+.push-btn:hover { border-color: var(--gold); }
+
+.disconnect-btn {
+  background: transparent;
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.disconnect-btn:hover { background: rgba(248,81,73,.1); }
+
+/* ── Danger buttons ── */
+.btn-danger {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--red);
+  color: var(--red);
+  transition: all .15s;
+}
+
+.btn-danger:hover { background: rgba(248,81,73,.1); }
+
+/* ── Push status ── */
+.push-status-text {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+  min-height: 14px;
+}
+
+/* ── Settings sections with padding ── */
+.settings-section-body {
+  padding: 12px 16px;
+}
+
+/* ── Version footer ── */
+.settings-footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 11px;
+  padding: 20px 0 8px;
+}

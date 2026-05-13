@@ -2,9 +2,11 @@ import {
   initPage, storage, showToast, sendLocalNotification,
   xpToLevel, xpForLevel, fmtXP, SKILL_MAP,
   STORAGE_KEYS, requestPushPermission,
+  player, updateHeaderName,
 } from '/src/app/shared.js';
 
 initPage('goals');
+updateHeaderName();
 
 /* ── Skills list ────────────────────────────────────────── */
 // Build SKILLS directly from SKILL_MAP (imported from shared.js) so icons & colors always match
@@ -363,11 +365,53 @@ function openAddSheet() {
   setType('skill');
   document.getElementById('goal-sheet-overlay').classList.add('show');
 }
-function closeAddSheet() { document.getElementById('goal-sheet-overlay').classList.remove('show'); }
+
+// ── Drag-to-close ─────────────────────────────────────────────────────────────
+function makeDraggable(sheetEl, overlayEl, closeFn) {
+  let startX = 0, startY = 0, dragY = 0, dragX = 0, active = false, dir = null;
+  sheetEl.addEventListener('touchstart', e => {
+    const top = sheetEl.getBoundingClientRect().top;
+    if (e.touches[0].clientY - top > 80) return;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    dragY = dragX = 0; dir = null; active = true;
+    sheetEl.style.transition = 'none';
+  }, { passive: true });
+  window.addEventListener('touchmove', e => {
+    if (!active) return;
+    const dy = e.touches[0].clientY - startY;
+    const dx = e.touches[0].clientX - startX;
+    if (!dir) {
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 8) dir = 'h';
+      else if (Math.abs(dy) > 8) dir = 'v';
+    }
+    if (dir === 'v') { dragY = Math.max(0, dy); sheetEl.style.transform = `translateY(${dragY}px)`; }
+    else if (dir === 'h') { dragX = dx; sheetEl.style.transform = `translateX(${dragX}px)`; }
+  }, { passive: true });
+  window.addEventListener('touchend', () => {
+    if (!active) return;
+    active = false;
+    sheetEl.style.transition = '';
+    if ((dir === 'v' && dragY > 100) || (dir === 'h' && Math.abs(dragX) > 120)) {
+      sheetEl.style.transform = '';
+      closeFn();
+    } else {
+      sheetEl.style.transform = 'translateY(0)';
+    }
+    dragY = dragX = 0; dir = null;
+  });
+}
+
+function closeAddSheet() {
+  const s = document.getElementById('goal-sheet');
+  if (s) s.style.transform = '';
+  document.getElementById('goal-sheet-overlay').classList.remove('show');
+}
 
 document.getElementById('gs-close').onclick=closeAddSheet;
 document.getElementById('goal-sheet-overlay').onclick=e=>{ if(e.target.id==='goal-sheet-overlay') closeAddSheet(); };
 document.getElementById('add-goal-btn').onclick=openAddSheet;
+makeDraggable(document.getElementById('goal-sheet'), document.getElementById('goal-sheet-overlay'), closeAddSheet);
 
 document.getElementById('gs-submit').onclick=()=>{
   const err=document.getElementById('gs-err');
@@ -435,9 +479,14 @@ function openUpdateSheet(id) {
   document.getElementById('upd-xphr-wrap').style.display=g.type==='skill'?'flex':'none';
   document.getElementById('upd-sheet-overlay').classList.add('show');
 }
-function closeUpdateSheet() { document.getElementById('upd-sheet-overlay').classList.remove('show'); }
+function closeUpdateSheet() {
+  const s = document.getElementById('upd-sheet');
+  if (s) s.style.transform = '';
+  document.getElementById('upd-sheet-overlay').classList.remove('show');
+}
 document.getElementById('upd-close').onclick=closeUpdateSheet;
 document.getElementById('upd-sheet-overlay').onclick=e=>{ if(e.target.id==='upd-sheet-overlay') closeUpdateSheet(); };
+makeDraggable(document.getElementById('upd-sheet'), document.getElementById('upd-sheet-overlay'), closeUpdateSheet);
 
 document.getElementById('upd-submit').onclick=()=>{
   const g=goals.find(x=>x.id===editingId); if(!g) return;

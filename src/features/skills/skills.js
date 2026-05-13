@@ -2,6 +2,7 @@ import {
   initPage, fetchPlayer, player, settings, showToast, storage,
   STORAGE_KEYS, SKILLS, SKILL_MAP, fmtXP, fmtNum, fmtRank,
   xpToLevel, xpForLevel, xpProgress, normalizeAccountType,
+  updateHeaderName,
 } from '/src/app/shared.js';
 
 initPage('skills');
@@ -106,6 +107,7 @@ async function loadPlayer(rsn, accountType) {
   try {
     const data = await fetchPlayer(rsn, accountType);
     player.set(data);
+    updateHeaderName();
     renderSkills(data);
     showToast('✅ ' + (data.displayName || rsn));
   } catch (err) { showError(err.message); }

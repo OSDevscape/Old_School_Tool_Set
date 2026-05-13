@@ -13,7 +13,7 @@
 <body>
 
 <header>
-  <h1>OSTS</h1>
+  <h1>OSTS<span id="player-name-header"></span></h1>
   <div class="hdr-actions" style="gap:6px">
     <button id="install-btn">Install</button>
     <button id="profile-btn" aria-label="Switch profile" title="Saved profiles">
@@ -24,62 +24,7 @@
   </div>
 </header>
 
-<!-- Settings Panel -->
-<div id="settings-overlay"></div>
-<div id="settings-panel" aria-hidden="true">
-  <div class="settings-head">
-    <h2>Settings</h2>
-    <button class="settings-close" id="settings-close">✕</button>
-  </div>
 
-  <div class="settings-block">
-    <div class="settings-label">Appearance</div>
-    <div class="theme-options">
-      <button class="theme-chip" data-theme="dark">Dark</button>
-      <button class="theme-chip" data-theme="light">Light</button>
-      <button class="theme-chip" data-theme="brown">Brown</button>
-    </div>
-  </div>
-
-  <div class="settings-block">
-    <div class="settings-label">Account</div>
-    <input id="rsn-input" class="settings-rsn-input" type="text"
-           placeholder="Enter RSN…" autocomplete="off" spellcheck="false">
-    <div class="account-type-grid" id="account-type-grid">
-      <button class="acct-btn active" data-type="ironman">🛡 Ironman</button>
-      <button class="acct-btn" data-type="hardcore">💀 HCIM</button>
-      <button class="acct-btn" data-type="ultimate">🔱 UIM</button>
-      <button class="acct-btn" data-type="regular">⚔ Main</button>
-      <button class="acct-btn" data-type="gim">👥 GIM</button>
-      <button class="acct-btn" data-type="ghcim">☠ GHCIM</button>
-    </div>
-    <button class="search-btn" id="push-update-btn">Push update</button>
-    <button class="push-btn"   id="search-btn">Search</button>
-    <button class="disconnect-btn" id="disconnect-btn">Disconnect RSN</button>
-  </div>
-
-  <div class="settings-block">
-    <div class="settings-label">Saved Profiles</div>
-    <div class="sp-note">Save multiple RSNs and switch between them instantly.</div>
-    <div id="sp-profile-list"></div>
-    <div class="sp-save-row">
-      <button class="sp-save-btn secondary" id="sp-save-current" disabled>Save current profile</button>
-      <button class="sp-save-btn primary"   id="sp-save-new"     disabled>Save as new</button>
-    </div>
-    <div class="sp-nickname-row" id="sp-nickname-row">
-      <input class="sp-nickname-input" id="sp-nickname-input" type="text"
-             placeholder="Nickname…" maxlength="20" autocomplete="off" spellcheck="false">
-      <button class="sp-nickname-confirm" id="sp-nickname-confirm">Save</button>
-      <button class="sp-nickname-cancel"  id="sp-nickname-cancel">✕</button>
-    </div>
-  </div>
-
-  <div class="settings-block">
-    <div class="settings-label">Notifications</div>
-    <div class="push-note" id="push-status">Push notifications not set up.</div>
-    <button class="push-btn" id="enable-push-btn" style="margin-top:8px">Enable Push Notifications</button>
-  </div>
-</div>
 
 <!-- Main -->
 <div id="main">
@@ -88,6 +33,21 @@
     <div id="loader"></div>
     <div class="error-msg" id="error-msg"></div>
 
+    <!-- RSN Search bar always visible at top -->
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <input id="rsn-input" type="text" placeholder="Enter RSN…" autocomplete="off" spellcheck="false"
+        style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;
+               padding:10px 14px;font-size:14px;color:var(--text);outline:none">
+      <button id="search-btn" style="background:var(--gold);border:none;border-radius:10px;
+               padding:10px 16px;font-size:13px;font-weight:700;color:#111;cursor:pointer;white-space:nowrap">Search</button>
+      <button id="push-update-btn" title="Push WOM update" style="background:var(--surface);border:1px solid var(--border);
+               border-radius:10px;padding:10px 12px;font-size:13px;color:var(--text);cursor:pointer;white-space:nowrap">↻</button>
+    </div>
+    <div id="account-type-detected" style="font-size:11px;color:var(--muted);margin:-4px 0 8px;min-height:14px;display:flex;align-items:center;justify-content:space-between">
+      <span id="account-type-detected-text"></span>
+      <button id="disconnect-btn" style="font-size:10px;color:var(--red);background:none;border:none;cursor:pointer;padding:0;display:none">Disconnect</button>
+    </div>
+
     <!-- Welcome state -->
     <div class="welcome" id="welcome-msg">
       <div class="welcome-icon">
@@ -95,7 +55,7 @@
              alt="OSTS" class="welcome-logo" loading="lazy">
       </div>
       <h2>Old School Tool Set</h2>
-      <p>Open settings ⚙️, enter your RSN, and start tracking.</p>
+      <p>Enter your RSN above to start tracking.</p>
     </div>
 
     <!-- Overview content (hidden until loaded) -->

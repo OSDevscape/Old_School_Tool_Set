@@ -13,32 +13,13 @@
 <body>
 
 <header>
-  <h1>OSTS</h1>
+  <h1>OSTS<span id="player-name-header"></span></h1>
   <div class="hdr-actions">
     <button id="install-btn" style="display:none">Install</button>
     <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
   </div>
 </header>
 
-<div id="settings-overlay"></div>
-<div id="settings-panel" aria-hidden="true">
-  <div class="settings-head">
-    <h2>Settings</h2>
-    <button class="settings-close" id="settings-close">✕</button>
-  </div>
-  <div class="settings-block">
-    <div class="settings-label">Appearance</div>
-    <div class="theme-options">
-      <button class="theme-chip" data-theme="dark">Dark</button>
-      <button class="theme-chip" data-theme="light">Light</button>
-      <button class="theme-chip" data-theme="brown">Brown</button>
-    </div>
-  </div>
-  <div class="settings-block">
-    <div class="settings-label">Collection Log</div>
-    <button class="push-btn" id="reset-clog-btn" style="background:rgba(248,81,73,.1);border-color:var(--red);color:var(--red)">Reset All Progress</button>
-  </div>
-</div>
 
 <div id="main">
   <div class="page active">

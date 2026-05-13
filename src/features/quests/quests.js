@@ -1,5 +1,6 @@
-import { initPage, storage, showToast, SKILL_MAP } from '/src/app/shared.js';
+import { initPage, storage, showToast, SKILL_MAP, player, updateHeaderName } from '/src/app/shared.js';
 initPage('quests');
+updateHeaderName();
 
 const QUESTS = [
   {id:'learning_the_ropes',    name:"Learning the Ropes",                              qp:1, f2p:true,  diff:'N',len:'VS',series:null},

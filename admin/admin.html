@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSTS — Owner Panel</title>
+<link rel="stylesheet" href="/src/styles/style.css">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+
+<!-- ── Login ── -->
+<div id="login-screen">
+  <div class="login-card">
+    <h1>OSTS</h1>
+    <div class="sub">Owner Access</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <input id="login-pw" type="password" placeholder="Owner password" autocomplete="current-password">
+      <div id="global-error"></div>
+      <button class="primary" id="login-btn">Enter</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Admin shell ── -->
+<div id="admin-screen">
+  <header>
+    <div class="brand">OSTS <span>Owner Panel</span></div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="theme-options" style="gap:4px">
+        <button class="theme-chip" data-theme="dark"  style="min-width:52px;padding:5px 8px;font-size:11px">Dark</button>
+        <button class="theme-chip" data-theme="brown" style="min-width:52px;padding:5px 8px;font-size:11px">Brown</button>
+        <button class="theme-chip" data-theme="light" style="min-width:52px;padding:5px 8px;font-size:11px">Light</button>
+      </div>
+      <button id="logout-btn" style="font-size:12px;padding:5px 12px">Log Out</button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav>
+      <div class="nav-section">Overview</div>
+      <a data-sec="stats">📊 Stats</a>
+      <a data-sec="db">🗄️ Database</a>
+      <div class="nav-section">Users</div>
+      <a data-sec="users">👤 Manage Users</a>
+      <div class="nav-section">Data</div>
+      <a data-sec="players">🗡️ Player Lookup</a>
+      <a data-sec="searches">🔍 Search Log</a>
+      <div class="nav-section">Notifications</div>
+      <a data-sec="push">🔔 Push</a>
+      <div class="nav-section">App</div>
+      <a data-sec="controls">⚙️ Controls</a>
+    </nav>
+
+    <div class="content">
+
+      <!-- STATS -->
+      <div class="section" id="sec-stats">
+        <div class="section-title">Stats</div>
+        <div class="stat-grid">
+          <div class="stat-box"><div class="val" id="s-users">–</div><div class="lbl">Total Users</div></div>
+          <div class="stat-box"><div class="val" id="s-sessions">–</div><div class="lbl">Active Sessions</div></div>
+          <div class="stat-box"><div class="val" id="s-push">–</div><div class="lbl">Push Subscribers</div></div>
+          <div class="stat-box"><div class="val" id="s-30">–</div><div class="lbl">Signups (30d)</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Signups — Last 7 Days</div>
+          <div class="chart-bar-wrap" id="signup-chart"></div>
+          <div class="chart-labels" id="signup-labels"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Newest Users</div>
+          <div id="newest-users"></div>
+        </div>
+      </div>
+
+      <!-- DB -->
+      <div class="section" id="sec-db">
+        <div class="section-title">Database Health</div>
+        <div class="stat-grid">
+          <div class="stat-box"><div class="val" id="db-version" style="font-size:14px;padding-top:6px">–</div><div class="lbl">MySQL Version</div></div>
+          <div class="stat-box"><div class="val" id="db-expired">–</div><div class="lbl">Expired Sessions</div></div>
+          <div class="stat-box"><div class="val" id="db-oldest" style="font-size:13px;padding-top:8px">–</div><div class="lbl">Oldest Snapshot</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Row Counts</div>
+          <div class="db-grid" id="db-table-grid"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Session Cleanup</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button id="btn-clear-expired">🧹 Clear Expired Sessions</button>
+            <button class="danger" id="btn-nuke-sessions">⚡ Nuke ALL Sessions</button>
+          </div>
+          <div id="session-msg" style="font-size:12px;color:var(--muted);margin-top:8px"></div>
+        </div>
+      </div>
+
+      <!-- USERS -->
+      <div class="section" id="sec-users">
+        <div class="section-title">Manage Users</div>
+        <div class="row" style="margin-bottom:20px">
+          <input id="user-search-input" type="text" placeholder="Search by username…" autocomplete="off">
+          <button class="primary" id="user-search-btn">Search</button>
+        </div>
+        <div id="user-results"><div class="empty">Search for a username to get started.</div></div>
+      </div>
+
+      <!-- PLAYERS -->
+      <div class="section" id="sec-players">
+        <div class="section-title">Player Lookup</div>
+        <div class="row" style="margin-bottom:20px">
+          <input id="player-rsn-input" type="text" placeholder="Search RSN…" autocomplete="off">
+          <button class="primary" id="player-search-btn">Search</button>
+        </div>
+        <div id="player-results"><div class="empty">Search an RSN to view player data.</div></div>
+      </div>
+
+      <!-- SEARCHES -->
+      <div class="section" id="sec-searches">
+        <div class="section-title">Search Log</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+          <select id="search-limit" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:13px">
+            <option value="20">Last 20</option>
+            <option value="50">Last 50</option>
+            <option value="100">Last 100</option>
+          </select>
+          <button class="primary" id="load-searches-btn">Load</button>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div id="search-log-container"><div class="empty">Click Load to fetch search log.</div></div>
+        </div>
+      </div>
+
+      <!-- PUSH -->
+      <div class="section" id="sec-push">
+        <div class="section-title">Push Notifications</div>
+        <div class="stat-grid" style="margin-bottom:20px">
+          <div class="stat-box"><div class="val" id="push-total">–</div><div class="lbl">Subscribers</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Recent Subscriptions</div>
+          <div id="push-sub-list" style="font-size:12px"><div class="empty">Loading…</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Broadcast Push</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <input id="push-title" type="text" placeholder="Notification title" maxlength="80">
+            <textarea id="push-body" placeholder="Notification body…" maxlength="200" style="min-height:60px"></textarea>
+            <input id="push-url" type="text" placeholder="Link URL (default: /)" maxlength="200">
+            <div style="display:flex;gap:8px;align-items:center">
+              <button class="primary" id="broadcast-btn">📢 Send to All Subscribers</button>
+              <div id="broadcast-status" style="font-size:12px;color:var(--muted)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTROLS -->
+      <div class="section" id="sec-controls">
+        <div class="section-title">App Controls</div>
+        <div class="card">
+          <div class="card-title">Maintenance Mode</div>
+          <div class="toggle-row">
+            <div>
+              <div class="toggle-label">Maintenance Mode <span class="pill off" id="maint-pill">Off</span></div>
+              <div class="toggle-sub">Shows a full-screen maintenance message to all users.</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+            <input id="maint-msg" type="text" placeholder="Message shown to users…" maxlength="200">
+            <div style="display:flex;gap:8px">
+              <button class="primary" id="maint-on-btn">Enable</button>
+              <button id="maint-off-btn">Disable</button>
+            </div>
+            <div id="maint-status" style="font-size:12px;color:var(--muted)"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Site Announcement</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:10px">
+            Shown as a banner on the home page. Clear the field and save to remove it.
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <textarea id="announce-text" placeholder="Announcement text (max 300 chars)…" maxlength="300"></textarea>
+            <div style="display:flex;gap:8px">
+              <button class="primary" id="announce-save-btn">Save</button>
+              <button id="announce-clear-btn">Clear</button>
+            </div>
+            <div id="announce-status" style="font-size:12px;color:var(--muted)"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/src/app/shared.js"></script>
+<script src="/admin/admin.js"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@ import {
   STORAGE_KEYS, ACCOUNT_TYPES, SKILLS, SKILL_MAP,
   fmtXP, fmtNum, fmtRank, calcCombat,
   xpToLevel, xpForLevel, xpProgress, normalizeAccountType,
-  sendLocalNotification,
+  sendLocalNotification, updateHeaderName,
 } from '/src/app/shared.js';
 
 
@@ -73,42 +73,7 @@ function renderProfilesModal() {
   });
 }
 
-// ── Settings panel profiles ───────────────────────────────────────────────────
-function renderSettingsProfiles() {
-  const profiles = getProfiles();
-  const activeId = getActiveId();
-  const list     = document.getElementById('sp-profile-list');
-
-  // Sort active first
-  const sorted = [...profiles].sort((a,b) => (b.id === activeId) - (a.id === activeId));
-
-  list.innerHTML = sorted.map(p => `
-    <div class="sp-profile-card${p.id === activeId ? ' active' : ''}" id="spc-${p.id}">
-      <div class="sp-avatar">${profileTypeIcon(p.type)}</div>
-      <div class="sp-info">
-        <div class="sp-nickname">${p.nickname}</div>
-        <div class="sp-rsn-type">${p.rsn} • ${profileTypeLabel(p.type)}</div>
-      </div>
-      <div class="sp-btns">
-        ${p.id !== activeId ? `<button class="sp-btn" data-load="${p.id}">Load</button>` : ''}
-        <button class="sp-btn" data-rename="${p.id}">Rename</button>
-        <button class="sp-btn danger" data-delete="${p.id}">Delete</button>
-      </div>
-    </div>
-  `).join('');
-
-  list.querySelectorAll('[data-load]').forEach(btn =>
-    btn.addEventListener('click', () => switchToProfile(btn.dataset.load)));
-  list.querySelectorAll('[data-rename]').forEach(btn =>
-    btn.addEventListener('click', () => renameProfile(btn.dataset.rename)));
-  list.querySelectorAll('[data-delete]').forEach(btn =>
-    btn.addEventListener('click', () => deleteProfile(btn.dataset.delete)));
-
-  // Enable/disable save buttons based on whether a player is loaded
-  const hasPlayer = !!player.get();
-  document.getElementById('sp-save-current').disabled = !hasPlayer || !activeId;
-  document.getElementById('sp-save-new').disabled     = !hasPlayer;
-}
+// Profile management is handled in settings.js
 
 // ── Profile actions ───────────────────────────────────────────────────────────
 function switchToProfile(id) {
@@ -118,8 +83,7 @@ function switchToProfile(id) {
 
   // Close any open panels first
   closeProfilesModal();
-  settings.close();
-
+  
   setActiveId(id);
 
   // Update account type selector
@@ -147,6 +111,7 @@ async function _doFetchSwitch(p) {
   try {
     const data = await fetchPlayer(p.rsn, normalizeAccountType(p.type));
     player.set(data);
+    updateHeaderName();
     // Update cached copy
     const profiles = getProfiles();
     const idx = profiles.findIndex(x => x.id === p.id);
@@ -162,61 +127,10 @@ async function _doFetchSwitch(p) {
   } finally {
     setLoading(false);
     updateProfileBtn();
-    renderSettingsProfiles();
-  }
+    }
 }
 
-function saveCurrentProfile() {
-  const data = player.get(); if (!data) return;
-  const activeId = getActiveId();
-  if (!activeId) return;
-  const profiles = getProfiles();
-  const idx = profiles.findIndex(x => x.id === activeId);
-  if (idx === -1) return;
-  profiles[idx].cachedData = slimCache(data);
-  profiles[idx].rsn  = data.displayName || data.username || profiles[idx].rsn;
-  profiles[idx].type = data.type || profiles[idx].type;
-  try { saveProfiles(profiles); } catch {}
-  showToast('✅ Profile updated');
-  renderSettingsProfiles();
-}
-
-function saveAsNewProfile() {
-  const data = player.get(); if (!data) return;
-  // Show the inline nickname input row
-  const row   = document.getElementById('sp-nickname-row');
-  const input = document.getElementById('sp-nickname-input');
-  input.value = data.displayName || data.username || '';
-  row.classList.add('show');
-  input.focus();
-  input.select();
-}
-
-function commitSaveAsNew() {
-  const data = player.get(); if (!data) return;
-  const row   = document.getElementById('sp-nickname-row');
-  const input = document.getElementById('sp-nickname-input');
-  const nick  = input.value.trim() || data.displayName || data.username || 'Profile';
-  const rsn   = data.displayName || data.username || '';
-  const type  = normalizeAccountType(data.type);
-  const id    = genId();
-  const profiles = getProfiles();
-  profiles.push({ id, nickname: nick, rsn, type, cachedData: slimCache(data) });
-  try {
-    saveProfiles(profiles);
-  } catch (e) {
-    // Quota exceeded — save without cache, fetch fresh on switch
-    profiles[profiles.length - 1].cachedData = null;
-    try { saveProfiles(profiles); } catch {}
-    showToast('⚠️ Profile saved (no cache — will fetch on switch)');
-  }
-  setActiveId(id);
-  row.classList.remove('show');
-  input.value = '';
-  showToast('✅ Profile "' + nick + '" saved');
-  updateProfileBtn();
-  renderSettingsProfiles();
-}
+// saveCurrentProfile / saveAsNewProfile handled in settings.js
 
 // Slim the WOM data down to only what OSTS needs to render, avoiding localStorage quota
 function slimCache(data) {
@@ -255,8 +169,7 @@ function renameProfile(id) {
     p.nickname = v;
     saveProfiles(profiles);
     updateProfileBtn();
-    renderSettingsProfiles();
-    showToast('Renamed to "' + v + '"');
+      showToast('Renamed to "' + v + '"');
   }
   inp.addEventListener('keydown', e => { if (e.key === 'Enter') commit(); if (e.key === 'Escape') renderSettingsProfiles(); });
   inp.addEventListener('blur', commit);
@@ -289,7 +202,6 @@ function deleteProfile(id) {
     }
   }
   updateProfileBtn();
-  renderSettingsProfiles();
   showToast('Profile deleted');
 }
 
@@ -307,24 +219,7 @@ function updateProfileBtn() {
   }
 }
 
-// Save buttons
-document.getElementById('sp-save-current').addEventListener('click', saveCurrentProfile);
-document.getElementById('sp-save-new').addEventListener('click', saveAsNewProfile);
-document.getElementById('sp-nickname-confirm').addEventListener('click', commitSaveAsNew);
-document.getElementById('sp-nickname-cancel').addEventListener('click', () => {
-  document.getElementById('sp-nickname-row').classList.remove('show');
-  document.getElementById('sp-nickname-input').value = '';
-});
-document.getElementById('sp-nickname-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter')  commitSaveAsNew();
-  if (e.key === 'Escape') {
-    document.getElementById('sp-nickname-row').classList.remove('show');
-    document.getElementById('sp-nickname-input').value = '';
-  }
-});
 
-// Re-render settings profiles when panel opens
-document.getElementById('settings-btn').addEventListener('click', () => renderSettingsProfiles(), true);
 
 initPage('overview');
 
@@ -362,10 +257,20 @@ async function loadPlayer() {
   if (!rsn) { showToast('Enter a player name'); return; }
   setLoading(true); clearError(); hideContent();
   try {
-    const data = await fetchPlayer(rsn, currentAccountType);
+    const data = await fetchPlayer(rsn, null); // auto-detect type
     player.set(data);
+    updateHeaderName();
+    currentAccountType = normalizeAccountType(data.type, 'ironman');
+    storage.set(STORAGE_KEYS.ACCOUNT_TYPE, currentAccountType);
+    // Show detected type + disconnect button
+    const detText = document.getElementById('account-type-detected-text');
+    const discBtn = document.getElementById('disconnect-btn');
+    if (detText) {
+      const info = ACCOUNT_TYPES[currentAccountType] || ACCOUNT_TYPES.ironman;
+      detText.textContent = `Detected: ${info.icon} ${info.label}`;
+    }
+    if (discBtn) discBtn.style.display = 'inline';
     renderOverview(data);
-    settings.close();
     showToast('✅ ' + (data.displayName || rsn) + ' loaded');
   } catch (err) {
     showError(err.message || 'Failed to load player');
@@ -395,28 +300,15 @@ setInterval(() => {
 }, 1000);
 
 // ── Disconnect ───────────────────────────────────────────────────────────
-document.getElementById('disconnect-btn').addEventListener('click', () => {
+document.getElementById('disconnect-btn')?.addEventListener('click', () => {
   player.clear(); hideContent();
   document.getElementById('welcome-msg').style.display = '';
   document.getElementById('rsn-input').value = '';
-  settings.close(); showToast('RSN disconnected');
+  const det = document.getElementById('account-type-detected');
+  if (det) det.textContent = '';
+  updateHeaderName();
+  showToast('RSN disconnected');
 });
-
-// ── Push notifications ───────────────────────────────────────────────────
-updatePushStatus();
-document.getElementById('enable-push-btn').addEventListener('click', async () => {
-  try {
-    const { registerPush } = await import('/src/app/bootstrap.js');
-    await registerPush();
-    showToast('✅ Push notifications enabled');
-    updatePushStatus();
-  } catch (err) { showToast('Push setup failed: ' + err.message, 6000); }
-});
-function updatePushStatus() {
-  const el = document.getElementById('push-status');
-  if (!el || !('Notification' in window)) return;
-  el.textContent = { granted:'✅ Enabled', denied:'🚫 Blocked', default:'Not set up yet.' }[Notification.permission] || '';
-}
 
 // ── Collapsible sections ─────────────────────────────────────────────────
 document.querySelectorAll('.ov-collapse-head[data-collapse]').forEach(btn => {
@@ -598,7 +490,6 @@ function renderOverview(data) {
     }
   }
   updateProfileBtn();
-  renderSettingsProfiles();
 }
 
 // ── Nearest 99s list ─────────────────────────────────────────────────────
