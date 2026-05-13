@@ -2,8 +2,8 @@
 // Strategy: network-first for navigation, cache-on-demand for assets
 // No precaching — avoids install failures from wrong paths
 
-const CACHE     = 'osts-v3.0';
-const API_CACHE = 'osts-api-v2.5';
+const CACHE     = 'osts-v4.0';
+const API_CACHE = 'osts-api-v3.0';
 
 // ── Install: skip waiting, no precache ───────────────────────────────────────
 self.addEventListener('install', event => {
@@ -79,8 +79,8 @@ self.addEventListener('push', event => {
   event.waitUntil(
     self.registration.showNotification(data.title || 'OSTS Notification', {
       body:     data.body || 'You have a new notification.',
-      icon:     '/Assets/Logo/icon-192.png',
-      badge:    '/Assets/Logo/icon-192.png',
+      icon:     '/public/Assets/Logo/icon-192.png',
+      badge:    '/public/Assets/Logo/icon-192.png',
       tag:      data.tag || 'osts-push',
       renotify: true,
       data:     { url: data.url || '/' },

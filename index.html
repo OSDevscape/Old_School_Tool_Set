@@ -2,11 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Apply saved theme immediately — prevents flash of wrong theme -->
+  <script>!function(){try{var t=JSON.parse(localStorage.getItem('osts_theme_v2')||'"brown"');document.documentElement.className=t==='light'?'theme-light':t==='brown'?'theme-brown':'';}catch(e){document.documentElement.className='theme-brown';}}();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#2b241b">
   <link rel="manifest" href="/public/manifest.json">
-  <title>OSTS — Home</title>
-  <meta name="description" content="Old School Tool Set — OSRS news and player tracking.">
+  <title>OSTS — Old School Tool Set</title>
+
+  <!-- Primary meta -->
+  <meta name="description" content="OSRS skill tracking, XP gains, bossing stats, farming timers, quests and more. The ultimate Old School RuneScape companion.">
+  <meta name="keywords" content="OSRS, Old School RuneScape, skill tracker, XP gains, bossing, farming timers, quest tracker">
+  <meta name="author" content="OSTS">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://osts.app/">
+  <meta property="og:title"       content="OSTS — Old School Tool Set">
+  <meta property="og:description" content="OSRS skill tracking, XP gains, bossing stats, farming timers, quests and more.">
+  <meta property="og:image"       content="https://osts.app/public/Assets/Logo/icon-512.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:site_name"   content="OSTS">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary">
+  <meta name="twitter:title"       content="OSTS — Old School Tool Set">
+  <meta name="twitter:description" content="OSRS skill tracking, XP gains, bossing stats, farming timers, quests and more.">
+  <meta name="twitter:image"       content="https://osts.app/public/Assets/Logo/icon-512.png">
+
+  <!-- PWA / Apple -->
+  <link rel="apple-touch-icon" href="/public/Assets/Logo/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="OSTS">
+  <meta name="mobile-web-app-capable" content="yes">
+
   <link rel="stylesheet" href="/src/styles/style.css">
   <link rel="stylesheet" href="/src/styles/index.css">
 
@@ -39,18 +69,8 @@
     <div class="settings-label">Player Profiles</div>
     <div id="sp-profile-list" style="margin-bottom:8px"></div>
     <div style="font-size:11px;color:var(--muted)">
-      Manage profiles on the <a href="/src/features/overview/overview.html" style="color:var(--gold);font-weight:600">Overview</a> page.
+      Manage profiles on the <a href="Pages/overview.html" style="color:var(--gold);font-weight:600">Overview</a> page.
     </div>
-  </div>
-
-  <div class="settings-block">
-    <div class="settings-label">Push Notifications</div>
-    <button id="push-enable-btn" style="
-      width:100%;padding:8px 12px;border-radius:6px;border:1px solid var(--border);
-      background:var(--surface);color:var(--text);font-size:13px;cursor:pointer;text-align:left">
-      🔔 Enable Push Notifications
-    </button>
-    <div id="push-status" style="font-size:11px;color:var(--muted);margin-top:4px"></div>
   </div>
 
 </div>

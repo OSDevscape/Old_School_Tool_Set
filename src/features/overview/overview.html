@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Apply saved theme immediately — prevents flash of wrong theme -->
+  <script>!function(){try{var t=JSON.parse(localStorage.getItem('osts_theme_v2')||'"brown"');document.documentElement.className=t==='light'?'theme-light':t==='brown'?'theme-brown':'';}catch(e){document.documentElement.className='theme-brown';}}();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#2b241b">
   <link rel="manifest" href="/public/manifest.json">
@@ -34,14 +36,14 @@
     <div class="error-msg" id="error-msg"></div>
 
     <!-- RSN Search bar always visible at top -->
-    <div style="display:flex;gap:8px;margin-bottom:10px">
+    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
       <input id="rsn-input" type="text" placeholder="Enter RSN…" autocomplete="off" spellcheck="false"
-        style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;
+        style="flex:1;min-width:0;background:var(--surface);border:1px solid var(--border);border-radius:10px;
                padding:10px 14px;font-size:14px;color:var(--text);outline:none">
       <button id="search-btn" style="background:var(--gold);border:none;border-radius:10px;
-               padding:10px 16px;font-size:13px;font-weight:700;color:#111;cursor:pointer;white-space:nowrap">Search</button>
-      <button id="push-update-btn" title="Push WOM update" style="background:var(--surface);border:1px solid var(--border);
-               border-radius:10px;padding:10px 12px;font-size:13px;color:var(--text);cursor:pointer;white-space:nowrap">↻</button>
+               padding:10px 16px;font-size:13px;font-weight:700;color:#111;cursor:pointer">Search</button>
+      <button id="push-update-btn" title="Update WOM" style="background:var(--surface);border:1px solid var(--border);
+               border-radius:10px;padding:10px 12px;font-size:13px;color:var(--text);cursor:pointer">Update WOM</button>
     </div>
     <div id="account-type-detected" style="font-size:11px;color:var(--muted);margin:-4px 0 8px;min-height:14px;display:flex;align-items:center;justify-content:space-between">
       <span id="account-type-detected-text"></span>

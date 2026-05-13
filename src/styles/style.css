@@ -23,7 +23,7 @@
 }
 
 /* ── Light Theme ── */
-body.theme-light {
+html.theme-light, body.theme-light {
   --bg:      #f4efe4;
   --surface: #fffaf0;
   --surface2:#f0e6d2;
@@ -40,7 +40,7 @@ body.theme-light {
 }
 
 /* ── Brown Theme ── */
-body.theme-brown {
+html.theme-brown, body.theme-brown {
   --bg:      #2b241b;
   --surface: #3a3024;
   --surface2:#4a3c2c;
@@ -56,9 +56,9 @@ body.theme-brown {
   --border:  #8d6b3e;
 }
 
-body.theme-brown header,
-body.theme-brown .card,
-body.theme-brown .surface-card { box-shadow: none; }
+html.theme-brown header, body.theme-brown header,
+html.theme-brown .card, body.theme-brown .card,
+html.theme-brown .surface-card, body.theme-brown .surface-card { box-shadow: none; }
 
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }

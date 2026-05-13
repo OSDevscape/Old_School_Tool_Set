@@ -114,10 +114,14 @@ export const theme = {
   THEMES: ['dark', 'light', 'brown'],
   current() { return storage.get(STORAGE_KEYS.THEME, 'brown'); },
   apply(t) {
-    t = (t || 'dark').toLowerCase();
-    document.body.classList.remove('theme-light', 'theme-brown');
-    if (t === 'light') document.body.classList.add('theme-light');
-    if (t === 'brown') document.body.classList.add('theme-brown');
+    t = (t || 'brown').toLowerCase();
+    // Apply to both html and body — html gets it from the inline head script,
+    // body gets it here. Both needed to cover all CSS selectors.
+    [document.documentElement, document.body].forEach(el => {
+      el.classList.remove('theme-light', 'theme-brown');
+      if (t === 'light') el.classList.add('theme-light');
+      if (t === 'brown') el.classList.add('theme-brown');
+    });
     storage.set(STORAGE_KEYS.THEME, t);
     document.querySelectorAll('.theme-chip[data-theme]').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.theme === t);
@@ -370,7 +374,7 @@ export async function fetchPlayer(rsn, accountType = null) {
       }
     }
     if (detectedType === 'unknown') detectedType = 'regular';
-    // Dead HCIM: hiscores keeps them on HCIM board — trust WOM status
+    // Dead HCIM: hiscores keeps them on board — trust WOM status
     if (detectedType === 'hardcore' && womStatus === 'dead') detectedType = 'ironman';
   }
 
@@ -480,14 +484,11 @@ export function updateHeaderName() {
   const rsn = player.getRsn();
   el.textContent = rsn ? ` — ${rsn}` : '';
 }
-
 export const settings = {
   open() {
     window.location.href = '/src/app/settings/settings.html';
   },
-  close() {
-    // No-op: settings is now a full page
-  },
+  close() {},
   bindCloseOnOverlay() {},
 };
 
@@ -534,18 +535,30 @@ export function initMoreMenu() {
 
 export function initInstallPrompt() {
   let deferredPrompt = null;
+
+  // Hide install button by default — only show when browser fires beforeinstallprompt
+  const btn = document.getElementById('install-btn');
+  if (btn) btn.style.display = 'none';
+
   window.addEventListener('beforeinstallprompt', e => {
     e.preventDefault();
     deferredPrompt = e;
-    const btn = document.getElementById('install-btn');
     if (btn) btn.style.display = 'block';
   });
-  document.getElementById('install-btn')?.addEventListener('click', async () => {
+
+  btn?.addEventListener('click', async () => {
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') document.getElementById('install-btn').style.display = 'none';
+    if (btn) btn.style.display = 'none';
     deferredPrompt = null;
+  });
+
+  // Hide button once app is installed
+  window.addEventListener('appinstalled', () => {
+    if (btn) btn.style.display = 'none';
+    deferredPrompt = null;
+    console.log('[OSTS] PWA installed');
   });
 }
 
