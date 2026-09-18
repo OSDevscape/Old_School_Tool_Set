@@ -1,3 +1,96 @@
-# Ignore template files
-template
+# ─────────────────────────────────────────────────────────────────────────────
+# Templates
+# ─────────────────────────────────────────────────────────────────────────────
+template/
 *.template
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Node / npm
+# ─────────────────────────────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+.npmrc.local
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Environment variables and secrets
+# Never commit API keys, database passwords, tokens, or private configuration.
+# ─────────────────────────────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.keystore
+*.jks
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Generated Capacitor web bundle
+# www is rebuilt from index.html + src + public before `npx cap sync`.
+# ─────────────────────────────────────────────────────────────────────────────
+www/
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Android / Gradle generated files
+# Keep the Android source project itself; ignore only generated output/cache files.
+# ─────────────────────────────────────────────────────────────────────────────
+android/.gradle/
+android/build/
+android/app/build/
+android/capacitor-cordova-android-plugins/build/
+android/.idea/
+android/local.properties
+android/hs_err_pid*.log
+android/*.hprof
+android/captures/
+android/.externalNativeBuild/
+android/.cxx/
+
+# APKs, Android App Bundles, and debug/release outputs
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Android signing configuration
+android/keystore.properties
+android/key.properties
+
+# ─────────────────────────────────────────────────────────────────────────────
+# IDE / editor files
+# ─────────────────────────────────────────────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Operating-system junk
+# ─────────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+ehthumbs.db
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Logs, caches, and temporary files
+# ─────────────────────────────────────────────────────────────────────────────
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*.orig
+.cache/

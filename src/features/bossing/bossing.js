@@ -1,6 +1,6 @@
 import {
-  initPage, fetchPlayer, player, settings, showToast, storage,
-  STORAGE_KEYS, fmtNum, fmtRank, normalizeAccountType,
+  initPage, fetchPlayer, player, showToast, storage,
+  STORAGE_KEYS, fmtNum, fmtRank, normalizeAccountType, updateHeaderName,
 } from '/src/app/shared.js';
 
 initPage('bossing');
@@ -79,6 +79,7 @@ async function loadPlayer(rsn, accountType) {
   try {
     const data = await fetchPlayer(rsn, accountType);
     player.set(data);
+    updateHeaderName();
     renderBossing(data);
     showToast('✅ ' + (data.displayName || rsn));
   } catch (err) { showError(err.message); }

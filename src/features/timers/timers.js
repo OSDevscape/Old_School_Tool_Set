@@ -1,86 +1,113 @@
-import { initPage, storage, showToast, sendLocalNotification, player, updateHeaderName } from '/src/app/shared.js';
+import {
+  initPage,
+  storage,
+  showToast,
+  sendLocalNotification,
+  requestTimerNotificationPermission,
+  scheduleTimerNotification,
+  cancelTimerNotification,
+  player,
+  updateHeaderName
+} from '/src/app/shared.js';
 initPage('timers');
 updateHeaderName();
+
+console.log(
+  '[OSTS] Capacitor local notifications bridge:',
+  window.Capacitor?.Plugins?.LocalNotifications
+);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Built-in groups
 // ─────────────────────────────────────────────────────────────────────────────
 const BUILT_IN_GROUPS = [
-  { key:'herbs', label:'Herbs', icon:'🌿', items:[
-    ['guam','Guam',9,'1h 20m','https://oldschool.runescape.wiki/images/thumb/Guam_leaf_detail.png/64px-Guam_leaf_detail.png?85d6d'],
-    ['marrentill','Marrentill',14,'1h 20m','https://oldschool.runescape.wiki/images/thumb/Marrentill_detail.png/64px-Marrentill_detail.png?a6345'],
-    ['tarromin','Tarromin',19,'1h 20m','https://oldschool.runescape.wiki/images/thumb/Tarromin_detail.png/64px-Tarromin_detail.png?859ba'],
-    ['harralander','Harralander',26,'1h 20m','https://oldschool.runescape.wiki/images/thumb/Harralander_detail.png/64px-Harralander_detail.png?d6a6b'],
-    ['ranarr','Ranarr',32,'1h 20m','https://oldschool.runescape.wiki/images/thumb/Ranarr_weed_detail.png/64px-Ranarr_weed_detail.png?9e257'],
-    ['toadflax','Toadflax',38,'1h 20m','https://oldschool.runescape.wiki/images/thumb/Toadflax_detail.png/64px-Toadflax_detail.png?933e2'],
-    ['irit','Irit',44,'1h 20m','https://oldschool.runescape.wiki/images/thumb/Irit_leaf_detail.png/64px-Irit_leaf_detail.png?baf94'],
-    ['avantoe','Avantoe',50,'1h 20m','https://oldschool.runescape.wiki/images/thumb/Avantoe_detail.png/64px-Avantoe_detail.png?209b3'],
-    ['kwuarm','Kwuarm',56,'1h 20m','https://oldschool.runescape.wiki/images/thumb/Kwuarm_detail.png/64px-Kwuarm_detail.png?194c8'],
-    ['snapdragon','Snapdragon',62,'1h 20m','https://oldschool.runescape.wiki/images/thumb/Snapdragon_detail.png/64px-Snapdragon_detail.png?f5526'],
-    ['cadantine','Cadantine',67,'1h 20m','https://oldschool.runescape.wiki/images/thumb/Cadantine_detail.png/64px-Cadantine_detail.png?d6a6b'],
-    ['lantadyme','Lantadyme',73,'1h 20m','https://oldschool.runescape.wiki/images/thumb/Lantadyme_detail.png/64px-Lantadyme_detail.png?8337c'],
-    ['dwarf-weed','Dwarf Weed',79,'1h 20m','https://oldschool.runescape.wiki/images/thumb/Dwarf_weed_detail.png/64px-Dwarf_weed_detail.png?194c8'],
-    ['torstol','Torstol',85,'1h 20m','https://oldschool.runescape.wiki/images/thumb/Torstol_detail.png/64px-Torstol_detail.png?859ba'],
-  ]},
-  { key:'allotments', label:'Allotments', icon:'❖', items:[
-    ['potato','Potato',1,'40m','https://oldschool.runescape.wiki/images/thumb/Potato_detail.png/64px-Potato_detail.png?18b75'],
-    ['onion','Onion',5,'40m','https://oldschool.runescape.wiki/images/thumb/Onion_detail.png/64px-Onion_detail.png?46915'],
-    ['tomato','Tomato',12,'40m','https://oldschool.runescape.wiki/images/thumb/Tomato_detail.png/64px-Tomato_detail.png?68ce7'],
-    ['sweetcorn','Sweetcorn',20,'1h','https://oldschool.runescape.wiki/images/thumb/Sweetcorn_detail.png/64px-Sweetcorn_detail.png?05420'],
-    ['strawberry','Strawberry',31,'1h','https://oldschool.runescape.wiki/images/thumb/Strawberry_detail.png/64px-Strawberry_detail.png?b5384'],
-    ['watermelon','Watermelon',47,'1h 20m','https://oldschool.runescape.wiki/images/thumb/Watermelon_detail.png/64px-Watermelon_detail.png?a0167'],
-  ]},
-  { key:'trees', label:'Trees', icon:'🌲', items:[
-    ['oak','Oak',15,'2h 40m','https://oldschool.runescape.wiki/images/thumb/Oak_sapling_detail.png/64px-Oak_sapling_detail.png?164e0'],
-    ['willow','Willow',30,'4h','https://oldschool.runescape.wiki/images/thumb/Willow_sapling_detail.png/64px-Willow_sapling_detail.png?583a4'],
-    ['maple','Maple',45,'5h 20m','https://oldschool.runescape.wiki/images/thumb/Maple_sapling_detail.png/64px-Maple_sapling_detail.png?b9c9e'],
-    ['yew','Yew',60,'6h 40m','https://oldschool.runescape.wiki/images/thumb/Yew_sapling_detail.png/64px-Yew_sapling_detail.png?db804'],
-    ['magic-tree','Magic',75,'8h','https://oldschool.runescape.wiki/images/thumb/Magic_sapling_detail.png/64px-Magic_sapling_detail.png?90ab7'],
-  ]},
-  { key:'fruit-trees', label:'Fruit Trees', icon:'🍎', items:[
-    ['apple','Apple',27,'16h','https://oldschool.runescape.wiki/images/thumb/Apple_sapling_detail.png/64px-Apple_sapling_detail.png?1b183'],
-    ['banana','Banana',33,'16h','https://oldschool.runescape.wiki/images/thumb/Banana_sapling_detail.png/64px-Banana_sapling_detail.png?43d1d'],
-    ['orange','Orange',39,'16h','https://oldschool.runescape.wiki/images/thumb/Orange_sapling_detail.png/64px-Orange_sapling_detail.png?f9649'],
-    ['pineapple','Pineapple',51,'16h','https://oldschool.runescape.wiki/images/thumb/Pineapple_sapling_detail.png/64px-Pineapple_sapling_detail.png?a3b00'],
-    ['papaya','Papaya',57,'16h','https://oldschool.runescape.wiki/images/thumb/Papaya_sapling_detail.png/64px-Papaya_sapling_detail.png?a3b00'],
-    ['palm','Palm',68,'16h','https://oldschool.runescape.wiki/images/thumb/Palm_sapling_detail.png/64px-Palm_sapling_detail.png?a3b00'],
-    ['dragonfruit','Dragonfruit',81,'16h','https://oldschool.runescape.wiki/images/thumb/Dragonfruit_sapling_detail.png/64px-Dragonfruit_sapling_detail.png?af998'],
-  ]},
-  { key:'birdhouses', label:'Birdhouses', icon:'◉', items:[
-    ['bird-house','Bird House',5,'50m','https://oldschool.runescape.wiki/images/thumb/Bird_house_trapping.png/64px-Bird_house_trapping.png?d617f'],
-    ['oak-bird-house','Oak Bird House',14,'50m','https://oldschool.runescape.wiki/images/thumb/Oak_bird_house_detail.png/64px-Oak_bird_house_detail.png?5468f'],
-    ['willow-bird-house','Willow Bird House',24,'50m','https://oldschool.runescape.wiki/images/thumb/Willow_bird_house_detail.png/64px-Willow_bird_house_detail.png?9b339'],
-    ['teak-bird-house','Teak Bird House',34,'50m','https://oldschool.runescape.wiki/images/thumb/Teak_bird_house_detail.png/64px-Teak_bird_house_detail.png?859ba'],
-    ['maple-bird-house','Maple Bird House',44,'50m','https://oldschool.runescape.wiki/images/thumb/Maple_bird_house_detail.png/64px-Maple_bird_house_detail.png?15d44'],
-    ['yew-bird-house','Yew Bird House',59,'50m','https://oldschool.runescape.wiki/images/thumb/Yew_bird_house_detail.png/64px-Yew_bird_house_detail.png?7d4ca'],
-    ['magic-bird-house','Magic Bird House',74,'50m','https://oldschool.runescape.wiki/images/thumb/Magic_bird_house_detail.png/64px-Magic_bird_house_detail.png?03de7'],
-    ['redwood-bird-house','Redwood Bird House',89,'50m','https://oldschool.runescape.wiki/images/thumb/Redwood_bird_house_detail.png/64px-Redwood_bird_house_detail.png?9e257'],
-  ]},
-  { key:'extras', label:'Extras', icon:'⋯', items:[
-    ['battlestaves','Battlestaves',1,'24h','https://oldschool.runescape.wiki/images/thumb/Battlestaff_detail.png/64px-Battlestaff_detail.png?c5b58'],
-    ['herb-boxes','Herb Boxes',1,'24h','https://oldschool.runescape.wiki/images/thumb/Herb_box_detail.png/64px-Herb_box_detail.png?0470b'],
-    ['kingdom','Kingdom of Miscellania',1,'24h','https://oldschool.runescape.wiki/images/thumb/Throne_of_Miscellania.png/64px-Throne_of_Miscellania.png?45c45'],
-    ['tears','Tears of Guthix',1,'168h','https://oldschool.runescape.wiki/images/thumb/Tears_of_Guthix.png/64px-Tears_of_Guthix.png?1fc60'],
-  ]},
+  {
+    key: 'herbs', label: 'Herbs', icon: '🌿', items: [
+      ['guam', 'Guam', 9, '1h 20m', 'https://oldschool.runescape.wiki/images/thumb/Guam_leaf_detail.png/64px-Guam_leaf_detail.png?85d6d'],
+      ['marrentill', 'Marrentill', 14, '1h 20m', 'https://oldschool.runescape.wiki/images/thumb/Marrentill_detail.png/64px-Marrentill_detail.png?a6345'],
+      ['tarromin', 'Tarromin', 19, '1h 20m', 'https://oldschool.runescape.wiki/images/thumb/Tarromin_detail.png/64px-Tarromin_detail.png?859ba'],
+      ['harralander', 'Harralander', 26, '1h 20m', 'https://oldschool.runescape.wiki/images/thumb/Harralander_detail.png/64px-Harralander_detail.png?d6a6b'],
+      ['ranarr', 'Ranarr', 32, '1h 20m', 'https://oldschool.runescape.wiki/images/thumb/Ranarr_weed_detail.png/64px-Ranarr_weed_detail.png?9e257'],
+      ['toadflax', 'Toadflax', 38, '1h 20m', 'https://oldschool.runescape.wiki/images/thumb/Toadflax_detail.png/64px-Toadflax_detail.png?933e2'],
+      ['irit', 'Irit', 44, '1h 20m', 'https://oldschool.runescape.wiki/images/thumb/Irit_leaf_detail.png/64px-Irit_leaf_detail.png?baf94'],
+      ['avantoe', 'Avantoe', 50, '1h 20m', 'https://oldschool.runescape.wiki/images/thumb/Avantoe_detail.png/64px-Avantoe_detail.png?209b3'],
+      ['kwuarm', 'Kwuarm', 56, '1h 20m', 'https://oldschool.runescape.wiki/images/thumb/Kwuarm_detail.png/64px-Kwuarm_detail.png?194c8'],
+      ['snapdragon', 'Snapdragon', 62, '1h 20m', 'https://oldschool.runescape.wiki/images/thumb/Snapdragon_detail.png/64px-Snapdragon_detail.png?f5526'],
+      ['cadantine', 'Cadantine', 67, '1h 20m', 'https://oldschool.runescape.wiki/images/thumb/Cadantine_detail.png/64px-Cadantine_detail.png?d6a6b'],
+      ['lantadyme', 'Lantadyme', 73, '1h 20m', 'https://oldschool.runescape.wiki/images/thumb/Lantadyme_detail.png/64px-Lantadyme_detail.png?8337c'],
+      ['dwarf-weed', 'Dwarf Weed', 79, '1h 20m', 'https://oldschool.runescape.wiki/images/thumb/Dwarf_weed_detail.png/64px-Dwarf_weed_detail.png?194c8'],
+      ['torstol', 'Torstol', 85, '1h 20m', 'https://oldschool.runescape.wiki/images/thumb/Torstol_detail.png/64px-Torstol_detail.png?859ba'],
+    ]
+  },
+  {
+    key: 'allotments', label: 'Allotments', icon: '❖', items: [
+      ['potato', 'Potato', 1, '40m', 'https://oldschool.runescape.wiki/images/thumb/Potato_detail.png/64px-Potato_detail.png?18b75'],
+      ['onion', 'Onion', 5, '40m', 'https://oldschool.runescape.wiki/images/thumb/Onion_detail.png/64px-Onion_detail.png?46915'],
+      ['tomato', 'Tomato', 12, '40m', 'https://oldschool.runescape.wiki/images/thumb/Tomato_detail.png/64px-Tomato_detail.png?68ce7'],
+      ['sweetcorn', 'Sweetcorn', 20, '1h', 'https://oldschool.runescape.wiki/images/thumb/Sweetcorn_detail.png/64px-Sweetcorn_detail.png?05420'],
+      ['strawberry', 'Strawberry', 31, '1h', 'https://oldschool.runescape.wiki/images/thumb/Strawberry_detail.png/64px-Strawberry_detail.png?b5384'],
+      ['watermelon', 'Watermelon', 47, '1h 20m', 'https://oldschool.runescape.wiki/images/thumb/Watermelon_detail.png/64px-Watermelon_detail.png?a0167'],
+    ]
+  },
+  {
+    key: 'trees', label: 'Trees', icon: '🌲', items: [
+      ['oak', 'Oak', 15, '2h 40m', 'https://oldschool.runescape.wiki/images/thumb/Oak_sapling_detail.png/64px-Oak_sapling_detail.png?164e0'],
+      ['willow', 'Willow', 30, '4h', 'https://oldschool.runescape.wiki/images/thumb/Willow_sapling_detail.png/64px-Willow_sapling_detail.png?583a4'],
+      ['maple', 'Maple', 45, '5h 20m', 'https://oldschool.runescape.wiki/images/thumb/Maple_sapling_detail.png/64px-Maple_sapling_detail.png?b9c9e'],
+      ['yew', 'Yew', 60, '6h 40m', 'https://oldschool.runescape.wiki/images/thumb/Yew_sapling_detail.png/64px-Yew_sapling_detail.png?db804'],
+      ['magic-tree', 'Magic', 75, '8h', 'https://oldschool.runescape.wiki/images/thumb/Magic_sapling_detail.png/64px-Magic_sapling_detail.png?90ab7'],
+    ]
+  },
+  {
+    key: 'fruit-trees', label: 'Fruit Trees', icon: '🍎', items: [
+      ['apple', 'Apple', 27, '16h', 'https://oldschool.runescape.wiki/images/thumb/Apple_sapling_detail.png/64px-Apple_sapling_detail.png?1b183'],
+      ['banana', 'Banana', 33, '16h', 'https://oldschool.runescape.wiki/images/thumb/Banana_sapling_detail.png/64px-Banana_sapling_detail.png?43d1d'],
+      ['orange', 'Orange', 39, '16h', 'https://oldschool.runescape.wiki/images/thumb/Orange_sapling_detail.png/64px-Orange_sapling_detail.png?f9649'],
+      ['pineapple', 'Pineapple', 51, '16h', 'https://oldschool.runescape.wiki/images/thumb/Pineapple_sapling_detail.png/64px-Pineapple_sapling_detail.png?a3b00'],
+      ['papaya', 'Papaya', 57, '16h', 'https://oldschool.runescape.wiki/images/thumb/Papaya_sapling_detail.png/64px-Papaya_sapling_detail.png?a3b00'],
+      ['palm', 'Palm', 68, '16h', 'https://oldschool.runescape.wiki/images/thumb/Palm_sapling_detail.png/64px-Palm_sapling_detail.png?a3b00'],
+      ['dragonfruit', 'Dragonfruit', 81, '16h', 'https://oldschool.runescape.wiki/images/thumb/Dragonfruit_sapling_detail.png/64px-Dragonfruit_sapling_detail.png?af998'],
+    ]
+  },
+  {
+    key: 'birdhouses', label: 'Birdhouses', icon: '◉', items: [
+      ['bird-house', 'Bird House', 5, '50m', 'https://oldschool.runescape.wiki/images/thumb/Bird_house_trapping.png/64px-Bird_house_trapping.png?d617f'],
+      ['oak-bird-house', 'Oak Bird House', 14, '50m', 'https://oldschool.runescape.wiki/images/thumb/Oak_bird_house_detail.png/64px-Oak_bird_house_detail.png?5468f'],
+      ['willow-bird-house', 'Willow Bird House', 24, '50m', 'https://oldschool.runescape.wiki/images/thumb/Willow_bird_house_detail.png/64px-Willow_bird_house_detail.png?9b339'],
+      ['teak-bird-house', 'Teak Bird House', 34, '50m', 'https://oldschool.runescape.wiki/images/thumb/Teak_bird_house_detail.png/64px-Teak_bird_house_detail.png?859ba'],
+      ['maple-bird-house', 'Maple Bird House', 44, '50m', 'https://oldschool.runescape.wiki/images/thumb/Maple_bird_house_detail.png/64px-Maple_bird_house_detail.png?15d44'],
+      ['yew-bird-house', 'Yew Bird House', 59, '50m', 'https://oldschool.runescape.wiki/images/thumb/Yew_bird_house_detail.png/64px-Yew_bird_house_detail.png?7d4ca'],
+      ['magic-bird-house', 'Magic Bird House', 74, '50m', 'https://oldschool.runescape.wiki/images/thumb/Magic_bird_house_detail.png/64px-Magic_bird_house_detail.png?03de7'],
+      ['redwood-bird-house', 'Redwood Bird House', 89, '50m', 'https://oldschool.runescape.wiki/images/thumb/Redwood_bird_house_detail.png/64px-Redwood_bird_house_detail.png?9e257'],
+    ]
+  },
+  {
+    key: 'extras', label: 'Extras', icon: '⋯', items: [
+      ['battlestaves', 'Battlestaves', 1, '24h', 'https://oldschool.runescape.wiki/images/thumb/Battlestaff_detail.png/64px-Battlestaff_detail.png?c5b58'],
+      ['herb-boxes', 'Herb Boxes', 1, '24h', 'https://oldschool.runescape.wiki/images/thumb/Herb_box_detail.png/64px-Herb_box_detail.png?0470b'],
+      ['kingdom', 'Kingdom of Miscellania', 1, '24h', 'https://oldschool.runescape.wiki/images/thumb/Throne_of_Miscellania.png/64px-Throne_of_Miscellania.png?45c45'],
+      ['tears', 'Tears of Guthix', 1, '168h', 'https://oldschool.runescape.wiki/images/thumb/Tears_of_Guthix.png/64px-Tears_of_Guthix.png?1fc60'],
+    ]
+  },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Storage keys
 // ─────────────────────────────────────────────────────────────────────────────
-const CUSTOM_KEY   = 'osts_custom_timers_v2';
-const ENTRIES_KEY  = 'osts_timer_entries_v2';
-const PINS_KEY     = 'osts_timer_pins_v2';
+const CUSTOM_KEY = 'osts_custom_timers_v2';
+const ENTRIES_KEY = 'osts_timer_entries_v2';
+const PINS_KEY = 'osts_timer_pins_v2';
 const COLLAPSE_KEY = 'osts_timer_collapse_v2';
 
 let customTimers = storage.get(CUSTOM_KEY, []);
-let entries      = storage.get(ENTRIES_KEY, {});
-let pins         = storage.get(PINS_KEY, []);
-let collapsed    = storage.get(COLLAPSE_KEY, {});
+let entries = storage.get(ENTRIES_KEY, {});
+let pins = storage.get(PINS_KEY, []);
+let collapsed = storage.get(COLLAPSE_KEY, {});
 
-function saveCustom()  { storage.set(CUSTOM_KEY,   customTimers); }
-function saveEntries() { storage.set(ENTRIES_KEY,  entries); }
-function savePins()    { storage.set(PINS_KEY,     pins); }
-function saveCollapse(){ storage.set(COLLAPSE_KEY, collapsed); }
+function saveCustom() { storage.set(CUSTOM_KEY, customTimers); }
+function saveEntries() { storage.set(ENTRIES_KEY, entries); }
+function savePins() { storage.set(PINS_KEY, pins); }
+function saveCollapse() { storage.set(COLLAPSE_KEY, collapsed); }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Timer map — built-in + custom merged
@@ -144,13 +171,41 @@ function slugify(v) {
   return String(v || 'custom').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'custom';
 }
 
+function timerNotificationId(id) {
+  return `osts-timer-${String(id)}`;
+}
+
+function timerFinishAt(entry) {
+  return Date.now() + Math.max(0, Number(entry?.remaining || 0)) * 1000;
+}
+
+async function scheduleCompletionAlert(id) {
+  const entry = entries[id];
+  const meta = TIMER_MAP[id];
+
+  if (!entry || !meta || entry.paused || entry.remaining <= 0) return;
+
+  const allowed = await requestTimerNotificationPermission();
+  if (!allowed) return;
+
+  await scheduleTimerNotification({
+    id: timerNotificationId(id),
+    title: `${meta.name} is ready`,
+    body: 'Your timer is ready to collect.',
+    at: timerFinishAt(entry)
+  });
+}
+
+async function cancelCompletionAlert(id) {
+  await cancelTimerNotification(timerNotificationId(id));
+}
 // ─────────────────────────────────────────────────────────────────────────────
 // Build all render groups (custom-only groups first, then built-ins with any
 // custom items prepended to their matching category)
 // ─────────────────────────────────────────────────────────────────────────────
 function getAllGroups() {
   const builtIn = BUILT_IN_GROUPS.map(g => ({ ...g, items: g.items.slice(), custom: false }));
-  const byKey   = Object.fromEntries(builtIn.map(g => [g.key, g]));
+  const byKey = Object.fromEntries(builtIn.map(g => [g.key, g]));
 
   // Bucket custom timers by category
   const customGroups = {};
@@ -207,12 +262,24 @@ function startTimer(id) {
   showToast('⏱ ' + meta.name + ' started');
 }
 
-function pauseTimer(id) {
-  const e = entries[id]; if (!e || e.paused) return;
+async function pauseTimer(id) {
+  const e = entries[id];
+  if (!e || e.paused) return;
+
   const diff = Math.floor((Date.now() - (e.lastTick || Date.now())) / 1000);
+
   e.remaining = Math.max(0, e.remaining - diff);
-  e.paused = true; e.lastTick = 0;
-  saveEntries(); renderTimers();
+  e.paused = true;
+  e.lastTick = 0;
+
+  try {
+    await cancelCompletionAlert(id);
+  } catch (err) {
+    console.warn('[OSTS] Could not cancel timer notification:', err);
+  }
+
+  saveEntries();
+  renderTimers();
   showToast('⏸ ' + (TIMER_MAP[id]?.name || '') + ' paused');
 }
 
@@ -233,13 +300,24 @@ function togglePin(id) {
   savePins(); renderTimers();
 }
 
-function deleteCustomTimer(id) {
+async function deleteCustomTimer(id) {
   const t = customTimers.find(x => x.id === id);
   if (!t) return;
+
+  try {
+    await cancelCompletionAlert(id);
+  } catch (err) {
+    console.warn('[OSTS] Could not cancel timer notification:', err);
+  }
+
   customTimers = customTimers.filter(x => x.id !== id);
   pins = pins.filter(p => p !== id);
   delete entries[id];
-  saveCustom(); savePins(); saveEntries();
+
+  saveCustom();
+  savePins();
+  saveEntries();
+
   rebuildTimerMap();
   renderTimers();
   showToast('🗑 ' + t.name + ' deleted');
@@ -259,7 +337,7 @@ function timerStatus(id) {
 // ─────────────────────────────────────────────────────────────────────────────
 function timerCardHtml(id, showReorderButtons = false) {
   const meta = TIMER_MAP[id]; if (!meta) return '';
-  const st       = timerStatus(id);
+  const st = timerStatus(id);
   const isCustom = !!meta.custom;
 
   const iconHtml = String(meta.icon || '').startsWith('http')
@@ -267,9 +345,9 @@ function timerCardHtml(id, showReorderButtons = false) {
     : `<div class="timer-icon" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;font-size:16px;font-weight:800;color:var(--gold);background:var(--surface2);border-radius:6px">${meta.icon || meta.name[0].toUpperCase()}</div>`;
 
   const stateText =
-    st.state === 'ready'  ? '● Ready' :
-    st.state === 'active' ? '⏱ ' + fmtRemain(st.left) :
-    st.state === 'paused' ? '⏸ ' + fmtRemain(st.left) : meta.dur;
+    st.state === 'ready' ? '● Ready' :
+      st.state === 'active' ? '⏱ ' + fmtRemain(st.left) :
+        st.state === 'paused' ? '⏸ ' + fmtRemain(st.left) : meta.dur;
 
   const ctrl = st.state === 'active'
     ? `<button class="timer-btn" data-pause="${id}" title="Pause">⏸</button>`
@@ -277,9 +355,9 @@ function timerCardHtml(id, showReorderButtons = false) {
 
   const resetBtn = st.state !== 'idle' ? `<button class="timer-btn" data-reset="${id}" title="Reset">↺</button>` : '';
   const clearBtn = st.state !== 'idle' ? `<button class="timer-btn" data-clear="${id}" title="Clear">✕</button>` : '';
-  const delBtn   = isCustom ? `<button class="timer-btn danger" data-delete="${id}" title="Delete">🗑</button>` : '';
-  const pinCls   = pins.includes(id) ? ' active' : '';
-  const lvlText  = meta.lvl ? `Lv ${meta.lvl} · ` : '';
+  const delBtn = isCustom ? `<button class="timer-btn danger" data-delete="${id}" title="Delete">🗑</button>` : '';
+  const pinCls = pins.includes(id) ? ' active' : '';
+  const lvlText = meta.lvl ? `Lv ${meta.lvl} · ` : '';
 
   // Only show reorder buttons if explicitly requested (pinned section)
   const pinIndex = pins.indexOf(id);
@@ -315,7 +393,7 @@ function renderTimers() {
 
   // ── Pinned ────────────────────────────────────────────────────────────────
   const pinnedRoot = document.getElementById('timer-pinned');
-  const validPins  = pins.filter(id => TIMER_MAP[id]);
+  const validPins = pins.filter(id => TIMER_MAP[id]);
   pinnedRoot.innerHTML = validPins.length
     ? `<div class="data-label">Pinned</div>${validPins.map(id => timerCardHtml(id, true)).join('')}`
     : '';
@@ -420,7 +498,7 @@ function tick() {
     const diff = Math.floor((Date.now() - e.lastTick) / 1000);
     if (diff <= 0) return;
     e.remaining = Math.max(0, e.remaining - diff);
-    e.lastTick  = Date.now();
+    e.lastTick = Date.now();
     if (e.remaining <= 0) {
       e.remaining = 0; e.paused = true; e.lastTick = 0;
       sendLocalNotification(

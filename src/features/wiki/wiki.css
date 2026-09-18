@@ -1,0 +1,417 @@
+/* ─── OSTS Wiki Viewer ─────────────────────────────────────────────────────── */
+
+/* ── Search bar ─────────────────────────────────────────────────────────────── */
+.wiki-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 12px;
+}
+
+.wiki-back-btn {
+  flex-shrink: 0;
+  width: 38px; height: 38px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  margin-right: 8px;
+  transition: border-color .15s, background .15s;
+}
+.wiki-back-btn:active { background: var(--surface3); }
+
+.wiki-search-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 15px;
+  pointer-events: none;
+  color: var(--muted);
+  z-index: 1;
+}
+/* shift icon right when back button is visible */
+.wiki-search-wrap:has(.wiki-back-btn:not([style*="display:none"])) .wiki-search-icon {
+  left: 58px;
+}
+
+.wiki-search {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  padding: 11px 38px 11px 38px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .15s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.wiki-search:focus { border-color: var(--gold); }
+.wiki-search::placeholder { color: var(--muted); }
+/* cancel button on Safari */
+.wiki-search::-webkit-search-cancel-button { display: none; }
+
+.wiki-clear-btn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 6px;
+  line-height: 1;
+}
+
+/* ── Results dropdown ───────────────────────────────────────────────────────── */
+.wiki-results-dropdown {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.wiki-result-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background .1s;
+}
+.wiki-result-item:last-child { border-bottom: none; }
+.wiki-result-item:active { background: var(--surface2); }
+
+.wiki-result-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  width: 28px;
+  text-align: center;
+}
+.wiki-result-thumb {
+  width: 28px; height: 28px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  object-fit: contain;
+  background: var(--surface2);
+}
+.wiki-result-text { flex: 1; min-width: 0; }
+.wiki-result-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wiki-result-desc {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wiki-result-arrow {
+  color: var(--muted);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.wiki-results-searching {
+  padding: 16px 14px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+.wiki-results-none {
+  padding: 16px 14px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ── Home view ──────────────────────────────────────────────────────────────── */
+.wiki-home {
+  padding-bottom: 20px;
+}
+.wiki-home-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.wiki-home-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.wiki-section-head {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.wiki-section-head::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.wiki-quick-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+}
+
+.wiki-quick-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 6px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 1.3;
+  transition: border-color .15s, background .1s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wiki-quick-btn:active {
+  background: var(--surface2);
+  border-color: var(--gold);
+}
+
+/* ── Article view ───────────────────────────────────────────────────────────── */
+.wiki-article {
+  padding-bottom: 24px;
+}
+
+.wiki-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 60px 20px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.wiki-spinner {
+  width: 32px; height: 32px;
+  border: 3px solid var(--border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.wiki-error {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.wiki-retry-btn {
+  margin-top: 14px;
+  padding: 10px 24px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ── Article content ─────────────────────────────────────────────────────────
+   We're rendering MediaWiki HTML; apply opinionated overrides so it looks
+   native inside the OSTS dark/light/brown theme.
+   ─────────────────────────────────────────────────────────────────────────── */
+.wiki-article-content {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text);
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Headings */
+.wiki-article-content h1,
+.wiki-article-content h2,
+.wiki-article-content h3,
+.wiki-article-content h4 {
+  color: var(--gold2, var(--gold));
+  margin: 18px 0 8px;
+  font-weight: 700;
+  line-height: 1.25;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+}
+.wiki-article-content h1 { font-size: 20px; }
+.wiki-article-content h2 { font-size: 17px; }
+.wiki-article-content h3 { font-size: 15px; border-bottom: none; }
+.wiki-article-content h4 { font-size: 13px; border-bottom: none; color: var(--muted); }
+
+/* Paragraphs */
+.wiki-article-content p { margin-bottom: 10px; }
+
+/* Links — make all wiki links look like OSTS gold links and intercept them */
+.wiki-article-content a {
+  color: var(--gold);
+  text-decoration: none;
+}
+.wiki-article-content a:active { opacity: .7; }
+
+/* Tables */
+.wiki-article-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 13px;
+  background: var(--surface);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.wiki-article-content th {
+  background: var(--surface2);
+  color: var(--gold);
+  font-weight: 700;
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.wiki-article-content td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.wiki-article-content tr:last-child td { border-bottom: none; }
+/* wikitable zebra */
+.wiki-article-content .wikitable tr:nth-child(even) td {
+  background: var(--surface2);
+}
+
+/* Infobox — make it scrollable on mobile */
+.wiki-article-content .infobox,
+.wiki-article-content .infobox-bonuses,
+.wiki-article-content .questdetails {
+  float: none !important;
+  width: 100% !important;
+  margin: 0 0 14px 0;
+  background: var(--surface);
+  border: 1px solid var(--border) !important;
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 13px;
+}
+.wiki-article-content .infobox th,
+.wiki-article-content .infobox-bonuses th {
+  background: var(--surface2);
+  color: var(--gold);
+  font-size: 12px;
+}
+
+/* Images */
+.wiki-article-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+}
+.wiki-article-content .thumb {
+  float: none !important;
+  margin: 10px 0;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px;
+}
+.wiki-article-content .thumbcaption {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+  text-align: center;
+}
+
+/* Lists */
+.wiki-article-content ul,
+.wiki-article-content ol {
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+.wiki-article-content li { margin-bottom: 3px; }
+
+/* Code / kbd */
+.wiki-article-content code,
+.wiki-article-content kbd {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 12px;
+  font-family: monospace;
+}
+
+/* Hide elements that make no sense in our viewer */
+.wiki-article-content .mw-editsection,
+.wiki-article-content .mw-editsection-bracket,
+.wiki-article-content #toc,
+.wiki-article-content .toc,
+.wiki-article-content .noprint,
+.wiki-article-content .printfooter,
+.wiki-article-content .mw-references-wrap + .reflist,
+.wiki-article-content .navbox,
+.wiki-article-content .navbox-group,
+.wiki-article-content .hatnote { display: none !important; }
+
+/* Hide edit pencil spans */
+.wiki-article-content span[class*="edit"] { display: none; }
+
+/* Quote / highlight boxes */
+.wiki-article-content .messagebox,
+.wiki-article-content .ambox,
+.wiki-article-content .tmbox {
+  background: var(--surface2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 10px 0;
+  font-size: 13px;
+}
+
+/* References */
+.wiki-article-content .references {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Scrollable wrapper for very wide tables */
+.wiki-table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.wiki-table-scroll table {
+  margin: 0;
+  border-radius: 0;
+  border: none;
+  min-width: 480px;
+}

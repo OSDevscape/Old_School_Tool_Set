@@ -1,4 +1,4 @@
-import { initPage, showToast, settings } from '/src/app/shared.js';
+import { initPage, showToast, storage, player, updateHeaderName } from '/src/app/shared.js';
 
 // ─── Storage keys for every bookmarkable system in OSTS ───────────────────────
 const KEYS = {
@@ -630,7 +630,7 @@ document.querySelectorAll('.theme-chip').forEach(btn => {
 });
 
 // ─── Init ──────────────────────────────────────────────────────────────────────
-initPage({ activePage:'more' });
+initPage('more');
 loadGEItems(); // async — populates GE item names for watchlist cards
 render();
 

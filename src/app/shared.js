@@ -10,6 +10,7 @@
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
+
 export const STORAGE_KEYS = {
   THEME:           'osts_theme_v2',
   RSN:             'osts_rsn_v2',
@@ -248,6 +249,12 @@ export function parseHiscoresCSV(csv) {
   return { skills, activities, bosses };
 }
 
+const API_BASE = (
+  window.location.protocol === 'capacitor:'
+    ? 'https://osts.website'
+    : ''
+);
+
 export async function fetchHiscores(rsn, accountType = 'ironman') {
   const type = normalizeAccountType(accountType);
   const url = `/.netlify/functions/hiscores?player=${encodeURIComponent(rsn)}&type=${type}`;
@@ -437,7 +444,7 @@ export async function fetchPlayer(rsn, accountType = null) {
   }
 
   // Write 2: Global DB — recent_searches + players table
-  fetch('/.netlify/functions/recent-players', {
+  fetch(`${API_BASE}/.netlify/functions/recent-players`, {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify({
@@ -454,7 +461,7 @@ export async function fetchPlayer(rsn, accountType = null) {
   }).catch(err => console.warn('[OSTS] Global recent write error:', err.message));
 
   // Write 3: Skill snapshot + boss KC — non-blocking
-  fetch('/.netlify/functions/snapshot', {
+  fetch(`${API_BASE}/.netlify/functions/snapshot`, {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify({
@@ -563,6 +570,41 @@ export function initInstallPrompt() {
 }
 
 // ─── Push Notifications ──────────────────────────────────────────────────────
+function getNativeTimerBridge() {
+  return window.Capacitor?.Plugins?.TimerNotifications || null;
+}
+
+export async function requestTimerNotificationPermission() {
+  const bridge = getNativeTimerBridge();
+
+  // Browser website: do not request native permissions.
+  if (!bridge) return false;
+
+  const result = await bridge.requestPermission();
+  return result?.granted === true;
+}
+
+export async function scheduleTimerNotification({ id, title, body, at }) {
+  const bridge = getNativeTimerBridge();
+  if (!bridge) return false;
+
+  const result = await bridge.schedule({
+    id: String(id),
+    title: String(title),
+    body: String(body),
+    at: Number(at)
+  });
+
+  return result?.scheduled === true;
+}
+
+export async function cancelTimerNotification(id) {
+  const bridge = getNativeTimerBridge();
+  if (!bridge) return false;
+
+  const result = await bridge.cancel({ id: String(id) });
+  return result?.cancelled === true;
+}
 
 export async function requestPushPermission() {
   if (!('Notification' in window)) throw new Error('Notifications not supported');
@@ -616,9 +658,9 @@ export function initPage(activePage) {
   updateHeaderName();
 
   // Register service worker immediately (separate from push opt-in)
-  if ('serviceWorker' in navigator) {
-    import('/src/app/bootstrap.js')
-      .then(({ registerSW }) => registerSW())
-      .catch(() => {});
-  }
+if (window.location.protocol !== 'capacitor:' && 'serviceWorker' in navigator) {
+  import('/src/app/bootstrap.js')
+    .then(({ registerSW }) => registerSW())
+    .catch(() => {});
+}
 }

@@ -27,7 +27,14 @@ const PROF_ICONS = { ironman:'⚔️', hardcore:'💀', ultimate:'🔱', regular
 const PROFILES_KEY    = 'osts_profiles_v2';
 const ACTIVE_PROF_KEY = 'osts_active_profile_v2';
 const getProfiles    = () => storage.get(PROFILES_KEY, []);
-const getActiveId    = () => storage.get(ACTIVE_PROF_KEY, null);
+const getActiveId    = () => {
+  // Handle both JSON-encoded ("id") and raw-string (id) storage from older app versions
+  try {
+    const v = localStorage.getItem(ACTIVE_PROF_KEY);
+    if (v == null) return null;
+    try { return JSON.parse(v); } catch { return v; }  // fallback: treat as raw string
+  } catch { return null; }
+};
 const setActiveId    = id => storage.set(ACTIVE_PROF_KEY, id);
 const getActiveProf  = () => { const id=getActiveId(); return id ? getProfiles().find(p=>p.id===id)||null : null; };
 
@@ -48,20 +55,49 @@ const liveTotal = ()  => liveData?.skills?.overall?.level   ?? null;
 // Pull skills straight from the profile's cached WOM snapshot — no network needed
 function loadLiveFromCache() {
   const p = getActiveProf();
+  let skills = null;
+  let refreshedAt = null;
 
-  // Try 1: profile's cached WOM snapshot
-  let snap = p?.cachedData?.latestSnapshot?.data;
-
-  // Try 2: the global player cache (most recent WOM fetch from Overview)
-  if (!snap?.skills) {
-    const globalCache = storage.get(STORAGE_KEYS.PLAYER_CACHE, null);
-    snap = globalCache?.latestSnapshot?.data;
+  // Helper: extract skills object from any cached data shape we might find
+  function extractSkills(d) {
+    if (!d) return null;
+    // Shape A: WOM  → d.latestSnapshot.data.skills  (current)
+    const a = d?.latestSnapshot?.data?.skills;
+    if (a && typeof a === 'object' && Object.keys(a).length > 0) return a;
+    // Shape B: flat → d.skills  (older cached format)
+    const b = d?.skills;
+    if (b && typeof b === 'object' && Object.keys(b).length > 0) return b;
+    return null;
   }
 
-  if (!snap?.skills) return false;
+  // Try 1: active profile's cachedData
+  if (p?.cachedData) {
+    skills = extractSkills(p.cachedData);
+    if (skills) refreshedAt = p.cachedData.updatedAt || null;
+  }
 
-  liveData = { skills: snap.skills };
-  lastRefreshed = p?.cachedData?.updatedAt ? new Date(p.cachedData.updatedAt) : null;
+  // Try 2: global player cache (last WOM fetch, any page)
+  if (!skills) {
+    const globalCache = storage.get(STORAGE_KEYS.PLAYER_CACHE, null);
+    skills = extractSkills(globalCache);
+    if (skills) refreshedAt = globalCache?.updatedAt || null;
+  }
+
+  // Try 3: hiscores-only data stored on the profile (no WOM snapshot available)
+  if (!skills && p?.cachedData?._hiscoresBosses === undefined && p?.cachedData) {
+    // Some older caches stored skills directly on cachedData root
+    const direct = p.cachedData;
+    if (direct && typeof direct === 'object') {
+      const candidate = Object.values(direct).find(v =>
+        v && typeof v === 'object' && v.attack && v.defence);
+      if (candidate) skills = candidate;
+    }
+  }
+
+  if (!skills || Object.keys(skills).length === 0) return false;
+
+  liveData = { skills };
+  lastRefreshed = refreshedAt ? new Date(refreshedAt) : null;
   return true;
 }
 
@@ -220,17 +256,33 @@ document.getElementById('gm-del-btn').onclick=()=>deleteGoal(detailGoalId);
 
 /* ── Profile chip ───────────────────────────────────────── */
 function renderProfileChip() {
-  const p=getActiveProf();
-  document.getElementById('profile-chip').style.display    = p ? 'flex' : 'none';
-  document.getElementById('no-profile-notice').style.display = p ? 'none' : 'block';
-  if (!p) return;
-  document.getElementById('pc-icon').textContent = PROF_ICONS[p.type]||'👤';
-  document.getElementById('pc-rsn').textContent  = p.nickname||p.rsn;
+  const p = getActiveProf();
+
+  // Even without a saved profile, show chip if player data exists in cache
+  const globalCache = !p ? storage.get(STORAGE_KEYS.PLAYER_CACHE, null) : null;
+  const hasData = p || globalCache;
+
+  document.getElementById('profile-chip').style.display     = hasData ? 'flex' : 'none';
+  document.getElementById('no-profile-notice').style.display = hasData ? 'none' : 'block';
+  if (!hasData) return;
+
+  if (p) {
+    document.getElementById('pc-icon').textContent = PROF_ICONS[p.type]||'👤';
+    document.getElementById('pc-rsn').textContent  = p.nickname||p.rsn;
+  } else {
+    // Fallback: show player from global cache (no saved profile yet)
+    const type = normalizeAccountType(globalCache?.type);
+    document.getElementById('pc-icon').textContent = PROF_ICONS[type]||'👤';
+    document.getElementById('pc-rsn').textContent  = globalCache?.displayName || globalCache?.username || 'Player';
+  }
+
   const timeStr = lastRefreshed
     ? lastRefreshed.toLocaleDateString([],{month:'short',day:'numeric'})
       +' '+lastRefreshed.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})
     : '';
-  document.getElementById('pc-time').textContent = timeStr ? `WOM · ${timeStr}` : 'Sync from Overview';
+  document.getElementById('pc-time').textContent = p
+    ? (timeStr ? `WOM · ${timeStr}` : 'Sync from Overview')
+    : 'Save profile in Settings';
 }
 
 /* ── Sync goals from current liveData (no network) ─────────── */
@@ -508,7 +560,7 @@ function renderProfileList() {
   const list=document.getElementById('sp-profile-list'); if(!list) return;
   const profiles=getProfiles(), activeId=getActiveId();
   if(!profiles.length){
-    list.innerHTML=`<p style="font-size:12px;color:var(--muted)">No saved profiles. <a href="/Pages/overview.html">Search a player</a> to create one.</p>`;
+    list.innerHTML=`<p style="font-size:12px;color:var(--muted)">No saved profiles. <a href="/src/features/overview/overview.html">Search a player</a> to create one.</p>`;
     return;
   }
   list.innerHTML=[...profiles].sort((a,b)=>(b.id===activeId)-(a.id===activeId)).map(p=>`

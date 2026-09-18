@@ -1,0 +1,6 @@
+{
+  "appId": "com.osts.website",
+  "appName": "Old School Tool Set",
+  "webDir": "www",
+  "bundledWebRuntime": true
+}

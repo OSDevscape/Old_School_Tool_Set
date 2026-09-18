@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2b241b">
+  <link rel="manifest" href="/public/manifest.json">
+  <title>OSTS — Wiki</title>
+  <link rel="stylesheet" href="/src/styles/style.css">
+  <link rel="stylesheet" href="/src/features/wiki/wiki.css">
+</head>
+<body>
+
+<header>
+  <h1 id="wiki-header-title">OSTS — Wiki</h1>
+  <div class="hdr-actions">
+    <button class="hdr-btn icon-btn" id="wiki-open-btn" title="Open in Wiki" style="display:none">↗</button>
+    <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
+  </div>
+</header>
+
+<div id="settings-overlay"></div>
+<div id="settings-panel" aria-hidden="true">
+  <div class="settings-head">
+    <h2>Settings</h2>
+    <button class="settings-close" id="settings-close">✕</button>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Appearance</div>
+    <div class="theme-options">
+      <button class="theme-chip" data-theme="dark">Dark</button>
+      <button class="theme-chip" data-theme="light">Light</button>
+      <button class="theme-chip" data-theme="brown">Brown</button>
+    </div>
+  </div>
+  <div class="settings-block">
+    <div class="settings-label">Player Profiles</div>
+    <div id="sp-profile-list" style="margin-bottom:8px"></div>
+  </div>
+</div>
+
+<div id="main">
+  <div class="page active" id="page-wiki">
+
+    <!-- Search Bar -->
+    <div class="wiki-search-wrap">
+      <button id="wiki-back-btn" class="wiki-back-btn" style="display:none" aria-label="Back">←</button>
+      <span class="wiki-search-icon">🔍</span>
+      <input
+        id="wiki-search"
+        class="wiki-search"
+        type="search"
+        placeholder="Search the OSRS Wiki…"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false"
+      >
+      <button id="wiki-clear-btn" class="wiki-clear-btn" style="display:none" aria-label="Clear">✕</button>
+    </div>
+
+    <!-- Search Results Dropdown -->
+    <div id="wiki-results-dropdown" class="wiki-results-dropdown" style="display:none"></div>
+
+    <!-- Home View -->
+    <div id="wiki-home" class="wiki-home">
+      <div class="wiki-home-title">📖 OSRS Wiki</div>
+      <div class="wiki-home-sub">Search any item, quest, monster, skill or mechanic</div>
+
+      <div class="wiki-section-head"><span>⚡ Quick Access</span></div>
+      <div class="wiki-quick-grid" id="wiki-quick-grid">
+        <button class="wiki-quick-btn" data-page="Grand Exchange">💰 Grand Exchange</button>
+        <button class="wiki-quick-btn" data-page="Prayer">🙏 Prayer</button>
+        <button class="wiki-quick-btn" data-page="Slayer">🎯 Slayer</button>
+        <button class="wiki-quick-btn" data-page="Construction">🏠 Construction</button>
+        <button class="wiki-quick-btn" data-page="Farming">🌿 Farming</button>
+        <button class="wiki-quick-btn" data-page="Runecraft">🔮 Runecraft</button>
+        <button class="wiki-quick-btn" data-page="Herblore">⚗️ Herblore</button>
+        <button class="wiki-quick-btn" data-page="Agility">🏃 Agility</button>
+        <button class="wiki-quick-btn" data-page="Hunter">🪤 Hunter</button>
+        <button class="wiki-quick-btn" data-page="Thieving">🥷 Thieving</button>
+        <button class="wiki-quick-btn" data-page="Woodcutting">🪓 Woodcutting</button>
+        <button class="wiki-quick-btn" data-page="Fishing">🎣 Fishing</button>
+      </div>
+
+      <div class="wiki-section-head" style="margin-top:16px"><span>🏆 Popular Bosses</span></div>
+      <div class="wiki-quick-grid" id="wiki-boss-grid">
+        <button class="wiki-quick-btn" data-page="Zulrah">🐍 Zulrah</button>
+        <button class="wiki-quick-btn" data-page="Vorkath">🐉 Vorkath</button>
+        <button class="wiki-quick-btn" data-page="Chambers of Xeric">⚔️ CoX</button>
+        <button class="wiki-quick-btn" data-page="Theatre of Blood">🩸 ToB</button>
+        <button class="wiki-quick-btn" data-page="Tombs of Amascut">🏺 ToA</button>
+        <button class="wiki-quick-btn" data-page="Nex">👁️ Nex</button>
+        <button class="wiki-quick-btn" data-page="Corporeal Beast">💀 Corp</button>
+        <button class="wiki-quick-btn" data-page="King Black Dragon">🐲 KBD</button>
+        <button class="wiki-quick-btn" data-page="Cerberus">🔥 Cerberus</button>
+        <button class="wiki-quick-btn" data-page="Kalphite Queen">🦂 KQ</button>
+        <button class="wiki-quick-btn" data-page="Alchemical Hydra">💧 Hydra</button>
+        <button class="wiki-quick-btn" data-page="Nightmare">😴 Nightmare</button>
+      </div>
+    </div>
+
+    <!-- Article View -->
+    <div id="wiki-article" class="wiki-article" style="display:none">
+      <div id="wiki-article-loading" class="wiki-loading" style="display:none">
+        <div class="wiki-spinner"></div>
+        <div>Loading article…</div>
+      </div>
+      <div id="wiki-article-error" class="wiki-error" style="display:none">
+        <div style="font-size:40px;margin-bottom:10px">😕</div>
+        <div id="wiki-error-msg">Could not load article.</div>
+        <button class="wiki-retry-btn" id="wiki-retry-btn">Try Again</button>
+      </div>
+      <div id="wiki-article-content" class="wiki-article-content"></div>
+    </div>
+
+  </div><!-- #page-wiki -->
+</div><!-- #main -->
+
+<!-- Bottom Nav -->
+<nav id="bottom-nav"></nav>
+
+<!-- More Menu -->
+<div class="modal-overlay" id="more-menu-overlay">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <div><div class="modal-title">More</div></div>
+      <button class="modal-close" id="more-menu-close">✕</button>
+    </div>
+    <div class="modal-actions">
+      <a class="modal-action" href="/src/features/bestiary/bestiary.html" style="border-color:var(--gold)">
+        <span class="ma-title">🐉 Bestiary</span>
+        <span class="ma-desc">Look up monsters, combat stats &amp; slayer info</span>
+      </a>
+      <a class="modal-action" href="/src/features/bookmarks/bookmarks.html" style="border-color:var(--gold)">
+        <span class="ma-title">🔖 Bookmarks</span>
+        <span class="ma-desc">Your saved clues, fairy rings, timers &amp; more</span>
+      </a>
+      <a class="modal-action" href="/src/features/bossing/bossing.html" style="border-color:var(--gold)">
+        <span class="ma-title">🏆 Bossing</span>
+        <span class="ma-desc">Track boss kill counts and personal bests</span>
+      </a>
+      <a class="modal-action" href="/src/features/clueScrolls/clueScrolls.html" style="border-color:var(--gold)">
+        <span class="ma-title">📜 Clue Solver</span>
+        <span class="ma-desc">Solve anagrams, ciphers, emotes &amp; puzzle boxes</span>
+      </a>
+      <a class="modal-action" href="/src/features/collectionLog/collectionLog.html">
+        <span class="ma-title">📒 Collection Log</span>
+        <span class="ma-desc">Track your collection log progress</span>
+      </a>
+      <a class="modal-action" href="/src/features/fairyRings/fairyRings.html" style="border-color:var(--gold)">
+        <span class="ma-title">🍄 Fairy Rings</span>
+        <span class="ma-desc">All 55 ring codes with pins &amp; personal notes</span>
+      </a>
+      <a class="modal-action" href="/src/features/goals/goals.html" style="border-color:var(--gold)">
+        <span class="ma-title">📊 Goals</span>
+        <span class="ma-desc">Set and track XP &amp; level goals per skill</span>
+      </a>
+      <a class="modal-action" href="/src/features/guides/guides.html" style="border-color:var(--gold)">
+        <span class="ma-title">🎓 Guides &amp; Tips</span>
+        <span class="ma-desc">YouTube guides from Theoatrix, Chymistry &amp; 10boot</span>
+      </a>
+      <a class="modal-action" href="/src/features/grandExchange/grandExchange.html" style="border-color:var(--gold)">
+        <span class="ma-title">💰 Grand Exchange</span>
+        <span class="ma-desc">Track item prices and market trends</span>
+      </a>
+      <a class="modal-action" href="/src/features/petLog/petLog.html" style="border-color:var(--gold)">
+        <span class="ma-title">🐾 Pet Log</span>
+        <span class="ma-desc">Log your pet drops and track your collection</span>
+      </a>
+      <a class="modal-action" href="/src/features/quests/quests.html" style="border-color:var(--gold)">
+        <span class="ma-title">🗺️ Quests</span>
+        <span class="ma-desc">Quest list with requirements and completion tracking</span>
+      </a>
+      <a class="modal-action" href="/src/features/timers/timers.html" style="border-color:var(--gold)">
+        <span class="ma-title">⏰ Timers</span>
+        <span class="ma-desc">Farm runs, birdhouses &amp; custom growth timers</span>
+      </a>
+      <a class="modal-action" href="/src/features/wiki/wiki.html" style="border-color:var(--gold)">
+        <span class="ma-title">📖 Wiki</span>
+        <span class="ma-desc">Browse the OSRS Wiki without leaving OSTS</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module" src="/src/features/wiki/wiki.js"></script>
+</body>
+</html>

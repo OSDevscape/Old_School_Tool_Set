@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Apply saved theme immediately — prevents flash of wrong theme -->
+  <script>!function(){try{var t=JSON.parse(localStorage.getItem('osts_theme_v2')||'"brown"');document.documentElement.className=t==='light'?'theme-light':t==='brown'?'theme-brown':'';}catch(e){document.documentElement.className='theme-brown';}}();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#2b241b">
   <link rel="manifest" href="/public/manifest.json">
@@ -11,31 +13,12 @@
 <body>
 
 <header>
-  <h1>OSTS</h1>
+  <h1>OSTS<span id="player-name-header"></span></h1>
   <div class="hdr-actions">
     <button id="install-btn">Install</button>
     <button class="hdr-btn icon-btn" id="settings-btn">⚙️</button>
   </div>
 </header>
-
-<div id="settings-overlay"></div>
-<div id="settings-panel" aria-hidden="true">
-  <div class="settings-head">
-    <h2>Settings</h2>
-    <button class="settings-close" id="settings-close">✕</button>
-  </div>
-  <div class="settings-block">
-    <div class="settings-label">Appearance</div>
-    <div class="theme-options">
-      <button class="theme-chip" data-theme="dark">Dark</button>
-      <button class="theme-chip" data-theme="light">Light</button>
-      <button class="theme-chip" data-theme="brown">Brown</button>
-    </div>
-  </div>
-  <div class="settings-block">
-    <div class="settings-label">Player Profiles</div>
-    <div id="sp-profile-list"></div>
-  </div>
 </div>
 
 <div id="main">
@@ -141,6 +124,7 @@
 
 <div id="toast"></div>
 
+<script type="module" src="/src/app/shared.js"></script>
 <script type="module" src="/src/features/bossing/bossing.js"></script>
 </body>
 </html>

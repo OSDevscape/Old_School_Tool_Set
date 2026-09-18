@@ -1,5 +1,5 @@
 import {
-  initPage, fetchPlayer, player, showToast, storage, wom,
+  initPage, fetchPlayer, player, showToast, storage, wom, theme,
   STORAGE_KEYS, normalizeAccountType, updateHeaderName,
 } from '/src/app/shared.js';
 
@@ -14,12 +14,12 @@ document.getElementById('back-btn').addEventListener('click', () => {
 });
 
 // ─── Theme ────────────────────────────────────────────────────────────────────
-const savedTheme = storage.get(STORAGE_KEYS.THEME, 'dark');
+// Reflect current theme on chips
+theme.init();
+
 document.querySelectorAll('.theme-chip').forEach(btn => {
-  if (btn.dataset.theme === savedTheme) btn.classList.add('active');
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.theme-chip').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    theme.apply(btn.dataset.theme);
   });
 });
 

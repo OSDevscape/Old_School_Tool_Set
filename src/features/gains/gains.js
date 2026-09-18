@@ -333,10 +333,13 @@ updateHeaderName();
       return;
     }
 
-    const points = timeline.map(p => ({
-      x: new Date(p.date),
-      y: p.value,
-    })).filter(p => p.y !== null && !isNaN(p.y));
+    const points = timeline
+  .map(p => ({
+    x: new Date(p.date),
+    y: Number(p.value),
+  }))
+  .filter(p => !Number.isNaN(p.x.getTime()) && Number.isFinite(p.y))
+  .sort((a, b) => a.x - b.x);
 
     if (points.length < 2) {
       wrap.innerHTML = '<div style="text-align:center;padding:20px;font-size:12px;color:var(--muted)">Not enough data for this period</div>';
@@ -401,10 +404,13 @@ updateHeaderName();
 
     if (!timeline?.length || timeline.length < 2) return;
 
-    const points = timeline.map(p => ({
-      x: new Date(p.date),
-      y: p.value,
-    })).filter(p => p.y !== null && !isNaN(p.y));
+    const points = timeline
+  .map(p => ({
+    x: new Date(p.date),
+    y: Number(p.value),
+  }))
+  .filter(p => !Number.isNaN(p.x.getTime()) && Number.isFinite(p.y))
+  .sort((a, b) => a.x - b.x);
 
     if (points.length < 2) return;
 
