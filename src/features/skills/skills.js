@@ -21,7 +21,7 @@ const METHODS = {
   prayer:       [[1,'Ensouled Heads (goblin)',50000],[38,'Ensouled Heads (giant)',160000],[60,'Ensouled Heads (dragon)',260000],[70,'Dragon Bones on altar',350000]],
   magic:        [[1,'Low Level Alchemy',30000],[43,'Superheat Item',75000],[55,'High Alch (AFK)',70000],[70,'Barraging (MM2 tunnels)',280000]],
   cooking:      [[1,'Shrimps / Anchovies',50000],[35,'Tuna',120000],[64,'Wines of Zamorak',490000],[80,'Karambwan',200000]],
-  woodcutting:  [[1,'Regular Trees',7000],[35,'Teak Trees (Ape Atoll)',55000],[60,'Blisterwood Tree',68000],[75,'Redwood Trees (AFK)',42000]],
+  woodcutting:  [[1,'Regular Trees',7000],[35,'Teak Trees (Ape Atoll)',55000],[60,'Blisterwood Tree',68000],[90,'Redwood Trees (AFK)',42000]],
   fletching:    [[1,'Arrow Shafts',40000],[52,'Stringing Maple Longbows',200000],[65,'Cutting Magic Shortbows',250000],[85,'Stringing Dragon Longbows',900000]],
   fishing:      [[1,'Shrimps (Draynor)',8000],[35,'Barbarian Fishing',40000],[58,'Minnows (Fishing Guild)',50000],[70,'Aerial Fishing',55000]],
   firemaking:   [[1,'Regular Logs',50000],[35,'Maple Logs',165000],[50,'Wintertodt (AFK)',100000],[60,'Magic Logs',200000]],
