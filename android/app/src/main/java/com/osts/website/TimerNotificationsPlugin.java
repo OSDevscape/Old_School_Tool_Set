@@ -14,9 +14,21 @@ import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.annotation.CapacitorPlugin;
-import com.getcapacitor.annotation.PluginMethod;
+import com.getcapacitor.PluginMethod;
 
-@CapacitorPlugin(name = "TimerNotifications")
+import com.getcapacitor.annotation.Permission;
+import com.getcapacitor.annotation.PermissionCallback;
+import com.getcapacitor.PermissionState;
+
+@CapacitorPlugin(
+    name = "TimerNotifications",
+    permissions = {
+        @Permission(
+            alias = "notifications",
+            strings = { Manifest.permission.POST_NOTIFICATIONS }
+        )
+    }
+)
 public class TimerNotificationsPlugin extends Plugin {
 
     private static final String CHANNEL_ID = "osts_timer_alerts";
@@ -29,23 +41,48 @@ public class TimerNotificationsPlugin extends Plugin {
     }
 
     @PluginMethod
-    public void requestPermission(PluginCall call) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
-            getContext().checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
-                    == PackageManager.PERMISSION_GRANTED) {
+public void getPermissionStatus(PluginCall call) {
+    JSObject result = new JSObject();
 
-            JSObject result = new JSObject();
-            result.put("granted", true);
-            call.resolve(result);
-            return;
-        }
+    boolean granted =
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+            getPermissionState("notifications") == PermissionState.GRANTED;
 
-        requestPermissionForAlias(
-                Manifest.permission.POST_NOTIFICATIONS,
-                call,
-                "notificationPermission"
-        );
+    result.put("granted", granted);
+    call.resolve(result);
+}
+
+    @PluginMethod
+public void requestPermission(PluginCall call) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+        JSObject result = new JSObject();
+        result.put("granted", true);
+        call.resolve(result);
+        return;
     }
+
+    if (getPermissionState("notifications") ==
+            com.getcapacitor.PermissionState.GRANTED) {
+        JSObject result = new JSObject();
+        result.put("granted", true);
+        call.resolve(result);
+        return;
+    }
+
+    requestPermissionForAlias("notifications", call, "notificationPermission");
+}
+
+@PermissionCallback
+private void notificationPermission(PluginCall call) {
+    JSObject result = new JSObject();
+
+    boolean granted =
+            getPermissionState("notifications") ==
+            com.getcapacitor.PermissionState.GRANTED;
+
+    result.put("granted", granted);
+    call.resolve(result);
+}
 
     @PluginMethod
     public void schedule(PluginCall call) {
